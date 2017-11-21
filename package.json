@@ -1,0 +1,37 @@
+{
+  "name": "todo-tree",
+  "displayName": "Todo Tree",
+  "description": "Use ripgrep to find TODO tags and display the results in a tree view",
+  "version": "0.0.1",
+  "icon": "icon.png",
+  "publisher": "Gruntfuggly",
+  "engines": {
+    "vscode": "^1.5.0"
+  },
+  "repository": "https://github.com/Gruntfuggly/todo-tree",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./extension",
+  "contributes": {},
+  "scripts": {},
+  "devDependencies": {
+    "typescript": "^2.0.3",
+    "vscode": "^1.0.0",
+    "mocha": "^2.3.3",
+    "eslint": "^3.6.0",
+    "@types/node": "^6.0.40",
+    "@types/mocha": "^2.2.32"
+  },
+  "__metadata": {
+    "id": "47137038-6832-49c2-a31c-9ad3d95187fc",
+    "publisherId": "d4906d2e-f2ee-492d-9c7c-02b6160599ec",
+    "publisherDisplayName": "Gruntfuggly"
+  },
+  "dependencies": {
+    "ripgrep-js": "^1.1.0"
+  }
+}
