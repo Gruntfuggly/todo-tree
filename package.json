@@ -16,7 +16,36 @@
     "*"
   ],
   "main": "./extension",
-  "contributes": {},
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "todo-tree",
+          "name": "TODOs"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "todo-tree.refresh",
+          "when": "view == todo-tree",
+          "group": "navigation"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "todo-tree.refresh",
+        "title": "Refresh",
+        "category": "todo-tree",
+        "icon": {
+          "dark": "resources/icons/dark/refresh.svg",
+          "light": "resources/icons/light/refresh.svg"
+        }
+      }
+    ]
+  },
   "scripts": {},
   "devDependencies": {
     "typescript": "^2.0.3",
@@ -32,6 +61,7 @@
     "publisherDisplayName": "Gruntfuggly"
   },
   "dependencies": {
+    "filepath": "^1.1.0",
     "ripgrep-js": "^1.1.0"
   }
 }
