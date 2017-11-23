@@ -1,7 +1,6 @@
 Object.defineProperty( exports, "__esModule", { value: true } );
 var vscode = require( 'vscode' );
 var path = require( "path" );
-var filepath = require( "filepath" );
 
 var elements = [];
 
@@ -65,15 +64,6 @@ class TodoDataProvider
         return treeItem;
     }
 
-    _getIcon( status )
-    {
-        let icon = {
-            dark: this._context.asAbsolutePath( path.join( "resources/icons", "dark", status + ".svg" ) ),
-            light: this._context.asAbsolutePath( path.join( "resources/icons", "light", status + ".svg" ) )
-        };
-        return icon;
-    }
-
     clear()
     {
         elements = [];
@@ -82,7 +72,7 @@ class TodoDataProvider
 
     add( root, match )
     {
-        var parts = filepath.create( match.file ).split();
+        var parts = match.file.split(path.sep);
 
         function findSubPath( e )
         {
@@ -96,6 +86,7 @@ class TodoDataProvider
             var child = parent.find( findSubPath, p );
             if( !child )
             {
+console.log("Creating path element:" + p );
                 pathElement = {
                     type: PATH, name: p, elements: [], todos: []
                 };

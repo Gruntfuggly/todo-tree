@@ -3,7 +3,7 @@ var vscode = require( 'vscode' );
 var ripgrep = require( 'ripgrep-js' );
 var TreeView = require( "./dataProvider" );
 
-function activate( context ) // TODO: First
+function activate( context )
 {
     var provider = new TreeView.TodoDataProvider( context );
     vscode.window.registerTreeDataProvider( 'todo-tree', provider );
@@ -12,11 +12,14 @@ function activate( context ) // TODO: First
     {
         provider.clear();
 
-        var root = vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
+        var root = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
+        if( root === "" )
+        {
+            root = vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
+        }
 
-        // TODO: Second
-
-        ripgrep( root, { regex: " TODO" } ).then( ( result ) =>
+        var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
+        ripgrep( root, { regex: "'" + regex + "'" } ).then( ( result ) =>
         {
             result.map( function( match )
             {
@@ -50,7 +53,6 @@ function activate( context ) // TODO: First
 
 function deactivate()
 {
-    // TODO: Third
 }
 
 exports.activate = activate;
