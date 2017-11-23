@@ -21,7 +21,11 @@ class TodoDataProvider
     {
         if( !element )
         {
-            return elements;
+            if( elements.length > 0 )
+            {
+                return elements;
+            }
+            return [ { name: "Nothing found" }];
         }
         else if( element.type === PATH )
         {
@@ -43,6 +47,7 @@ class TodoDataProvider
     getTreeItem( element )
     {
         let treeItem = new vscode.TreeItem( element.name );
+        treeItem.collapsibleState = vscode.TreeItemCollapsibleState.None;
 
         if( element.type === PATH )
         {
@@ -50,7 +55,6 @@ class TodoDataProvider
         }
         else if( element.type === TODO )
         {
-            treeItem.collapsibleState = vscode.TreeItemCollapsibleState.None;
             treeItem.command = {
                 command: "todo-tree.revealTodo",
                 title: "",
@@ -72,7 +76,7 @@ class TodoDataProvider
 
     add( root, match )
     {
-        var parts = match.file.split(path.sep);
+        var parts = match.file.split( path.sep );
 
         function findSubPath( e )
         {
@@ -86,7 +90,6 @@ class TodoDataProvider
             var child = parent.find( findSubPath, p );
             if( !child )
             {
-console.log("Creating path element:" + p );
                 pathElement = {
                     type: PATH, name: p, elements: [], todos: []
                 };

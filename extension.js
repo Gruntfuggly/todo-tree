@@ -1,6 +1,6 @@
 
 var vscode = require( 'vscode' );
-var ripgrep = require( 'ripgrep-js' );
+var ripgrep = require( './ripgrep' );
 var TreeView = require( "./dataProvider" );
 
 function activate( context )
@@ -8,9 +8,13 @@ function activate( context )
     var provider = new TreeView.TodoDataProvider( context );
     vscode.window.registerTreeDataProvider( 'todo-tree', provider );
 
-    function findTodos()
+    function refresh()
     {
         provider.clear();
+
+        var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
+        status.text = "Scanning for TODOs...";
+        status.show();
 
         var root = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
         if( root === "" )
@@ -19,18 +23,20 @@ function activate( context )
         }
 
         var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
-        ripgrep( root, { regex: "'" + regex + "'" } ).then( ( result ) =>
+        var options = { regex: "'" + regex + "'" };
+        var globs = vscode.workspace.getConfiguration( 'todo-tree' ).globs;
+        if( globs && globs.length > 0 )
+        {
+            options.globs = globs;
+        }
+        ripgrep( root, options ).then( ( result ) =>
         {
             result.map( function( match )
             {
                 provider.add( root, match );
             } );
+            status.hide();
         } );
-    }
-
-    function refresh()
-    {
-        findTodos();
     }
 
     vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
@@ -49,6 +55,8 @@ function activate( context )
 
     context.subscriptions.push(
         vscode.commands.registerCommand( 'todo-tree.refresh', refresh ) );
+
+    refresh();
 }
 
 function deactivate()
