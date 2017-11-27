@@ -19,9 +19,9 @@ function activate( context )
         var root = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
         if( root === "" )
         {
-            if( vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0)
+            if( vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0 )
             {
-                 root = vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
+                root = vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
             }
             else
             {

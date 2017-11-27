@@ -32,6 +32,10 @@ The search starts in your workspace folder. Change this if you want to start som
 
 If you want to modify the files which are searched, you can define a list of <a href="https://www.npmjs.com/package/glob">globs</a>.
 
+`todo-tree.ripgrep`
+
+By default, the extension tries to download and use the version of ripgrep that has been compiled by vscode for your platform. If this doesn't work you can install ripgrep yourself and set this preference to point to it.
+
 ### Credits
 
 Uses a modified version of <a href="https://www.npmjs.com/package/ripgrep-js">ripgrep-js</a>.
