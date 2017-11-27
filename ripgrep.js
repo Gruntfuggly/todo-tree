@@ -94,6 +94,8 @@ module.exports = function ripGrep( cwd, options, searchTerm )
         return `${command} -g '${glob}'`;
     }, execString );
 
+    execString += " .";
+
     return new Promise( function( resolve, reject )
     {
         exec( execString, { cwd }, ( error, stdout, stderr ) =>

@@ -31,7 +31,7 @@ function activate( context )
         }
 
         var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
-        var options = { regex: "'" + regex + "'" };
+        var options = { regex: "\"" + regex + "\"" };
         var globs = vscode.workspace.getConfiguration( 'todo-tree' ).globs;
         if( globs && globs.length > 0 )
         {
