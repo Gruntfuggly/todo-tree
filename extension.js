@@ -19,7 +19,15 @@ function activate( context )
         var root = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
         if( root === "" )
         {
-            root = vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
+            if( vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0)
+            {
+                 root = vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
+            }
+            else
+            {
+                status.hide();
+                return;
+            }
         }
 
         var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
