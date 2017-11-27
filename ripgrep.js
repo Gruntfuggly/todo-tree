@@ -53,12 +53,12 @@ module.exports = function ripGrep( cwd, options, searchTerm )
 
     if( !cwd )
     {
-        return Promise.reject( 'No `cwd` provided' );
+        return Promise.reject( { error: 'No `cwd` provided' } );
     }
 
     if( arguments.length === 1 )
     {
-        return Promise.reject( 'No search term provided' );
+        return Promise.reject( { error: 'No search term provided' } );
     }
 
     options.regex = options.regex || '';
@@ -74,9 +74,13 @@ module.exports = function ripGrep( cwd, options, searchTerm )
         rgPath = path.join( extPath, "node_modules/vscode-ripgrep/bin/", rgExe );
     }
 
-    if( ! fs.existsSync( rgPath ) )
+    if( !fs.existsSync( rgPath ) )
     {
-        vscode.window.showErrorMessage( "todo-tree: ripgrep not found (" + rgPath + ")" );
+        return Promise.reject( { error: "ripgrep executable not found (" + rgPath + ")" } );
+    }
+    if( !fs.existsSync( cwd ) )
+    {
+        return Promise.reject( { error: "root folder not found (" + cwd + ")" } );
     }
 
     let execString = rgPath + ' --column --line-number --color never';
@@ -95,6 +99,8 @@ module.exports = function ripGrep( cwd, options, searchTerm )
     }, execString );
 
     execString += " .";
+
+    console.log( execString );
 
     return new Promise( function( resolve, reject )
     {

@@ -8,12 +8,12 @@ function activate( context )
     var provider = new TreeView.TodoDataProvider( context );
     vscode.window.registerTreeDataProvider( 'todo-tree', provider );
 
+    var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
+
     function refresh()
     {
         provider.clear();
 
-        var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
-        status.text = "Scanning for TODOs...";
         status.show();
 
         var root = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
@@ -30,6 +30,8 @@ function activate( context )
             }
         }
 
+        status.text = "Scanning " + root + " for TODOs...";
+
         var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
         var options = { regex: "\"" + regex + "\"" };
         var globs = vscode.workspace.getConfiguration( 'todo-tree' ).globs;
@@ -44,6 +46,17 @@ function activate( context )
                 provider.add( root, match );
             } );
             status.hide();
+        } ).catch( ( e ) =>
+        {
+            status.hide();
+            if( e.error )
+            {
+                vscode.window.showErrorMessage( "todo-tree: " + e.error );
+            }
+            else
+            {
+                vscode.window.showErrorMessage( "todo-tree: failed to execute search (" + e.stderr + ")" );
+            }
         } );
     }
 
