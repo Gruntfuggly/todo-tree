@@ -63,6 +63,11 @@
           "type": "array",
           "description": "Globs for use in limiting search results, e.g. [\"!node_modules/**\"]",
           "default": []
+        },
+        "todo-tree.ripgrep": {
+            "type": "string",
+            "description": "Location of your version of ripgrep",
+            "default": ""
         }
       }
     }

@@ -8,28 +8,29 @@
  */
 
 'use strict';
-const vscode = require( 'vscode' );
-const path = require( 'path' );
 const exec = require( 'child_process' ).exec;
+const fs = require( 'fs' );
+const path = require( 'path' );
+const vscode = require( 'vscode' );
 
 function RipgrepError( error, stderr )
 {
-  this.message = error;
-  this.stderr = stderr;
+    this.message = error;
+    this.stderr = stderr;
 }
 
 function formatResults( stdout )
 {
-  stdout = stdout.trim();
+    stdout = stdout.trim();
 
-  if( !stdout )
-  {
-    return [];
-  }
+    if( !stdout )
+    {
+        return [];
+    }
 
-  return stdout
-    .split( '\n' )
-    .map( ( line ) => new Match( line ) );
+    return stdout
+        .split( '\n' )
+        .map( ( line ) => new Match( line ) );
 }
 
 /**
@@ -43,72 +44,83 @@ function formatResults( stdout )
  */
 module.exports = function ripGrep( cwd, options, searchTerm )
 {
-  // If you're invoking the function with two arguments, just the `cwd` and `searchTerm`
-  if( arguments.length === 2 && typeof options === 'string' )
-  {
-    searchTerm = options;
-    options = {};
-  }
-
-  if( !cwd )
-  {
-    return Promise.reject( 'No `cwd` provided' );
-  }
-
-  if( arguments.length === 1 )
-  {
-    return Promise.reject( 'No search term provided' );
-  }
-
-  options.regex = options.regex || '';
-  options.globs = options.globs || [];
-  options.string = searchTerm || options.string || '';
-
-  var extPath = vscode.extensions.getExtension( "Gruntfuggly.todo-tree" ).extensionPath;
-  var isWin = /^win/.test( process.platform );
-  var rgExe = isWin ? "rg.exe" : "rg";
-  var rgPath = path.join( extPath, "node_modules/vscode-ripgrep/bin/", rgExe );
-  let execString = rgPath + ' --column --line-number --color never';
-
-  if( options.regex )
-  {
-    execString = `${execString} -e ${options.regex}`;
-  } else if( options.string )
-  {
-    execString = `${execString} -F ${options.string}`;
-  }
-
-  execString = options.globs.reduce( ( command, glob ) =>
-  {
-    return `${command} -g '${glob}'`;
-  }, execString );
-
-  return new Promise( function( resolve, reject )
-  {
-    exec( execString, { cwd }, ( error, stdout, stderr ) =>
+    // If you're invoking the function with two arguments, just the `cwd` and `searchTerm`
+    if( arguments.length === 2 && typeof options === 'string' )
     {
-      if( !error || ( error && stderr === '' ) )
-      {
-        resolve( formatResults( stdout ) );
-      } else
-      {
-        reject( new RipgrepError( error, stderr ) );
-      }
-    } );
-  } );
+        searchTerm = options;
+        options = {};
+    }
+
+    if( !cwd )
+    {
+        return Promise.reject( 'No `cwd` provided' );
+    }
+
+    if( arguments.length === 1 )
+    {
+        return Promise.reject( 'No search term provided' );
+    }
+
+    options.regex = options.regex || '';
+    options.globs = options.globs || [];
+    options.string = searchTerm || options.string || '';
+
+    var rgPath = vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep;
+    if( rgPath === "" )
+    {
+        var extPath = vscode.extensions.getExtension( "Gruntfuggly.todo-tree" ).extensionPath;
+        var isWin = /^win/.test( process.platform );
+        var rgExe = isWin ? "rg.exe" : "rg";
+        rgPath = path.join( extPath, "node_modules/vscode-ripgrep/bin/", rgExe );
+    }
+
+    if( ! fs.existsSync( rgPath ) )
+    {
+        vscode.window.showErrorMessage( "todo-tree: ripgrep not found (" + rgPath + ")" );
+    }
+
+    let execString = rgPath + ' --column --line-number --color never';
+
+    if( options.regex )
+    {
+        execString = `${execString} -e ${options.regex}`;
+    } else if( options.string )
+    {
+        execString = `${execString} -F ${options.string}`;
+    }
+
+    execString = options.globs.reduce( ( command, glob ) =>
+    {
+        return `${command} -g '${glob}'`;
+    }, execString );
+
+    return new Promise( function( resolve, reject )
+    {
+        exec( execString, { cwd }, ( error, stdout, stderr ) =>
+        {
+            if( !error || ( error && stderr === '' ) )
+            {
+                resolve( formatResults( stdout ) );
+            } else
+            {
+                reject( new RipgrepError( error, stderr ) );
+            }
+        } );
+    }
+    );
 };
 
 class Match
 {
-  constructor( matchText )
-  {
-    matchText = matchText.split( ':' );
+    constructor( matchText )
+    {
+        matchText = matchText.split( ':' );
 
-    this.file = matchText.shift();
-    this.line = parseInt( matchText.shift() );
-    this.column = parseInt( matchText.shift() );
-    this.match = matchText.join( ':' );
-  }
+        this.file = matchText.shift();
+        this.line = parseInt( matchText.shift() );
+        this.column = parseInt( matchText.shift() );
+        this.match = matchText.join( ':' );
+    }
 }
 
 module.exports.Match = Match;
