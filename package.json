@@ -65,24 +65,15 @@
           "default": []
         },
         "todo-tree.ripgrep": {
-          "type": "string",
-          "description": "Location of your version of ripgrep",
-          "default": ""
+            "type": "string",
+            "description": "Location of your version of ripgrep",
+            "default": ""
         }
       }
     }
   },
   "scripts": {},
-  "devDependencies": {
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0",
-    "mocha": "^2.3.3",
-    "eslint": "^3.6.0",
-    "@types/node": "^6.0.40",
-    "@types/mocha": "^2.2.32"
-  },
   "dependencies": {
-    "filepath": "^1.1.0",
     "vscode-ripgrep": "^0.6.0-patch.0.5"
   }
 }
