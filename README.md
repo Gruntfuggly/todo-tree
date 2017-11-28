@@ -36,6 +36,11 @@ If you want to modify the files which are searched, you can define a list of <a 
 
 By default, the extension tries to download and use the version of ripgrep that has been compiled by vscode for your platform. If this doesn't work you can install ripgrep yourself and set this preference to point to it.
 
+_Note: If you are running on Windows and see an error saying that rg.exe is not found, please try the following:_
+1. Go to `.vscode/extensions/Gruntfuggly.todo-tree-0.0.<x>` (replacing &lt;x&gt; with the version number you have)
+2. Enter `npm uninstall vscode-ripgrep`
+3. Enter `npm install`
+
 ### Credits
 
 Uses a modified version of <a href="https://www.npmjs.com/package/ripgrep-js">ripgrep-js</a>.
