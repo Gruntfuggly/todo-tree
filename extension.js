@@ -2,6 +2,9 @@
 var vscode = require( 'vscode' );
 var ripgrep = require( './ripgrep' );
 var TreeView = require( "./dataProvider" );
+var childProcess = require( 'child_process' );
+var fs = require( 'fs' );
+var path = require( 'path' );
 
 function activate( context )
 {
@@ -9,6 +12,16 @@ function activate( context )
     vscode.window.registerTreeDataProvider( 'todo-tree', provider );
 
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
+
+    // It would be nice if vscode-ripgrep could simply be installed by npm as a dependency of
+    // the extension, but for some reason it gets the platform wrong and downloads the wrong
+    // version, so it needs to be done here insted.
+    var extPath = vscode.extensions.getExtension( "Gruntfuggly.todo-tree" ).extensionPath;
+    var rgPath = path.join( extPath, "node_modules/vscode-ripgrep" );
+    if( !fs.existsSync( rgPath ) )
+    {
+        childProcess.execSync( "npm install vscode-ripgrep", { cwd: extPath } );
+    }
 
     function refresh()
     {

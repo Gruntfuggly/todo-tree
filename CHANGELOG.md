@@ -1,3 +1,6 @@
+# v0.0.5 - 2017-11-28
+- Attempt to install vscode-ripgrep directly from the extension
+
 # v0.0.4 - 2017-11-28
 - Attempt to reinstall vscode-ripgrep automatically
 
