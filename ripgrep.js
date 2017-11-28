@@ -66,7 +66,7 @@ module.exports = function ripGrep( cwd, options, searchTerm )
     options.string = searchTerm || options.string || '';
 
     var rgPath = vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep;
-    if( rgPath === "" )
+    if( !rgPath || rgPath === "" )
     {
         var extPath = vscode.extensions.getExtension( "Gruntfuggly.todo-tree" ).extensionPath;
         var isWin = /^win/.test( process.platform );

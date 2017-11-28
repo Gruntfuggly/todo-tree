@@ -18,9 +18,17 @@ function activate( context )
     // version, so it needs to be done here insted.
     var extPath = vscode.extensions.getExtension( "Gruntfuggly.todo-tree" ).extensionPath;
     var rgPath = path.join( extPath, "node_modules/vscode-ripgrep" );
-    if( !fs.existsSync( rgPath ) )
+    var rgExe = vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep;
+    if( ( !rgExe || rgExe === "" ) && !fs.existsSync( rgPath ) )
     {
-        childProcess.execSync( "npm install vscode-ripgrep", { cwd: extPath } );
+        try
+        {
+            childProcess.execSync( "npm install vscode-ripgrep", { cwd: extPath } );
+        }
+        catch( e )
+        {
+            vscode.window.showErrorMessage( "todo-tree: Failed to install vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
+        }
     }
 
     function refresh()

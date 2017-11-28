@@ -1,3 +1,6 @@
+# v0.0.6 - 2017-11-28
+- Only attempt install if todo-tree.ripgrep is undefined and show some info if the install fails
+
 # v0.0.5 - 2017-11-28
 - Attempt to install vscode-ripgrep directly from the extension
 
