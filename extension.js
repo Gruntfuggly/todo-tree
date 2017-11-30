@@ -8,11 +8,6 @@ var path = require( 'path' );
 
 function activate( context )
 {
-    var provider = new TreeView.TodoDataProvider( context );
-    vscode.window.registerTreeDataProvider( 'todo-tree', provider );
-
-    var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
-
     // It would be nice if vscode-ripgrep could simply be installed by npm as a dependency of
     // the extension, but for some reason it gets the platform wrong and downloads the wrong
     // version, so it needs to be done here insted.
@@ -28,8 +23,14 @@ function activate( context )
         catch( e )
         {
             vscode.window.showErrorMessage( "todo-tree: Failed to install vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
+            return;
         }
     }
+
+    var provider = new TreeView.TodoDataProvider( context );
+    vscode.window.registerTreeDataProvider( 'todo-tree', provider );
+
+    var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
 
     function refresh()
     {
