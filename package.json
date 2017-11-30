@@ -1,77 +1,92 @@
 {
-  "name": "todo-tree",
-  "displayName": "Todo Tree",
-  "description": "Use ripgrep to find TODO tags and display the results in a tree view",
-  "version": "0.0.6",
-  "icon": "resources/todo-tree.png",
-  "publisher": "Gruntfuggly",
-  "engines": {
-    "vscode": "^1.5.0"
-  },
-  "repository": "https://github.com/Gruntfuggly/todo-tree",
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "*"
-  ],
-  "main": "./extension",
-  "contributes": {
-    "views": {
-      "explorer": [
-        {
-          "id": "todo-tree",
-          "name": "TODOs"
-        }
-      ]
-    },
-    "menus": {
-      "view/title": [
-        {
-          "command": "todo-tree.refresh",
-          "when": "view == todo-tree",
-          "group": "navigation"
-        }
-      ]
-    },
-    "commands": [
-      {
-        "command": "todo-tree.refresh",
-        "title": "Refresh",
-        "category": "todo-tree",
-        "icon": {
-          "dark": "resources/icons/dark/refresh.svg",
-          "light": "resources/icons/light/refresh.svg"
-        }
-      }
-    ],
-    "configuration": {
-      "type": "object",
-      "title": "todo-tree configuration",
-      "properties": {
-        "todo-tree.regex": {
-          "type": "string",
-          "description": "Regular expression for matching TODOs",
-          "default": "(//|#|<--|;)\\s*(TODO|FIXME)"
-        },
-        "todo-tree.rootFolder": {
-          "type": "string",
-          "description": "Folder in which to run the search (defaults to the workspace folder)",
-          "default": ""
-        },
-        "todo-tree.globs": {
-          "type": "array",
-          "description": "Globs for use in limiting search results, e.g. [\"!node_modules/**\"]",
-          "default": []
-        },
-        "todo-tree.ripgrep": {
-          "type": "string",
-          "description": "Location of your version of ripgrep",
-          "default": ""
-        }
-      }
-    }
-  },
-  "scripts": {},
-  "dependencies": {}
+	"name": "todo-tree",
+	"displayName": "Todo Tree",
+	"description": "Use ripgrep to find TODO tags and display the results in a tree view",
+	"version": "0.0.7",
+	"icon": "resources/todo-tree.png",
+	"publisher": "Gruntfuggly",
+	"engines": {
+		"vscode": "^1.5.0"
+	},
+	"repository": "https://github.com/Gruntfuggly/todo-tree",
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./extension",
+	"contributes": {
+		"views": {
+			"explorer": [
+				{
+					"id": "todo-tree",
+					"name": "TODOs"
+				}
+			]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "todo-tree.refresh",
+					"when": "view == todo-tree",
+					"group": "navigation"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "todo-tree.refresh",
+				"title": "Refresh",
+				"category": "todo-tree",
+				"icon": {
+					"dark": "resources/icons/dark/refresh.svg",
+					"light": "resources/icons/light/refresh.svg"
+				}
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "todo-tree configuration",
+			"properties": {
+				"todo-tree.regex": {
+					"type": "string",
+					"description": "Regular expression for matching TODOs",
+					"default": "(//|#|<--|;)\\s*(TODO|FIXME)"
+				},
+				"todo-tree.rootFolder": {
+					"type": "string",
+					"description": "Folder in which to run the search (defaults to the workspace folder)",
+					"default": ""
+				},
+				"todo-tree.globs": {
+					"type": "array",
+					"description": "Globs for use in limiting search results, e.g. [\"!node_modules/**\"]",
+					"default": []
+				},
+				"todo-tree.ripgrep": {
+					"type": "string",
+					"description": "Location of your version of ripgrep",
+					"default": ""
+				},
+				"todo-tree.autoUpdate": {
+					"type": "boolean",
+					"description": "If true, the tree will be updated when files are saved",
+					"default": true
+				},
+				"todo-tree.expanded": {
+					"type": "boolean",
+					"description": "Set to true if you want the tree to be initially expanded",
+					"default": false
+				}
+			}
+		},
+		"scripts": {},
+		"dependencies": {}
+	},
+	"__metadata": {
+		"id": "261cac81-cd7b-4555-bb41-0c2d2bcd3e70",
+		"publisherDisplayName": "Gruntfuggly",
+		"publisherId": "d4906d2e-f2ee-492d-9c7c-02b6160599ec"
+	}
 }

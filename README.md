@@ -36,6 +36,18 @@ If you want to modify the files which are searched, you can define a list of <a 
 
 By default, the extension tries to download and use the version of ripgrep that has been compiled by vscode for your platform. If this doesn't work you can install ripgrep yourself and set this preference to point to it.
 
+`todo-tree.autoUpdate`
+
+When set to true, the tree will be updated when a file is saved.
+
+`todo-tree.expanded`
+
+If you want the tree to be opened with all nodes expanded, set this to true. By default, the tree will be completely collapsed.
+
+## Known issues
+
+Unfortunately, due to a current limitation of vscode, when the view is refreshed, or the tree is updated because a file has been saved, the tree will be reset to the initial collapsed or expanded state. Once tree views are enhanced (https://github.com/Microsoft/vscode/issues/27823) the tree state should hopefully be preserved.
+
 ### Credits
 
 Uses a modified version of <a href="https://www.npmjs.com/package/ripgrep-js">ripgrep-js</a>.

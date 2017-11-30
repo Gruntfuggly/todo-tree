@@ -32,12 +32,8 @@ function activate( context )
 
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
 
-    function refresh()
+    function getRoot()
     {
-        provider.clear();
-
-        status.show();
-
         var root = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
         if( root === "" )
         {
@@ -45,14 +41,18 @@ function activate( context )
             {
                 root = vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
             }
-            else
-            {
-                status.hide();
-                return;
-            }
         }
+        return root;
+    }
 
-        status.text = "Scanning " + root + " for TODOs...";
+    function search( filename, refreshRequired )
+    {
+        var root = getRoot();
+        if( root === "" )
+        {
+            status.hide();
+            return;
+        }
 
         var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
         var options = { regex: "\"" + regex + "\"" };
@@ -61,12 +61,21 @@ function activate( context )
         {
             options.globs = globs;
         }
+        if( filename )
+        {
+            options.filename = filename;
+        }
+
         ripgrep( root, options ).then( ( result ) =>
         {
             result.map( function( match )
             {
                 provider.add( root, match );
             } );
+            if( refreshRequired && ( result === undefined || result.length === 0 ) )
+            {
+                provider.refresh();
+            }
             status.hide();
         } ).catch( ( e ) =>
         {
@@ -80,6 +89,17 @@ function activate( context )
                 vscode.window.showErrorMessage( "todo-tree: failed to execute search (" + e.stderr + ")" );
             }
         } );
+    }
+
+    function refresh()
+    {
+        provider.clear();
+
+        status.show();
+
+        status.text = "Scanning " + root + " for TODOs...";
+
+        search();
     }
 
     vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
@@ -96,8 +116,17 @@ function activate( context )
         } );
     } );
 
-    context.subscriptions.push(
-        vscode.commands.registerCommand( 'todo-tree.refresh', refresh ) );
+    var onSave = vscode.workspace.onDidSaveTextDocument( ( e ) =>
+    {
+        var root = getRoot();
+        if( vscode.workspace.getConfiguration( 'todo-tree' ).autoUpdate && root )
+        {
+            var removed = provider.remove( root, e.fileName );
+            search( e.fileName, removed );
+        }
+    } );
+
+    context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', refresh ) );
 
     refresh();
 }

@@ -51,7 +51,8 @@ class TodoDataProvider
 
         if( element.type === PATH )
         {
-            treeItem.collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+            treeItem.collapsibleState = vscode.workspace.getConfiguration( 'todo-tree' ).expanded ?
+                vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
         }
         else if( element.type === TODO )
         {
@@ -74,9 +75,49 @@ class TodoDataProvider
         this._onDidChangeTreeData.fire();
     }
 
+    remove( root, filename )
+    {
+        var removed = false;
+
+        var fullPath = path.resolve( root, filename );
+        var relativePath = path.relative( root, fullPath );
+        var parts = relativePath.split( path.sep );
+
+        function findSubPath( e )
+        {
+            return e.type === PATH && e.name === this;
+        }
+
+        var me = this;
+        var pathElement;
+        var parent = elements;
+        parts.map( function( p, i )
+        {
+            var child = parent.find( findSubPath, p );
+            if( !child || i === parts.length - 1 )
+            {
+                if( child )
+                {
+                    parent.splice( parent.indexOf( child ), 1 );
+                    me._onDidChangeTreeData.fire( child );
+                    removed = true;
+                }
+            }
+            else
+            {
+                pathElement = child;
+                parent = pathElement.elements;
+            }
+        } );
+
+        return removed;
+    }
+
     add( root, match )
     {
-        var parts = match.file.split( path.sep );
+        var fullPath = path.resolve( root, match.file );
+        var relativePath = path.relative( root, fullPath );
+        var parts = relativePath.split( path.sep );
 
         function findSubPath( e )
         {
@@ -104,7 +145,7 @@ class TodoDataProvider
         } );
 
         var todoElement = {
-            type: TODO, name: match.match.substr( match.column - 1 ), line: match.line - 1, file: path.join( root, match.file )
+            type: TODO, name: match.match.substr( match.column - 1 ), line: match.line - 1, file: fullPath
         };
 
         pathElement.todos.push( todoElement );
@@ -112,7 +153,7 @@ class TodoDataProvider
         this._onDidChangeTreeData.fire();
     }
 
-    refresh( html )
+    refresh()
     {
         this._onDidChangeTreeData.fire();
     }

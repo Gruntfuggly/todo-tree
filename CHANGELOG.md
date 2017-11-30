@@ -1,3 +1,7 @@
+# v0.0.7 - 2017-11-30
+- Add auto update when saving files
+- Add preference to show tree expanded by default.
+
 # v0.0.6 - 2017-11-28
 - Only attempt install if todo-tree.ripgrep is undefined and show some info if the install fails
 

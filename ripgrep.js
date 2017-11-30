@@ -83,7 +83,7 @@ module.exports = function ripGrep( cwd, options, searchTerm )
         return Promise.reject( { error: "root folder not found (" + cwd + ")" } );
     }
 
-    let execString = rgPath + ' --column --line-number --color never';
+    let execString = rgPath + ' -H --column --line-number --color never';
 
     if( options.regex )
     {
@@ -98,7 +98,14 @@ module.exports = function ripGrep( cwd, options, searchTerm )
         return `${command} -g '${glob}'`;
     }, execString );
 
-    execString += " .";
+    if( options.filename )
+    {
+        execString += " " + options.filename;
+    }
+    else
+    {
+        execString += " .";
+    }
 
     console.log( execString );
 
