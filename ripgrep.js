@@ -129,9 +129,15 @@ class Match
 {
     constructor( matchText )
     {
-        matchText = matchText.split( ':' );
+        this.file = "";
 
-        this.file = matchText.shift();
+        if( matchText.length > 1 && matchText[1] === ':')
+        {
+            this.file = matchText.substr(0,2);
+            matchText = matchText.substr(2);
+        }
+        matchText = matchText.split( ':' );
+        this.file += matchText.shift();
         this.line = parseInt( matchText.shift() );
         this.column = parseInt( matchText.shift() );
         this.match = matchText.join( ':' );

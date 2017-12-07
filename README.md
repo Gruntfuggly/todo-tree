@@ -42,7 +42,7 @@ When set to true, the tree will be updated when a file is saved.
 
 `todo-tree.expanded`
 
-If you want the tree to be opened with all nodes expanded, set this to true. By default, the tree will be completely collapsed.
+If you want the tree to be opened with all nodes expanded, set this to true. By default, the tree will be collapsed.
 
 ## Known issues
 
