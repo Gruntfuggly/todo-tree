@@ -68,6 +68,10 @@ function activate( context )
 
         ripgrep( rootFolder, options ).then( ( result ) =>
         {
+            result.sort( function compare( a, b )
+            {
+                return a.file > b.file ? 1 : b.file > a.file ? -1 : a.line > b.line;
+            } );
             result.map( function( match )
             {
                 provider.add( rootFolder, match );
