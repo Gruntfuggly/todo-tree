@@ -75,12 +75,12 @@ class TodoDataProvider
         this._onDidChangeTreeData.fire();
     }
 
-    remove( root, filename )
+    remove( rootFolder, filename )
     {
         var removed = false;
 
-        var fullPath = path.resolve( root, filename );
-        var relativePath = path.relative( root, fullPath );
+        var fullPath = path.resolve( rootFolder, filename );
+        var relativePath = path.relative( rootFolder, fullPath );
         var parts = relativePath.split( path.sep );
 
         function findSubPath( e )
@@ -113,10 +113,10 @@ class TodoDataProvider
         return removed;
     }
 
-    add( root, match )
+    add( rootFolder, match )
     {
-        var fullPath = path.resolve( root, match.file );
-        var relativePath = path.relative( root, fullPath );
+        var fullPath = path.resolve( rootFolder, match.file );
+        var relativePath = path.relative( rootFolder, fullPath );
         var parts = relativePath.split( path.sep );
 
         function findSubPath( e )

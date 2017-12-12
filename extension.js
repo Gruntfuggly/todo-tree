@@ -32,23 +32,23 @@ function activate( context )
 
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
 
-    function getRoot()
+    function getRootFolder()
     {
-        var root = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
-        if( root === "" )
+        var rootFolder = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
+        if( rootFolder === "" )
         {
             if( vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0 )
             {
-                root = vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
+                rootFolder = vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
             }
         }
-        return root;
+        return rootFolder;
     }
 
     function search( filename, refreshRequired )
     {
-        var root = getRoot();
-        if( root === "" )
+        var rootFolder = getRootFolder();
+        if( rootFolder === "" )
         {
             status.hide();
             return;
@@ -66,11 +66,11 @@ function activate( context )
             options.filename = filename;
         }
 
-        ripgrep( root, options ).then( ( result ) =>
+        ripgrep( rootFolder, options ).then( ( result ) =>
         {
             result.map( function( match )
             {
-                provider.add( root, match );
+                provider.add( rootFolder, match );
             } );
             if( refreshRequired && ( result === undefined || result.length === 0 ) )
             {
@@ -97,7 +97,7 @@ function activate( context )
 
         status.show();
 
-        status.text = "Scanning " + root + " for TODOs...";
+        status.text = "todo-tree: Scanning " + getRootFolder() + "...";
 
         search();
     }
@@ -118,10 +118,10 @@ function activate( context )
 
     var onSave = vscode.workspace.onDidSaveTextDocument( ( e ) =>
     {
-        var root = getRoot();
-        if( vscode.workspace.getConfiguration( 'todo-tree' ).autoUpdate && root )
+        var rootFolder = getRootFolder();
+        if( vscode.workspace.getConfiguration( 'todo-tree' ).autoUpdate && rootFolder )
         {
-            var removed = provider.remove( root, e.fileName );
+            var removed = provider.remove( rootFolder, e.fileName );
             search( e.fileName, removed );
         }
     } );
