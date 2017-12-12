@@ -125,8 +125,12 @@ function activate( context )
         var rootFolder = getRootFolder();
         if( vscode.workspace.getConfiguration( 'todo-tree' ).autoUpdate && rootFolder )
         {
-            var removed = provider.remove( rootFolder, e.fileName );
-            search( e.fileName, removed );
+            const relative = path.relative( rootFolder, e.fileName );
+            if( !!relative && !relative.startsWith( '..' ) && !path.isAbsolute( relative ) )
+            {
+                var removed = provider.remove( rootFolder, e.fileName );
+                search( e.fileName, removed );
+            }
         }
     } );
 
