@@ -1,3 +1,10 @@
+# v0.0.8 - 2017-12-12
+- Fix scanning message
+- sort results to keep tree consistent
+- remove empty parent nodes from the tree
+- ignore files outside the root folder
+- handle filenames containing spaces
+
 # v0.0.7 - 2017-11-30
 - Add auto update when saving files
 - Add preference to show tree expanded by default

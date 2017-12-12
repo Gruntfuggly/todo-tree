@@ -2,7 +2,7 @@
 	"name": "todo-tree",
 	"displayName": "Todo Tree",
 	"description": "Use ripgrep to find TODO tags and display the results in a tree view",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"icon": "resources/todo-tree.png",
 	"publisher": "Gruntfuggly",
 	"engines": {
