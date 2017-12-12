@@ -96,10 +96,19 @@ class TodoDataProvider
             var child = parent.find( findSubPath, p );
             if( !child || i === parts.length - 1 )
             {
-                if( child )
+                while( child )
                 {
-                    parent.splice( parent.indexOf( child ), 1 );
+                    var elementArray = child.parent ? child.parent.elements : elements;
+                    elementArray.splice( elementArray.indexOf( child ), 1 );
                     me._onDidChangeTreeData.fire( child );
+                    if( elementArray.length === 0 )
+                    {
+                        child = child.parent;
+                    }
+                    else
+                    {
+                        child = undefined;
+                    }
                     removed = true;
                 }
             }
@@ -132,16 +141,15 @@ class TodoDataProvider
             if( !child )
             {
                 pathElement = {
-                    type: PATH, name: p, elements: [], todos: []
+                    type: PATH, name: p, parent: pathElement, elements: [], todos: []
                 };
                 parent.push( pathElement );
-                parent = pathElement.elements;
             }
             else
             {
                 pathElement = child;
-                parent = pathElement.elements;
             }
+                parent = pathElement.elements;
         } );
 
         var todoElement = {
