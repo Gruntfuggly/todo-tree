@@ -100,7 +100,7 @@ module.exports = function ripGrep( cwd, options, searchTerm )
 
     if( options.filename )
     {
-        execString += " " + options.filename;
+        execString += " \"" + options.filename + "\"";
     }
     else
     {
