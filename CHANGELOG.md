@@ -1,3 +1,6 @@
+# v0.0.9 - 2017-12-13
+- Only show the tree view if it's not empty
+
 # v0.0.8 - 2017-12-12
 - Fix scanning message
 - sort results to keep tree consistent

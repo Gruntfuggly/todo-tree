@@ -72,6 +72,7 @@ class TodoDataProvider
     clear()
     {
         elements = [];
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-empty', true );
         this._onDidChangeTreeData.fire();
     }
 
@@ -119,11 +120,18 @@ class TodoDataProvider
             }
         } );
 
+        if( elements.length === 0 )
+        {
+            vscode.commands.executeCommand( 'setContext', 'todo-tree-empty', true );
+        }
+
         return removed;
     }
 
     add( rootFolder, match )
     {
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-empty', false );
+
         var fullPath = path.resolve( rootFolder, match.file );
         var relativePath = path.relative( rootFolder, fullPath );
         var parts = relativePath.split( path.sep );
@@ -149,7 +157,7 @@ class TodoDataProvider
             {
                 pathElement = child;
             }
-                parent = pathElement.elements;
+            parent = pathElement.elements;
         } );
 
         var todoElement = {
