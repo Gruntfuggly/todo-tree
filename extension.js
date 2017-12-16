@@ -134,7 +134,33 @@ function activate( context )
         }
     } );
 
+    function showFlatView()
+    {
+        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'flat', true, false ).then( function()
+        {
+            vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', true );
+            vscode.commands.executeCommand( 'setContext', 'todo-tree-tree', false );
+            refresh();
+        } );
+    }
+
+    function showTreeView()
+    {
+        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'flat', false, false ).then( function()
+        {
+            vscode.commands.executeCommand( 'setContext', 'todo-tree-tree', true );
+            vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', false );
+            refresh();
+        } );
+    }
+
     context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', refresh ) );
+    context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showFlatView', showFlatView ) );
+    context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showTreeView', showTreeView ) );
+
+    var flat = vscode.workspace.getConfiguration( 'todo-tree' ).flat;
+    vscode.commands.executeCommand( 'setContext', 'todo-tree-tree', !flat );
+    vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', flat );
 
     refresh();
 }

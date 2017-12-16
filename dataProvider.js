@@ -136,33 +136,61 @@ class TodoDataProvider
         var relativePath = path.relative( rootFolder, fullPath );
         var parts = relativePath.split( path.sep );
 
-        function findSubPath( e )
-        {
-            return e.type === PATH && e.name === this;
-        }
-
         var pathElement;
-        var parent = elements;
-        parts.map( function( p )
+
+        var todoElement = {
+            type: TODO, name: match.match.substr( match.column - 1 ), line: match.line - 1, file: fullPath
+        };
+
+        if( vscode.workspace.getConfiguration( 'todo-tree' ).flat )
         {
-            var child = parent.find( findSubPath, p );
+            function findPath( e )
+            {
+                return e.type === PATH && e.path === this;
+            }
+
+            var child = elements.find( findPath, relativePath );
+
             if( !child )
             {
+                var folder = path.dirname( relativePath );
+                var pathLabel = ( folder === "." ) ? "" : " (" + folder + ")";
                 pathElement = {
-                    type: PATH, name: p, parent: pathElement, elements: [], todos: []
+                    type: PATH, name: path.basename( fullPath ) + pathLabel, path: relativePath, todos: []
                 };
-                parent.push( pathElement );
+
+                elements.push( pathElement );
             }
             else
             {
                 pathElement = child;
             }
-            parent = pathElement.elements;
-        } );
+        }
+        else
+        {
+            function findSubPath( e )
+            {
+                return e.type === PATH && e.name === this;
+            }
 
-        var todoElement = {
-            type: TODO, name: match.match.substr( match.column - 1 ), line: match.line - 1, file: fullPath
-        };
+            var parent = elements;
+            parts.map( function( p )
+            {
+                var child = parent.find( findSubPath, p );
+                if( !child )
+                {
+                    pathElement = {
+                        type: PATH, name: p, parent: pathElement, elements: [], todos: []
+                    };
+                    parent.push( pathElement );
+                }
+                else
+                {
+                    pathElement = child;
+                }
+                parent = pathElement.elements;
+            } );
+        }
 
         pathElement.todos.push( todoElement );
 

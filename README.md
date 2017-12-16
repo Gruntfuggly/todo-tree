@@ -44,14 +44,21 @@ When set to true, the tree will be updated when a file is saved.
 
 If you want the tree to be opened with all nodes expanded, set this to true. By default, the tree will be collapsed.
 
+`todo-tree.flat`
+
+Set to true to show the tree as a flat list of files (with folder names in brackets).
+
 ## Known issues
 
 Unfortunately, due to a current limitation of vscode, when the view is refreshed, or the tree is updated because a file has been saved, the tree will be reset to the initial collapsed or expanded state. Once tree views are enhanced (https://github.com/Microsoft/vscode/issues/27823) the tree state should hopefully be preserved.
 
-The tree is normally presented in alphabetical order. The extension tries to update individual files when they are saved. If there are no more TODOs in the file it will be removed from the tree along with any parent folders which are now empty. If a TODO is then re-added to the file, it will be inserted into the tree at the end. Refreshing the tree will put the file back in the expected place. Hopefully when the tree views are enhanced, there will be a better mechanism to keep the tree ordered in some way.
+The tree is normally presented in alphabetical order. The extension tries to update individual files when they are saved. If there are no more TODOs in the file it will be removed from the tree
+along with any parent folders which are now empty. If a TODO is then re-added to the file, it will be inserted into the tree at the end. Refreshing the tree will put the file back in the expected place. Hopefully when the tree views are enhanced, there will be a better mechanism to keep the tree ordered in some way.
 
 ### Credits
 
 Uses a modified version of <a href="https://www.npmjs.com/package/ripgrep-js">ripgrep-js</a>.
 
-<div>Icon originally made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+<div>Main icons originally made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+
+<div>Tree view icons made by <a href="https://www.flaticon.com/authors/vaadin" title="Vaadin">Vaadin</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>

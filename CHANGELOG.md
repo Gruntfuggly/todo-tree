@@ -1,3 +1,6 @@
+# v0.0.10 - 2017-12-16
+- Add flat list view
+
 # v0.0.9 - 2017-12-13
 - Only show the tree view if it's not empty
 

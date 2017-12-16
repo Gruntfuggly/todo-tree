@@ -2,7 +2,7 @@
 	"name": "todo-tree",
 	"displayName": "Todo Tree",
 	"description": "Use ripgrep to find TODO tags and display the results in a tree view",
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"icon": "resources/todo-tree.png",
 	"publisher": "Gruntfuggly",
 	"engines": {
@@ -29,6 +29,16 @@
 		"menus": {
 			"view/title": [
 				{
+					"command": "todo-tree.showFlatView",
+					"when": "view == todo-tree && todo-tree-tree",
+					"group": "navigation"
+				},
+				{
+					"command": "todo-tree.showTreeView",
+					"when": "view == todo-tree && todo-tree-flat",
+					"group": "navigation"
+				},
+				{
 					"command": "todo-tree.refresh",
 					"when": "view == todo-tree",
 					"group": "navigation"
@@ -36,6 +46,24 @@
 			]
 		},
 		"commands": [
+			{
+				"command": "todo-tree.showFlatView",
+				"title": "Show flat view",
+				"category": "todo-tree",
+				"icon": {
+					"dark": "resources/icons/dark/flat.svg",
+					"light": "resources/icons/light/flat.svg"
+				}
+			},
+			{
+				"command": "todo-tree.showTreeView",
+				"title": "Show tree view",
+				"category": "todo-tree",
+				"icon": {
+					"dark": "resources/icons/dark/tree.svg",
+					"light": "resources/icons/light/tree.svg"
+				}
+			},
 			{
 				"command": "todo-tree.refresh",
 				"title": "Refresh",
@@ -78,6 +106,11 @@
 				"todo-tree.expanded": {
 					"type": "boolean",
 					"description": "Set to true if you want the tree to be initially expanded",
+					"default": false
+				},
+				"todo-tree.flat": {
+					"type": "boolean",
+					"description": "Set to true to show a flat list of files",
 					"default": false
 				}
 			}
