@@ -1,3 +1,6 @@
+# v0.0.11 - 2017-12-16
+- Remove command logging
+
 # v0.0.10 - 2017-12-16
 - Add flat list view
 

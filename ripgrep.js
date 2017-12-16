@@ -107,8 +107,6 @@ module.exports = function ripGrep( cwd, options, searchTerm )
         execString += " .";
     }
 
-    console.log( execString );
-
     return new Promise( function( resolve, reject )
     {
         exec( execString, { cwd }, ( error, stdout, stderr ) =>
@@ -131,10 +129,10 @@ class Match
     {
         this.file = "";
 
-        if( matchText.length > 1 && matchText[1] === ':')
+        if( matchText.length > 1 && matchText[ 1 ] === ':' )
         {
-            this.file = matchText.substr(0,2);
-            matchText = matchText.substr(2);
+            this.file = matchText.substr( 0, 2 );
+            matchText = matchText.substr( 2 );
         }
         matchText = matchText.split( ':' );
         this.file += matchText.shift();
