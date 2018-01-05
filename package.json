@@ -2,7 +2,7 @@
 	"name": "todo-tree",
 	"displayName": "Todo Tree",
 	"description": "Use ripgrep to find TODO tags and display the results in a tree view",
-	"version": "0.0.11",
+	"version": "0.0.12",
 	"icon": "resources/todo-tree.png",
 	"publisher": "Gruntfuggly",
 	"engines": {
@@ -122,5 +122,8 @@
 		"id": "261cac81-cd7b-4555-bb41-0c2d2bcd3e70",
 		"publisherDisplayName": "Gruntfuggly",
 		"publisherId": "d4906d2e-f2ee-492d-9c7c-02b6160599ec"
+	},
+	"dependencies": {
+		"vscode-ripgrep": "^0.6.0-patch.0.5"
 	}
 }

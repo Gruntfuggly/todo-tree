@@ -1,3 +1,6 @@
+# v0.0.12 - 2018-01-05
+- Force the use of an older version of vscode-ripgrep. The latest version seems to fail to install.
+
 # v0.0.11 - 2017-12-16
 - Remove command logging
 
