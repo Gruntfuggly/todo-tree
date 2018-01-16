@@ -1,3 +1,7 @@
+# v0.0.13 - 2018-01-16
+- Hide the viewlet by default - instead of when detecting there is nothing in the tree.
+- Use the version of vscode-ripgrep and comes with vscode itself. This is a lot simpler and makes starup quicker too. The downside is that if vscode is installed somewhere other than the default location, it won't be found.
+
 # v0.0.12 - 2018-01-05
 - Force the use of an older version of vscode-ripgrep. The latest version seems to fail to install.
 

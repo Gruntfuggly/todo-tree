@@ -8,29 +8,51 @@ var path = require( 'path' );
 
 function activate( context )
 {
-    // It would be nice if vscode-ripgrep could simply be installed by npm as a dependency of
-    // the extension, but for some reason it gets the platform wrong and downloads the wrong
-    // version, so it needs to be done here insted.
-    var extPath = vscode.extensions.getExtension( "Gruntfuggly.todo-tree" ).extensionPath;
-    var rgPath = path.join( extPath, "node_modules/vscode-ripgrep" );
-    var rgExe = vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep;
-    if( ( !rgExe || rgExe === "" ) && !fs.existsSync( rgPath ) )
+    var provider = new TreeView.TodoDataProvider( context );
+    var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
+
+    function exePathUndefined()
     {
-        try
-        {
-            childProcess.execSync( "npm install vscode-ripgrep", { cwd: extPath } );
-        }
-        catch( e )
-        {
-            vscode.window.showErrorMessage( "todo-tree: Failed to install vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
-            return;
-        }
+        var rgExePath = vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep;
+        return !rgExePath || rgExePath === "";
     }
 
-    var provider = new TreeView.TodoDataProvider( context );
-    vscode.window.registerTreeDataProvider( 'todo-tree', provider );
+    function setExePath( register )
+    {
+        function checkExePath( path )
+        {
+            if( exePathUndefined() && fs.existsSync( path ) )
+            {
+                vscode.workspace.getConfiguration( 'todo-tree' ).update( "ripgrep", path, true ).then( function()
+                {
+                    register();
+                } );
+                return true;
+            }
+            return false;
+        }
 
-    var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
+        var pathSet = false;
+        var isMac = /^darwin/.test( process.platform );
+        var isWin = /^win/.test( process.platform );
+        if( isMac )
+        {
+            pathSet = checkExePath( "/Applications/Visual Studio Code.app/Contents/Resources/app/node_modules/vscode-ripgrep/bin/rg" );
+        }
+        else if( isWin )
+        {
+            pathSet = checkExePath( "C:\\Program Files\\Microsoft VS Code\\resources\\app\\node_modules\\vscode-ripgrep\\bin\\rg.exe" );
+        }
+        else
+        {
+            pathSet = checkExePath( "/usr/share/code/resources/app/node_modules/vscode-ripgrep/bin/rg" );
+        }
+
+        if( !pathSet )
+        {
+            vscode.window.showErrorMessage( "todo-tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
+        }
+    }
 
     function getRootFolder()
     {
@@ -106,20 +128,6 @@ function activate( context )
         search();
     }
 
-    vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
-    {
-        vscode.workspace.openTextDocument( file ).then( function( document )
-        {
-            vscode.window.showTextDocument( document ).then( function( editor )
-            {
-                var position = new vscode.Position( line, 0 );
-                editor.selection = new vscode.Selection( position, position );
-                editor.revealRange( editor.selection, vscode.TextEditorRevealType.Default );
-                vscode.commands.executeCommand( 'workbench.action.focusActiveEditorGroup' );
-            } );
-        } );
-    } );
-
     var onSave = vscode.workspace.onDidSaveTextDocument( ( e ) =>
     {
         var rootFolder = getRootFolder();
@@ -154,15 +162,43 @@ function activate( context )
         } );
     }
 
-    context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', refresh ) );
-    context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showFlatView', showFlatView ) );
-    context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showTreeView', showTreeView ) );
+    function register()
+    {
+        vscode.window.registerTreeDataProvider( 'todo-tree', provider );
 
-    var flat = vscode.workspace.getConfiguration( 'todo-tree' ).flat;
-    vscode.commands.executeCommand( 'setContext', 'todo-tree-tree', !flat );
-    vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', flat );
+        vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
+        {
+            vscode.workspace.openTextDocument( file ).then( function( document )
+            {
+                vscode.window.showTextDocument( document ).then( function( editor )
+                {
+                    var position = new vscode.Position( line, 0 );
+                    editor.selection = new vscode.Selection( position, position );
+                    editor.revealRange( editor.selection, vscode.TextEditorRevealType.Default );
+                    vscode.commands.executeCommand( 'workbench.action.focusActiveEditorGroup' );
+                } );
+            } );
+        } );
 
-    refresh();
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', refresh ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showFlatView', showFlatView ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showTreeView', showTreeView ) );
+
+        var flat = vscode.workspace.getConfiguration( 'todo-tree' ).flat;
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-tree', !flat );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', flat );
+
+        refresh();
+    }
+
+    if( exePathUndefined() )
+    {
+        setExePath( register );
+    }
+    else
+    {
+        register();
+    }
 }
 
 function deactivate()

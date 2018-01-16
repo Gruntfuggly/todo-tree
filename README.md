@@ -34,7 +34,15 @@ If you want to modify the files which are searched, you can define a list of <a 
 
 `todo-tree.ripgrep`
 
-By default, the extension tries to download and use the version of ripgrep that has been compiled by vscode for your platform. If this doesn't work you can install ripgrep yourself and set this preference to point to it.
+When first installed, the extension will attempt to find the version of vscode-ripgrep that comes with vscode. Depending on your OS, it looks in the following places:
+
+* Windows: `C:\Program Files\Microsoft VS Code\resources\app\node_modules\vscode-ripgrep\bin\rg.exe`
+* Linux: `/usr/share/code/resources/app/node_modules/vscode-ripgrep/bin/rg`
+* OSX: `/Applications/Visual Studio Code.app/Contents/Resources/app/node_modules/vscode-ripgrep/bin/rg`
+
+If you install vscode somewhere else, you can set this appropriately.
+
+Alternatively, you can install ripgrep manually and set this to point to wherever it is installed.
 
 `todo-tree.autoUpdate`
 

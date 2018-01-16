@@ -66,13 +66,7 @@ module.exports = function ripGrep( cwd, options, searchTerm )
     options.string = searchTerm || options.string || '';
 
     var rgPath = vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep;
-    if( !rgPath || rgPath === "" )
-    {
-        var extPath = vscode.extensions.getExtension( "Gruntfuggly.todo-tree" ).extensionPath;
-        var isWin = /^win/.test( process.platform );
-        var rgExe = isWin ? "rg.exe" : "rg";
-        rgPath = path.join( extPath, "node_modules/vscode-ripgrep/bin/", rgExe );
-    }
+    var isWin = /^win/.test( process.platform );
 
     if( !fs.existsSync( rgPath ) )
     {
@@ -83,8 +77,16 @@ module.exports = function ripGrep( cwd, options, searchTerm )
         return Promise.reject( { error: "root folder not found (" + cwd + ")" } );
     }
 
-    let execString = rgPath + ' -H --column --line-number --color never';
+    if( isWin )
+    {
+        rgPath = '"' + rgPath +'"';
+    }
+    else
+    {
+        rgPath = rgPath.replace( / /g, '\\ ' );
+    }
 
+    let execString = rgPath + ' -H --column --line-number --color never';
     if( options.regex )
     {
         execString = `${execString} -e ${options.regex}`;
