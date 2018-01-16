@@ -72,7 +72,7 @@ class TodoDataProvider
     clear()
     {
         elements = [];
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-empty', true );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', false );
         this._onDidChangeTreeData.fire();
     }
 
@@ -122,7 +122,7 @@ class TodoDataProvider
 
         if( elements.length === 0 )
         {
-            vscode.commands.executeCommand( 'setContext', 'todo-tree-empty', true );
+            vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', false );
         }
 
         return removed;
@@ -130,7 +130,7 @@ class TodoDataProvider
 
     add( rootFolder, match )
     {
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-empty', false );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', true );
 
         var fullPath = path.resolve( rootFolder, match.file );
         var relativePath = path.relative( rootFolder, fullPath );

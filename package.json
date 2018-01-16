@@ -22,7 +22,7 @@
 				{
 					"id": "todo-tree",
 					"name": "TODOs",
-					"when": "!todo-tree-empty"
+					"when": "todo-tree-has-content"
 				}
 			]
 		},
