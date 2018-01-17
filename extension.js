@@ -11,41 +11,55 @@ function activate( context )
     var provider = new TreeView.TodoDataProvider( context );
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
 
+    function exeName()
+    {
+        var isWin = /^win/.test( process.platform );
+        return isWin ? "rg.exe" : "rg";
+    }
+
     function exePathUndefined()
     {
         var rgExePath = vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep;
         return !rgExePath || rgExePath === "";
     }
 
+    function checkExePath( folder, register )
+    {
+        var exePath = path.join( folder, exeName() );
+
+        if( exePathUndefined() && fs.existsSync( exePath ) )
+        {
+            vscode.workspace.getConfiguration( 'todo-tree' ).update( "ripgrep", exePath, true ).then( function()
+            {
+                register();
+            } );
+            return true;
+        }
+        return false;
+    }
+
     function setExePath( register )
     {
-        function checkExePath( path )
-        {
-            if( exePathUndefined() && fs.existsSync( path ) )
-            {
-                vscode.workspace.getConfiguration( 'todo-tree' ).update( "ripgrep", path, true ).then( function()
-                {
-                    register();
-                } );
-                return true;
-            }
-            return false;
-        }
-
         var pathSet = false;
         var isMac = /^darwin/.test( process.platform );
         var isWin = /^win/.test( process.platform );
         if( isMac )
         {
-            pathSet = checkExePath( "/Applications/Visual Studio Code.app/Contents/Resources/app/node_modules/vscode-ripgrep/bin/rg" );
+            pathSet = checkExePath( "/Applications/Visual Studio Code.app/Contents/Resources/app/node_modules/vscode-ripgrep/bin/", register );
         }
         else if( isWin )
         {
-            pathSet = checkExePath( "C:\\Program Files\\Microsoft VS Code\\resources\\app\\node_modules\\vscode-ripgrep\\bin\\rg.exe" );
+            pathSet = checkExePath( "C:\\Program Files\\Microsoft VS Code\\resources\\app\\node_modules\\vscode-ripgrep\\bin\\", register );
         }
         else
         {
-            pathSet = checkExePath( "/usr/share/code/resources/app/node_modules/vscode-ripgrep/bin/rg" );
+            pathSet = checkExePath( "/usr/share/code/resources/app/node_modules/vscode-ripgrep/bin/", register );
+        }
+
+        if( !pathSet )
+        {
+            var installPath = path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules/vscode-ripgrep/bin/" );
+            pathSet = checkExePath( installPath, register );
         }
 
         if( !pathSet )

@@ -40,7 +40,7 @@ When first installed, the extension will attempt to find the version of vscode-r
 * Linux: `/usr/share/code/resources/app/node_modules/vscode-ripgrep/bin/rg`
 * OSX: `/Applications/Visual Studio Code.app/Contents/Resources/app/node_modules/vscode-ripgrep/bin/rg`
 
-If you install vscode somewhere else, you can set this appropriately.
+If you installed vscode somewhere else, the extension will try to find vscode-ripgrep using the application installation path.
 
 Alternatively, you can install ripgrep manually and set this to point to wherever it is installed.
 
