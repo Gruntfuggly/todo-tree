@@ -1,3 +1,6 @@
+# v0.0.15 - 2018-02-02
+- Fix globs in Windows
+
 # v0.0.14 - 2018-01-17
 - If vscode-ripgrep is not found in the standard location, try finding it using the application installation path.
 

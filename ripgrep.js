@@ -97,7 +97,7 @@ module.exports = function ripGrep( cwd, options, searchTerm )
 
     execString = options.globs.reduce( ( command, glob ) =>
     {
-        return `${command} -g '${glob}'`;
+        return `${command} -g \"${glob}\"`;
     }, execString );
 
     if( options.filename )
