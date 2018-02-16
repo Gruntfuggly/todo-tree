@@ -25,7 +25,7 @@ class TodoDataProvider
             {
                 return elements;
             }
-            return [ { name: "Nothing found" }];
+            return [ { name: "Nothing found" } ];
         }
         else if( element.type === PATH )
         {
@@ -46,7 +46,7 @@ class TodoDataProvider
 
     getTreeItem( element )
     {
-        let treeItem = new vscode.TreeItem( element.name );
+        let treeItem = new vscode.TreeItem( element.name + ( element.pathLabel ? element.pathLabel : "" ) );
         treeItem.collapsibleState = vscode.TreeItemCollapsibleState.None;
 
         if( element.type === PATH )
@@ -156,7 +156,7 @@ class TodoDataProvider
                 var folder = path.dirname( relativePath );
                 var pathLabel = ( folder === "." ) ? "" : " (" + folder + ")";
                 pathElement = {
-                    type: PATH, name: path.basename( fullPath ) + pathLabel, path: relativePath, todos: []
+                    type: PATH, name: path.basename( fullPath ), pathLabel: pathLabel, path: relativePath, todos: []
                 };
 
                 elements.push( pathElement );

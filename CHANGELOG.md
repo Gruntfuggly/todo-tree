@@ -1,3 +1,6 @@
+# v0.0.16 - 2018-02-16
+- Fix single file update in flat view
+
 # v0.0.15 - 2018-02-02
 - Fix globs in Windows
 
