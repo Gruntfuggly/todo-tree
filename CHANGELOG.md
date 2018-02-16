@@ -1,3 +1,6 @@
+# v0.0.18 - 2018-02-16
+- Fixed default regex for HTML (thanks to [kcmr](https://github.com/kcmr))
+
 # v0.0.17 - 2018-02-16
 - Add support for file icons from theme
 - Add customizable icon colour for todo icon
