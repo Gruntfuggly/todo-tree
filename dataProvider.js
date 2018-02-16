@@ -44,10 +44,21 @@ class TodoDataProvider
         }
     }
 
+    getTodoIcon()
+    {
+        var imageFile = "todo-" + vscode.workspace.getConfiguration( 'todo-tree' ).iconColour + ".svg";
+        var icon = {
+            dark: this._context.asAbsolutePath( path.join( "resources/icons", "dark", imageFile ) ),
+            light: this._context.asAbsolutePath( path.join( "resources/icons", "light", imageFile ) )
+        };
+        return icon;
+    }
+
     getTreeItem( element )
     {
         let treeItem = new vscode.TreeItem( element.name + ( element.pathLabel ? element.pathLabel : "" ) );
         treeItem.collapsibleState = vscode.TreeItemCollapsibleState.None;
+        treeItem.resourceUri = new vscode.Uri.file( element.file );
 
         if( element.type === PATH )
         {
@@ -56,6 +67,8 @@ class TodoDataProvider
         }
         else if( element.type === TODO )
         {
+            treeItem.iconPath = this.getTodoIcon();
+
             treeItem.command = {
                 command: "todo-tree.revealTodo",
                 title: "",
@@ -156,7 +169,7 @@ class TodoDataProvider
                 var folder = path.dirname( relativePath );
                 var pathLabel = ( folder === "." ) ? "" : " (" + folder + ")";
                 pathElement = {
-                    type: PATH, name: path.basename( fullPath ), pathLabel: pathLabel, path: relativePath, todos: []
+                    type: PATH, file: fullPath, name: path.basename( fullPath ), pathLabel: pathLabel, path: relativePath, todos: []
                 };
 
                 elements.push( pathElement );
@@ -174,13 +187,14 @@ class TodoDataProvider
             }
 
             var parent = elements;
-            parts.map( function( p )
+            parts.map( function( p, level )
             {
                 var child = parent.find( findSubPath, p );
                 if( !child )
                 {
+                    var subPath = path.join( rootFolder, parts.slice( 0, level + 1 ).join( path.sep ) );
                     pathElement = {
-                        type: PATH, name: p, parent: pathElement, elements: [], todos: []
+                        type: PATH, file: subPath, name: p, parent: pathElement, elements: [], todos: []
                     };
                     parent.push( pathElement );
                 }

@@ -1,3 +1,7 @@
+# v0.0.17 - 2018-02-16
+- Add support for file icons from theme
+- Add customizable icon colour for todo icon
+
 # v0.0.16 - 2018-02-16
 - Fix single file update in flat view
 

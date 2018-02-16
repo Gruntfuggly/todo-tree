@@ -2,7 +2,7 @@
 	"name": "todo-tree",
 	"displayName": "Todo Tree",
 	"description": "Use ripgrep to find TODO tags and display the results in a tree view",
-	"version": "0.0.16",
+	"version": "0.0.17",
 	"icon": "resources/todo-tree.png",
 	"publisher": "Gruntfuggly",
 	"engines": {
@@ -112,6 +112,20 @@
 					"type": "boolean",
 					"description": "Set to true to show a flat list of files",
 					"default": false
+				},
+				"todo-tree.iconColour": {
+					"type": "string",
+					"enum": [
+						"red",
+						"green",
+						"blue",
+						"yellow",
+						"magenta",
+						"cyan",
+						"grey"
+					],
+					"default": "green",
+					"description": "The colour of the icon in the tree view"
 				}
 			}
 		},
