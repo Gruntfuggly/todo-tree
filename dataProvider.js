@@ -44,13 +44,35 @@ class TodoDataProvider
         }
     }
 
-    getTodoIcon()
+    getTodoIcon( text )
     {
-        var imageFile = "todo-" + vscode.workspace.getConfiguration( 'todo-tree' ).iconColour + ".svg";
+        var colourMappings = vscode.workspace.getConfiguration( 'todo-tree' ).iconColours;
+
+        var colour = "";
+
+        for( var mapping in colourMappings )
+        {
+            if( colourMappings.hasOwnProperty( mapping ) )
+            {
+                if( text.match( mapping ) )
+                {
+                    colour = colourMappings[ mapping ];
+                }
+            }
+        }
+
+        if( colour === "" )
+        {
+            colour = vscode.workspace.getConfiguration( 'todo-tree' ).iconColour;
+        }
+
+        var imageFile = "todo-" + colour + ".svg";
+
         var icon = {
             dark: this._context.asAbsolutePath( path.join( "resources/icons", "dark", imageFile ) ),
             light: this._context.asAbsolutePath( path.join( "resources/icons", "light", imageFile ) )
         };
+
         return icon;
     }
 
@@ -67,7 +89,7 @@ class TodoDataProvider
         }
         else if( element.type === TODO )
         {
-            treeItem.iconPath = this.getTodoIcon();
+            treeItem.iconPath = this.getTodoIcon( element.name );
 
             treeItem.command = {
                 command: "todo-tree.revealTodo",

@@ -60,6 +60,19 @@ Set to true to show the tree as a flat list of files (with folder names in brack
 
 Use this to change the colour of the icon for TODOs in the tree. Should be one of "red", "green", "blue", "yellow", "magenta", "cyan" or "grey".
 
+`todo-tree.iconColours`
+
+Use this if you need different icon colours based on the type of tag. The colours must be from the list above, and the match can be a javasctipt regex. E.g.
+
+```
+{
+    "TODO": "yellow",
+    "^BUG": "red"
+}
+```
+
+_Note: The colours are applied __after__ the search results, so don't forget to modify `todo-tree.regex` if you want to add new tags!_
+
 ## Known issues
 
 The tree is normally presented in alphabetical order. The extension tries to update individual files when they are saved. If there are no more TODOs in the file it will be removed from the tree

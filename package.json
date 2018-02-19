@@ -2,7 +2,7 @@
 	"name": "todo-tree",
 	"displayName": "Todo Tree",
 	"description": "Use ripgrep to find TODO tags and display the results in a tree view",
-	"version": "0.0.18",
+	"version": "0.0.19",
 	"icon": "resources/todo-tree.png",
 	"publisher": "Gruntfuggly",
 	"engines": {
@@ -126,6 +126,11 @@
 					],
 					"default": "green",
 					"description": "The colour of the icon in the tree view"
+				},
+				"todo-tree.iconColours": {
+					"type": "object",
+					"default": {},
+					"description": "Override the default icon colour. Colours must be in the `iconColour` list, e.g.  { \"BUG\":\"red\", \"FIXME\":\"cyan\" } "
 				}
 			}
 		},

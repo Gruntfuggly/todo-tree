@@ -1,3 +1,6 @@
+# v0.0.19 - 2018-02-19
+- Allow icon colour customization based on type of tag
+
 # v0.0.18 - 2018-02-16
 - Fixed default regex for HTML (thanks to [kcmr](https://github.com/kcmr))
 
