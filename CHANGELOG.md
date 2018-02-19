@@ -1,3 +1,6 @@
+# v0.0.20 - 2018-02-19
+- Added a screenshot to the README.md
+
 # v0.0.19 - 2018-02-19
 - Allow icon colour customization based on type of tag
 

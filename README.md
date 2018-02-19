@@ -2,6 +2,8 @@
 
 This extension uses <a href="https://github.com/BurntSushi/ripgrep">ripgrep</a> to search for TODOs within your workspace, which it will then show in a tree view in the explorer pane. Clicking a TODO within the tree will open the file and put the cursor on the line containing the TODO.
 
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/screenshot.png">
+
 ## Installing
 
 You can install the latest version of the extension via the Visual Studio Marketplace [here](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree).
@@ -74,6 +76,8 @@ Use this if you need different icon colours based on the type of tag. The colour
 _Note: The colours are applied __after__ the search results, so don't forget to modify `todo-tree.regex` if you want to add new tags!_
 
 ## Known issues
+
+Icons for files are currently wrong - currently vscode assumes anything with children in a tree view must be a folder. Hopefully this will be fixed in the next release of vscode.
 
 The tree is normally presented in alphabetical order. The extension tries to update individual files when they are saved. If there are no more TODOs in the file it will be removed from the tree
 along with any parent folders which are now empty. If a TODO is then re-added to the file, it will be inserted into the tree at the end. Refreshing the tree will put the file back in the expected place. Hopefully when the tree views are enhanced, there will be a better mechanism to keep the tree ordered in some way.
