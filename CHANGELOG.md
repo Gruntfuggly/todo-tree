@@ -1,3 +1,6 @@
+# v0.0.21 - 2018-02-20
+- Added list of available icon colours to configuration description
+
 # v0.0.20 - 2018-02-19
 - Added a screenshot to the README.md
 
