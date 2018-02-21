@@ -1,3 +1,7 @@
+# v0.0.22 - 2018-02-21
+- Add keywords to package.json
+- Update description
+
 # v0.0.21 - 2018-02-20
 - Added list of available icon colours to configuration description
 

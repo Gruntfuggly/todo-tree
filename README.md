@@ -1,6 +1,6 @@
 # Todo Tree
 
-This extension uses <a href="https://github.com/BurntSushi/ripgrep">ripgrep</a> to search for TODOs within your workspace, which it will then show in a tree view in the explorer pane. Clicking a TODO within the tree will open the file and put the cursor on the line containing the TODO.
+This extension quickly searches (using <a href="https://github.com/BurntSushi/ripgrep">ripgrep</a>) your workspace for comment tags like TODO and FIXME, and displays them in a tree view in the explorer pane. Clicking a TODO within the tree will open the file and put the cursor on the line containing the TODO. The view is updated whenever files are saved.
 
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/screenshot.png">
 

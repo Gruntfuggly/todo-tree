@@ -1,8 +1,13 @@
 {
 	"name": "todo-tree",
 	"displayName": "Todo Tree",
-	"description": "Use ripgrep to find TODO tags and display the results in a tree view",
-	"version": "0.0.21",
+    "description": "Show TODO, FIXME, etc. comment tags in a tree view",
+    "keywords": [
+        "todo",
+        "task",
+        "tasklist"
+    ],
+    "version": "0.0.22",
 	"icon": "resources/todo-tree.png",
 	"publisher": "Gruntfuggly",
 	"engines": {
