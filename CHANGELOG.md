@@ -1,3 +1,6 @@
+# v0.0.23 - 2018-02-22
+- Allow hex codes to be used to specify icon colours
+
 # v0.0.22 - 2018-02-21
 - Add keywords to package.json
 - Update description

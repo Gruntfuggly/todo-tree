@@ -60,15 +60,15 @@ Set to true to show the tree as a flat list of files (with folder names in brack
 
 `todo-tree.iconColour`
 
-Use this to change the colour of the icon for TODOs in the tree. Should be one of "red", "green", "blue", "yellow", "magenta", "cyan" or "grey".
+Use this to change the colour of the icon for TODOs in the tree. Can be hex (e.g. "#FF80FF" ) or one of "red", "green", "blue", "yellow", "magenta", "cyan" or "grey".
 
 `todo-tree.iconColours`
 
-Use this if you need different icon colours based on the type of tag. The colours must be from the list above, and the match can be a javasctipt regex. E.g.
+Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javasctipt regex. E.g.
 
 ```
 {
-    "TODO": "yellow",
+    "TODO": "#FF80FF",
     "^BUG": "red"
 }
 ```
