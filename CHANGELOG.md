@@ -1,3 +1,7 @@
+# v0.0.24 - 2018-03-06
+- Inhibit error messages from ripgrep (stops error when current folder is empty)
+- Refresh current file when editor is closed
+
 # v0.0.23 - 2018-02-22
 - Allow hex codes to be used to specify icon colours
 

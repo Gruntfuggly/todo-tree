@@ -142,7 +142,7 @@ function activate( context )
         search();
     }
 
-    var onSave = vscode.workspace.onDidSaveTextDocument( ( e ) =>
+    function refreshFile( e )
     {
         var rootFolder = getRootFolder();
         if( vscode.workspace.getConfiguration( 'todo-tree' ).autoUpdate && rootFolder )
@@ -154,7 +154,7 @@ function activate( context )
                 search( e.fileName, removed );
             }
         }
-    } );
+    }
 
     function showFlatView()
     {
@@ -197,6 +197,9 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', refresh ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showFlatView', showFlatView ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showTreeView', showTreeView ) );
+
+        context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( refreshFile ) );
+        context.subscriptions.push( vscode.workspace.onDidCloseTextDocument( refreshFile ) );
 
         var flat = vscode.workspace.getConfiguration( 'todo-tree' ).flat;
         vscode.commands.executeCommand( 'setContext', 'todo-tree-tree', !flat );
