@@ -1,4 +1,7 @@
-# v0.0.25 - 2018-0308
+# v0.0.26 - 2018-03-08
+- Try resetting the ripgrep path if the current path is not found
+
+# v0.0.25 - 2018-03-08
 - Support new location of vscode-ripgrep for 1.21.0
 
 # v0.0.24 - 2018-03-06

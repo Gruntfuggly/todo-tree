@@ -20,7 +20,7 @@ function activate( context )
     function exePathUndefined()
     {
         var rgExePath = vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep;
-        return !rgExePath || rgExePath === "";
+        return !rgExePath || rgExePath === "" || !fs.existsSync( rgExePath );
     }
 
     function checkExePath( folder, register )
