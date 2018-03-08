@@ -1,3 +1,6 @@
+# v0.0.25 - 2018-0308
+- Support new location of vscode-ripgrep for 1.21.0
+
 # v0.0.24 - 2018-03-06
 - Inhibit error messages from ripgrep (stops error when current folder is empty)
 - Refresh current file when editor is closed

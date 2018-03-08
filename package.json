@@ -7,7 +7,7 @@
         "task",
         "tasklist"
     ],
-	"version": "0.0.24",
+	"version": "0.0.25",
 	"icon": "resources/todo-tree.png",
 	"publisher": "Gruntfuggly",
 	"engines": {

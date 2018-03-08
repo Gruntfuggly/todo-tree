@@ -64,6 +64,12 @@ function activate( context )
 
         if( !pathSet )
         {
+            var installPath = path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules.asar.unpacked/vscode-ripgrep/bin/" );
+            pathSet = checkExePath( installPath, register );
+        }
+
+        if( !pathSet )
+        {
             vscode.window.showErrorMessage( "todo-tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
         }
     }
