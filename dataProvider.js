@@ -125,6 +125,11 @@ class TodoDataProvider
         {
             treeItem.collapsibleState = vscode.workspace.getConfiguration( 'todo-tree' ).expanded ?
                 vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
+
+            if( element.todos && element.todos.length > 0 )
+            {
+                treeItem.iconPath = vscode.ThemeIcon.File;
+            }
         }
         else if( element.type === TODO )
         {
