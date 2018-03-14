@@ -36,15 +36,7 @@ If you want to modify the files which are searched, you can define a list of <a 
 
 `todo-tree.ripgrep`
 
-When first installed, the extension will attempt to find the version of vscode-ripgrep that comes with vscode. Depending on your OS, it looks in the following places:
-
-* Windows: `C:\Program Files\Microsoft VS Code\resources\app\node_modules\vscode-ripgrep\bin\rg.exe`
-* Linux: `/usr/share/code/resources/app/node_modules/vscode-ripgrep/bin/rg`
-* OSX: `/Applications/Visual Studio Code.app/Contents/Resources/app/node_modules/vscode-ripgrep/bin/rg`
-
-If you installed vscode somewhere else, the extension will try to find vscode-ripgrep using the application installation path.
-
-Alternatively, you can install ripgrep manually and set this to point to wherever it is installed.
+Normally, the extension will location ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed.
 
 `todo-tree.autoUpdate`
 
@@ -77,10 +69,7 @@ _Note: The colours are applied __after__ the search results, so don't forget to 
 
 ## Known issues
 
-Icons for files are currently wrong - currently vscode assumes anything with children in a tree view must be a folder. Hopefully this will be fixed in the next release of vscode.
-
-The tree is normally presented in alphabetical order. The extension tries to update individual files when they are saved. If there are no more TODOs in the file it will be removed from the tree
-along with any parent folders which are now empty. If a TODO is then re-added to the file, it will be inserted into the tree at the end. Refreshing the tree will put the file back in the expected place. Hopefully when the tree views are enhanced, there will be a better mechanism to keep the tree ordered in some way.
+The tree is normally presented in alphabetical order. The extension tries to update individual files when they are saved. If there are no more TODOs in the file it will be removed from the tree along with any parent folders which are now empty. If a TODO is then re-added to the file, it will be inserted into the tree at the end. Refreshing the tree will put the file back in the expected place. Hopefully when the tree views are enhanced, there will be a better mechanism to keep the tree ordered in some way.
 
 ### Credits
 

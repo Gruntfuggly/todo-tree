@@ -1,3 +1,6 @@
+# v0.0.27 - 2018-03-14
+- Locate ripgrep dynamically (thanks to [ericmoritz](https://github.com/ericmoritz))
+
 # v0.0.26 - 2018-03-08
 - Try resetting the ripgrep path if the current path is not found
 
