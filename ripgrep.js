@@ -65,7 +65,7 @@ module.exports = function ripGrep( cwd, options, searchTerm )
     options.globs = options.globs || [];
     options.string = searchTerm || options.string || '';
 
-    var rgPath = vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep;
+    var rgPath = options.rgPath;
     var isWin = /^win/.test( process.platform );
 
     if( !fs.existsSync( rgPath ) )
