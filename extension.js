@@ -16,62 +16,24 @@ function activate( context )
         var isWin = /^win/.test( process.platform );
         return isWin ? "rg.exe" : "rg";
     }
+    function getRgPath() {
+        var rgPath = "";
 
-    function exePathUndefined()
-    {
-        var rgExePath = vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep;
-        return !rgExePath || rgExePath === "" || !fs.existsSync( rgExePath );
+        rgPath = exePathIsDefined(vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep);
+        if( rgPath ) return rgPath;
+
+        rgPath = exePathIsDefined(path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules/vscode-ripgrep/bin/rg" ));
+        if( rgPath ) return rgPath;
+
+        rgPath = exePathIsDefined(path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules.asar.unpacked/vscode-ripgrep/bin/rg" ));
+        if ( rgPath ) return rgPath;
+
+        return rgPath;
     }
 
-    function checkExePath( folder, register )
+    function exePathIsDefined(rgExePath)
     {
-        var exePath = path.join( folder, exeName() );
-
-        if( exePathUndefined() && fs.existsSync( exePath ) )
-        {
-            vscode.workspace.getConfiguration( 'todo-tree' ).update( "ripgrep", exePath, true ).then( function()
-            {
-                register();
-            } );
-            return true;
-        }
-        return false;
-    }
-
-    function setExePath( register )
-    {
-        var pathSet = false;
-        var isMac = /^darwin/.test( process.platform );
-        var isWin = /^win/.test( process.platform );
-        if( isMac )
-        {
-            pathSet = checkExePath( "/Applications/Visual Studio Code.app/Contents/Resources/app/node_modules/vscode-ripgrep/bin/", register );
-        }
-        else if( isWin )
-        {
-            pathSet = checkExePath( "C:\\Program Files\\Microsoft VS Code\\resources\\app\\node_modules\\vscode-ripgrep\\bin\\", register );
-        }
-        else
-        {
-            pathSet = checkExePath( "/usr/share/code/resources/app/node_modules/vscode-ripgrep/bin/", register );
-        }
-
-        if( !pathSet )
-        {
-            var installPath = path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules/vscode-ripgrep/bin/" );
-            pathSet = checkExePath( installPath, register );
-        }
-
-        if( !pathSet )
-        {
-            var installPath = path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules.asar.unpacked/vscode-ripgrep/bin/" );
-            pathSet = checkExePath( installPath, register );
-        }
-
-        if( !pathSet )
-        {
-            vscode.window.showErrorMessage( "todo-tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
-        }
+        return fs.existsSync( rgExePath ) ? rgExePath : undefined;
     }
 
     function getRootFolder()
@@ -97,7 +59,10 @@ function activate( context )
         }
 
         var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
-        var options = { regex: "\"" + regex + "\"" };
+        var options = { 
+            regex: "\"" + regex + "\"",
+            rgPath: getRgPath() 
+        };
         var globs = vscode.workspace.getConfiguration( 'todo-tree' ).globs;
         if( globs && globs.length > 0 )
         {
@@ -107,7 +72,6 @@ function activate( context )
         {
             options.filename = filename;
         }
-
         ripgrep( rootFolder, options ).then( ( result ) =>
         {
             result.sort( function compare( a, b )
@@ -184,6 +148,11 @@ function activate( context )
 
     function register()
     {
+        // We can't do anything if we can't find ripgrep
+        if(!getRgPath()) {
+            vscode.window.showErrorMessage( "todo-tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
+            return;
+        }
         vscode.window.registerTreeDataProvider( 'todo-tree', provider );
 
         vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
@@ -214,14 +183,9 @@ function activate( context )
         refresh();
     }
 
-    if( exePathUndefined() )
-    {
-        setExePath( register );
-    }
-    else
-    {
-        register();
-    }
+
+    register();
+
 }
 
 function deactivate()
