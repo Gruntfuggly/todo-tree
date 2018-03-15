@@ -1,3 +1,6 @@
+# v0.0.28 - 2018-03-15
+- Fix sort function
+
 # v0.0.27 - 2018-03-14
 - Locate ripgrep dynamically (thanks to [ericmoritz](https://github.com/ericmoritz))
 

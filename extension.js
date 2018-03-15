@@ -76,7 +76,7 @@ function activate( context )
         {
             result.sort( function compare( a, b )
             {
-                return a.file > b.file ? 1 : b.file > a.file ? -1 : a.line > b.line;
+                return a.file > b.file ? 1 : b.file > a.file ? -1 : a.line > b.line ? 1 : -1;
             } );
             result.map( function( match )
             {
