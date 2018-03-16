@@ -5,9 +5,10 @@
     "keywords": [
         "todo",
         "task",
-        "tasklist"
+        "tasklist",
+        "multi-root ready"
     ],
-	"version": "0.0.28",
+	"version": "0.0.29",
 	"icon": "resources/todo-tree.png",
 	"publisher": "Gruntfuggly",
 	"engines": {

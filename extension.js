@@ -6,6 +6,8 @@ var childProcess = require( 'child_process' );
 var fs = require( 'fs' );
 var path = require( 'path' );
 
+var lastRootFolder;
+
 function activate( context )
 {
     var provider = new TreeView.TodoDataProvider( context );
@@ -44,7 +46,19 @@ function activate( context )
         {
             if( vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0 )
             {
-                rootFolder = vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
+                var editor = vscode.window.activeTextEditor;
+                if( editor )
+                {
+                    var workspace = vscode.workspace.getWorkspaceFolder( editor.document.uri );
+                    if( workspace )
+                    {
+                        rootFolder = workspace.uri.fsPath;
+                    }
+                    else
+                    {
+                        rootFolder = lastRootFolder;
+                    }
+                }
             }
         }
         return rootFolder;
@@ -58,6 +72,8 @@ function activate( context )
             status.hide();
             return;
         }
+
+        lastRootFolder = rootFolder;
 
         var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
         var options = {
@@ -174,6 +190,21 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', refresh ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showFlatView', showFlatView ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showTreeView', showTreeView ) );
+
+        vscode.window.onDidChangeActiveTextEditor( function( e )
+        {
+            if( e && e.document )
+            {
+                var workspace = vscode.workspace.getWorkspaceFolder( e.document.uri );
+                if( workspace )
+                {
+                    if( workspace.uri.fsPath !== lastRootFolder )
+                    {
+                        refresh();
+                    }
+                }
+            }
+        } );
 
         context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( refreshFile ) );
         context.subscriptions.push( vscode.workspace.onDidCloseTextDocument( refreshFile ) );
