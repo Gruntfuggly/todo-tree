@@ -178,6 +178,19 @@ function activate( context )
         context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( refreshFile ) );
         context.subscriptions.push( vscode.workspace.onDidCloseTextDocument( refreshFile ) );
 
+        context.subscriptions.push( vscode.workspace.onDidChangeConfiguration( function( e )
+        {
+            if( e.affectsConfiguration( "todo-tree.iconColour" ) ||
+                e.affectsConfiguration( "todo-tree.iconColours" ) )
+            {
+                provider.refresh();
+            }
+            else if( e.affectsConfiguration( "todo-tree" ) )
+            {
+                refresh();
+            }
+        } ) );
+
         var flat = vscode.workspace.getConfiguration( 'todo-tree' ).flat;
         vscode.commands.executeCommand( 'setContext', 'todo-tree-tree', !flat );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', flat );
@@ -185,9 +198,7 @@ function activate( context )
         refresh();
     }
 
-
     register();
-
 }
 
 function deactivate()
