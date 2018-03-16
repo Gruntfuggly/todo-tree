@@ -16,22 +16,23 @@ function activate( context )
         var isWin = /^win/.test( process.platform );
         return isWin ? "rg.exe" : "rg";
     }
-    function getRgPath() {
+    function getRgPath()
+    {
         var rgPath = "";
 
-        rgPath = exePathIsDefined(vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep);
+        rgPath = exePathIsDefined( vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep );
         if( rgPath ) return rgPath;
 
-        rgPath = exePathIsDefined(path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules/vscode-ripgrep/bin/rg" ));
+        rgPath = exePathIsDefined( path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules/vscode-ripgrep/bin/rg" ) );
         if( rgPath ) return rgPath;
 
-        rgPath = exePathIsDefined(path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules.asar.unpacked/vscode-ripgrep/bin/rg" ));
-        if ( rgPath ) return rgPath;
+        rgPath = exePathIsDefined( path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules.asar.unpacked/vscode-ripgrep/bin/rg" ) );
+        if( rgPath ) return rgPath;
 
         return rgPath;
     }
 
-    function exePathIsDefined(rgExePath)
+    function exePathIsDefined( rgExePath )
     {
         return fs.existsSync( rgExePath ) ? rgExePath : undefined;
     }
@@ -59,9 +60,9 @@ function activate( context )
         }
 
         var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
-        var options = { 
+        var options = {
             regex: "\"" + regex + "\"",
-            rgPath: getRgPath() 
+            rgPath: getRgPath()
         };
         var globs = vscode.workspace.getConfiguration( 'todo-tree' ).globs;
         if( globs && globs.length > 0 )
@@ -149,7 +150,8 @@ function activate( context )
     function register()
     {
         // We can't do anything if we can't find ripgrep
-        if(!getRgPath()) {
+        if( !getRgPath() )
+        {
             vscode.window.showErrorMessage( "todo-tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
             return;
         }
