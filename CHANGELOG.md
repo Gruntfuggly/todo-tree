@@ -1,3 +1,6 @@
+# v0.0.30 - 2018-03-17
+- Inhibit error when no root folder is initially available
+
 # v0.0.29 - 2018-03-16
 - Add support for multiple workspaces
 - Refresh view when configuration is modified

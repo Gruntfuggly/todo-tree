@@ -67,7 +67,7 @@ function activate( context )
     function search( filename, refreshRequired )
     {
         var rootFolder = getRootFolder();
-        if( rootFolder === "" )
+        if( !rootFolder )
         {
             status.hide();
             return;
