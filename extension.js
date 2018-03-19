@@ -18,6 +18,7 @@ function activate( context )
         var isWin = /^win/.test( process.platform );
         return isWin ? "rg.exe" : "rg";
     }
+
     function getRgPath()
     {
         var rgPath = "";
@@ -25,10 +26,10 @@ function activate( context )
         rgPath = exePathIsDefined( vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep );
         if( rgPath ) return rgPath;
 
-        rgPath = exePathIsDefined( path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules/vscode-ripgrep/bin/rg" ) );
+        rgPath = exePathIsDefined( path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules/vscode-ripgrep/bin/", exeName() ) );
         if( rgPath ) return rgPath;
 
-        rgPath = exePathIsDefined( path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules.asar.unpacked/vscode-ripgrep/bin/rg" ) );
+        rgPath = exePathIsDefined( path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules.asar.unpacked/vscode-ripgrep/bin/", exeName() ) );
         if( rgPath ) return rgPath;
 
         return rgPath;

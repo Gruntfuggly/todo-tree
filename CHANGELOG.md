@@ -1,3 +1,6 @@
+# v0.0.31 - 2018-03-19
+- Fix executable name for Windows
+
 # v0.0.30 - 2018-03-17
 - Inhibit error when no root folder is initially available
 
