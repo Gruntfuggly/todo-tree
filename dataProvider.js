@@ -272,9 +272,11 @@ class TodoDataProvider
             } );
         }
 
-        pathElement.todos.push( todoElement );
-
-        this._onDidChangeTreeData.fire();
+        if( !pathElement.todos.find( element => { return element.name === todoElement.name && element.line === todoElement.line; } ) )
+        {
+            pathElement.todos.push( todoElement );
+            this._onDidChangeTreeData.fire();
+        }
     }
 
     refresh()
