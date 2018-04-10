@@ -67,6 +67,8 @@ function activate( context )
 
     function search( filename, refreshRequired )
     {
+        var config = vscode.workspace.getConfiguration( 'todo-tree' );
+
         var rootFolder = getRootFolder();
         if( !rootFolder )
         {
@@ -76,12 +78,13 @@ function activate( context )
 
         lastRootFolder = rootFolder;
 
-        var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
+        var regex = config.regex.replace( "$TAGS", config.tags.join( "|" ) );
+
         var options = {
             regex: "\"" + regex + "\"",
             rgPath: getRgPath()
         };
-        var globs = vscode.workspace.getConfiguration( 'todo-tree' ).globs;
+        var globs = config.globs;
         if( globs && globs.length > 0 )
         {
             options.globs = globs;

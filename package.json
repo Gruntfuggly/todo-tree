@@ -86,9 +86,14 @@
 			"properties": {
 				"todo-tree.regex": {
 					"type": "string",
-					"description": "Regular expression for matching TODOs",
-					"default": "(//|#|<!--|;)\\s*(TODO|FIXME)"
-				},
+					"description": "Regular expression for matching TODOs. Note: $TAGS will be replaced by the tag list",
+					"default": "((//|#|<!--|;)\\s*($TAGS)|^\\s*- \\[ \\])"
+                },
+                "todo-tree.tags": {
+                    "type":"array",
+                    "description": "List of tags",
+                    "default": ["TODO", "FIXME" ]
+                },
 				"todo-tree.rootFolder": {
 					"type": "string",
 					"description": "Folder in which to run the search (defaults to the workspace folder)",

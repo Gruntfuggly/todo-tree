@@ -79,7 +79,7 @@ module.exports = function ripGrep( cwd, options, searchTerm )
 
     if( isWin )
     {
-        rgPath = '"' + rgPath +'"';
+        rgPath = '"' + rgPath + '"';
     }
     else
     {
