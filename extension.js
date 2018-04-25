@@ -1,3 +1,4 @@
+/* jshint esversion:6 */
 
 var vscode = require( 'vscode' );
 var ripgrep = require( './ripgrep' );
@@ -65,20 +66,52 @@ function activate( context )
         return rootFolder;
     }
 
-    function search( filename, refreshRequired )
+    function addToTree( rootFolder, matches, flat )
+    {
+        matches.sort( function compare( a, b )
+        {
+            return a.file > b.file ? 1 : b.file > a.file ? -1 : a.line > b.line ? 1 : -1;
+        } );
+        matches.map( function( match )
+        {
+            provider.add( rootFolder, match, flat );
+        } );
+    }
+
+    function search( rootFolder, options, flat )
+    {
+        ripgrep( rootFolder, options ).then( matches =>
+        {
+            if( matches.length > 0 )
+            {
+                addToTree( rootFolder, matches, flat );
+            }
+            else if( options.filename )
+            {
+                provider.remove( rootFolder, options.filename, flat, false );
+            }
+            status.hide();
+        } ).catch( e =>
+        {
+            status.hide();
+            var message = e.message;
+            if( e.stderr )
+            {
+                message += " (" + e.stderr + ")";
+            }
+            vscode.window.showErrorMessage( "todo-tree: " + message );
+        } );
+    }
+
+    function getOptions( filename )
     {
         var config = vscode.workspace.getConfiguration( 'todo-tree' );
 
-        var rootFolder = getRootFolder();
-        if( !rootFolder )
+        var regex = config.regex;
+        if( regex.indexOf( "($TAGS)" ) > -1 )
         {
-            status.hide();
-            return;
+            regex = regex.replace( "$TAGS", config.tags.join( "|" ) );
         }
-
-        lastRootFolder = rootFolder;
-
-        var regex = config.regex.replace( "$TAGS", config.tags.join( "|" ) );
 
         var options = {
             regex: "\"" + regex + "\"",
@@ -93,58 +126,78 @@ function activate( context )
         {
             options.filename = filename;
         }
-        ripgrep( rootFolder, options ).then( ( result ) =>
-        {
-            result.sort( function compare( a, b )
-            {
-                return a.file > b.file ? 1 : b.file > a.file ? -1 : a.line > b.line ? 1 : -1;
-            } );
-            result.map( function( match )
-            {
-                provider.add( rootFolder, match );
-            } );
-            if( refreshRequired && ( result === undefined || result.length === 0 ) )
-            {
-                provider.refresh();
-            }
-            status.hide();
-        } ).catch( ( e ) =>
+
+        return options;
+    }
+
+    function searchWorkspace()
+    {
+        // console.log( "searchWorkspace" );
+        var rootFolder = getRootFolder();
+        if( !rootFolder )
         {
             status.hide();
-            if( e.error )
+            return;
+        }
+
+        lastRootFolder = rootFolder;
+
+        search( rootFolder, getOptions(), vscode.workspace.getConfiguration( 'todo-tree' ).flat );
+    }
+
+    function searchOutOfWorkspaceDocuments()
+    {
+        // console.log( "searchOutOfWorkspaceDocuments" );
+        var rootFolder = getRootFolder();
+        var documents = vscode.workspace.textDocuments;
+        documents.map( function( document, index )
+        {
+            if( document.uri && document.uri.scheme === "file" )
             {
-                vscode.window.showErrorMessage( "todo-tree: " + e.error );
-            }
-            else
-            {
-                vscode.window.showErrorMessage( "todo-tree: failed to execute search (" + e.stderr + ")" );
+                var filePath = vscode.Uri.parse( document.uri.path ).fsPath;
+                if( !rootFolder || !filePath.startsWith( rootFolder ) )
+                {
+                    searchFile( filePath );
+                }
             }
         } );
     }
 
-    function refresh()
+    function rebuild()
     {
+        // console.log( "rebuild" );
         provider.clear();
 
+        status.text = "todo-tree: Scanning " + getRootFolder() + "...";
         status.show();
 
-        status.text = "todo-tree: Scanning " + getRootFolder() + "...";
-
-        search();
+        searchWorkspace();
+        searchOutOfWorkspaceDocuments();
     }
 
-    function refreshFile( e )
+    function searchFile( filename )
     {
+        // console.log( "searchFile(" + filename + ")" );
         var rootFolder = getRootFolder();
-        if( vscode.workspace.getConfiguration( 'todo-tree' ).autoUpdate && rootFolder )
+        var relative = "";
+        var flat = rootFolder ? vscode.workspace.getConfiguration( 'todo-tree' ).flat : true;
+
+        if( rootFolder )
         {
-            const relative = path.relative( rootFolder, e.fileName );
-            if( !!relative && !relative.startsWith( '..' ) && !path.isAbsolute( relative ) )
+            relative = path.relative( rootFolder, filename );
+            if( relative.startsWith( '..' ) )
             {
-                var removed = provider.remove( rootFolder, e.fileName );
-                search( e.fileName, removed );
+                flat = true;
             }
         }
+        else
+        {
+            rootFolder = "/";
+            flat = true;
+        }
+
+        provider.removeChildren( rootFolder, filename, flat );
+        search( rootFolder, getOptions( filename ), flat );
     }
 
     function showFlatView()
@@ -153,7 +206,7 @@ function activate( context )
         {
             vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', true );
             vscode.commands.executeCommand( 'setContext', 'todo-tree-tree', false );
-            refresh();
+            rebuild();
         } );
     }
 
@@ -163,7 +216,7 @@ function activate( context )
         {
             vscode.commands.executeCommand( 'setContext', 'todo-tree-tree', true );
             vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', false );
-            refresh();
+            rebuild();
         } );
     }
 
@@ -191,7 +244,7 @@ function activate( context )
             } );
         } );
 
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', refresh ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', rebuild ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showFlatView', showFlatView ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showTreeView', showTreeView ) );
 
@@ -200,18 +253,27 @@ function activate( context )
             if( e && e.document )
             {
                 var workspace = vscode.workspace.getWorkspaceFolder( e.document.uri );
-                if( workspace )
+                if( !workspace || workspace.uri.fsPath !== lastRootFolder )
                 {
-                    if( workspace.uri.fsPath !== lastRootFolder )
-                    {
-                        refresh();
-                    }
+                    rebuild();
                 }
             }
         } );
 
-        context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( refreshFile ) );
-        context.subscriptions.push( vscode.workspace.onDidCloseTextDocument( refreshFile ) );
+        context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( e =>
+        {
+            if( e.uri.scheme === "file" )
+            {
+                searchFile( e.fileName );
+            }
+        } ) );
+        context.subscriptions.push( vscode.workspace.onDidCloseTextDocument( e =>
+        {
+            if( e.uri.scheme === "file" && e.isClosed !== true )
+            {
+                searchFile( e.fileName );
+            }
+        } ) );
 
         context.subscriptions.push( vscode.workspace.onDidChangeConfiguration( function( e )
         {
@@ -222,7 +284,7 @@ function activate( context )
             }
             else if( e.affectsConfiguration( "todo-tree" ) )
             {
-                refresh();
+                rebuild();
             }
         } ) );
 
@@ -230,7 +292,7 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-tree', !flat );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', flat );
 
-        refresh();
+        rebuild();
     }
 
     register();

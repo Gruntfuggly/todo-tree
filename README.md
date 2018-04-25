@@ -20,15 +20,22 @@ The source code is available on GitHub [here](https://github.com/Gruntfuggly/tod
 
 The extension can be customised as follows:
 
-`todo-tree.regex`
-
-By default, the regex to find TODOs is fairly simple - it searches for `TODO` or `FIXME` in coments starting with `//`, `#`, `;` or `<--`
-
-If you want to refine it, just modify this regex. Note: This is a <a href="https://doc.rust-lang.org/regex/regex/index.html>">Rust regular expression</a>, not javascript.
-
 `todo-tree.rootFolder`
 
-The search starts in your workspace folder. Change this if you want to start somewhere else.
+The search starts in your current workspace folder. Change this if you want to start somewhere else.
+
+*Note: If you are using multiple workspaces the tree will show the TODOs for the workspace of the currently selected file.*
+
+`todo-tree.tags`
+
+This defines the tags which are recognised as TODOs. This list is automatically inserted into the regex. The defaults are "TODO" and "FIXME".
+
+`todo-tree.regex`
+
+This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with `//`, `#`, `;`, `<--` or '/*'. This should cover most languages.
+If you want to refine it, make sure that the ($TAGS) is kept. The second part of the expression allows matching of Github markdown task lists.
+
+*Note: This is a <a href="https://doc.rust-lang.org/regex/regex/index.html>">Rust regular expression</a>, not javascript.*
 
 `todo-tree.globs`
 
@@ -36,11 +43,7 @@ If you want to modify the files which are searched, you can define a list of <a 
 
 `todo-tree.ripgrep`
 
-Normally, the extension will location ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed.
-
-`todo-tree.autoUpdate`
-
-When set to true, the tree will be updated when a file is saved.
+Normally, the extension will locate ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed.
 
 `todo-tree.expanded`
 
@@ -56,7 +59,7 @@ Use this to change the colour of the icon for TODOs in the tree. Can be hex (e.g
 
 `todo-tree.iconColours`
 
-Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javasctipt regex. E.g.
+Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javascript regex. E.g.
 
 ```
 {
@@ -65,7 +68,7 @@ Use this if you need different icon colours based on the type of tag. The colour
 }
 ```
 
-_Note: The colours are applied __after__ the search results, so don't forget to modify `todo-tree.regex` if you want to add new tags!_
+_Note: The colours are applied __after__ the search results, so don't forget to modify `todo-tree.tags` if you want to add new tags!_
 
 ## Known issues
 

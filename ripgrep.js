@@ -1,3 +1,4 @@
+/* jshint esversion:6, node: true */
 /* eslint-env node */
 
 /**
@@ -90,7 +91,8 @@ module.exports = function ripGrep( cwd, options, searchTerm )
     if( options.regex )
     {
         execString = `${execString} -e ${options.regex}`;
-    } else if( options.string )
+    }
+    else if( options.string )
     {
         execString = `${execString} -F ${options.string}`;
     }
@@ -116,7 +118,8 @@ module.exports = function ripGrep( cwd, options, searchTerm )
             if( !error || ( error && stderr === '' ) )
             {
                 resolve( formatResults( stdout ) );
-            } else
+            }
+            else
             {
                 reject( new RipgrepError( error, stderr ) );
             }

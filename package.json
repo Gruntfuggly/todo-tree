@@ -1,13 +1,13 @@
 {
 	"name": "todo-tree",
 	"displayName": "Todo Tree",
-    "description": "Show TODO, FIXME, etc. comment tags in a tree view",
-    "keywords": [
-        "todo",
-        "task",
-        "tasklist",
-        "multi-root ready"
-    ],
+	"description": "Show TODO, FIXME, etc. comment tags in a tree view",
+	"keywords": [
+		"todo",
+		"task",
+		"tasklist",
+		"multi-root ready"
+	],
 	"version": "0.0.31",
 	"icon": "resources/todo-tree.png",
 	"publisher": "Gruntfuggly",
@@ -87,13 +87,16 @@
 				"todo-tree.regex": {
 					"type": "string",
 					"description": "Regular expression for matching TODOs. Note: $TAGS will be replaced by the tag list",
-					"default": "((//|#|<!--|;)\\s*($TAGS)|^\\s*- \\[ \\])"
-                },
-                "todo-tree.tags": {
-                    "type":"array",
-                    "description": "List of tags",
-                    "default": ["TODO", "FIXME" ]
-                },
+					"default": "((//|#|<!--|;|/\\*)\\s*($TAGS)|^\\s*- \\[ \\])"
+				},
+				"todo-tree.tags": {
+					"type": "array",
+					"description": "List of tags",
+					"default": [
+						"TODO",
+						"FIXME"
+					]
+				},
 				"todo-tree.rootFolder": {
 					"type": "string",
 					"description": "Folder in which to run the search (defaults to the workspace folder)",
@@ -108,11 +111,6 @@
 					"type": "string",
 					"description": "Location of your version of ripgrep",
 					"default": ""
-				},
-				"todo-tree.autoUpdate": {
-					"type": "boolean",
-					"description": "If true, the tree will be updated when files are saved",
-					"default": true
 				},
 				"todo-tree.expanded": {
 					"type": "boolean",

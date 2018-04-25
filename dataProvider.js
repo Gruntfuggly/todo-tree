@@ -1,7 +1,10 @@
+/* jshint esversion:6 */
+
 Object.defineProperty( exports, "__esModule", { value: true } );
-var vscode = require( 'vscode' ),
-    path = require( "path" ),
-    fs = require( 'fs' );
+
+var vscode = require( 'vscode' );
+var path = require( "path" );
+var fs = require( 'fs' );
 
 var elements = [];
 
@@ -49,8 +52,7 @@ class TodoDataProvider
     {
         function isHexColour( text )
         {
-            return ( typeof text === "string" ) && ( text.length === 3 || text.length === 6 )
-                && !isNaN( parseInt( text, 16 ) );
+            return ( typeof text === "string" ) && ( text.length === 3 || text.length === 6 ) && !isNaN( parseInt( text, 16 ) );
         }
 
         var colourMappings = vscode.workspace.getConfiguration( 'todo-tree' ).iconColours;
@@ -120,6 +122,7 @@ class TodoDataProvider
         let treeItem = new vscode.TreeItem( element.name + ( element.pathLabel ? element.pathLabel : "" ) );
         treeItem.collapsibleState = vscode.TreeItemCollapsibleState.None;
         treeItem.resourceUri = new vscode.Uri.file( element.file );
+        treeItem.tooltip = element.file;
 
         if( element.type === PATH )
         {
@@ -155,60 +158,127 @@ class TodoDataProvider
         this._onDidChangeTreeData.fire();
     }
 
-    remove( rootFolder, filename )
+    removeChildren( rootFolder, filename, flat )
     {
-        var removed = false;
+        // console.log( "removeChildren (rootFolder:" + rootFolder + ",file:" + filename + ",flat:" + flat );
 
         var fullPath = path.resolve( rootFolder, filename );
         var relativePath = path.relative( rootFolder, fullPath );
         var parts = relativePath.split( path.sep );
 
-        function findSubPath( e )
+        var pathElement;
+
+        if( flat )
         {
-            return e.type === PATH && e.name === this;
+            var findPath = function( e )
+            {
+                return e.type === PATH && e.file === this;
+            };
+
+            pathElement = elements.find( findPath, fullPath );
+        }
+        else
+        {
+            var findSubPath = function( e )
+            {
+                return e.type === PATH && e.name === this;
+            };
+
+            var parent = elements;
+            parts.map( function( p, level )
+            {
+                var child = parent && parent.find( findSubPath, p );
+                if( child )
+                {
+                    pathElement = child;
+                    parent = pathElement.elements;
+                }
+            } );
         }
 
-        var me = this;
-        var pathElement;
-        var parent = elements;
-        parts.map( function( p, i )
+        if( pathElement && pathElement.file === fullPath )
         {
-            var child = parent.find( findSubPath, p );
-            if( !child || i === parts.length - 1 )
+            pathElement.todos = [];
+            this._onDidChangeTreeData.fire( pathElement );
+        }
+    }
+
+    remove( rootFolder, filename, flat )
+    {
+        // console.log( "remove (rootFolder:" + rootFolder + ",file:" + filename + ",flat:" + flat );
+
+        var fullPath = path.resolve( rootFolder, filename );
+        var relativePath = path.relative( rootFolder, fullPath );
+        var parts = relativePath.split( path.sep );
+
+        if( flat )
+        {
+            var findPath = function( e )
             {
-                while( child )
+                return !( e.type === PATH && e.file === this );
+            };
+
+            elements = elements.filter( findPath, fullPath );
+            this._onDidChangeTreeData.fire();
+        }
+        else
+        {
+            var findSubPath = function( e )
+            {
+                return e.type === PATH && e.name === this;
+            };
+
+            var pathElement;
+            var parent = elements;
+            parts.map( function( p, level )
+            {
+                var child = parent && parent.find( findSubPath, p );
+                if( child )
                 {
-                    var elementArray = child.parent ? child.parent.elements : elements;
-                    elementArray.splice( elementArray.indexOf( child ), 1 );
-                    me._onDidChangeTreeData.fire( child );
-                    if( elementArray.length === 0 )
+                    pathElement = child;
+                    parent = pathElement.elements;
+                }
+            } );
+
+            if( pathElement && pathElement.file === fullPath )
+            {
+                while( pathElement )
+                {
+                    parent = pathElement.parent;
+                    var siblings;
+                    if( !parent )
                     {
-                        child = child.parent;
+                        siblings = elements;
                     }
                     else
                     {
-                        child = undefined;
+                        siblings = parent.elements;
                     }
-                    removed = true;
+                    siblings.splice( siblings.indexOf( pathElement ), 1 );
+                    if( siblings.length === 0 )
+                    {
+                        pathElement = parent;
+                    }
+                    else
+                    {
+                        pathElement = undefined;
+                    }
                 }
+
+                this._onDidChangeTreeData.fire();
             }
-            else
-            {
-                pathElement = child;
-                parent = pathElement.elements;
-            }
-        } );
+        }
 
         if( elements.length === 0 )
         {
             vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', false );
         }
-
-        return removed;
     }
 
-    add( rootFolder, match )
+    add( rootFolder, match, flat )
     {
+        // console.log( "add (rootFolder:" + rootFolder + ",match:" + match.file + ",flat:" + flat );
+
         vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', true );
 
         var fullPath = path.resolve( rootFolder, match.file );
@@ -221,18 +291,18 @@ class TodoDataProvider
             type: TODO, name: match.match.substr( match.column - 1 ), line: match.line - 1, file: fullPath
         };
 
-        if( vscode.workspace.getConfiguration( 'todo-tree' ).flat )
+        if( flat )
         {
-            function findPath( e )
+            var findPath = function( e )
             {
-                return e.type === PATH && e.path === this;
-            }
+                return e.type === PATH && e.file === this;
+            };
 
-            var child = elements.find( findPath, relativePath );
+            var child = elements.find( findPath, fullPath );
 
             if( !child )
             {
-                var folder = path.dirname( relativePath );
+                var folder = relativePath.startsWith( '..' ) ? path.dirname( fullPath ) : path.dirname( relativePath );
                 var pathLabel = ( folder === "." ) ? "" : " (" + folder + ")";
                 pathElement = {
                     type: PATH, file: fullPath, name: path.basename( fullPath ), pathLabel: pathLabel, path: relativePath, todos: []
@@ -247,10 +317,10 @@ class TodoDataProvider
         }
         else
         {
-            function findSubPath( e )
+            var findSubPath = function( e )
             {
-                return e.type === PATH && e.name === this;
-            }
+                return e.pathLabel === undefined && e.type === PATH && e.name === this;
+            };
 
             var parent = elements;
             parts.map( function( p, level )

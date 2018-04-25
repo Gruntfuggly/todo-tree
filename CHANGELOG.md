@@ -1,3 +1,9 @@
+# v0.0.32 - 2018-04-25
+- Show TODOs from open files which are not within the workspace. Note: Due to a limitation of VSCode, they will only appear as the files are loaded.
+- Split tags out of regex to simplify configuration. Note: existing configurations should still work.
+- Removed autoUpdate flag as it seems a but irrelevant now
+- Improve stability of tree
+
 # v0.0.31 - 2018-03-19
 - Fix executable name for Windows
 
@@ -58,7 +64,7 @@
 
 # v0.0.13 - 2018-01-16
 - Hide the viewlet by default - instead of when detecting there is nothing in the tree.
-- Use the version of vscode-ripgrep and comes with vscode itself. This is a lot simpler and makes starup quicker too. The downside is that if vscode is installed somewhere other than the default location, it won't be found.
+- Use the version of vscode-ripgrep and comes with vscode itself. This is a lot simpler and makes startup quicker too. The downside is that if vscode is installed somewhere other than the default location, it won't be found.
 
 # v0.0.12 - 2018-01-05
 - Force the use of an older version of vscode-ripgrep. The latest version seems to fail to install.
