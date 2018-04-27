@@ -46,25 +46,41 @@ function activate( context )
 
     function getRootFolder()
     {
+        function workspaceFolder()
+        {
+            var definition;
+            var editor = vscode.window.activeTextEditor;
+            if( editor )
+            {
+                var workspace = vscode.workspace.getWorkspaceFolder( editor.document.uri );
+                if( workspace )
+                {
+                    definition = workspace.uri.fsPath;
+                }
+            }
+            return definition;
+        }
+
         var rootFolder = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
         if( rootFolder === "" )
         {
-            if( vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0 )
+            rootFolder = workspaceFolder();
+            if( !rootFolder )
             {
-                var editor = vscode.window.activeTextEditor;
-                if( editor )
-                {
-                    var workspace = vscode.workspace.getWorkspaceFolder( editor.document.uri );
-                    if( workspace )
-                    {
-                        rootFolder = workspace.uri.fsPath;
-                    }
-                    else
-                    {
-                        rootFolder = lastRootFolder;
-                    }
-                }
+                rootFolder = lastRootFolder;
             }
+        }
+        else
+        {
+            var envRegex = new RegExp( "\\$\\{(.*?)\\}", "g" );
+            rootFolder = rootFolder.replace( envRegex, function( match, name )
+            {
+                if( name === "workspaceFolder" )
+                {
+                    return workspaceFolder();
+                }
+                return process.env[ name ];
+            } );
         }
 
         if( !rootFolder )

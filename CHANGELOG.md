@@ -1,3 +1,6 @@
+# v0.0.33 - 2018-04-27
+- Allow variable substitution (including ${workspaceFolder}) in todo-tree.rootFolder
+
 # v0.0.32 - 2018-04-25
 - Show TODOs from open files which are not within the workspace. Note: Due to a limitation of VSCode, they will only appear as the files are loaded.
 - Split tags out of regex to simplify configuration. Note: existing configurations should still work.
