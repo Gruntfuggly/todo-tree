@@ -244,6 +244,18 @@ function activate( context )
         } );
     }
 
+    function refreshFile( filename )
+    {
+        provider.clear();
+        dataSet = dataSet.filter( match =>
+        {
+            return match.file !== filename;
+        } );
+
+        searchList = [ { file: filename } ];
+        iterateSearchList();
+    }
+
     function register()
     {
         // We can't do anything if we can't find ripgrep
@@ -277,24 +289,18 @@ function activate( context )
             if( e && e.document )
             {
                 var workspace = vscode.workspace.getWorkspaceFolder( e.document.uri );
-                if( !workspace || workspace.uri.fsPath !== lastRootFolder )
+                var configuredWorkspace = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
+
+                if( !workspace || configuredWorkspace )
+                {
+                    refreshFile( e.document.fileName );
+                }
+                else if( workspace.uri.fsPath !== lastRootFolder )
                 {
                     rebuild();
                 }
             }
         } );
-
-        function refreshFile( filename )
-        {
-            provider.clear();
-            dataSet = dataSet.filter( match =>
-            {
-                return match.file !== filename;
-            } );
-
-            searchList = [ { file: filename } ];
-            iterateSearchList();
-        }
 
         context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( e =>
         {
