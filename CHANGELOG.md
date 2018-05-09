@@ -1,4 +1,4 @@
-# v0.0.47 - 2018-05-09
+# v0.0.48 - 2018-05-09
 - Fix bad display of READMD.md in marketplace
 
 # v0.0.34 - 2018-05-09
