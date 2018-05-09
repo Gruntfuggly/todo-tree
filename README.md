@@ -4,6 +4,8 @@ This extension quickly searches (using <a href="https://github.com/BurntSushi/ri
 
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/screenshot.png">
 
+*Note: The tree will only appear when it finds some TODOs.*
+
 ## Installing
 
 You can install the latest version of the extension via the Visual Studio Marketplace [here](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree).
@@ -20,83 +22,18 @@ The source code is available on GitHub [here](https://github.com/Gruntfuggly/tod
 
 The extension can be customised as follows:
 
-<dl>
-<dt>todo-tree.rootFolder</dt>
-<dd>
-The search starts in your current workspace folder (or the workspace of the currently selected file). Change this setting if you want to start somewhere else. You can include environment variables and also use ${workspaceFolder}.
-
-e.g.
-
-`"todo-tree.rootFolder": "${workspaceFolder}/test"`
-
-or
-
-`"todo-tree.rootFolder": "${HOME}/project"`
-
-*Note: Other open files (outside of the rootFolder) will be shown (as they are opened) with their full path in brackets.*
-
-</dd>
-
-<dt>todo-tree.tags</dt>
-<dd>
-Default: <code>["TODO","FIXME"]</code>
-
-This defines the tags which are recognised as TODOs. This list is automatically inserted into the regex.
-</dd>
-
-<dt>todo-tree.regex</dt>
-<dd>
-Default:<code>"((//|#|&lt!--|;|/\\*)\\s*($TAGS)|^\\s*- \\[ \\])"</code>
-
-This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with `//`, `#`, `;`, `<--` or `/*`. This should cover most languages.
-If you want to refine it, make sure that the ($TAGS) is kept. The second part of the expression allows matching of Github markdown task lists.
-
-*Note: This is a <a href="https://doc.rust-lang.org/regex/regex/index.html>">Rust regular expression</a>, not javascript.*
-</dd>
-
-<dt>todo-tree.globs</dt>
-<dd>
-If you want to modify the files which are searched, you can define a list of <a href="https://www.npmjs.com/package/glob">globs</a>.
-</dd>
-
-<dt>todo-tree.ripgrep</dt>
-<dd>
-Normally, the extension will locate ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed.
-</dd>
-
-<dt>todo-tree.expanded</dt>
-<dd>
-Default:<code>false</code>
-
-If you want the tree to be opened with all nodes expanded, set this to true. By default, the tree will be collapsed.
-</dd>
-
-<dt>todo-tree.flat</dt>
-<dd>
-Default:<code>false</code>
-
-Set to true to show the tree as a flat list of files (with folder names in brackets).
-</dd>
-
-<dt>todo-tree.iconColour</dt>
-<dd>
-Default:<code>"green"</code>
-
-Use this to change the colour of the icon for TODOs in the tree. Can be hex (e.g. "#FF80FF" ) or one of "red", "green", "blue", "yellow", "magenta", "cyan" or "grey".
-</dd>
-
-<dt>todo-tree.iconColours</dt>
-<dd>
-Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javascript regex. E.g.
-
-    {
-        "TODO": "#FF80FF",
-        "^BUG": "red"
-    }
-
-_Note: The colours are applied __after__ the search results, so don't forget to modify `todo-tree.tags` if you want to add new tags!_
-</dd>
-</dl>
+|Setting|Default|Description
+|-------|-------|-----------
+|todo&#8209;tree.rootFolder|**<tt>""</tt>**|The search starts in your current workspace folder (or the workspace of the currently selected file). Change this setting if you want to start somewhere else. You can include environment variables and also use ${workspaceFolder}.</br>e.g.</br>**<tt>"todo-tree.rootFolder": "${workspaceFolder}/test"</tt>**</br>or</br>**<tt>"todo-tree.rootFolder": "${HOME}/project"</tt>**</br></br>*Note: Other open files (outside of the rootFolder) will be shown (as they are opened) with their full path in brackets.*|
+|todo&#8209;tree.tags|**<tt>["TODO","FIXME"]</tt>**|This defines the tags which are recognised as TODOs. This list is automatically inserted into the regex.|
+|todo&#8209;tree.regex|**<tt>&#x22;&#x28;&#x28;&#x2f;&#x2f;&#x7c;&#x23;&#x7c;&#x3c;&#x21;&#x2d;&#x2d;&#x7c;&#x3b;&#x7c;&#x2f;&#x5c;&#x5c;&#x2a;&#x29;&#x5c;&#x5c;&#x73;&#x2a;&#x28;&#x24;&#x54;&#x41;&#x47;&#x53;&#x29;&#x7c;&#x5e;&#x5c;&#x5c;&#x73;&#x2a;&#x2d;&#x20;&#x5c;&#x5c;&#x5b;&#x20;&#x5c;&#x5c;&#x5d;&#x29;&#x22;</tt>**|This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with **<tt>//</tt>**, **<tt>#</tt>**, **<tt>;</tt>**, **<tt><--</tt>** or **<tt>/*</tt>**.</br>This should cover most languages. However if you want to refine it, make sure that the **<tt>($TAGS)</tt>** is kept. The second part of the expression allows matching of Github markdown task lists.</br><br>*Note: This is a <a href="https://doc.rust-lang.org/regex/regex/index.html>">Rust regular expression</a>, not javascript.*|
+|todo&#8209;tree.globs|**<tt>[]</tt>**|If you want to modify the files which are searched, you can define a list of <a href="https://www.npmjs.com/package/glob">globs</a>.|
+|todo&#8209;tree.ripgrep|**<tt>""</tt>**|Normally, the extension will locate ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed.|
+|todo&#8209;tree.ripgrepArgs|**<tt>""</tt>**|Use this to pass additional arguments to ripgrep.</br>e.g.**<tt>"-i"</tt>** to make the search case insensitive</br></br>*Use with caution!*|
+|todo&#8209;tree.expanded|**<tt>false</tt>**|If you want the tree to be opened with all nodes expanded, set this to true. By default, the tree will be collapsed.|
+|todo-tree.flat|**<tt>false</tt>**|Set to true to show the tree as a flat list of files (with folder names in brackets).|
+|todo-tree.iconColour|**<tt>"green"</tt>**|Use this to change the colour of the icon for TODOs in the tree. Can be hex (e.g. "#FF80FF" ) or one of "red", "green", "blue", "yellow", "magenta", "cyan" or "grey".|
+|todo&#8209;tree.iconColours|**<tt>{}</tt>**|Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javascript regex. e.g.</br>**<tt>{"TODO": "#FF80FF","^BUG": "red"</tt>**}</br></br>_Note: The colours are applied __after__ the search results, so don't forget to modify **<tt>todo-tree.tags</tt>** if you want to add new tags!_|
 
 ### Credits
 
