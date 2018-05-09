@@ -18,6 +18,13 @@ Alternatively, open Visual Studio code, press `Ctrl+P` or `Cmd+P` and type:
 
 The source code is available on GitHub [here](https://github.com/Gruntfuggly/todo-tree).
 
+## Configuration
+
+The extension can be customised as follows:
+
+|Setting|Default|Description|
+|-------|-------|-----------|
+|todo&#8209;tree.rootFolder|**<tt>""</tt>**|The search starts in your current workspace folder (or the workspace of the currently selected file). Change this setting if you want to start somewhere else. You can include environment variables and also use ${workspaceFolder}.</br>e.g.</br>**<tt>"todo-tree.rootFolder": "${workspaceFolder}/test"</tt>**</br>or</br>**<tt>"todo-tree.rootFolder": "${HOME}/project"</tt>**</br></br>*Note: Other open files (outside of the rootFolder) will be shown (as they are opened) with their full path in brackets.*|
 
 ### Credits
 
