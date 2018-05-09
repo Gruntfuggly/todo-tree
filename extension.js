@@ -168,6 +168,7 @@ function activate( context )
         }
 
         options.outputChannel = outputChannel;
+        options.additional = vscode.workspace.getConfiguration( 'todo-tree' ).ripgrepArgs;
 
         return options;
     }

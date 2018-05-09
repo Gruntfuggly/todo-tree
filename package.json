@@ -145,6 +145,11 @@
                     "type": "boolean",
                     "default": false,
                     "description": "Turn on diagnostic logging (reload required)"
+                },
+                "todo-tree.ripgrepArgs": {
+                    "type": "string",
+                    "description": "Additional arguments to pass to ripgrep (Use with caution!)",
+                    "default": ""
                 }
             }
         },
