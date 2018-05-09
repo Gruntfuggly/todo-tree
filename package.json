@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.49",
+    "version": "0.0.50",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
