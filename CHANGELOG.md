@@ -1,3 +1,5 @@
+# v0.0.35 - 2018-05-09
+- Fix bad display of READMD.md in marketplace
 
 # v0.0.34 - 2018-05-09
 - Add support for additional ripgrep arguments
