@@ -24,7 +24,7 @@ The extension can be customised as follows:
 
 |Setting|Default|Description|
 |-------|-------|-----------|
-|todo&#8209;tree.rootFolder|""|The search starts in your current workspace folder (or the workspace of the currently selected file). Change this setting if you want to start somewhere else. You can include environment variables and also use ${workspaceFolder}.</br>e.g.</br>"todo-tree.rootFolder": "${workspaceFolder}/test"</br>or</br>"todo-tree.rootFolder": "${HOME}/project"</br></br>Note: Other open files (outside of the rootFolder) will be shown (as they are opened) with their full path in brackets.*|
+|todo&#8209;tree.rootFolder|""|The search starts in your current workspace folder (or the workspace of the currently selected file). Change this setting if you want to start somewhere else. You can include environment variables and also use ${workspaceFolder}.</br>e.g.</br>"todo-tree.rootFolder": "$&#123;workspaceFolder&#125;/test"</br>or</br>"todo-tree.rootFolder": "$&#123;HOME&#125;/project"</br></br>Note: Other open files (outside of the rootFolder) will be shown (as they are opened) with their full path in brackets.*|
 
 ### Credits
 
