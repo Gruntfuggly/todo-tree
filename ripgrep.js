@@ -111,6 +111,11 @@ module.exports = function ripGrep( cwd, options, searchTerm )
         execString += " .";
     }
 
+    if( options.outputChannel )
+    {
+        options.outputChannel.appendLine( "Command:" + execString );
+    }
+
     return new Promise( function( resolve, reject )
     {
         exec( execString, { cwd }, ( error, stdout, stderr ) =>

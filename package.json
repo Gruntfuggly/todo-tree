@@ -140,6 +140,11 @@
                     "type": "object",
                     "default": {},
                     "description": "Set the icon colour based on the tag. Colours can be defined as hex codes, or from the `iconColour` list, e.g.  { \"BUG\":\"red\", \"FIXME\":\"#A188FF\" } "
+                },
+                "todo-tree.debug": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Turn on diagnostic logging (reload required)"
                 }
             }
         },

@@ -16,6 +16,7 @@ function activate( context )
 {
     var provider = new TreeView.TodoDataProvider( context, defaultRootFolder );
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
+    var outputChannel = vscode.workspace.getConfiguration( 'todo-tree' ).debug ? vscode.window.createOutputChannel( "todo-tree" ) : undefined;
 
     function exeName()
     {
@@ -113,6 +114,10 @@ function activate( context )
             {
                 matches.forEach( match =>
                 {
+                    if( outputChannel )
+                    {
+                        outputChannel.appendLine( " Match: " + JSON.stringify( match ) );
+                    }
                     dataSet.push( match );
                 } );
             }
@@ -162,6 +167,8 @@ function activate( context )
             options.filename = filename;
         }
 
+        options.outputChannel = outputChannel;
+
         return options;
     }
 
@@ -199,6 +206,12 @@ function activate( context )
         if( searchList.length > 0 )
         {
             var entry = searchList.pop();
+
+            if( outputChannel )
+            {
+                outputChannel.appendLine( "Search: " + JSON.stringify( entry ) );
+            }
+
             if( entry.file )
             {
                 search( getRootFolder(), getOptions( entry.file ), iterateSearchList );
@@ -288,6 +301,11 @@ function activate( context )
         {
             if( e && e.document )
             {
+                if( outputChannel )
+                {
+                    outputChannel.appendLine( "onDidChangeActiveTextEditor (uri:" + JSON.stringify( e.document.uri ) + ")" );
+                }
+
                 var workspace = vscode.workspace.getWorkspaceFolder( e.document.uri );
                 var configuredWorkspace = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
 
@@ -325,6 +343,8 @@ function activate( context )
                 addToTree( getRootFolder() );
             }
         } ) );
+
+        context.subscriptions.push( outputChannel );
 
         var flat = vscode.workspace.getConfiguration( 'todo-tree' ).flat;
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', flat );
