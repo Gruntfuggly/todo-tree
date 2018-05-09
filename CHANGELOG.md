@@ -1,3 +1,9 @@
+
+# v0.0.34 - 2018-05-09
+- Add support for additional ripgrep arguments
+- Add support for diagnostic logging (to Output window)
+- Improve configuration section of README.md
+
 # v0.0.33 - 2018-04-27
 - Allow variable substitution (including ${workspaceFolder}) in todo-tree.rootFolder
 
