@@ -1,3 +1,4 @@
+# v0.0.51 - 2015-05-11
 - Add tree view to activity bar
 
 # v0.0.50 - 2018-05-09
