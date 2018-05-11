@@ -122,31 +122,35 @@ class TodoDataProvider
     {
         let treeItem = new vscode.TreeItem( element.name + ( element.pathLabel ? element.pathLabel : "" ) );
         treeItem.collapsibleState = vscode.TreeItemCollapsibleState.None;
-        treeItem.resourceUri = new vscode.Uri.file( element.file );
-        treeItem.tooltip = element.file;
 
-        if( element.type === PATH )
+        if( element.file )
         {
-            treeItem.collapsibleState = vscode.workspace.getConfiguration( 'todo-tree' ).expanded ?
-                vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
+            treeItem.resourceUri = new vscode.Uri.file( element.file );
+            treeItem.tooltip = element.file;
 
-            if( element.todos && element.todos.length > 0 )
+            if( element.type === PATH )
             {
-                treeItem.iconPath = vscode.ThemeIcon.File;
-            }
-        }
-        else if( element.type === TODO )
-        {
-            treeItem.iconPath = this.getTodoIcon( element.name );
+                treeItem.collapsibleState = vscode.workspace.getConfiguration( 'todo-tree' ).expanded ?
+                    vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
 
-            treeItem.command = {
-                command: "todo-tree.revealTodo",
-                title: "",
-                arguments: [
-                    element.file,
-                    element.line
-                ]
-            };
+                if( element.todos && element.todos.length > 0 )
+                {
+                    treeItem.iconPath = vscode.ThemeIcon.File;
+                }
+            }
+            else if( element.type === TODO )
+            {
+                treeItem.iconPath = this.getTodoIcon( element.name );
+
+                treeItem.command = {
+                    command: "todo-tree.revealTodo",
+                    title: "",
+                    arguments: [
+                        element.file,
+                        element.line
+                    ]
+                };
+            }
         }
 
         return treeItem;

@@ -23,12 +23,27 @@
     ],
     "main": "./extension",
     "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "todo-tree-container",
+                    "title": "TODOs",
+                    "icon": "resources/todo-tree-container.svg"
+                }
+            ]
+        },
         "views": {
             "explorer": [
                 {
+                    "id": "todo-tree-explorer",
+                    "name": "TODOS",
+                    "when": "todo-tree-has-content && todo-tree-in-explorer"
+                }
+            ],
+            "todo-tree-container": [
+                {
                     "id": "todo-tree",
-                    "name": "TODOs",
-                    "when": "todo-tree-has-content"
+                    "name": ""
                 }
             ]
         },
@@ -150,6 +165,11 @@
                     "type": "string",
                     "description": "Additional arguments to pass to ripgrep (Use with caution!)",
                     "default": ""
+                },
+                "todo-tree.showInExplorer": {
+                    "type": "boolean",
+                    "description": "If true, show the tree in the explorer. Set to false if you only want to use the dedicated tree in the activity bar.",
+                    "default": true
                 }
             }
         },

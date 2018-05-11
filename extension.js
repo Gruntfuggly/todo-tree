@@ -279,6 +279,7 @@ function activate( context )
             return;
         }
         vscode.window.registerTreeDataProvider( 'todo-tree', provider );
+        vscode.window.registerTreeDataProvider( 'todo-tree-explorer', provider );
 
         vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
         {
@@ -342,6 +343,7 @@ function activate( context )
             {
                 provider.clear();
                 addToTree( getRootFolder() );
+                vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
             }
         } ) );
 
@@ -349,6 +351,8 @@ function activate( context )
 
         var flat = vscode.workspace.getConfiguration( 'todo-tree' ).flat;
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', flat );
+
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
 
         rebuild();
     }

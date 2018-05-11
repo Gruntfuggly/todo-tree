@@ -1,3 +1,5 @@
+- Add tree view to activity bar
+
 # v0.0.50 - 2018-05-09
 - Fix bad display of READMD.md in marketplace
 
