@@ -278,7 +278,13 @@ function activate( context )
             vscode.window.showErrorMessage( "todo-tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
             return;
         }
-        vscode.window.registerTreeDataProvider( 'todo-tree', provider );
+        var version = vscode.version.split( "." );
+
+        if( version[ 1 ] > 22 )
+        {
+            vscode.window.registerTreeDataProvider( 'todo-tree', provider );
+        }
+
         vscode.window.registerTreeDataProvider( 'todo-tree-explorer', provider );
 
         vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
