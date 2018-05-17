@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.52",
+    "version": "0.0.53",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -49,6 +49,21 @@
         },
         "menus": {
             "view/title": [
+                {
+                    "command": "todo-tree.showFlatView",
+                    "when": "view == todo-tree-explorer && todo-tree-flat == false",
+                    "group": "navigation"
+                },
+                {
+                    "command": "todo-tree.showTreeView",
+                    "when": "view == todo-tree-explorer && todo-tree-flat == true",
+                    "group": "navigation"
+                },
+                {
+                    "command": "todo-tree.refresh",
+                    "when": "view == todo-tree-explorer",
+                    "group": "navigation"
+                },
                 {
                     "command": "todo-tree.showFlatView",
                     "when": "view == todo-tree && todo-tree-flat == false",

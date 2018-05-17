@@ -1,3 +1,6 @@
+# v0.0.53 - 2015-05-17
+- Restore icons to the explorer tree view
+
 # v0.0.52 - 2015-05-12
 - Inhibit warning if version of vscode is earlier than 1.23
 
