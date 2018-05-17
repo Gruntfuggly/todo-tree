@@ -1,3 +1,6 @@
+- fix link to rust regex docs
+- change example glob pattern in config
+
 # v0.0.53 - 2015-05-17
 - Restore icons to the explorer tree view
 

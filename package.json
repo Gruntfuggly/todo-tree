@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.53",
+    "version": "0.0.54",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -134,7 +134,7 @@
                 },
                 "todo-tree.globs": {
                     "type": "array",
-                    "description": "Globs for use in limiting search results, e.g. [\"!node_modules/**\"]",
+                    "description": "Globs for use in limiting search results, e.g. [\"!**/unit-tests\"]",
                     "default": []
                 },
                 "todo-tree.ripgrep": {
