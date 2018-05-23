@@ -1,3 +1,5 @@
+# v0.0.54 - 2015-05-23
+- Add expand/collapse buttons
 - fix link to rust regex docs
 - change example glob pattern in config
 

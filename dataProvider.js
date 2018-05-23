@@ -11,6 +11,35 @@ var elements = [];
 const PATH = "path";
 const TODO = "todo";
 
+var buildCounter = 1;
+var usedHashes = {};
+
+function hash( text )
+{
+    var hash = 0;
+    if( text.length == 0 )
+    {
+        return hash;
+    }
+    for( var i = 0; i < text.length; i++ )
+    {
+        var char = text.charCodeAt( i );
+        hash = ( ( hash << 5 ) - hash ) + char;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+
+    hash = Math.abs( hash ) % 1000000;
+
+    while( usedHashes[ hash ] !== undefined )
+    {
+        hash++;
+    }
+
+    usedHashes[ hash ] = true;
+
+    return hash;
+}
+
 class TodoDataProvider
 {
     constructor( _context, defaultRootFolder )
@@ -121,6 +150,9 @@ class TodoDataProvider
     getTreeItem( element )
     {
         let treeItem = new vscode.TreeItem( element.name + ( element.pathLabel ? element.pathLabel : "" ) );
+
+        treeItem.id = element.id;
+
         treeItem.collapsibleState = vscode.TreeItemCollapsibleState.None;
 
         if( element.file )
@@ -158,6 +190,7 @@ class TodoDataProvider
 
     clear()
     {
+        usedHashes = {};
         elements = [];
     }
 
@@ -170,7 +203,11 @@ class TodoDataProvider
         var pathElement;
 
         var todoElement = {
-            type: TODO, name: match.match.substr( match.column - 1 ), line: match.line - 1, file: fullPath
+            type: TODO,
+            name: match.match.substr( match.column - 1 ),
+            line: match.line - 1,
+            file: fullPath,
+            id: ( buildCounter * 1000000 ) + hash( JSON.stringify( match ) )
         };
 
         var flat =
@@ -192,7 +229,13 @@ class TodoDataProvider
                 var folder = relativePath.startsWith( '..' ) ? path.dirname( fullPath ) : path.dirname( relativePath );
                 var pathLabel = ( folder === "." ) ? "" : " (" + folder + ")";
                 pathElement = {
-                    type: PATH, file: fullPath, name: path.basename( fullPath ), pathLabel: pathLabel, path: relativePath, todos: []
+                    type: PATH,
+                    file: fullPath,
+                    name: path.basename( fullPath ),
+                    pathLabel: pathLabel,
+                    path: relativePath,
+                    todos: [],
+                    id: ( buildCounter * 1000000 ) + hash( fullPath )
                 };
 
                 elements.push( pathElement );
@@ -217,7 +260,13 @@ class TodoDataProvider
                 {
                     var subPath = path.join( rootFolder, parts.slice( 0, level + 1 ).join( path.sep ) );
                     pathElement = {
-                        type: PATH, file: subPath, name: p, parent: pathElement, elements: [], todos: []
+                        type: PATH,
+                        file: subPath,
+                        name: p,
+                        parent: pathElement,
+                        elements: [],
+                        todos: [],
+                        id: ( buildCounter * 1000000 ) + hash( subPath )
                     };
                     parent.push( pathElement );
                 }
@@ -235,10 +284,19 @@ class TodoDataProvider
         }
     }
 
-    refresh()
+    rebuild()
+    {
+        usedHashes = {};
+        buildCounter = ( buildCounter + 1 ) % 100;
+    }
+
+    refresh( setViewVisibility )
     {
         this._onDidChangeTreeData.fire();
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', elements.length > 0 );
+        if( setViewVisibility === true )
+        {
+            vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', elements.length > 0 );
+        }
     }
 }
 exports.TodoDataProvider = TodoDataProvider;

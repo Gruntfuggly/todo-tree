@@ -36,14 +36,14 @@
             "explorer": [
                 {
                     "id": "todo-tree-explorer",
-                    "name": "TODOS",
+                    "name": "TODOs",
                     "when": "todo-tree-has-content && todo-tree-in-explorer"
                 }
             ],
             "todo-tree-container": [
                 {
                     "id": "todo-tree",
-                    "name": ""
+                    "name": "TODOs"
                 }
             ]
         },
@@ -51,33 +51,28 @@
             "view/title": [
                 {
                     "command": "todo-tree.showFlatView",
-                    "when": "view == todo-tree-explorer && todo-tree-flat == false",
-                    "group": "navigation"
+                    "when": "view =~ /todo-tree/ && todo-tree-flat == false",
+                    "group": "navigation@1"
                 },
                 {
                     "command": "todo-tree.showTreeView",
-                    "when": "view == todo-tree-explorer && todo-tree-flat == true",
-                    "group": "navigation"
+                    "when": "view =~ /todo-tree/ && todo-tree-flat == true",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "todo-tree.expand",
+                    "when": "view =~ /todo-tree/ && todo-tree-show-expand",
+                    "group": "navigation@2"
+                },
+                {
+                    "command": "todo-tree.collapse",
+                    "when": "view =~ /todo-tree/ && todo-tree-show-collapse",
+                    "group": "navigation@2"
                 },
                 {
                     "command": "todo-tree.refresh",
-                    "when": "view == todo-tree-explorer",
-                    "group": "navigation"
-                },
-                {
-                    "command": "todo-tree.showFlatView",
-                    "when": "view == todo-tree && todo-tree-flat == false",
-                    "group": "navigation"
-                },
-                {
-                    "command": "todo-tree.showTreeView",
-                    "when": "view == todo-tree && todo-tree-flat == true",
-                    "group": "navigation"
-                },
-                {
-                    "command": "todo-tree.refresh",
-                    "when": "view == todo-tree",
-                    "group": "navigation"
+                    "when": "view =~ /todo-tree/",
+                    "group": "navigation@3"
                 }
             ]
         },
@@ -107,6 +102,24 @@
                 "icon": {
                     "dark": "resources/icons/dark/refresh.svg",
                     "light": "resources/icons/light/refresh.svg"
+                }
+            },
+            {
+                "command": "todo-tree.expand",
+                "title": "Expand All",
+                "category": "todo-tree",
+                "icon": {
+                    "dark": "resources/icons/dark/expand.svg",
+                    "light": "resources/icons/light/expand.svg"
+                }
+            },
+            {
+                "command": "todo-tree.collapse",
+                "title": "Collapse All",
+                "category": "todo-tree",
+                "icon": {
+                    "dark": "resources/icons/dark/collapse.svg",
+                    "light": "resources/icons/light/collapse.svg"
                 }
             }
         ],
