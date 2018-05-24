@@ -366,9 +366,21 @@ function activate( context )
         {
             if( e.affectsConfiguration( "todo-tree" ) )
             {
-                provider.clear();
-                provider.rebuild();
-                addToTree( getRootFolder() );
+                if( e.affectsConfiguration( "todo-tree.globs" ) ||
+                    e.affectsConfiguration( "todo-tree.regex" ) ||
+                    e.affectsConfiguration( "todo-tree.ripgrep" ) ||
+                    e.affectsConfiguration( "todo-tree.ripgrepArgs" ) ||
+                    e.affectsConfiguration( "todo-tree.rootFolder" ) ||
+                    e.affectsConfiguration( "todo-tree.tags" ) )
+                {
+                    rebuild();
+                }
+                else
+                {
+                    provider.clear();
+                    provider.rebuild();
+                    addToTree( getRootFolder() );
+                }
                 vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
                 setButtons();
             }
