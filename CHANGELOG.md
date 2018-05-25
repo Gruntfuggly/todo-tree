@@ -1,15 +1,19 @@
-# v0.0.54 - 2015-05-23
-- Add expand/collapse buttons
-- fix link to rust regex docs
-- change example glob pattern in config
+# v0.0.55 - 2018-05-25
+- Add filter function
+- Refresh or rebuild (as appropriate) the tree on config changes
 
-# v0.0.53 - 2015-05-17
+# v0.0.54 - 2018-05-23
+- Add expand/collapse buttons
+- Fix link to rust regex docs
+- Change example glob pattern in config
+
+# v0.0.53 - 2018-05-17
 - Restore icons to the explorer tree view
 
-# v0.0.52 - 2015-05-12
+# v0.0.52 - 2018-05-12
 - Inhibit warning if version of vscode is earlier than 1.23
 
-# v0.0.51 - 2015-05-11
+# v0.0.51 - 2018-05-11
 - Add tree view to activity bar
 
 # v0.0.50 - 2018-05-09

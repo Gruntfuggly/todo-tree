@@ -55,9 +55,10 @@ class TodoDataProvider
     {
         if( !element )
         {
-            if( elements.length > 0 )
+            var roots = elements.filter( e => e.visible );
+            if( roots.length > 0 )
             {
-                return elements;
+                return roots;
             }
             return [ { name: "Nothing found" } ];
         }
@@ -65,11 +66,11 @@ class TodoDataProvider
         {
             if( element.elements && element.elements.length > 0 )
             {
-                return element.elements;
+                return element.elements.filter( e => e.visible );
             }
             else
             {
-                return element.todos;
+                return element.todos.filter( e => e.visible );
             }
         }
         else if( element.type === TODO )
@@ -207,7 +208,8 @@ class TodoDataProvider
             name: match.match.substr( match.column - 1 ),
             line: match.line - 1,
             file: fullPath,
-            id: ( buildCounter * 1000000 ) + hash( JSON.stringify( match ) )
+            id: ( buildCounter * 1000000 ) + hash( JSON.stringify( match ) ),
+            visible: true
         };
 
         var flat =
@@ -234,8 +236,10 @@ class TodoDataProvider
                     name: path.basename( fullPath ),
                     pathLabel: pathLabel,
                     path: relativePath,
+                    elements: [],
                     todos: [],
-                    id: ( buildCounter * 1000000 ) + hash( fullPath )
+                    id: ( buildCounter * 1000000 ) + hash( fullPath ),
+                    visible: true
                 };
 
                 elements.push( pathElement );
@@ -266,7 +270,8 @@ class TodoDataProvider
                         parent: pathElement,
                         elements: [],
                         todos: [],
-                        id: ( buildCounter * 1000000 ) + hash( subPath )
+                        id: ( buildCounter * 1000000 ) + hash( subPath ),
+                        visible: true
                     };
                     parent.push( pathElement );
                 }
@@ -297,6 +302,57 @@ class TodoDataProvider
         {
             vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', elements.length > 0 );
         }
+    }
+
+    filter( text, children )
+    {
+        var matcher = new RegExp( text, vscode.workspace.getConfiguration( 'todo-tree' ).filterCaseSensitive ? "" : "i" );
+
+        if( children === undefined )
+        {
+            children = elements;
+        }
+        children.forEach( child => // FIXME
+        {
+            if( child.type == TODO )
+            {
+                child.visible = !text || matcher.exec( child.name );
+            }
+            else
+            {
+                if( child.elements )
+                {
+                    this.filter( text, child.elements );
+                }
+                if( child.todos )
+                {
+                    this.filter( text, child.todos );
+                }
+                var visibleElements = child.elements.filter( e => e.visible ).length;
+                var visibleTodos = child.todos.filter( e => e.visible ).length;
+                child.visible = visibleElements + visibleTodos > 0;
+            }
+        } );
+    }
+
+    clearFilter( children )
+    {
+        if( children === undefined )
+        {
+            children = elements;
+        }
+        children.forEach( child => // FIXME
+        {
+            child.visible = true;
+            if( child.elements )
+            {
+                this.clearFilter( child.elements );
+            }
+            if( child.todos )
+            {
+                this.clearFilter( child.todos );
+            }
+        } );
     }
 }
 exports.TodoDataProvider = TodoDataProvider;

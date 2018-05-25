@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.54",
+    "version": "0.0.55",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -70,9 +70,19 @@
                     "group": "navigation@2"
                 },
                 {
+                    "command": "todo-tree.filter",
+                    "when": "view =~ /todo-tree/ && !todo-tree-is-filtered",
+                    "group": "navigation@3"
+                },
+                {
+                    "command": "todo-tree.filterClear",
+                    "when": "view =~ /todo-tree/ && todo-tree-is-filtered",
+                    "group": "navigation@3"
+                },
+                {
                     "command": "todo-tree.refresh",
                     "when": "view =~ /todo-tree/",
-                    "group": "navigation@3"
+                    "group": "navigation@4"
                 }
             ]
         },
@@ -106,7 +116,7 @@
             },
             {
                 "command": "todo-tree.expand",
-                "title": "Expand All",
+                "title": "Expand all",
                 "category": "todo-tree",
                 "icon": {
                     "dark": "resources/icons/dark/expand.svg",
@@ -115,11 +125,29 @@
             },
             {
                 "command": "todo-tree.collapse",
-                "title": "Collapse All",
+                "title": "Collapse all",
                 "category": "todo-tree",
                 "icon": {
                     "dark": "resources/icons/dark/collapse.svg",
                     "light": "resources/icons/light/collapse.svg"
+                }
+            },
+            {
+                "command": "todo-tree.filter",
+                "title": "Filter",
+                "category": "todo-tree",
+                "icon": {
+                    "dark": "resources/icons/dark/filter.svg",
+                    "light": "resources/icons/light/filter.svg"
+                }
+            },
+            {
+                "command": "todo-tree.filterClear",
+                "title": "Clear filter",
+                "category": "todo-tree",
+                "icon": {
+                    "dark": "resources/icons/dark/clear-filter.svg",
+                    "light": "resources/icons/light/clear-filter.svg"
                 }
             }
         ],
@@ -198,6 +226,11 @@
                     "type": "boolean",
                     "description": "If true, show the tree in the explorer. Set to false if you only want to use the dedicated tree in the activity bar.",
                     "default": true
+                },
+                "todo-tree.filterCaseSensitive": {
+                    "type": "boolean",
+                    "description": "Set to true if you want the filtering to be case sensitive",
+                    "default": false
                 }
             }
         },

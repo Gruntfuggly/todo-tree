@@ -11,6 +11,7 @@ var defaultRootFolder = "/";
 var lastRootFolder = defaultRootFolder;
 var dataSet = [];
 var searchList = [];
+var currentFilter;
 
 function activate( context )
 {
@@ -103,6 +104,7 @@ function activate( context )
             provider.add( rootFolder, match );
         } );
         status.hide();
+        provider.filter( currentFilter );
         provider.refresh( true );
     }
 
@@ -232,6 +234,7 @@ function activate( context )
     {
         dataSet = [];
         provider.clear();
+        clearFilter();
 
         status.text = "todo-tree: Scanning " + getRootFolder() + "...";
         status.show();
@@ -287,6 +290,14 @@ function activate( context )
         vscode.workspace.getConfiguration( 'todo-tree' ).update( 'expanded', true, false );
     }
 
+    function clearFilter()
+    {
+        currentFilter = undefined;
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-is-filtered', false );
+        provider.clearFilter();
+        provider.refresh();
+    }
+
     function register()
     {
         // We can't do anything if we can't find ripgrep
@@ -301,6 +312,8 @@ function activate( context )
         {
             vscode.window.registerTreeDataProvider( 'todo-tree', provider );
         }
+
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-is-filtered', false );
 
         vscode.window.registerTreeDataProvider( 'todo-tree-explorer', provider );
 
@@ -318,6 +331,22 @@ function activate( context )
             } );
         } );
 
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filter', function()
+        {
+            vscode.window.showInputBox( { prompt: "Filter TODOs" } ).then(
+                function( term )
+                {
+                    currentFilter = term;
+                    if( currentFilter )
+                    {
+                        vscode.commands.executeCommand( 'setContext', 'todo-tree-is-filtered', true );
+                        provider.filter( currentFilter );
+                        provider.refresh();
+                    }
+                } );
+        } ) );
+
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filterClear', clearFilter ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', rebuild ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showFlatView', showFlatView ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showTreeView', showTreeView ) );
