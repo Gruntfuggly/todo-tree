@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.55",
+    "version": "0.0.56",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -231,6 +231,11 @@
                     "type": "boolean",
                     "description": "Set to true if you want the filtering to be case sensitive",
                     "default": false
+                },
+                "todo-tree.autoRefresh": {
+                    "type": "boolean",
+                    "description": "Set to true if you would rather the tree was not refreshed automatically",
+                    "default": true
                 }
             }
         },

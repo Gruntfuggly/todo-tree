@@ -1,3 +1,6 @@
+# v0.0.56 - 2018-05-28
+- Add configuration to disable auto refresh
+
 # v0.0.55 - 2018-05-25
 - Add filter function
 - Refresh or rebuild (as appropriate) the tree on config changes

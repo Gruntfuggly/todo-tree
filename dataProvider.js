@@ -17,7 +17,7 @@ var usedHashes = {};
 function hash( text )
 {
     var hash = 0;
-    if( text.length == 0 )
+    if( text.length === 0 )
     {
         return hash;
     }

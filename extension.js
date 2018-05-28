@@ -355,23 +355,26 @@ function activate( context )
 
         vscode.window.onDidChangeActiveTextEditor( function( e )
         {
-            if( e && e.document )
+            if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
             {
-                if( outputChannel )
+                if( e && e.document )
                 {
-                    outputChannel.appendLine( "onDidChangeActiveTextEditor (uri:" + JSON.stringify( e.document.uri ) + ")" );
-                }
+                    if( outputChannel )
+                    {
+                        outputChannel.appendLine( "onDidChangeActiveTextEditor (uri:" + JSON.stringify( e.document.uri ) + ")" );
+                    }
 
-                var workspace = vscode.workspace.getWorkspaceFolder( e.document.uri );
-                var configuredWorkspace = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
+                    var workspace = vscode.workspace.getWorkspaceFolder( e.document.uri );
+                    var configuredWorkspace = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
 
-                if( !workspace || configuredWorkspace )
-                {
-                    refreshFile( e.document.fileName );
-                }
-                else if( workspace.uri.fsPath !== lastRootFolder )
-                {
-                    rebuild();
+                    if( !workspace || configuredWorkspace )
+                    {
+                        refreshFile( e.document.fileName );
+                    }
+                    else if( workspace.uri.fsPath !== lastRootFolder )
+                    {
+                        rebuild();
+                    }
                 }
             }
         } );
@@ -380,14 +383,20 @@ function activate( context )
         {
             if( e.uri.scheme === "file" && path.basename( e.fileName ) !== "settings.json" )
             {
-                refreshFile( e.fileName );
+                if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
+                {
+                    refreshFile( e.fileName );
+                }
             }
         } ) );
         context.subscriptions.push( vscode.workspace.onDidCloseTextDocument( e =>
         {
             if( e.uri.scheme === "file" && e.isClosed !== true )
             {
-                refreshFile( e.fileName );
+                if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
+                {
+                    refreshFile( e.fileName );
+                }
             }
         } ) );
 
@@ -410,6 +419,7 @@ function activate( context )
                     provider.rebuild();
                     addToTree( getRootFolder() );
                 }
+
                 vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
                 setButtons();
             }
