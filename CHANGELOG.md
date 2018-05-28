@@ -1,3 +1,6 @@
+# v0.0.57 - 2018-05-28
+- Apply globs to files out of workspace
+
 # v0.0.56 - 2018-05-28
 - Add configuration to disable auto refresh
 

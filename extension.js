@@ -6,6 +6,7 @@ var TreeView = require( "./dataProvider" );
 var childProcess = require( 'child_process' );
 var fs = require( 'fs' );
 var path = require( 'path' );
+var minimatch = require( 'minimatch' );
 
 var defaultRootFolder = "/";
 var lastRootFolder = defaultRootFolder;
@@ -276,8 +277,23 @@ function activate( context )
             return match.file !== filename;
         } );
 
-        searchList = [ { file: filename } ];
-        iterateSearchList();
+        var globs = vscode.workspace.getConfiguration( 'todo-tree' ).globs;
+        var add = globs.length === 0;
+        if( !add )
+        {
+            globs.forEach( glob =>
+            {
+                if( minimatch( filename, glob ) )
+                {
+                    add = true;
+                }
+            } );
+        }
+        if( add === true )
+        {
+            searchList = [ { file: filename } ];
+            iterateSearchList();
+        }
     }
 
     function collapse()
