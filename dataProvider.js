@@ -195,17 +195,26 @@ class TodoDataProvider
         elements = [];
     }
 
-    add( rootFolder, match )
+    add( rootFolder, match, tagRegex )
     {
         var fullPath = path.resolve( rootFolder, match.file );
         var relativePath = path.relative( rootFolder, fullPath );
         var parts = relativePath.split( path.sep );
 
         var pathElement;
+        var name = match.match.substr( match.column - 1 );
+        if( tagRegex )
+        {
+            var tagMatch = tagRegex.exec( match.match );
+            if( tagMatch )
+            {
+                name = match.match.substr( tagMatch.index );
+            }
+        }
 
         var todoElement = {
             type: TODO,
-            name: match.match.substr( match.column - 1 ),
+            name: name,
             line: match.line - 1,
             file: fullPath,
             id: ( buildCounter * 1000000 ) + hash( JSON.stringify( match ) ),

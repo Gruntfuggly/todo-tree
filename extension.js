@@ -96,13 +96,16 @@ function activate( context )
 
     function addToTree( rootFolder )
     {
+        var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
+        var tagRegex = regex.indexOf( "$TAGS" ) > -1 ? new RegExp( "(" + vscode.workspace.getConfiguration( 'todo-tree' ).tags.join( "|" ) + ")" ) : undefined;
+
         dataSet.sort( function compare( a, b )
         {
             return a.file > b.file ? 1 : b.file > a.file ? -1 : a.line > b.line ? 1 : -1;
         } );
         dataSet.map( function( match )
         {
-            provider.add( rootFolder, match );
+            provider.add( rootFolder, match, tagRegex );
         } );
         status.hide();
         provider.filter( currentFilter );
