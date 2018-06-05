@@ -1,4 +1,5 @@
-# v0.0.58 - 2018-06-01
+# v0.0.58 - 2018-06-05
+- Add in file highlighting
 - Remove leading comments from tree
 
 # v0.0.57 - 2018-05-28

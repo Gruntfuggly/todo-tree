@@ -11,6 +11,8 @@ var elements = [];
 const PATH = "path";
 const TODO = "todo";
 
+var defaultColours = [ "red", "green", "blue", "yellow", "magenta", "cyan", "grey" ];
+
 var buildCounter = 1;
 var usedHashes = {};
 
@@ -90,16 +92,13 @@ class TodoDataProvider
 
         var colour = "";
 
-        for( var mapping in colourMappings )
+        Object.keys( colourMappings ).forEach( mapping =>
         {
-            if( colourMappings.hasOwnProperty( mapping ) )
+            if( text.match( mapping ) )
             {
-                if( text.match( mapping ) )
-                {
-                    colour = colourMappings[ mapping ];
-                }
+                colour = colourMappings[ mapping ];
             }
-        }
+        } );
 
         if( colour === "" )
         {
@@ -134,10 +133,15 @@ class TodoDataProvider
             darkIconPath = iconPath;
             lightIconPath = iconPath;
         }
-        else
+        else if( defaultColours.indexOf( colour ) > -1 )
         {
             darkIconPath = this._context.asAbsolutePath( path.join( "resources/icons", "dark", "todo-" + colour + ".svg" ) );
             lightIconPath = this._context.asAbsolutePath( path.join( "resources/icons", "light", "todo-" + colour + ".svg" ) );
+        }
+        else
+        {
+            darkIconPath = this._context.asAbsolutePath( path.join( "resources/icons", "dark", "todo-green.svg" ) );
+            lightIconPath = this._context.asAbsolutePath( path.join( "resources/icons", "light", "todo-green.svg" ) );
         }
 
         var icon = {

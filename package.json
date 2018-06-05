@@ -224,7 +224,7 @@
                 },
                 "todo-tree.showInExplorer": {
                     "type": "boolean",
-                    "description": "If true, show the tree in the explorer. Set to false if you only want to use the dedicated tree in the activity bar.",
+                    "description": "If true, show the tree in the explorer. Set to false if you only want to use the dedicated tree in the activity bar",
                     "default": true
                 },
                 "todo-tree.filterCaseSensitive": {
@@ -236,6 +236,11 @@
                     "type": "boolean",
                     "description": "Set to true if you would rather the tree was not refreshed automatically",
                     "default": true
+                },
+                "todo-tree.highlight": {
+                    "type": "boolean",
+                    "description": "Enable highlighting of tags within files",
+                    "default": false
                 }
             }
         }
