@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.58",
+    "version": "0.0.59",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -240,6 +240,11 @@
                 "todo-tree.highlight": {
                     "type": "boolean",
                     "description": "Enable highlighting of tags within files",
+                    "default": false
+                },
+                "todo-tree.showTagsFromOpenFilesOnly": {
+                    "type": "boolean",
+                    "description": "Disable scanning of the workspace for TODOs",
                     "default": false
                 }
             }

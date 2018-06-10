@@ -307,12 +307,15 @@ function activate( context )
 
     function searchWorkspace( searchList )
     {
-        var rootFolder = getRootFolder();
-        if( rootFolder !== defaultRootFolder )
+        if( vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly !== true )
         {
-            lastRootFolder = rootFolder;
+            var rootFolder = getRootFolder();
+            if( rootFolder !== defaultRootFolder )
+            {
+                lastRootFolder = rootFolder;
 
-            searchList.push( { folder: rootFolder } );
+                searchList.push( { folder: rootFolder } );
+            }
         }
     }
 
@@ -326,7 +329,9 @@ function activate( context )
             if( document.uri && document.uri.scheme === "file" )
             {
                 var filePath = vscode.Uri.parse( document.uri.path ).fsPath;
-                if( rootFolder === defaultRootFolder || !filePath.startsWith( rootFolder ) )
+                if( rootFolder === defaultRootFolder ||
+                    !filePath.startsWith( rootFolder ) ||
+                    vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly === true )
                 {
                     searchList.push( { file: filePath } );
                 }
@@ -514,7 +519,10 @@ function activate( context )
 
                     if( !workspace || configuredWorkspace )
                     {
-                        refreshFile( e.document.fileName );
+                        if( e.uri.scheme === "file" )
+                        {
+                            refreshFile( e.document.fileName );
+                        }
                     }
                     else if( workspace.uri.fsPath !== lastRootFolder )
                     {
@@ -562,6 +570,7 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.ripgrep" ) ||
                     e.affectsConfiguration( "todo-tree.ripgrepArgs" ) ||
                     e.affectsConfiguration( "todo-tree.rootFolder" ) ||
+                    e.affectsConfiguration( "todo-tree.showTagsFromOpenFilesOnly" ) ||
                     e.affectsConfiguration( "todo-tree.tags" ) )
                 {
                     rebuild();

@@ -325,7 +325,7 @@ class TodoDataProvider
         {
             children = elements;
         }
-        children.forEach( child => // FIXME
+        children.forEach( child =>
         {
             if( child.type == TODO )
             {
@@ -354,7 +354,7 @@ class TodoDataProvider
         {
             children = elements;
         }
-        children.forEach( child => // FIXME
+        children.forEach( child =>
         {
             child.visible = true;
             if( child.elements )

@@ -1,3 +1,6 @@
+# v0.0.59 - 2018-06-10
+- Add option to disable scanning of workspace
+
 # v0.0.58 - 2018-06-05
 - Add in file highlighting
 - Remove leading comments from tree
