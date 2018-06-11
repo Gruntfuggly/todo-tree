@@ -1,3 +1,6 @@
+# v0.0.60 - 2018-06-11
+- Improve tag matching icon colours
+
 # v0.0.59 - 2018-06-10
 - Add option to disable scanning of workspace
 

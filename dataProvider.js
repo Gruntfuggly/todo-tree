@@ -90,15 +90,19 @@ class TodoDataProvider
 
         var colourMappings = vscode.workspace.getConfiguration( 'todo-tree' ).iconColours;
 
-        var colour = "";
 
-        Object.keys( colourMappings ).forEach( mapping =>
+        var colour = colourMappings[ text ] || "";
+
+        if( colour === "" )
         {
-            if( text.match( mapping ) )
+            Object.keys( colourMappings ).forEach( mapping =>
             {
-                colour = colourMappings[ mapping ];
-            }
-        } );
+                if( text.match( mapping ) )
+                {
+                    colour = colourMappings[ mapping ];
+                }
+            } );
+        }
 
         if( colour === "" )
         {
@@ -177,7 +181,7 @@ class TodoDataProvider
             }
             else if( element.type === TODO )
             {
-                treeItem.iconPath = this.getTodoIcon( element.name );
+                treeItem.iconPath = this.getTodoIcon( element.tag ? element.tag : element.name );
 
                 treeItem.command = {
                     command: "todo-tree.revealTodo",
@@ -207,9 +211,10 @@ class TodoDataProvider
 
         var pathElement;
         var name = match.match.substr( match.column - 1 );
+        var tagMatch;
         if( tagRegex )
         {
-            var tagMatch = tagRegex.exec( match.match );
+            tagMatch = tagRegex.exec( match.match );
             if( tagMatch )
             {
                 name = match.match.substr( tagMatch.index );
@@ -224,6 +229,11 @@ class TodoDataProvider
             id: ( buildCounter * 1000000 ) + hash( JSON.stringify( match ) ),
             visible: true
         };
+
+        if( tagMatch )
+        {
+            todoElement.tag = tagMatch[ 0 ];
+        }
 
         var flat =
             relativePath.startsWith( ".." ) ||
