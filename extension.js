@@ -519,7 +519,7 @@ function activate( context )
 
                     if( !workspace || configuredWorkspace )
                     {
-                        if( e.uri.scheme === "file" )
+                        if( e.uri && e.uri.scheme === "file" )
                         {
                             refreshFile( e.document.fileName );
                         }
