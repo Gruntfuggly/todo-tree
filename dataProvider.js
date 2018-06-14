@@ -5,6 +5,7 @@ Object.defineProperty( exports, "__esModule", { value: true } );
 var vscode = require( 'vscode' );
 var path = require( "path" );
 var fs = require( 'fs' );
+var commentPatterns = require( 'comment-patterns' );
 
 var elements = [];
 
@@ -211,13 +212,34 @@ class TodoDataProvider
 
         var pathElement;
         var name = match.match.substr( match.column - 1 );
+
+        var commentPattern = commentPatterns( match.file );
+        if( commentPattern && commentPattern.multiLineComment.length > 0 )
+        {
+            commentPattern = commentPatterns.regex( match.file );
+            if( commentPattern && commentPattern.regex )
+            {
+                var commentMatch = commentPattern.regex.exec( name );
+                if( commentMatch )
+                {
+                    for( var i = commentPattern.cg.contentStart; i < commentMatch.length; ++i )
+                    {
+                        if( commentMatch[ i ] )
+                        {
+                            name = commentMatch[ i ];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         var tagMatch;
         if( tagRegex )
         {
-            tagMatch = tagRegex.exec( match.match );
+            tagMatch = tagRegex.exec( name );
             if( tagMatch )
             {
-                name = match.match.substr( tagMatch.index );
+                name = name.substr( tagMatch.index );
             }
         }
 

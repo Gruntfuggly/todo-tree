@@ -519,12 +519,12 @@ function activate( context )
 
                     if( !workspace || configuredWorkspace )
                     {
-                        if( e.uri.scheme === "file" )
+                        if( e.document.uri && e.document.uri.scheme === "file" )
                         {
                             refreshFile( e.document.fileName );
                         }
                     }
-                    else if( workspace.uri.fsPath !== lastRootFolder )
+                    else if( workspace.uri && ( workspace.uri.fsPath !== lastRootFolder ) )
                     {
                         rebuild();
                     }

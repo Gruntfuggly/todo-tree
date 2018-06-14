@@ -1,3 +1,7 @@
+# v0.0.61 - 2018-06-14
+- Tidy up trailing block comments
+- Fix error when checking for changed editors (thanks to [md2perpe](https://github.com/md2perpe))
+
 # v0.0.60 - 2018-06-11
 - Improve tag matching icon colours
 
