@@ -1,3 +1,6 @@
+# v0.0.63 - 2018-06-14
+- Cope with languages that don't have block comments
+
 # v0.0.62 - 2018-06-14
 - Handle missing languages when checking block comments
 

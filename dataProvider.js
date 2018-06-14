@@ -222,7 +222,7 @@ class TodoDataProvider
         {
         }
 
-        if( commentPattern && commentPattern.multiLineComment.length > 0 )
+        if( commentPattern && commentPattern.multiLineComment && commentPattern.multiLineComment.length > 0 )
         {
             commentPattern = commentPatterns.regex( match.file );
             if( commentPattern && commentPattern.regex )
