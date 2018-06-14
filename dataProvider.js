@@ -213,7 +213,15 @@ class TodoDataProvider
         var pathElement;
         var name = match.match.substr( match.column - 1 );
 
-        var commentPattern = commentPatterns( match.file );
+        var commentPattern;
+        try
+        {
+            commentPattern = commentPatterns( match.file );
+        }
+        catch( e )
+        {
+        }
+
         if( commentPattern && commentPattern.multiLineComment.length > 0 )
         {
             commentPattern = commentPatterns.regex( match.file );
