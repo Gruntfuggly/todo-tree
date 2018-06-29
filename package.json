@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.63",
+    "version": "0.0.64",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -60,13 +60,13 @@
                     "group": "navigation@1"
                 },
                 {
-                    "command": "todo-tree.expand",
-                    "when": "view =~ /todo-tree/ && todo-tree-show-expand",
+                    "command": "todo-tree.groupByTag",
+                    "when": "view =~ /todo-tree/ && todo-tree-show-group",
                     "group": "navigation@2"
                 },
                 {
-                    "command": "todo-tree.collapse",
-                    "when": "view =~ /todo-tree/ && todo-tree-show-collapse",
+                    "command": "todo-tree.ungroupByTag",
+                    "when": "view =~ /todo-tree/ && todo-tree-show-ungroup",
                     "group": "navigation@2"
                 },
                 {
@@ -80,9 +80,19 @@
                     "group": "navigation@3"
                 },
                 {
+                    "command": "todo-tree.expand",
+                    "when": "view =~ /todo-tree/ && todo-tree-show-expand",
+                    "group": "navigation@4"
+                },
+                {
+                    "command": "todo-tree.collapse",
+                    "when": "view =~ /todo-tree/ && todo-tree-show-collapse",
+                    "group": "navigation@4"
+                },
+                {
                     "command": "todo-tree.refresh",
                     "when": "view =~ /todo-tree/",
-                    "group": "navigation@4"
+                    "group": "navigation@5"
                 }
             ]
         },
@@ -149,6 +159,24 @@
                     "dark": "resources/icons/dark/clear-filter.svg",
                     "light": "resources/icons/light/clear-filter.svg"
                 }
+            },
+            {
+                "command": "todo-tree.groupByTag",
+                "title": "Group by Tag",
+                "category": "todo-tree",
+                "icon": {
+                    "dark": "resources/icons/dark/tag.svg",
+                    "light": "resources/icons/light/tag.svg"
+                }
+            },
+            {
+                "command": "todo-tree.ungroupByTag",
+                "title": "Ungroup by Tag",
+                "category": "todo-tree",
+                "icon": {
+                    "dark": "resources/icons/dark/notag.svg",
+                    "light": "resources/icons/light/notag.svg"
+                }
             }
         ],
         "configuration": {
@@ -185,7 +213,12 @@
                 },
                 "todo-tree.expanded": {
                     "type": "boolean",
-                    "description": "Set to true if you want the tree to be initially expanded",
+                    "description": "Set to true if you want the tree to be fully expanded",
+                    "default": false
+                },
+                "todo-tree.grouped": {
+                    "type": "boolean",
+                    "description": "Set to true if you want the tree to be grouped by tag",
                     "default": false
                 },
                 "todo-tree.flat": {

@@ -1,3 +1,6 @@
+# v0.0.64 - 2018-06-29
+- Add support for grouping by tags
+
 # v0.0.63 - 2018-06-14
 - Cope with languages that don't have block comments
 

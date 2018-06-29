@@ -175,9 +175,13 @@ class TodoDataProvider
                 treeItem.collapsibleState = vscode.workspace.getConfiguration( 'todo-tree' ).expanded ?
                     vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
 
-                if( element.todos && element.todos.length > 0 )
+                if( element.todos && element.todos.length > 0 && element.isRootTag === undefined )
                 {
                     treeItem.iconPath = vscode.ThemeIcon.File;
+                }
+                else
+                {
+                    treeItem.iconPath = this.getTodoIcon( element.tag ? element.tag : element.name );
                 }
             }
             else if( element.type === TODO )
@@ -206,6 +210,31 @@ class TodoDataProvider
 
     add( rootFolder, match, tagRegex )
     {
+        function getRootTagElement( tag )
+        {
+            var findRootTag = function( e )
+            {
+                return e.name === this;
+            };
+            child = elements.find( findRootTag, tag );
+            if( child === undefined )
+            {
+                child = {
+                    isRootTag: true,
+                    type: PATH,
+                    name: tag,
+                    tag: tag,
+                    visible: true,
+                    elements: [],
+                    todos: [],
+                    file: fullPath,
+                    id: ( buildCounter * 1000000 ) + hash( tag + fullPath ),
+                };
+                elements.push( child );
+            }
+            return child;
+        }
+
         var fullPath = path.resolve( rootFolder, match.file );
         var relativePath = path.relative( rootFolder, fullPath );
         var parts = relativePath.split( path.sep );
@@ -248,6 +277,10 @@ class TodoDataProvider
             if( tagMatch )
             {
                 name = name.substr( tagMatch.index );
+                if( vscode.workspace.getConfiguration( 'todo-tree' ).grouped )
+                {
+                    name = name.substr( tagMatch[ 0 ].length );
+                }
             }
         }
 
@@ -277,7 +310,16 @@ class TodoDataProvider
                 return e.type === PATH && e.file === this;
             };
 
-            var child = elements.find( findExactPath, fullPath );
+            var parent;
+            if( vscode.workspace.getConfiguration( 'todo-tree' ).grouped && todoElement.tag )
+            {
+                parent = getRootTagElement( todoElement.tag ).elements;
+            }
+            else
+            {
+                parent = elements;
+            }
+            var child = parent.find( findExactPath, fullPath );
 
             if( !child )
             {
@@ -295,7 +337,7 @@ class TodoDataProvider
                     visible: true
                 };
 
-                elements.push( pathElement );
+                parent.push( pathElement );
             }
             else
             {
@@ -309,7 +351,15 @@ class TodoDataProvider
                 return e.pathLabel === undefined && e.type === PATH && e.name === this;
             };
 
-            var parent = elements;
+            var parent;
+            if( vscode.workspace.getConfiguration( 'todo-tree' ).grouped && todoElement.tag )
+            {
+                parent = getRootTagElement( todoElement.tag ).elements;
+            }
+            else
+            {
+                parent = elements;
+            }
             parts.map( function( p, level )
             {
                 var child = parent.find( findSubPath, p );
