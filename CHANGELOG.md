@@ -1,3 +1,7 @@
+# v0.0.65 - 2018-07-02
+- Fix icons for folders
+- Add start of line as start of tag marker
+
 # v0.0.64 - 2018-06-29
 - Add support for grouping by tags
 
