@@ -175,13 +175,17 @@ class TodoDataProvider
                 treeItem.collapsibleState = vscode.workspace.getConfiguration( 'todo-tree' ).expanded ?
                     vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
 
-                if( element.todos && element.todos.length > 0 && element.isRootTag === undefined )
+                if( element.isRootTag )
                 {
-                    treeItem.iconPath = vscode.ThemeIcon.File;
+                    treeItem.iconPath = this.getTodoIcon( element.tag ? element.tag : element.name );
+                }
+                else if( element.elements && element.elements.length > 0 )
+                {
+                    treeItem.iconPath = vscode.ThemeIcon.Folder;
                 }
                 else
                 {
-                    treeItem.iconPath = this.getTodoIcon( element.tag ? element.tag : element.name );
+                    treeItem.iconPath = vscode.ThemeIcon.File;
                 }
             }
             else if( element.type === TODO )
