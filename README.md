@@ -38,6 +38,12 @@ The extension can be customised as follows:
 | todo&#8209;tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. |
 | todo&#8209;tree.highlight | <tt>false</tt> | Set this to true to highlight tags in files. |
 
+## Known Issues
+
+Grouping by tag will only work when your configuration defines the tags using the `todo-tree.tags` setting. Older versions of the extension had the tags directly defined in the `todo-tree.regex` whereas now, the regex replaces **$TAGS** with the contents of `todo-tree.tags`.
+
+Grouping by tag doesn't work for markdown task list items as there is no tag to group with. The tree will show the files alongside the tag groups.
+
 ### Credits
 
 Uses a modified version of <a href="https://www.npmjs.com/package/ripgrep-js">ripgrep-js</a>.
