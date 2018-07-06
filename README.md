@@ -37,6 +37,7 @@ The extension can be customised as follows:
 | todo&#8209;tree.showInExplorer | <tt>true</tt> | The tree is now also available in the activity bar. If you no longer want to see it in the explorer view, set this to false. |
 | todo&#8209;tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. |
 | todo&#8209;tree.highlight | <tt>false</tt> | Set this to true to highlight tags in files. |
+| todo&#8209;tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
 
 ## Known Issues
 

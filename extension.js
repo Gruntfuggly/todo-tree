@@ -608,40 +608,43 @@ function activate( context )
             var highlights = {};
             var editor = vscode.window.activeTextEditor;
 
-            if( vscode.workspace.getConfiguration( 'todo-tree' ).highlight === true )
+            if( editor )
             {
-                const text = editor.document.getText();
-                var regex = new RegExp( getRegex(), 'g' );
-                let match;
-                while( ( match = regex.exec( text ) ) !== null )
+                if( vscode.workspace.getConfiguration( 'todo-tree' ).highlight === true )
                 {
-                    const tag = match[ match.length - 1 ];
-                    const startPos = editor.document.positionAt( match.index );
-                    const endPos = editor.document.positionAt( match.index + match[ 0 ].length );
-                    const decoration = { range: new vscode.Range( startPos, endPos ) };
-                    if( highlights[ tag ] === undefined )
+                    const text = editor.document.getText();
+                    var regex = new RegExp( getRegex(), 'g' );
+                    let match;
+                    while( ( match = regex.exec( text ) ) !== null )
                     {
-                        highlights[ tag ] = [];
+                        const tag = match[ match.length - 1 ];
+                        const startPos = editor.document.positionAt( match.index );
+                        const endPos = editor.document.positionAt( match.index + match[ 0 ].length );
+                        const decoration = { range: new vscode.Range( startPos, endPos ) };
+                        if( highlights[ tag ] === undefined )
+                        {
+                            highlights[ tag ] = [];
+                        }
+                        highlights[ tag ].push( decoration );
                     }
-                    highlights[ tag ].push( decoration );
                 }
+                decorations.forEach( decoration =>
+                {
+                    decoration.dispose();
+                } );
+                Object.keys( highlights ).forEach( tag =>
+                {
+                    var decoration = getDecoration( tag );
+                    decorations.push( decoration );
+                    editor.setDecorations( decoration, highlights[ tag ] );
+                } );
             }
-            decorations.forEach( decoration =>
-            {
-                decoration.dispose();
-            } );
-            Object.keys( highlights ).forEach( tag =>
-            {
-                var decoration = getDecoration( tag );
-                decorations.push( decoration );
-                editor.setDecorations( decoration, highlights[ tag ] );
-            } );
         }
 
         function triggerHighlight()
         {
             clearTimeout( highlightTimer );
-            highlightTimer = setTimeout( highlight, 500 );
+            highlightTimer = setTimeout( highlight, vscode.workspace.getConfiguration( 'todo-tree' ).highlightDelay );
         }
 
         context.subscriptions.push( vscode.workspace.onDidChangeTextDocument( function( e )

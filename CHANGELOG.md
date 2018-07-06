@@ -1,3 +1,6 @@
+# v0.0.66 - 2018-07-06
+- Allow delay before highlighting to be configured
+
 # v0.0.65 - 2018-07-02
 - Fix icons for folders
 - Add start of line as start of tag marker

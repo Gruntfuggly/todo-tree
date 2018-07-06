@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.65",
+    "version": "0.0.66",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -274,6 +274,11 @@
                     "type": "boolean",
                     "description": "Enable highlighting of tags within files",
                     "default": false
+                },
+                "todo-tree.highlightDelay": {
+                    "type": "integer",
+                    "description": "Delay before highlighting tags within files (milliseconds)",
+                    "default": 500
                 },
                 "todo-tree.showTagsFromOpenFilesOnly": {
                     "type": "boolean",
