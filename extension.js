@@ -215,6 +215,11 @@ function activate( context )
 
     function addToTree( rootFolder )
     {
+        if( outputChannel )
+        {
+            outputChannel.appendLine( "Found " + dataSet.length + " items..." );
+        }
+
         var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
         var tagRegex = regex.indexOf( "$TAGS" ) > -1 ? new RegExp( "(" + vscode.workspace.getConfiguration( 'todo-tree' ).tags.join( "|" ) + ")" ) : undefined;
 
@@ -233,7 +238,7 @@ function activate( context )
 
     function search( rootFolder, options, done )
     {
-        ripgrep( "/", options ).then( matches =>
+        ripgrep.search( "/", options ).then( matches =>
         {
             if( matches.length > 0 )
             {
@@ -373,6 +378,7 @@ function activate( context )
 
         status.text = "todo-tree: Scanning " + getRootFolder() + "...";
         status.show();
+        status.command = "todo-tree.stopScan";
 
         searchOutOfWorkspaceDocuments( searchList );
         searchWorkspace( searchList );
@@ -507,6 +513,12 @@ function activate( context )
                         provider.refresh();
                     }
                 } );
+        } ) );
+
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.stopScan', function()
+        {
+            ripgrep.kill();
+            status.text = "todo-tree: Scanning interrupted.";
         } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filterClear', clearFilter ) );

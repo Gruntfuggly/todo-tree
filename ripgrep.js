@@ -9,10 +9,10 @@
  */
 
 'use strict';
-const exec = require( 'child_process' ).exec;
+const child_process = require( 'child_process' );
 const fs = require( 'fs' );
-const path = require( 'path' );
-const vscode = require( 'vscode' );
+
+var currentProcess;
 
 function RipgrepError( error, stderr )
 {
@@ -43,7 +43,7 @@ function formatResults( stdout )
  * @param {Array<string>} option.globs a set of globs to include/exclude. See `-g` option
  * @param {string} [searchTerm]
  */
-module.exports = function ripGrep( cwd, options, searchTerm )
+module.exports.search = function ripGrep( cwd, options, searchTerm )
 {
     // If you're invoking the function with two arguments, just the `cwd` and `searchTerm`
     if( arguments.length === 2 && typeof options === 'string' )
@@ -118,7 +118,7 @@ module.exports = function ripGrep( cwd, options, searchTerm )
 
     return new Promise( function( resolve, reject )
     {
-        exec( execString, { cwd }, ( error, stdout, stderr ) =>
+        currentProcess = child_process.exec( execString, { cwd }, ( error, stdout, stderr ) =>
         {
             if( !error || ( error && stderr === '' ) )
             {
@@ -128,9 +128,17 @@ module.exports = function ripGrep( cwd, options, searchTerm )
             {
                 reject( new RipgrepError( error, stderr ) );
             }
+            currentProcess = undefined;
         } );
+    } );
+};
+
+module.exports.kill = function()
+{
+    if( currentProcess !== undefined )
+    {
+        currentProcess.kill( 'SIGINT' );
     }
-    );
 };
 
 class Match
