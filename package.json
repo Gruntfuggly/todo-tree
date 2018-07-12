@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.68",
+    "version": "0.0.69",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -245,6 +245,11 @@
                     "default": {},
                     "description": "Set the icon colour based on the tag. Colours can be defined as hex codes, or from the `iconColour` list, e.g.  { \"BUG\":\"red\", \"FIXME\":\"#A188FF\" } "
                 },
+                "todo-tree.icons": {
+                    "type": "object",
+                    "default": {},
+                    "description": "Use alternate icons from the octicons set for specified tags, e.g.  { \"TODO\":\"flame\", \"FIXME\":\"bug\" }"
+                },
                 "todo-tree.debug": {
                     "type": "boolean",
                     "default": false,
@@ -295,6 +300,7 @@
     },
     "dependencies": {
         "comment-patterns": "^0.9.0",
-        "minimatch": "^3.0.4"
+        "minimatch": "^3.0.4",
+        "octicons": "^7.4.0"
     }
 }

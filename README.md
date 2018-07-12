@@ -32,6 +32,7 @@ The extension can be customised as follows:
 | todo&#8209;tree.ripgrepArgs | <tt>""</tt> | Use this to pass additional arguments to ripgrep. e.g. <tt>"-i"</tt> to make the search case insensitive. *Use with caution!* |
 | todo&#8209;tree.expanded | <tt>false</tt> | If you want the tree to be opened with all nodes expanded, set this to true. By default, the tree will be collapsed. |
 | todo&#8209;tree.flat | <tt>false</tt> | Set to true to show the tree as a flat list of files (with folder names in brackets). |
+| todo&#8209;tree.icons | <tt>{}</tt> | Use alternative icons from the octicon set for specific tags, e.g. <tt>{"TODO":"pin", "FIXME":"issue-opened"}</tt> |
 | todo&#8209;tree.iconColour | <tt>"green"</tt> | Use this to change the colour of the icon for TODOs in the tree. Can be hex (e.g. "#FF80FF" ) or one of <tt>"red"</tt>, <tt>"green"</tt>, <tt>"blue"</tt>, <tt>"yellow"</tt>, <tt>"magenta"</tt>, <tt>"cyan"</tt> or <tt>"grey"</tt>. |
 | todo&#8209;tree.iconColours | <tt>{}</tt> | Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javascript regex. e.g. <tt>{"TODO": "#FF80FF","^BUG": "red"}</tt>. *Note: The colours are applied **after** the search results, so don't forget to modify todo-tree.tags if you want to add new tags!* |
 | todo&#8209;tree.showInExplorer | <tt>true</tt> | The tree is now also available in the activity bar. If you no longer want to see it in the explorer view, set this to false. |

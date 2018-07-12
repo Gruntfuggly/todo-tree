@@ -6,6 +6,7 @@ var vscode = require( 'vscode' );
 var path = require( "path" );
 var fs = require( 'fs' );
 var commentPatterns = require( 'comment-patterns' );
+var octicons = require( 'octicons' );
 
 var elements = [];
 
@@ -91,7 +92,6 @@ class TodoDataProvider
 
         var colourMappings = vscode.workspace.getConfiguration( 'todo-tree' ).iconColours;
 
-
         var colour = colourMappings[ text ] || "";
 
         if( colour === "" )
@@ -113,9 +113,37 @@ class TodoDataProvider
         var darkIconPath;
         var lightIconPath;
 
-        if( isHexColour( colour.substr( 1 ) ) )
+        var colourName = isHexColour( colour.substr( 1 ) ) ? colour.substr( 1 ) : colour;
+
+        var icons = vscode.workspace.getConfiguration( 'todo-tree' ).icons;
+        if( icons[ text ] )
         {
-            var iconPath = path.join( this._context.storagePath, "todo-" + colour.substr( 1 ) + ".svg" );
+            var iconName = icons[ text ];
+            if( !octicons[ iconName ] )
+            {
+                iconName = "check";
+            }
+
+            var iconPath = path.join( this._context.storagePath, "todo-" + iconName + "-" + colourName + ".svg" );
+            if( !fs.existsSync( iconPath ) )
+            {
+                if( !fs.existsSync( this._context.storagePath ) )
+                {
+                    fs.mkdirSync( this._context.storagePath );
+                }
+
+                var content = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n" +
+                    octicons[ iconName ].toSVG( { "xmlns": "http://www.w3.org/2000/svg", "fill": colour } );
+
+                fs.writeFileSync( iconPath, content );
+            }
+
+            darkIconPath = iconPath;
+            lightIconPath = iconPath;
+        }
+        else if( isHexColour( colour.substr( 1 ) ) )
+        {
+            var iconPath = path.join( this._context.storagePath, "todo-" + colourName + ".svg" );
             if( !fs.existsSync( iconPath ) )
             {
                 if( !fs.existsSync( this._context.storagePath ) )
