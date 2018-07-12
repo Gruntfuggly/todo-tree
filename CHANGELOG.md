@@ -1,3 +1,6 @@
+# v0.0.68 - 2018-07-12
+- Fix trailing slash in rootFolder (Windows)
+
 # v0.0.67 - 2018-07-12
 - Add support for interrupt/restart of scan
 

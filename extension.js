@@ -217,7 +217,7 @@ function activate( context )
             rootFolder = defaultRootFolder;
         }
 
-        return rootFolder;
+        return path.resolve( rootFolder );
     }
 
     function addToTree( rootFolder )
