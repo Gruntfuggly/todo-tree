@@ -1,3 +1,6 @@
+# v0.0.67 - 2018-07-12
+- Add support for interrupt/restart of scan
+
 # v0.0.66 - 2018-07-06
 - Allow delay before highlighting to be configured
 

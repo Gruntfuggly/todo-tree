@@ -3,7 +3,6 @@
 var vscode = require( 'vscode' );
 var ripgrep = require( './ripgrep' );
 var TreeView = require( "./dataProvider" );
-var childProcess = require( 'child_process' );
 var fs = require( 'fs' );
 var path = require( 'path' );
 var minimatch = require( 'minimatch' );
@@ -14,9 +13,9 @@ var dataSet = [];
 var searchList = [];
 var currentFilter;
 var highlightTimer;
-var decorationType;
 var textColours = {};
 var decorations = [];
+var interrupted = false;
 
 var defaultColours = [ "red", "green", "blue", "yellow", "magenta", "cyan", "grey" ];
 
@@ -45,6 +44,14 @@ function activate( context )
     var provider = new TreeView.TodoDataProvider( context, defaultRootFolder );
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
     var outputChannel = vscode.workspace.getConfiguration( 'todo-tree' ).debug ? vscode.window.createOutputChannel( "todo-tree" ) : undefined;
+
+    function debug( text )
+    {
+        if( outputChannel )
+        {
+            outputChannel.appendLine( text );
+        }
+    }
 
     function isHexColour( colour )
     {
@@ -215,10 +222,7 @@ function activate( context )
 
     function addToTree( rootFolder )
     {
-        if( outputChannel )
-        {
-            outputChannel.appendLine( "Found " + dataSet.length + " items..." );
-        }
+        debug( "Found " + dataSet.length + " items" );
 
         var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
         var tagRegex = regex.indexOf( "$TAGS" ) > -1 ? new RegExp( "(" + vscode.workspace.getConfiguration( 'todo-tree' ).tags.join( "|" ) + ")" ) : undefined;
@@ -231,7 +235,12 @@ function activate( context )
         {
             provider.add( rootFolder, match, tagRegex );
         } );
-        status.hide();
+
+        if( interrupted === false )
+        {
+            status.hide();
+        }
+
         provider.filter( currentFilter );
         provider.refresh( true );
     }
@@ -244,10 +253,7 @@ function activate( context )
             {
                 matches.forEach( match =>
                 {
-                    if( outputChannel )
-                    {
-                        outputChannel.appendLine( " Match: " + JSON.stringify( match ) );
-                    }
+                    debug( " Match: " + JSON.stringify( match ) );
                     dataSet.push( match );
                 } );
             }
@@ -350,10 +356,7 @@ function activate( context )
         {
             var entry = searchList.pop();
 
-            if( outputChannel )
-            {
-                outputChannel.appendLine( "Search: " + JSON.stringify( entry ) );
-            }
+            debug( "Search: " + JSON.stringify( entry ) );
 
             if( entry.file )
             {
@@ -376,9 +379,12 @@ function activate( context )
         provider.clear();
         clearFilter();
 
+        interrupted = false;
+
         status.text = "todo-tree: Scanning " + getRootFolder() + "...";
         status.show();
         status.command = "todo-tree.stopScan";
+        status.tooltip = "Click to interrupt scan";
 
         searchOutOfWorkspaceDocuments( searchList );
         searchWorkspace( searchList );
@@ -519,6 +525,9 @@ function activate( context )
         {
             ripgrep.kill();
             status.text = "todo-tree: Scanning interrupted.";
+            status.tooltip = "Click to restart";
+            status.command = "todo-tree.refresh";
+            interrupted = true;
         } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filterClear', clearFilter ) );
@@ -536,10 +545,7 @@ function activate( context )
             {
                 if( e && e.document )
                 {
-                    if( outputChannel )
-                    {
-                        outputChannel.appendLine( "onDidChangeActiveTextEditor (uri:" + JSON.stringify( e.document.uri ) + ")" );
-                    }
+                    debug( "onDidChangeActiveTextEditor (uri:" + JSON.stringify( e.document.uri ) + ")" );
 
                     var workspace = vscode.workspace.getWorkspaceFolder( e.document.uri );
                     var configuredWorkspace = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
