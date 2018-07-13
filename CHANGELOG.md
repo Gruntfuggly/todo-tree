@@ -1,3 +1,6 @@
+# v0.0.71 - 2018-07-13
+- Inhibit failure messages when there is nothing found
+
 # v0.0.70 - 2018-07-13
 - Allow configuration of buffer size to cope with large amounts of TODOs (thanks to [somewhatabstract](https://github.com/somewhatabstract))
 

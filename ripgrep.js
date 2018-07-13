@@ -121,25 +121,27 @@ module.exports.search = function ripGrep( cwd, options, searchTerm )
         // The default for omitting maxBuffer, according to Node docs, is 200kB.
         // We'll explicitly give that here if a custom value is not provided.
         // Note that our options value is in KB, so we have to convert to bytes.
-        const maxBuffer = (options.maxBuffer || 200) * 1024;
+        const maxBuffer = ( options.maxBuffer || 200 ) * 1024;
         currentProcess = child_process.exec( execString, { cwd, maxBuffer }, ( error, stdout, stderr ) =>
         {
-            if ( options.outputChannel )
+            if( options.outputChannel )
             {
                 // If we get an error, we may not have anything in stderr,
                 // but we should still get told about it.
-                if ( error ) {
+                if( error && error.code != 1 )
+                {
                     options.outputChannel.appendLine( "Error: " + error.message );
                 }
 
-                if ( stderr !== '' ) {
+                if( stderr !== '' )
+                {
                     options.outputChannel.appendLine( "STDERR: " + stderr );
                 }
             }
 
             // If we have any error output, either thrown or written to stderr
             // let's reject the promise accordingly without any results.
-            if ( error || stderr !== "" )
+            if( ( error && error.code != 1 ) || stderr !== "" )
             {
                 reject( new RipgrepError( error, stderr ) );
             }
