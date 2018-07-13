@@ -1,3 +1,9 @@
+# v0.0.70 - 2018-07-13
+- Allow configuration of buffer size to cope with large amounts of TODOs (thanks to [somewhatabstract](https://github.com/somewhatabstract))
+
+# v0.0.69 - 2018-07-12
+- Support custom icons from the octicon set
+
 # v0.0.68 - 2018-07-12
 - Fix trailing slash in rootFolder (Windows)
 
