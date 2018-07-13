@@ -311,7 +311,8 @@ function activate( context )
         }
 
         options.outputChannel = outputChannel;
-        options.additional = vscode.workspace.getConfiguration( 'todo-tree' ).ripgrepArgs;
+        options.additional = config.ripgrepArgs;
+        options.maxBuffer = config.ripgrepMaxBuffer;
 
         return options;
     }
@@ -603,6 +604,7 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.regex" ) ||
                     e.affectsConfiguration( "todo-tree.ripgrep" ) ||
                     e.affectsConfiguration( "todo-tree.ripgrepArgs" ) ||
+                    e.affectsConfiguration( "todo-tree.ripgrepMaxBuffer" ) ||
                     e.affectsConfiguration( "todo-tree.rootFolder" ) ||
                     e.affectsConfiguration( "todo-tree.showTagsFromOpenFilesOnly" ) ||
                     e.affectsConfiguration( "todo-tree.tags" ) )

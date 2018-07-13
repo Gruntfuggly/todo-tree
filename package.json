@@ -289,6 +289,11 @@
                     "type": "boolean",
                     "description": "Disable scanning of the workspace for TODOs",
                     "default": false
+                },
+                "todo-tree.ripgrepMaxBuffer": {
+                    "type": "integer",
+                    "description": "Size of the buffer to use for retrieving output from ripgrep (kilobytes)",
+                    "default": 200
                 }
             }
         }
