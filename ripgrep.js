@@ -113,20 +113,39 @@ module.exports.search = function ripGrep( cwd, options, searchTerm )
 
     if( options.outputChannel )
     {
-        options.outputChannel.appendLine( "Command:" + execString );
+        options.outputChannel.appendLine( "Command: " + execString );
     }
 
     return new Promise( function( resolve, reject )
     {
-        currentProcess = child_process.exec( execString, { cwd }, ( error, stdout, stderr ) =>
+        // The default for omitting maxBuffer, according to Node docs, is 200kB.
+        // We'll explicitly give that here if a custom value is not provided.
+        // Note that our options value is in KB, so we have to convert to bytes.
+        const maxBuffer = (options.maxBuffer || 200) * 1024;
+        currentProcess = child_process.exec( execString, { cwd, maxBuffer }, ( error, stdout, stderr ) =>
         {
-            if( !error || ( error && stderr === '' ) )
+            if ( options.outputChannel )
             {
-                resolve( formatResults( stdout ) );
+                // If we get an error, we may not have anything in stderr,
+                // but we should still get told about it.
+                if ( error ) {
+                    options.outputChannel.appendLine( "Error: " + error.message );
+                }
+
+                if ( stderr !== '' ) {
+                    options.outputChannel.appendLine( "STDERR: " + stderr );
+                }
+            }
+
+            // If we have any error output, either thrown or written to stderr
+            // let's reject the promise accordingly without any results.
+            if ( error || stderr !== "" )
+            {
+                reject( new RipgrepError( error, stderr ) );
             }
             else
             {
-                reject( new RipgrepError( error, stderr ) );
+                resolve( formatResults( stdout ) );
             }
             currentProcess = undefined;
         } );

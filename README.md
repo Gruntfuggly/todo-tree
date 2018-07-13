@@ -30,6 +30,7 @@ The extension can be customised as follows:
 | todo&#8209;tree.globs | <tt>[]</tt> | If you want to modify the files which are searched, you can define a list of <a href="https://www.npmjs.com/package/glob">globs</a>.|
 | todo&#8209;tree.ripgrep | <tt>""</tt> | Normally, the extension will locate ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed. |
 | todo&#8209;tree.ripgrepArgs | <tt>""</tt> | Use this to pass additional arguments to ripgrep. e.g. <tt>"-i"</tt> to make the search case insensitive. *Use with caution!* |
+| todo&#8209;tree.ripgrepMaxBuffer | <tt>200</tt> | By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly. |
 | todo&#8209;tree.expanded | <tt>false</tt> | If you want the tree to be opened with all nodes expanded, set this to true. By default, the tree will be collapsed. |
 | todo&#8209;tree.flat | <tt>false</tt> | Set to true to show the tree as a flat list of files (with folder names in brackets). |
 | todo&#8209;tree.icons | <tt>{}</tt> | Use alternative icons from the octicon set for specific tags, e.g. <tt>{"TODO":"pin", "FIXME":"issue-opened"}</tt> |
