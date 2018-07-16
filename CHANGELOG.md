@@ -1,3 +1,6 @@
+# v0.0.72 - 2018-07-16
+- Treat process as a stream to avoid buffer size problems
+
 # v0.0.71 - 2018-07-13
 - Inhibit failure messages when there is nothing found
 
