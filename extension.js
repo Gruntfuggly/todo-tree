@@ -12,9 +12,8 @@ var lastRootFolder = defaultRootFolder;
 var dataSet = [];
 var searchList = [];
 var currentFilter;
-var highlightTimer;
+var highlightTimer = {};
 var textColours = {};
-var decorations = [];
 var interrupted = false;
 
 var defaultColours = [ "red", "green", "blue", "yellow", "magenta", "cyan", "grey" ];
@@ -41,6 +40,7 @@ var defaultDarkColours = {
 
 function activate( context )
 {
+    var decorations = {};
     var provider = new TreeView.TodoDataProvider( context, defaultRootFolder );
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
     var outputChannel = vscode.workspace.getConfiguration( 'todo-tree' ).debug ? vscode.window.createOutputChannel( "todo-tree" ) : undefined;
@@ -624,10 +624,9 @@ function activate( context )
             }
         } ) );
 
-        function highlight()
+        function highlight( editor )
         {
             var highlights = {};
-            var editor = vscode.window.activeTextEditor;
 
             if( editor )
             {
@@ -649,31 +648,55 @@ function activate( context )
                         highlights[ tag ].push( decoration );
                     }
                 }
-                decorations.forEach( decoration =>
+                if( decorations[ editor.id ] )
                 {
-                    decoration.dispose();
-                } );
+                    decorations[ editor.id ].forEach( decoration =>
+                    {
+                        decoration.dispose();
+                    } );
+                }
+                decorations[ editor.id ] = [];
                 Object.keys( highlights ).forEach( tag =>
                 {
                     var decoration = getDecoration( tag );
-                    decorations.push( decoration );
+                    decorations[ editor.id ].push( decoration );
                     editor.setDecorations( decoration, highlights[ tag ] );
                 } );
             }
         }
 
-        function triggerHighlight()
+        function triggerHighlight( editor )
         {
-            clearTimeout( highlightTimer );
-            highlightTimer = setTimeout( highlight, vscode.workspace.getConfiguration( 'todo-tree' ).highlightDelay );
+            if( editor )
+            {
+                if( highlightTimer[ editor.id ] )
+                {
+                    clearTimeout( highlightTimer[ editor.id ] );
+                }
+                highlightTimer[ editor.id ] = setTimeout( highlight, vscode.workspace.getConfiguration( 'todo-tree' ).highlightDelay, editor );
+            }
+        }
+
+        function documentChanged( document )
+        {
+            var visibleEditors = vscode.window.visibleTextEditors;
+
+            visibleEditors.map( editor =>
+            {
+                if( document === editor.document )
+                {
+                    triggerHighlight( editor );
+                }
+            } );
         }
 
         context.subscriptions.push( vscode.workspace.onDidChangeTextDocument( function( e )
         {
-            triggerHighlight();
+            documentChanged( e.document );
         } ) );
 
         context.subscriptions.push( outputChannel );
+        context.subscriptions.push( decorations );
 
         var flat = vscode.workspace.getConfiguration( 'todo-tree' ).flat;
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', flat );
@@ -683,7 +706,11 @@ function activate( context )
         refreshTextColours();
         setButtons();
         rebuild();
-        triggerHighlight();
+
+        if( vscode.window.activeTextEditor )
+        {
+            documentChanged( vscode.window.activeTextEditor.document );
+        }
     }
 
     register();
