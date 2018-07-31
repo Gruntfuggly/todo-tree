@@ -542,9 +542,9 @@ function activate( context )
 
         vscode.window.onDidChangeActiveTextEditor( function( e )
         {
-            if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
+            if( e && e.document )
             {
-                if( e && e.document )
+                if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
                 {
                     debug( "onDidChangeActiveTextEditor (uri:" + JSON.stringify( e.document.uri ) + ")" );
 
@@ -563,9 +563,8 @@ function activate( context )
                         rebuild();
                     }
                 }
+                documentChanged( e.document );
             }
-
-            triggerHighlight();
         } );
 
         context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( e =>
@@ -578,6 +577,7 @@ function activate( context )
                 }
             }
         } ) );
+
         context.subscriptions.push( vscode.workspace.onDidCloseTextDocument( e =>
         {
             if( e.uri.scheme === "file" && e.isClosed !== true )
@@ -616,7 +616,7 @@ function activate( context )
                     provider.clear();
                     provider.rebuild();
                     addToTree( getRootFolder() );
-                    triggerHighlight();
+                    documentChanged();
                 }
 
                 vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
@@ -683,7 +683,7 @@ function activate( context )
 
             visibleEditors.map( editor =>
             {
-                if( document === editor.document )
+                if( document === undefined || document === editor.document )
                 {
                     triggerHighlight( editor );
                 }

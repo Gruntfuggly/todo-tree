@@ -1,3 +1,6 @@
+# v0.0.74 - 2018-07-31
+- Fix showing highlights properly
+
 # v0.0.73 - 2018-07-30
 - Show highlights in all editors (not just the active editor) (fixes [#61](https://github.com/Gruntfuggly/todo-tree/issues/61))
 
