@@ -1,3 +1,8 @@
+# v0.0.75 - 2018-07-31
+- Add commands for adding and removing tags
+- Add note to README.md about reloading the window after installation
+- Add note to README.md about excluding files and folders
+
 # v0.0.74 - 2018-07-31
 - Fix showing highlights properly
 

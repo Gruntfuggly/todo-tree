@@ -20,6 +20,16 @@ Alternatively, open Visual Studio code, press `Ctrl+P` or `Cmd+P` and type:
 
 The source code is available on GitHub [here](https://github.com/Gruntfuggly/todo-tree).
 
+## Commands
+
+To make it easier to configure the tags, there are two commands available:
+
+**todo-tree: Add Tag** - allows entry of a new tag for searching
+
+**todo-tree: Remove Tag** - shows a list of current tags which can be selected for removing
+
+*Note: The Remove Tag command can be used to show current tags - just press Escape or Enter with out selecting any to close it.*
+
 ## Configuration
 
 The extension can be customised as follows:
@@ -44,7 +54,7 @@ The extension can be customised as follows:
 | todo-tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
 
 
-### Excluding folders
+### Excluding files and folders
 
 To exclude folders from your search, use the `todo-tree.globs` setting. For example, if you want to ignore everything in subfolders called `dist`, set it to `[ "!dist" ]`.
 
