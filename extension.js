@@ -474,6 +474,35 @@ function activate( context )
         provider.refresh();
     }
 
+    function addTag()
+    {
+        vscode.window.showInputBox( { prompt: "New tag", placeHolder: "e.g. FIXME" } ).then( function( tag )
+        {
+            if( tag )
+            {
+                var tags = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'tags' );
+                if( tags.indexOf( tag ) === -1 )
+                {
+                    tags.push( tag );
+                    vscode.workspace.getConfiguration( 'todo-tree' ).update( 'tags', tags, true );
+                }
+            }
+        } );
+    }
+
+    function removeTag()
+    {
+        var tags = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'tags' );
+        vscode.window.showQuickPick( tags, { matchOnDetail: true, matchOnDescription: true, canPickMany: true, placeHolder: "Select tags to remove" } ).then( function( tagsToRemove )
+        {
+            tagsToRemove.map( tag =>
+            {
+                tags = tags.filter( t => tag != t );
+            } );
+            vscode.workspace.getConfiguration( 'todo-tree' ).update( 'tags', tags, true );
+        } );
+    }
+
     function register()
     {
         // We can't do anything if we can't find ripgrep
@@ -539,6 +568,8 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.collapse', collapse ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.groupByTag', groupByTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.ungroupByTag', ungroupByTag ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.addTag', addTag ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeTag', removeTag ) );
 
         vscode.window.onDidChangeActiveTextEditor( function( e )
         {
@@ -610,6 +641,7 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.tags" ) )
                 {
                     rebuild();
+                    documentChanged();
                 }
                 else
                 {

@@ -177,6 +177,16 @@
                     "dark": "resources/icons/dark/notag.svg",
                     "light": "resources/icons/light/notag.svg"
                 }
+            },
+            {
+                "command": "todo-tree.addTag",
+                "title": "Add Tag",
+                "category": "todo-tree"
+            },
+            {
+                "command": "todo-tree.removeTag",
+                "title": "Remove Tag",
+                "category": "todo-tree"
             }
         ],
         "configuration": {
