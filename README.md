@@ -2,6 +2,8 @@
 
 This extension quickly searches (using <a href="https://github.com/BurntSushi/ripgrep">ripgrep</a>) your workspace for comment tags like TODO and FIXME, and displays them in a tree view in the explorer pane. Clicking a TODO within the tree will open the file and put the cursor on the line containing the TODO.
 
+Found TODOs can also be highlighted in open files.
+
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/screenshot.png">
 
 *Note: The tree will only appear when it finds some TODOs.*
@@ -19,6 +21,20 @@ Alternatively, open Visual Studio code, press `Ctrl+P` or `Cmd+P` and type:
 ### Source Code
 
 The source code is available on GitHub [here](https://github.com/Gruntfuggly/todo-tree).
+
+## Controls
+
+The tree view header contains the following buttons:
+
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/flat.png" height="16px" align="center"> - Show the tree view as a flat list, with the full filename for each TODO<br>
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/tree.png" height="16px" align="center"> - Show the tree view as a tree with expandable nodes for each folder (default)<br>
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/tag.png" height="16px" align="center"> - Group the TODOs in the tree by the tag<br>
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/notag.png" height="16px" align="center"> - Organise the TODOs by file (default)<br>
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/filter.png" height="16px" align="center"> - Only show items in the tree which match the entered filter text<br>
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/clear-filter.png" height="16px" align="center"> - Remove any active filter<br>
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/collapse.png" height="16px" align="center"> - Collapse all tree nodes<br>
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/expand.png" height="16px" align="center"> - Expand all tree nodes<br>
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/refresh.png" height="16px" align="center"> - Rebuild the tree
 
 ## Commands
 
@@ -49,7 +65,7 @@ The extension can be customised as follows:
 | todo-tree.iconColour | <tt>"green"</tt> | Use this to change the colour of the icon for TODOs in the tree. Can be hex (e.g. "#FF80FF" ) or one of <tt>"red"</tt>, <tt>"green"</tt>, <tt>"blue"</tt>, <tt>"yellow"</tt>, <tt>"magenta"</tt>, <tt>"cyan"</tt> or <tt>"grey"</tt>. |
 | todo-tree.iconColours | <tt>{}</tt> | Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javascript regex. e.g. <tt>{"TODO": "#FF80FF","^BUG": "red"}</tt>. *Note: The colours are applied **after** the search results, so don't forget to modify todo-tree.tags if you want to add new tags!* |
 | todo-tree.showInExplorer | <tt>true</tt> | The tree is now also available in the activity bar. If you no longer want to see it in the explorer view, set this to false. |
-| todo-tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. |
+| todo-tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. *Note: this does not the apply to the search*. |
 | todo-tree.highlight | <tt>false</tt> | Set this to true to highlight tags in files. |
 | todo-tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
 
@@ -60,7 +76,7 @@ To exclude folders from your search, use the `todo-tree.globs` setting. For exam
 
 For more information on glob patterns, see [here](https://github.com/isaacs/minimatch).
 
-*Note: By default, ripgrep ignores files and folders from your `.gitignore` or `.ignore` files. If you want to include these files, set* `todo-tree.ripgrepArgs` *to* `--no-ignore`. 
+*Note: By default, ripgrep ignores files and folders from your `.gitignore` or `.ignore` files. If you want to include these files, set* `todo-tree.ripgrepArgs` *to* `--no-ignore`.
 
 ## Known Issues
 

@@ -1,3 +1,6 @@
+# v0.0.76 - 2018-07-31
+- Add information about header buttons to README.md
+
 # v0.0.75 - 2018-07-31
 - Add commands for adding and removing tags
 - Add note to README.md about reloading the window after installation
