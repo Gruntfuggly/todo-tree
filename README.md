@@ -6,7 +6,7 @@ Found TODOs can also be highlighted in open files.
 
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/screenshot.png">
 
-*Note: The tree will only appear when it finds some TODOs.*
+*Note: The tree will only appear in the explorer pane when the extension finds some TODOs.*
 
 ## Installing
 
