@@ -14,6 +14,8 @@ Alternatively, open Visual Studio code, press `Ctrl+P` or `Cmd+P` and type:
 
     > ext install todo-tree
 
+*Note: Don't forget to reload the window to activate the extension!*
+
 ### Source Code
 
 The source code is available on GitHub [here](https://github.com/Gruntfuggly/todo-tree).
@@ -40,6 +42,15 @@ The extension can be customised as follows:
 | todo-tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. |
 | todo-tree.highlight | <tt>false</tt> | Set this to true to highlight tags in files. |
 | todo-tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
+
+
+### Excluding folders
+
+To exclude folders from your search, use the `todo-tree.globs` setting. For example, if you want to ignore everything in subfolders called `dist`, set it to `[ "!dist" ]`.
+
+For more information on glob patterns, see [here](https://github.com/isaacs/minimatch).
+
+*Note: By default, ripgrep ignores files and folders from your `.gitignore` or `.ignore` files. If you want to include these files, set* `todo-tree.ripgrepArgs` *to* `--no-ignore`. 
 
 ## Known Issues
 
