@@ -68,7 +68,7 @@ The extension can be customised as follows:
 | todo-tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. *Note: this does not the apply to the search*. |
 | todo-tree.highlight | <tt>false</tt> | Set this to true to highlight tags in files. |
 | todo-tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
-
+| todo-tree.trackFile | <tt>true</tt> | Set to false if you want to prevent tracking the open file in the tree view. |
 
 ### Excluding files and folders
 

@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.76",
+    "version": "0.0.77",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -35,14 +35,14 @@
         "views": {
             "explorer": [
                 {
-                    "id": "todo-tree-explorer",
+                    "id": "todo-tree-view-explorer",
                     "name": "TODOs",
                     "when": "todo-tree-has-content && todo-tree-in-explorer"
                 }
             ],
             "todo-tree-container": [
                 {
-                    "id": "todo-tree",
+                    "id": "todo-tree-view",
                     "name": "TODOs"
                 }
             ]
@@ -304,6 +304,11 @@
                     "type": "integer",
                     "description": "Size of the buffer to use for retrieving output from ripgrep (kilobytes)",
                     "default": 200
+                },
+                "todo-tree.trackFile": {
+                    "type": "boolean",
+                    "description": "If enabled, the current file is tracked in the tree view",
+                    "default": true
                 }
             }
         }

@@ -1,3 +1,6 @@
+# v0.0.77 - 2018-08-03
+- Track open file in the tree views
+
 # v0.0.76 - 2018-07-31
 - Add information about header buttons to README.md
 

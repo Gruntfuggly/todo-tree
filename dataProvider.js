@@ -185,6 +185,11 @@ class TodoDataProvider
         return icon;
     }
 
+    getParent( element )
+    {
+        return element.parent;
+    }
+
     getTreeItem( element )
     {
         let treeItem = new vscode.TreeItem( element.name + ( element.pathLabel ? element.pathLabel : "" ) );
@@ -420,6 +425,7 @@ class TodoDataProvider
 
         if( !pathElement.todos.find( element => { return element.name === todoElement.name && element.line === todoElement.line; } ) )
         {
+            todoElement.parent = pathElement;
             pathElement.todos.push( todoElement );
         }
     }
@@ -488,6 +494,67 @@ class TodoDataProvider
                 this.clearFilter( child.todos );
             }
         } );
+    }
+
+    getElement( rootFolder, filename )
+    {
+        var element;
+
+        var fullPath = path.resolve( rootFolder, filename );
+        var relativePath = path.relative( rootFolder, fullPath );
+        var parts = relativePath.split( path.sep );
+
+        var flat =
+            relativePath.startsWith( ".." ) ||
+            rootFolder === this.defaultRootFolder ||
+            vscode.workspace.getConfiguration( 'todo-tree' ).flat;
+
+        if( flat )
+        {
+            var findExactPath = function( e )
+            {
+                return e.type === PATH && e.file === this;
+            };
+
+            var parent;
+            if( vscode.workspace.getConfiguration( 'todo-tree' ).grouped && todoElement.tag )
+            {
+                parent = getRootTagElement( todoElement.tag ).elements;
+            }
+            else
+            {
+                parent = elements;
+            }
+
+            element = parent.find( findExactPath, fullPath );
+        }
+        else
+        {
+            var findSubPath = function( e )
+            {
+                return e.pathLabel === undefined && e.type === PATH && e.name === this;
+            };
+
+            var parent;
+            if( !vscode.workspace.getConfiguration( 'todo-tree' ).grouped )
+            {
+                parent = elements;
+                parts.map( function( p )
+                {
+                    var child = parent.find( findSubPath, p );
+                    if( child )
+                    {
+                        element = child;
+                    }
+                    if( element )
+                    {
+                        parent = element.elements;
+                    }
+                } );
+            }
+        }
+
+        return element && element.file === filename ? element : undefined;
     }
 }
 exports.TodoDataProvider = TodoDataProvider;

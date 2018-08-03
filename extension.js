@@ -45,6 +45,9 @@ function activate( context )
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
     var outputChannel = vscode.workspace.getConfiguration( 'todo-tree' ).debug ? vscode.window.createOutputChannel( "todo-tree" ) : undefined;
 
+    var todoTreeViewExplorer = vscode.window.createTreeView( "todo-tree-view-explorer", { treeDataProvider: provider } );
+    var todoTreeView = vscode.window.createTreeView( "todo-tree-view", { treeDataProvider: provider } );
+
     function debug( text )
     {
         if( outputChannel )
@@ -513,14 +516,7 @@ function activate( context )
         }
         var version = vscode.version.split( "." );
 
-        if( version[ 1 ] > 22 )
-        {
-            vscode.window.registerTreeDataProvider( 'todo-tree', provider );
-        }
-
         vscode.commands.executeCommand( 'setContext', 'todo-tree-is-filtered', false );
-
-        vscode.window.registerTreeDataProvider( 'todo-tree-explorer', provider );
 
         vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
         {
@@ -594,6 +590,9 @@ function activate( context )
                         rebuild();
                     }
                 }
+
+                showInTree( e.document.fileName );
+
                 documentChanged( e.document );
             }
         } );
@@ -655,6 +654,25 @@ function activate( context )
                 setButtons();
             }
         } ) );
+
+        function showInTree( filename )
+        {
+            if( vscode.workspace.getConfiguration( 'todo-tree' ).trackFile === true )
+            {
+                var element = provider.getElement( getRootFolder(), filename );
+                if( element )
+                {
+                    if( todoTreeViewExplorer.visible === true )
+                    {
+                        todoTreeViewExplorer.reveal( element, { focus: false, select: true } );
+                    }
+                    if( todoTreeView.visible === true )
+                    {
+                        todoTreeView.reveal( element, { focus: false, select: true } );
+                    }
+                }
+            }
+        }
 
         function highlight( editor )
         {
