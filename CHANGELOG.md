@@ -1,3 +1,6 @@
+# v0.0.78 - 2018-08-06
+- Prevent tracking file when grouping enabled
+
 # v0.0.77 - 2018-08-03
 - Track open file in the tree views
 

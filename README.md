@@ -84,6 +84,8 @@ Grouping by tag will only work when your configuration defines the tags using th
 
 Grouping by tag doesn't work for markdown task list items as there is no tag to group with. The tree will show the files alongside the tag groups.
 
+Tracking the file in the tree view does not work when grouping by tag (as there can be multiple entries for each file).
+
 ### Credits
 
 Uses a modified version of <a href="https://www.npmjs.com/package/ripgrep-js">ripgrep-js</a>.

@@ -509,35 +509,26 @@ class TodoDataProvider
             rootFolder === this.defaultRootFolder ||
             vscode.workspace.getConfiguration( 'todo-tree' ).flat;
 
-        if( flat )
+        if( !vscode.workspace.getConfiguration( 'todo-tree' ).grouped )
         {
-            var findExactPath = function( e )
+            if( flat )
             {
-                return e.type === PATH && e.file === this;
-            };
+                var findExactPath = function( e )
+                {
+                    return e.type === PATH && e.file === this;
+                };
 
-            var parent;
-            if( vscode.workspace.getConfiguration( 'todo-tree' ).grouped && todoElement.tag )
-            {
-                parent = getRootTagElement( todoElement.tag ).elements;
+                element = elements.find( findExactPath, fullPath );
             }
             else
             {
-                parent = elements;
-            }
+                var findSubPath = function( e )
+                {
+                    return e.pathLabel === undefined && e.type === PATH && e.name === this;
+                };
 
-            element = parent.find( findExactPath, fullPath );
-        }
-        else
-        {
-            var findSubPath = function( e )
-            {
-                return e.pathLabel === undefined && e.type === PATH && e.name === this;
-            };
+                var parent;
 
-            var parent;
-            if( !vscode.workspace.getConfiguration( 'todo-tree' ).grouped )
-            {
                 parent = elements;
                 parts.map( function( p )
                 {
