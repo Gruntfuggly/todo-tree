@@ -15,6 +15,7 @@ var currentFilter;
 var highlightTimer = {};
 var textColours = {};
 var interrupted = false;
+var selectedDocument;
 
 var defaultColours = [ "red", "green", "blue", "yellow", "magenta", "cyan", "grey" ];
 
@@ -529,6 +530,7 @@ function activate( context )
 
         vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
         {
+            selectedDocument = file;
             vscode.workspace.openTextDocument( file ).then( function( document )
             {
                 vscode.window.showTextDocument( document ).then( function( editor )
@@ -600,7 +602,12 @@ function activate( context )
                     }
                 }
 
-                showInTree( e.document.fileName );
+                if( selectedDocument !== e.document.fileName )
+                {
+                    showInTree( e.document.fileName );
+                }
+
+                selectedDocument = undefined;
 
                 documentChanged( e.document );
             }
