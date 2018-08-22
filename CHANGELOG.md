@@ -1,3 +1,6 @@
+# v0.0.79 - 2018-08-22
+- Add support for highlight tag only, tag and text, or entire line
+
 # v0.0.78 - 2018-08-06
 - Prevent tracking file when grouping enabled
 

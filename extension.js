@@ -508,6 +508,15 @@ function activate( context )
 
     function register()
     {
+        if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'highlight' ) === true )
+        {
+            vscode.workspace.getConfiguration( 'todo-tree' ).update( 'highlight', 'tag', true );
+        }
+        else if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'highlight' ) === false )
+        {
+            vscode.workspace.getConfiguration( 'todo-tree' ).update( 'highlight', 'none', true );
+        };
+
         // We can't do anything if we can't find ripgrep
         if( !getRgPath() )
         {
@@ -680,16 +689,28 @@ function activate( context )
 
             if( editor )
             {
-                if( vscode.workspace.getConfiguration( 'todo-tree' ).highlight === true )
+                if( vscode.workspace.getConfiguration( 'todo-tree' ).highlight !== 'none' )
                 {
                     const text = editor.document.getText();
                     var regex = new RegExp( getRegex(), 'g' );
                     let match;
                     while( ( match = regex.exec( text ) ) !== null )
                     {
-                        const tag = match[ match.length - 1 ];
-                        const startPos = editor.document.positionAt( match.index );
-                        const endPos = editor.document.positionAt( match.index + match[ 0 ].length );
+                        var tag = match[ match.length - 1 ];
+                        var startPos = editor.document.positionAt( match.index );
+                        var endPos = editor.document.positionAt( match.index + match[ 0 ].length );
+
+                        if( vscode.workspace.getConfiguration( 'todo-tree' ).highlight === 'text' )
+                        {
+                            endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
+                        }
+
+                        if( vscode.workspace.getConfiguration( 'todo-tree' ).highlight === 'line' )
+                        {
+                            endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
+                            startPos = new vscode.Position( endPos.line, 0 );
+                        }
+
                         const decoration = { range: new vscode.Range( startPos, endPos ) };
                         if( highlights[ tag ] === undefined )
                         {

@@ -286,9 +286,15 @@
                     "default": true
                 },
                 "todo-tree.highlight": {
-                    "type": "boolean",
+                    "type": "string",
+                    "enum": [
+                        "none",
+                        "tag",
+                        "text",
+                        "line"
+                    ],
                     "description": "Enable highlighting of tags within files",
-                    "default": false
+                    "default": "none"
                 },
                 "todo-tree.highlightDelay": {
                     "type": "integer",
