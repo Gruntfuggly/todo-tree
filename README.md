@@ -8,6 +8,48 @@ Found TODOs can also be highlighted in open files.
 
 *Note: The tree will only appear in the explorer pane when the extension finds some TODOs.*
 
+## Highlighting
+
+Highlighting tags is configurable. Use `defaultHighlight` to set up highlights for all tags. If you need to configure individual tags differently, use `customHighlight`. If settings are not specified in `customHighlight`, the value from `defautHighlight` is used. If a setting is not specified in `defaultHighlight` then the older, deprecated `icon`, `iconColour` and `iconColours` settings are used.
+
+Both `defaultHighlight` and `customHighlight` allow for the following setings:
+
+`foreground` - used to set the colour of the icon in the tree view, the foreground colour of the highlight in the editor and the marker in the ruler.
+
+`background` - used to set the background colour of the highlight in the editor.
+
+Foreground and background colours can be one of "red", "green", "blue", "yellow", "magenta", "cyan" or "grey". RGB values can also be used.
+
+`icon` - used to set a different icon in the tree view. Must be a valid octicon - will default to a tick if it's not.
+
+`type` - used to control how much is highlighted in the editor. Valid values are:
+
+ - `tag` - highlights just the tag
+ - `text` - highlights the tag and any text after the tag
+ - `line` - highlights the entire line containing the tag
+
+Example:
+
+```
+"defaultHighlight": {
+    "icon": "alert",
+    "type": "text",
+    "foreground": "red",
+    "background": "white"
+},
+customHighlight: " {
+    "TODO": {
+        "icon": "check",
+        "type": "line"
+    },
+    "FIXME": {
+        "foreground": "black"
+    }
+}
+```
+
+*Note: The highlight configuration is separate from the settings for the search. Adding settings in `customHighlight` does not automatically add the tags into `todo-tree.tags`.*
+
 ## Installing
 
 You can install the latest version of the extension via the Visual Studio Marketplace [here](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree).
@@ -61,14 +103,19 @@ The extension can be customised as follows:
 | todo-tree.ripgrepMaxBuffer | <tt>200</tt> | By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly. |
 | todo-tree.expanded | <tt>false</tt> | If you want the tree to be opened with all nodes expanded, set this to true. By default, the tree will be collapsed. |
 | todo-tree.flat | <tt>false</tt> | Set to true to show the tree as a flat list of files (with folder names in brackets). |
-| todo-tree.icons | <tt>{}</tt> | Use alternative icons from the octicon set for specific tags, e.g. <tt>{"TODO":"pin", "FIXME":"issue-opened"}</tt> |
-| todo-tree.iconColour | <tt>"green"</tt> | Use this to change the colour of the icon for TODOs in the tree. Can be hex (e.g. "#FF80FF" ) or one of <tt>"red"</tt>, <tt>"green"</tt>, <tt>"blue"</tt>, <tt>"yellow"</tt>, <tt>"magenta"</tt>, <tt>"cyan"</tt> or <tt>"grey"</tt>. |
-| todo-tree.iconColours | <tt>{}</tt> | Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javascript regex. e.g. <tt>{"TODO": "#FF80FF","^BUG": "red"}</tt>. *Note: The colours are applied **after** the search results, so don't forget to modify todo-tree.tags if you want to add new tags!* |
+| todo-tree.icons* | <tt>{}</tt> | Use alternative icons from the octicon set for specific tags, e.g. <tt>{"TODO":"pin", "FIXME":"issue-opened"}</tt> |
+| todo-tree.iconColour* | <tt>"green"</tt> | Use this to change the colour of the icon for TODOs in the tree. Can be hex (e.g. "#FF80FF" ) or one of <tt>"red"</tt>, <tt>"green"</tt>, <tt>"blue"</tt>, <tt>"yellow"</tt>, <tt>"magenta"</tt>, <tt>"cyan"</tt> or <tt>"grey"</tt>. |
+| todo-tree.iconColours* | <tt>{}</tt> | Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javascript regex. e.g. <tt>{"TODO": "#FF80FF","^BUG": "red"}</tt>. *Note: The colours are applied **after** the search results, so don't forget to modify todo-tree.tags if you want to add new tags!* |
 | todo-tree.showInExplorer | <tt>true</tt> | The tree is now also available in the activity bar. If you no longer want to see it in the explorer view, set this to false. |
 | todo-tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. *Note: this does not the apply to the search*. |
-| todo-tree.highlight | <tt>false</tt> | Set this to true to highlight tags in files. |
+| todo-tree.highlight* | <tt>false</tt> | Set this to true to highlight tags in files. |
 | todo-tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
 | todo-tree.trackFile | <tt>true</tt> | Set to false if you want to prevent tracking the open file in the tree view. |
+| todo-tree.defaultHighlight | <tt>{}</tt> | Set default highlights. E.g. `{"foreground":"white","background":"red","icon":"check","type":"text"}` |
+| todo-tree.customHighlight | <tt>{}</tt> | Set highlights per tag. E.g. `{"TODO":{"foreground":"white","type":"text"},"FIXME":{"icon":"beaker"}}` |
+
+*deprecated - Please use `todo-tree.defaultHighlight` and `todo-tree.customHighlight` instead.
+
 
 ### Excluding files and folders
 

@@ -1,3 +1,6 @@
+# v0.0.80 - 2018-08-31
+- Extend configurability of highlights
+
 # v0.0.79 - 2018-08-22
 - Add support for highlight tag only, tag and text, or entire line
 - Inhibit tracking document when selecting from tree

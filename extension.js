@@ -6,6 +6,7 @@ var TreeView = require( "./dataProvider" );
 var fs = require( 'fs' );
 var path = require( 'path' );
 var minimatch = require( 'minimatch' );
+var highlights = require( './highlights.js' );
 
 var defaultRootFolder = "/";
 var lastRootFolder = defaultRootFolder;
@@ -13,7 +14,7 @@ var dataSet = [];
 var searchList = [];
 var currentFilter;
 var highlightTimer = {};
-var textColours = {};
+var complementaryColours = {};
 var interrupted = false;
 var selectedDocument;
 
@@ -63,7 +64,7 @@ function activate( context )
         return ( typeof colour === "string" ) && ( hex.length === 3 || hex.length === 6 ) && !isNaN( parseInt( hex, 16 ) );
     }
 
-    function textColour( colour )
+    function complementaryColour( colour )
     {
         var hex = colour.split( / / )[ 0 ].replace( /[^\da-fA-F]/g, '' );
         var digits = hex.length / 3;
@@ -85,69 +86,87 @@ function activate( context )
         return l > 0.179 ? "#000000" : "#ffffff";
     }
 
-    function refreshTextColours()
+    function refreshComplementaryColours()
     {
-        textColours = {};
+        complementaryColours = {};
 
         Object.keys( defaultLightColours ).forEach( colour =>
         {
-            textColours[ defaultLightColours[ colour ] ] = textColour( defaultLightColours[ colour ] );
+            complementaryColours[ defaultLightColours[ colour ] ] = complementaryColour( defaultLightColours[ colour ] );
         } );
         Object.keys( defaultDarkColours ).forEach( colour =>
         {
-            textColours[ defaultDarkColours[ colour ] ] = textColour( defaultDarkColours[ colour ] );
+            complementaryColours[ defaultDarkColours[ colour ] ] = complementaryColour( defaultDarkColours[ colour ] );
         } );
 
-        var iconColours = vscode.workspace.getConfiguration( 'todo-tree' ).iconColours;
-        Object.keys( iconColours ).forEach( tag =>
+        var otherColours = highlights.getOtherColours();
+
+        otherColours.forEach( colour =>
         {
-            if( isHexColour( iconColours[ tag ] ) )
+            if( isHexColour( colour ) )
             {
-                textColours[ iconColours[ tag ] ] = textColour( iconColours[ tag ] );
+                complementaryColours[ colour ] = complementaryColour( colour );
             }
         } );
-
-        var iconColour = vscode.workspace.getConfiguration( 'todo-tree' ).iconColour;
-        if( isHexColour( iconColour ) )
-        {
-            textColours[ iconColour ] = textColour( iconColour );
-        }
     }
 
     function getDecoration( tag )
     {
-        var colourMappings = vscode.workspace.getConfiguration( 'todo-tree' ).iconColours;
-        var colour = vscode.workspace.getConfiguration( 'todo-tree' ).iconColour;
+        var foregroundColour = highlights.getForeground( tag );
+        var backgroundColour = highlights.getBackground( tag );
 
-        if( colourMappings[ tag ] )
+        var lightForegroundColour = foregroundColour;
+        var darkForegroundColour = foregroundColour;
+        var lightBackgroundColour = backgroundColour;
+        var darkBackgroundColour = backgroundColour;
+
+        if( !isHexColour( foregroundColour ) )
         {
-            colour = colourMappings[ tag ];
-        }
-
-        var lightColour = colour;
-        var darkColour = colour;
-
-        if( !isHexColour( colour ) )
-        {
-            if( defaultColours.indexOf( colour ) > -1 )
+            if( defaultColours.indexOf( foregroundColour ) > -1 )
             {
-                lightColour = defaultLightColours[ colour ];
-                darkColour = defaultDarkColours[ colour ];
+                lightForegroundColour = defaultLightColours[ foregroundColour ];
+                darkForegroundColour = defaultDarkColours[ foregroundColour ];
             }
             else
             {
-                lightColour = "#ffffff";
-                darkColour = "#000000";
+                lightDoregroundColour = "#ffffff";
+                darkDoregroundColour = "#000000";
             }
         }
 
-        return vscode.window.createTextEditorDecorationType( {
-            overviewRulerColor: "rgb(255,255,255,0.5)",
+        if( backgroundColour !== undefined && !isHexColour( backgroundColour ) )
+        {
+            if( defaultColours.indexOf( backgroundColour ) > -1 )
+            {
+                lightBackgroundColour = defaultLightColours[ backgroundColour ];
+                darkBackgroundColour = defaultDarkColours[ backgroundColour ];
+            }
+            else
+            {
+                lightBackgroundColour = "#ffffff";
+                darkBackgroundColour = "#000000";
+            }
+        }
+
+        var decorationOptions = {
+            overviewRulerColor: foregroundColour,
             overviewRulerLane: vscode.OverviewRulerLane.Right,
-            light: { backgroundColor: lightColour, color: textColours[ lightColour ] },
-            dark: { backgroundColor: darkColour, color: textColours[ darkColour ] },
             borderRadius: "0.2em",
-        } );
+        };
+
+        if( lightForegroundColour === undefined )
+        {
+            lightForegroundColour = complementaryColours[ lightBackgroundColour ];
+        }
+        if( darkForegroundColour === undefined )
+        {
+            darkForegroundColour = complementaryColours[ darkBackgroundColour ];
+        }
+
+        decorationOptions.light = { backgroundColor: lightBackgroundColour, color: lightForegroundColour };
+        decorationOptions.dark = { backgroundColor: darkBackgroundColour, color: darkForegroundColour };
+
+        return vscode.window.createTextEditorDecorationType( decorationOptions );
     }
 
     function exeName()
@@ -509,14 +528,51 @@ function activate( context )
 
     function register()
     {
-        if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'highlight' ) === true )
+        function migrateSettings()
         {
-            vscode.workspace.getConfiguration( 'todo-tree' ).update( 'highlight', 'tag', true );
+            if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'highlight' ) === true )
+            {
+                vscode.workspace.getConfiguration( 'todo-tree' ).update( 'highlight', 'tag', true );
+            }
+            else if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'highlight' ) === false )
+            {
+                vscode.workspace.getConfiguration( 'todo-tree' ).update( 'highlight', 'none', true );
+            }
+
+            var defaultHighlight = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'defaultHighlight' );
+            if( Object.keys( defaultHighlight ).length === 0 )
+            {
+                defaultHighlight.foreground = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'iconColour' );
+                defaultHighlight.type = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'highlight' );
+
+                vscode.workspace.getConfiguration( 'todo-tree' ).update( 'defaultHighlight', defaultHighlight, true );
+            }
+
+            var customHighlight = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'customHighlight' );
+            if( Object.keys( customHighlight ).length === 0 )
+            {
+                var tags = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'tags' );
+                var icons = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'icons' );
+                var iconColours = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'iconColours' );
+
+                tags.map( function( tag )
+                {
+                    customHighlight[ tag ] = {};
+                    if( icons[ tag ] !== undefined )
+                    {
+                        customHighlight[ tag ].icon = icons[ tag ];
+                    }
+                    if( iconColours[ tag ] !== undefined )
+                    {
+                        customHighlight[ tag ].foreground = iconColours[ tag ];
+                    }
+                } );
+
+                vscode.workspace.getConfiguration( 'todo-tree' ).update( 'customHighlight', customHighlight, true );
+            }
         }
-        else if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'highlight' ) === false )
-        {
-            vscode.workspace.getConfiguration( 'todo-tree' ).update( 'highlight', 'none', true );
-        };
+
+        migrateSettings();
 
         // We can't do anything if we can't find ripgrep
         if( !getRgPath() )
@@ -524,7 +580,6 @@ function activate( context )
             vscode.window.showErrorMessage( "todo-tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
             return;
         }
-        var version = vscode.version.split( "." );
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-is-filtered', false );
 
@@ -643,7 +698,7 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.iconColours" ) ||
                     e.affectsConfiguration( "todo-tree.icons" ) )
                 {
-                    refreshTextColours();
+                    refreshComplementaryColours();
                 }
 
                 if( e.affectsConfiguration( "todo-tree.globs" ) ||
@@ -692,40 +747,42 @@ function activate( context )
 
         function highlight( editor )
         {
-            var highlights = {};
+            var documentHighlights = {};
 
             if( editor )
             {
-                if( vscode.workspace.getConfiguration( 'todo-tree' ).highlight !== 'none' )
+                const text = editor.document.getText();
+                var regex = new RegExp( getRegex(), 'g' );
+                let match;
+                while( ( match = regex.exec( text ) ) !== null )
                 {
-                    const text = editor.document.getText();
-                    var regex = new RegExp( getRegex(), 'g' );
-                    let match;
-                    while( ( match = regex.exec( text ) ) !== null )
+                    var tag = match[ match.length - 1 ];
+                    var type = highlights.getType( tag );
+                    if( type !== 'none' )
                     {
-                        var tag = match[ match.length - 1 ];
                         var startPos = editor.document.positionAt( match.index );
                         var endPos = editor.document.positionAt( match.index + match[ 0 ].length );
 
-                        if( vscode.workspace.getConfiguration( 'todo-tree' ).highlight === 'text' )
+                        if( type === 'text' )
                         {
                             endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
                         }
 
-                        if( vscode.workspace.getConfiguration( 'todo-tree' ).highlight === 'line' )
+                        if( type === 'line' )
                         {
                             endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
                             startPos = new vscode.Position( endPos.line, 0 );
                         }
 
                         const decoration = { range: new vscode.Range( startPos, endPos ) };
-                        if( highlights[ tag ] === undefined )
+                        if( documentHighlights[ tag ] === undefined )
                         {
-                            highlights[ tag ] = [];
+                            documentHighlights[ tag ] = [];
                         }
-                        highlights[ tag ].push( decoration );
+                        documentHighlights[ tag ].push( decoration );
                     }
                 }
+
                 if( decorations[ editor.id ] )
                 {
                     decorations[ editor.id ].forEach( decoration =>
@@ -733,12 +790,13 @@ function activate( context )
                         decoration.dispose();
                     } );
                 }
+
                 decorations[ editor.id ] = [];
-                Object.keys( highlights ).forEach( tag =>
+                Object.keys( documentHighlights ).forEach( tag =>
                 {
                     var decoration = getDecoration( tag );
                     decorations[ editor.id ].push( decoration );
-                    editor.setDecorations( decoration, highlights[ tag ] );
+                    editor.setDecorations( decoration, documentHighlights[ tag ] );
                 } );
             }
         }
@@ -781,7 +839,7 @@ function activate( context )
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
 
-        refreshTextColours();
+        refreshComplementaryColours();
         setButtons();
         rebuild();
 

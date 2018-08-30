@@ -7,6 +7,7 @@ var path = require( "path" );
 var fs = require( 'fs' );
 var commentPatterns = require( 'comment-patterns' );
 var octicons = require( 'octicons' );
+var highlights = require( './highlights.js' );
 
 var elements = [];
 
@@ -83,75 +84,57 @@ class TodoDataProvider
         }
     }
 
-    getTodoIcon( text )
+    getTodoIcon( tag )
     {
-        function isHexColour( text )
+        function isHexColour( rgb )
         {
-            return ( typeof text === "string" ) && ( text.length === 3 || text.length === 6 ) && !isNaN( parseInt( text, 16 ) );
+            return ( typeof rgb === "string" ) && ( rgb.length === 3 || rgb.length === 6 ) && !isNaN( parseInt( rgb, 16 ) );
         }
 
-        var colourMappings = vscode.workspace.getConfiguration( 'todo-tree' ).iconColours;
-
-        var colour = colourMappings[ text ] || "";
-
-        if( colour === "" )
-        {
-            Object.keys( colourMappings ).forEach( mapping =>
-            {
-                if( text.match( mapping ) )
-                {
-                    colour = colourMappings[ mapping ];
-                }
-            } );
-        }
-
-        if( colour === "" )
-        {
-            colour = vscode.workspace.getConfiguration( 'todo-tree' ).iconColour;
-        }
+        var colour = highlights.getForeground( tag );
 
         var darkIconPath;
         var lightIconPath;
 
         var colourName = isHexColour( colour.substr( 1 ) ) ? colour.substr( 1 ) : colour;
 
-        var icons = vscode.workspace.getConfiguration( 'todo-tree' ).icons;
-        if( icons[ text ] )
+        var iconName = highlights.getIcon( tag );
+
+        if( iconName )
         {
-            var iconName = icons[ text ];
             if( !octicons[ iconName ] )
             {
                 iconName = "check";
             }
 
-            var iconPath = path.join( this._context.storagePath, "todo-" + iconName + "-" + colourName + ".svg" );
-            if( !fs.existsSync( iconPath ) )
+            var octiconIconPath = path.join( this._context.storagePath, "todo-" + iconName + "-" + colourName + ".svg" );
+            if( !fs.existsSync( octiconIconPath ) )
             {
                 if( !fs.existsSync( this._context.storagePath ) )
                 {
                     fs.mkdirSync( this._context.storagePath );
                 }
 
-                var content = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n" +
+                var octiconIconDefinition = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n" +
                     octicons[ iconName ].toSVG( { "xmlns": "http://www.w3.org/2000/svg", "fill": colour } );
 
-                fs.writeFileSync( iconPath, content );
+                fs.writeFileSync( octiconIconPath, octiconIconDefinition );
             }
 
-            darkIconPath = iconPath;
-            lightIconPath = iconPath;
+            darkIconPath = octiconIconPath;
+            lightIconPath = octiconIconPath;
         }
         else if( isHexColour( colour.substr( 1 ) ) )
         {
-            var iconPath = path.join( this._context.storagePath, "todo-" + colourName + ".svg" );
-            if( !fs.existsSync( iconPath ) )
+            var colouredIconPath = path.join( this._context.storagePath, "todo-" + colourName + ".svg" );
+            if( !fs.existsSync( colouredIconPath ) )
             {
                 if( !fs.existsSync( this._context.storagePath ) )
                 {
                     fs.mkdirSync( this._context.storagePath );
                 }
 
-                var content =
+                var colouredIconDefinition =
                     "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>" +
                     "<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"" +
                     "\tviewBox=\"0 0 426.667 426.667\" style=\"enable-background:new 0 0 426.667 426.667;\" xml:space=\"preserve\">" +
@@ -160,13 +143,13 @@ class TodoDataProvider
                     "\tl140.894-140.898l31.309,31.309L174.199,322.918z\"/>" +
                     "</svg>";
 
-                fs.writeFileSync( iconPath, content );
+                fs.writeFileSync( colouredIconPath, colouredIconDefinition );
             }
 
-            darkIconPath = iconPath;
-            lightIconPath = iconPath;
+            darkIconPath = colouredIconPath;
+            lightIconPath = colouredIconPath;
         }
-        else if( defaultColours.indexOf( colour ) > -1 )
+        else if( defaultColours.indexOf( colourName ) > -1 )
         {
             darkIconPath = this._context.asAbsolutePath( path.join( "resources/icons", "dark", "todo-" + colour + ".svg" ) );
             lightIconPath = this._context.asAbsolutePath( path.join( "resources/icons", "light", "todo-" + colour + ".svg" ) );

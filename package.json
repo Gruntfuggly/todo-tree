@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.79",
+    "version": "0.0.80",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -315,6 +315,16 @@
                     "type": "boolean",
                     "description": "If enabled, the current file is tracked in the tree view",
                     "default": true
+                },
+                "todo-tree.defaultHighlight": {
+                    "type": "object",
+                    "description": "Default configuration for highlighting",
+                    "default": {}
+                },
+                "todo-tree.customHighlight": {
+                    "type": "object",
+                    "descripton": "Custom configuration for highlighting",
+                    "default": {}
                 }
             }
         }
