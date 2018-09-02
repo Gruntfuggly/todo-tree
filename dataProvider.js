@@ -323,6 +323,8 @@ class TodoDataProvider
             rootFolder === this.defaultRootFolder ||
             vscode.workspace.getConfiguration( 'todo-tree' ).flat;
 
+        var parent;
+
         if( flat )
         {
             var findExactPath = function( e )
@@ -330,7 +332,6 @@ class TodoDataProvider
                 return e.type === PATH && e.file === this;
             };
 
-            var parent;
             if( vscode.workspace.getConfiguration( 'todo-tree' ).grouped && todoElement.tag )
             {
                 parent = getRootTagElement( todoElement.tag ).elements;
@@ -371,7 +372,6 @@ class TodoDataProvider
                 return e.pathLabel === undefined && e.type === PATH && e.name === this;
             };
 
-            var parent;
             if( vscode.workspace.getConfiguration( 'todo-tree' ).grouped && todoElement.tag )
             {
                 parent = getRootTagElement( todoElement.tag ).elements;

@@ -1,3 +1,6 @@
+# v0.0.82 - 2018-09-02
+- Fix settings for unknown tags (e.g. markdown TOODs)
+
 # v0.0.81 - 2018-09-02
 - Fix spelling mistake in package.json
 

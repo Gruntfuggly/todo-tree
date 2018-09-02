@@ -4,7 +4,8 @@ function getAttribute( tag, attribute, defaultValue )
 {
     var config = vscode.workspace.getConfiguration( 'todo-tree' );
     var customHighlight = config.get( 'customHighlight' );
-    if( customHighlight[ tag ][ attribute ] !== undefined )
+    var tagSettings = customHighlight[ tag ];
+    if( tagSettings && tagSettings[ attribute ] !== undefined )
     {
         return customHighlight[ tag ][ attribute ];
     }
