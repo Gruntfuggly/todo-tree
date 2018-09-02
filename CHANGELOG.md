@@ -1,4 +1,7 @@
-# v0.0.80 - 2018-08-31
+# v0.0.81 - 2018-09-02
+- Fix spelling mistake in package.json
+
+# v0.0.80 - 2018-09-02
 - Extend configurability of highlights
 
 # v0.0.79 - 2018-08-22

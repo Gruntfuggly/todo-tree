@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.80",
+    "version": "0.0.81",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -323,7 +323,7 @@
                 },
                 "todo-tree.customHighlight": {
                     "type": "object",
-                    "descripton": "Custom configuration for highlighting",
+                    "description": "Custom configuration for highlighting",
                     "default": {}
                 }
             }
