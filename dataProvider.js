@@ -91,7 +91,7 @@ class TodoDataProvider
             return ( typeof rgb === "string" ) && ( rgb.length === 3 || rgb.length === 6 ) && !isNaN( parseInt( rgb, 16 ) );
         }
 
-        var colour = highlights.getForeground( tag );
+        var colour = highlights.getIconColour( tag );
 
         var darkIconPath;
         var lightIconPath;

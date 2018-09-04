@@ -1,3 +1,7 @@
+# v0.0.83 - 2018-09-04
+- if foreground is not specified, use black or white depending on background colour
+- if foreground is not specified, use background for icon colour if specified, else deprecated colours
+
 # v0.0.82 - 2018-09-02
 - Fix settings for unknown tags (e.g. markdown TOODs)
 

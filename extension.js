@@ -14,31 +14,8 @@ var dataSet = [];
 var searchList = [];
 var currentFilter;
 var highlightTimer = {};
-var complementaryColours = {};
 var interrupted = false;
 var selectedDocument;
-
-var defaultColours = [ "red", "green", "blue", "yellow", "magenta", "cyan", "grey" ];
-
-var defaultLightColours = {
-    "red": "#CC0000",
-    "green": "#008f00",
-    "blue": "#0433ff",
-    "yellow": "#c8c800",
-    "magenta": "#bb60bb",
-    "cyan": "#76d6ff",
-    "grey": "#888888",
-};
-
-var defaultDarkColours = {
-    "red": "#CC0000",
-    "green": "#6AC259",
-    "blue": "#0433ff",
-    "yellow": "#fffb00",
-    "magenta": "#ff85ff",
-    "cyan": "#76d6ff",
-    "grey": "#aaaaaa"
-};
 
 function activate( context )
 {
@@ -56,117 +33,6 @@ function activate( context )
         {
             outputChannel.appendLine( text );
         }
-    }
-
-    function isHexColour( colour )
-    {
-        var hex = colour.split( / / )[ 0 ].replace( /[^\da-fA-F]/g, '' );
-        return ( typeof colour === "string" ) && ( hex.length === 3 || hex.length === 6 ) && !isNaN( parseInt( hex, 16 ) );
-    }
-
-    function complementaryColour( colour )
-    {
-        var hex = colour.split( / / )[ 0 ].replace( /[^\da-fA-F]/g, '' );
-        var digits = hex.length / 3;
-        var red = parseInt( hex.substr( 0, digits ), 16 );
-        var green = parseInt( hex.substr( 1 * digits, digits ), 16 );
-        var blue = parseInt( hex.substr( 2 * digits, digits ), 16 );
-        var c = [ red / 255, green / 255, blue / 255 ];
-        for( var i = 0; i < c.length; ++i )
-        {
-            if( c[ i ] <= 0.03928 )
-            {
-                c[ i ] = c[ i ] / 12.92;
-            } else
-            {
-                c[ i ] = Math.pow( ( c[ i ] + 0.055 ) / 1.055, 2.4 );
-            }
-        }
-        var l = 0.2126 * c[ 0 ] + 0.7152 * c[ 1 ] + 0.0722 * c[ 2 ];
-        return l > 0.179 ? "#000000" : "#ffffff";
-    }
-
-    function refreshComplementaryColours()
-    {
-        complementaryColours = {};
-
-        Object.keys( defaultLightColours ).forEach( colour =>
-        {
-            complementaryColours[ defaultLightColours[ colour ] ] = complementaryColour( defaultLightColours[ colour ] );
-        } );
-        Object.keys( defaultDarkColours ).forEach( colour =>
-        {
-            complementaryColours[ defaultDarkColours[ colour ] ] = complementaryColour( defaultDarkColours[ colour ] );
-        } );
-
-        var otherColours = highlights.getOtherColours();
-
-        otherColours.forEach( colour =>
-        {
-            if( isHexColour( colour ) )
-            {
-                complementaryColours[ colour ] = complementaryColour( colour );
-            }
-        } );
-    }
-
-    function getDecoration( tag )
-    {
-        var foregroundColour = highlights.getForeground( tag );
-        var backgroundColour = highlights.getBackground( tag );
-
-        var lightForegroundColour = foregroundColour;
-        var darkForegroundColour = foregroundColour;
-        var lightBackgroundColour = backgroundColour;
-        var darkBackgroundColour = backgroundColour;
-
-        if( !isHexColour( foregroundColour ) )
-        {
-            if( defaultColours.indexOf( foregroundColour ) > -1 )
-            {
-                lightForegroundColour = defaultLightColours[ foregroundColour ];
-                darkForegroundColour = defaultDarkColours[ foregroundColour ];
-            }
-            else
-            {
-                lightDoregroundColour = "#ffffff";
-                darkDoregroundColour = "#000000";
-            }
-        }
-
-        if( backgroundColour !== undefined && !isHexColour( backgroundColour ) )
-        {
-            if( defaultColours.indexOf( backgroundColour ) > -1 )
-            {
-                lightBackgroundColour = defaultLightColours[ backgroundColour ];
-                darkBackgroundColour = defaultDarkColours[ backgroundColour ];
-            }
-            else
-            {
-                lightBackgroundColour = "#ffffff";
-                darkBackgroundColour = "#000000";
-            }
-        }
-
-        var decorationOptions = {
-            overviewRulerColor: foregroundColour,
-            overviewRulerLane: vscode.OverviewRulerLane.Right,
-            borderRadius: "0.2em",
-        };
-
-        if( lightForegroundColour === undefined )
-        {
-            lightForegroundColour = complementaryColours[ lightBackgroundColour ];
-        }
-        if( darkForegroundColour === undefined )
-        {
-            darkForegroundColour = complementaryColours[ darkBackgroundColour ];
-        }
-
-        decorationOptions.light = { backgroundColor: lightBackgroundColour, color: lightForegroundColour };
-        decorationOptions.dark = { backgroundColor: darkBackgroundColour, color: darkForegroundColour };
-
-        return vscode.window.createTextEditorDecorationType( decorationOptions );
     }
 
     function exeName()
@@ -696,9 +562,11 @@ function activate( context )
             {
                 if( e.affectsConfiguration( "todo-tree.iconColour" ) ||
                     e.affectsConfiguration( "todo-tree.iconColours" ) ||
-                    e.affectsConfiguration( "todo-tree.icons" ) )
+                    e.affectsConfiguration( "todo-tree.icons" ) ||
+                    e.affectsConfiguration( "todo-tree.defaultHighlight" ) ||
+                    e.affectsConfiguration( "todo-tree.customHighlight" ) )
                 {
-                    refreshComplementaryColours();
+                    highlights.refreshComplementaryColours();
                 }
 
                 if( e.affectsConfiguration( "todo-tree.globs" ) ||
@@ -794,7 +662,7 @@ function activate( context )
                 decorations[ editor.id ] = [];
                 Object.keys( documentHighlights ).forEach( tag =>
                 {
-                    var decoration = getDecoration( tag );
+                    var decoration = highlights.getDecoration( tag );
                     decorations[ editor.id ].push( decoration );
                     editor.setDecorations( decoration, documentHighlights[ tag ] );
                 } );
@@ -839,7 +707,8 @@ function activate( context )
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
 
-        refreshComplementaryColours();
+        highlights.refreshComplementaryColours();
+
         setButtons();
         rebuild();
 
