@@ -284,28 +284,10 @@ function activate( context )
 
     function setButtons()
     {
-        var expanded = vscode.workspace.getConfiguration( 'todo-tree' ).expanded;
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-expand', !expanded );
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-collapse', expanded );
-        var grouped = vscode.workspace.getConfiguration( 'todo-tree' ).grouped;
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-group', !grouped );
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-ungroup', grouped );
-    }
-
-    function showFlatView()
-    {
-        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'flat', true, false ).then( function()
-        {
-            vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', true );
-        } );
-    }
-
-    function showTreeView()
-    {
-        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'flat', false, false ).then( function()
-        {
-            vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', false );
-        } );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', false ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-filtered', context.workspaceState.get( 'filtered', false ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', false ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-grouped', context.workspaceState.get( 'grouped', false ) );
     }
 
     function refreshFile( filename )
@@ -335,32 +317,51 @@ function activate( context )
         }
     }
 
+    function refresh()
+    {
+        provider.clear();
+        provider.rebuild();
+        addToTree( getRootFolder() );
+        setButtons();
+    }
+
+    function showFlatView()
+    {
+        context.workspaceState.update( 'flat', true ).then( refresh );
+    }
+
+    function showTreeView()
+    {
+        context.workspaceState.update( 'flat', false ).then( refresh );
+    }
+
     function collapse()
     {
-        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'expanded', false, false );
+        context.workspaceState.update( 'expanded', false ).then( refresh );
     }
 
     function expand()
     {
-        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'expanded', true, false );
+        context.workspaceState.update( 'expanded', true ).then( refresh );
     }
 
     function groupByTag()
     {
-        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'grouped', true, false );
+        context.workspaceState.update( 'grouped', true ).then( refresh );
     }
 
     function ungroupByTag()
     {
-        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'grouped', false, false );
+        context.workspaceState.update( 'grouped', false ).then( refresh );
     }
 
     function clearFilter()
     {
         currentFilter = undefined;
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-is-filtered', false );
+        context.workspaceState.update( 'filtered', false );
         provider.clearFilter();
         provider.refresh();
+        setButtons();
     }
 
     function addTag()
@@ -447,8 +448,6 @@ function activate( context )
             return;
         }
 
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-is-filtered', false );
-
         vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
         {
             selectedDocument = file;
@@ -472,9 +471,10 @@ function activate( context )
                     currentFilter = term;
                     if( currentFilter )
                     {
-                        vscode.commands.executeCommand( 'setContext', 'todo-tree-is-filtered', true );
+                        context.workspaceState.update( 'filtered', true );
                         provider.filter( currentFilter );
                         provider.refresh();
+                        setButtons();
                     }
                 } );
         } ) );
@@ -701,9 +701,6 @@ function activate( context )
 
         context.subscriptions.push( outputChannel );
         context.subscriptions.push( decorations );
-
-        var flat = vscode.workspace.getConfiguration( 'todo-tree' ).flat;
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', flat );
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
 

@@ -1,9 +1,15 @@
+# v0.0.84 - 2018-09-06
+- Fix tree elements not appearing when there is no workspace
+- Use workspaceState for view state instead of workspace settings
+- Remove redundant settings from README.md
+- Fix a bunch of typos in various files
+
 # v0.0.83 - 2018-09-04
-- if foreground is not specified, use black or white depending on background colour
-- if foreground is not specified, use background for icon colour if specified, else deprecated colours
+- If foreground is not specified, use black or white depending on background colour
+- If foreground is not specified, use background for icon colour if specified, else deprecated colours
 
 # v0.0.82 - 2018-09-02
-- Fix settings for unknown tags (e.g. markdown TOODs)
+- Fix settings for unknown tags (e.g. markdown TODOs)
 
 # v0.0.81 - 2018-09-02
 - Fix spelling mistake in package.json
@@ -108,7 +114,7 @@
 - Add tree view to activity bar
 
 # v0.0.50 - 2018-05-09
-- Fix bad display of READMD.md in marketplace
+- Fix bad display of README.md in marketplace
 
 # v0.0.34 - 2018-05-09
 - Add support for additional ripgrep arguments

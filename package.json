@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.83",
+    "version": "0.0.84",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -61,32 +61,32 @@
                 },
                 {
                     "command": "todo-tree.groupByTag",
-                    "when": "view =~ /todo-tree/ && todo-tree-show-group",
+                    "when": "view =~ /todo-tree/ && todo-tree-grouped == false",
                     "group": "navigation@2"
                 },
                 {
                     "command": "todo-tree.ungroupByTag",
-                    "when": "view =~ /todo-tree/ && todo-tree-show-ungroup",
+                    "when": "view =~ /todo-tree/ && todo-tree-grouped == true",
                     "group": "navigation@2"
                 },
                 {
                     "command": "todo-tree.filter",
-                    "when": "view =~ /todo-tree/ && !todo-tree-is-filtered",
+                    "when": "view =~ /todo-tree/ && todo-tree-filtered == false",
                     "group": "navigation@3"
                 },
                 {
                     "command": "todo-tree.filterClear",
-                    "when": "view =~ /todo-tree/ && todo-tree-is-filtered",
+                    "when": "view =~ /todo-tree/ && todo-tree-filtered == true",
                     "group": "navigation@3"
                 },
                 {
                     "command": "todo-tree.expand",
-                    "when": "view =~ /todo-tree/ && todo-tree-show-expand",
+                    "when": "view =~ /todo-tree/ && todo-tree-expanded == false",
                     "group": "navigation@4"
                 },
                 {
                     "command": "todo-tree.collapse",
-                    "when": "view =~ /todo-tree/ && todo-tree-show-collapse",
+                    "when": "view =~ /todo-tree/ && todo-tree-expanded == true",
                     "group": "navigation@4"
                 },
                 {
@@ -220,21 +220,6 @@
                     "type": "string",
                     "description": "Location of your version of ripgrep",
                     "default": ""
-                },
-                "todo-tree.expanded": {
-                    "type": "boolean",
-                    "description": "Set to true if you want the tree to be fully expanded",
-                    "default": false
-                },
-                "todo-tree.grouped": {
-                    "type": "boolean",
-                    "description": "Set to true if you want the tree to be grouped by tag",
-                    "default": false
-                },
-                "todo-tree.flat": {
-                    "type": "boolean",
-                    "description": "Set to true to show a flat list of files",
-                    "default": false
                 },
                 "todo-tree.iconColour": {
                     "type": "string",

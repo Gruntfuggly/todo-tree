@@ -10,9 +10,9 @@ Found TODOs can also be highlighted in open files.
 
 ## Highlighting
 
-Highlighting tags is configurable. Use `defaultHighlight` to set up highlights for all tags. If you need to configure individual tags differently, use `customHighlight`. If settings are not specified in `customHighlight`, the value from `defautHighlight` is used. If a setting is not specified in `defaultHighlight` then the older, deprecated `icon`, `iconColour` and `iconColours` settings are used.
+Highlighting tags is configurable. Use `defaultHighlight` to set up highlights for all tags. If you need to configure individual tags differently, use `customHighlight`. If settings are not specified in `customHighlight`, the value from `defaultHighlight` is used. If a setting is not specified in `defaultHighlight` then the older, deprecated `icon`, `iconColour` and `iconColours` settings are used.
 
-Both `defaultHighlight` and `customHighlight` allow for the following setings:
+Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `foreground` - used to set the colour of the icon in the tree view, the foreground colour of the highlight in the editor and the marker in the ruler.
 
@@ -101,8 +101,6 @@ The extension can be customised as follows:
 | todo-tree.ripgrep | <tt>""</tt> | Normally, the extension will locate ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed. |
 | todo-tree.ripgrepArgs | <tt>""</tt> | Use this to pass additional arguments to ripgrep. e.g. <tt>"-i"</tt> to make the search case insensitive. *Use with caution!* |
 | todo-tree.ripgrepMaxBuffer | <tt>200</tt> | By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly. |
-| todo-tree.expanded | <tt>false</tt> | If you want the tree to be opened with all nodes expanded, set this to true. By default, the tree will be collapsed. |
-| todo-tree.flat | <tt>false</tt> | Set to true to show the tree as a flat list of files (with folder names in brackets). |
 | todo-tree.icons* | <tt>{}</tt> | Use alternative icons from the octicon set for specific tags, e.g. <tt>{"TODO":"pin", "FIXME":"issue-opened"}</tt> |
 | todo-tree.iconColour* | <tt>"green"</tt> | Use this to change the colour of the icon for TODOs in the tree. Can be hex (e.g. "#FF80FF" ) or one of <tt>"red"</tt>, <tt>"green"</tt>, <tt>"blue"</tt>, <tt>"yellow"</tt>, <tt>"magenta"</tt>, <tt>"cyan"</tt> or <tt>"grey"</tt>. |
 | todo-tree.iconColours* | <tt>{}</tt> | Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javascript regex. e.g. <tt>{"TODO": "#FF80FF","^BUG": "red"}</tt>. *Note: The colours are applied **after** the search results, so don't forget to modify todo-tree.tags if you want to add new tags!* |
@@ -132,6 +130,9 @@ Grouping by tag will only work when your configuration defines the tags using th
 Grouping by tag doesn't work for markdown task list items as there is no tag to group with. The tree will show the files alongside the tag groups.
 
 Tracking the file in the tree view does not work when grouping by tag (as there can be multiple entries for each file).
+
+When there is no current workspace, default icons will be shown in the tree.
+
 
 ### Credits
 
