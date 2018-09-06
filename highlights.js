@@ -73,8 +73,8 @@ function getDecoration( tag )
             }
             else
             {
-                lightDoregroundColour = "#ffffff";
-                darkDoregroundColour = "#000000";
+                lightForegroundColour = "#ffffff";
+                darkForegroundColour = "#000000";
             }
         }
     }

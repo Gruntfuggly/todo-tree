@@ -93,8 +93,8 @@ class TodoDataProvider
 
         var colour = highlights.getIconColour( tag );
 
-        var darkIconPath;
-        var lightIconPath;
+        var darkIconPath = this._context.asAbsolutePath( path.join( "resources/icons", "dark", "todo-green.svg" ) );
+        var lightIconPath = this._context.asAbsolutePath( path.join( "resources/icons", "light", "todo-green.svg" ) );
 
         var colourName = isHexColour( colour.substr( 1 ) ) ? colour.substr( 1 ) : colour;
 
@@ -107,22 +107,25 @@ class TodoDataProvider
                 iconName = "check";
             }
 
-            var octiconIconPath = path.join( this._context.storagePath, "todo-" + iconName + "-" + colourName + ".svg" );
-            if( !fs.existsSync( octiconIconPath ) )
+            if( this._context.storagePath )
             {
-                if( !fs.existsSync( this._context.storagePath ) )
+                var octiconIconPath = path.join( this._context.storagePath, "todo-" + iconName + "-" + colourName + ".svg" );
+                if( !fs.existsSync( octiconIconPath ) )
                 {
-                    fs.mkdirSync( this._context.storagePath );
+                    if( !fs.existsSync( this._context.storagePath ) )
+                    {
+                        fs.mkdirSync( this._context.storagePath );
+                    }
+
+                    var octiconIconDefinition = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n" +
+                        octicons[ iconName ].toSVG( { "xmlns": "http://www.w3.org/2000/svg", "fill": colour } );
+
+                    fs.writeFileSync( octiconIconPath, octiconIconDefinition );
                 }
 
-                var octiconIconDefinition = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n" +
-                    octicons[ iconName ].toSVG( { "xmlns": "http://www.w3.org/2000/svg", "fill": colour } );
-
-                fs.writeFileSync( octiconIconPath, octiconIconDefinition );
+                darkIconPath = octiconIconPath;
+                lightIconPath = octiconIconPath;
             }
-
-            darkIconPath = octiconIconPath;
-            lightIconPath = octiconIconPath;
         }
         else if( isHexColour( colour.substr( 1 ) ) )
         {
@@ -153,11 +156,6 @@ class TodoDataProvider
         {
             darkIconPath = this._context.asAbsolutePath( path.join( "resources/icons", "dark", "todo-" + colour + ".svg" ) );
             lightIconPath = this._context.asAbsolutePath( path.join( "resources/icons", "light", "todo-" + colour + ".svg" ) );
-        }
-        else
-        {
-            darkIconPath = this._context.asAbsolutePath( path.join( "resources/icons", "dark", "todo-green.svg" ) );
-            lightIconPath = this._context.asAbsolutePath( path.join( "resources/icons", "light", "todo-green.svg" ) );
         }
 
         var icon = {
