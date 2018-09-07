@@ -186,7 +186,7 @@ class TodoDataProvider
 
             if( element.type === PATH )
             {
-                treeItem.collapsibleState = this._context.workspaceState.get( 'expanded', false ) ?
+                treeItem.collapsibleState = this._context.workspaceState.get( 'expanded', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'expanded', false ) ) ?
                     vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
 
                 if( element.isRootTag )
@@ -295,7 +295,7 @@ class TodoDataProvider
             if( tagMatch )
             {
                 name = name.substr( tagMatch.index );
-                if( this._context.workspaceState.get( 'grouped', false ) )
+                if( this._context.workspaceState.get( 'grouped', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'grouped', false ) ) )
                 {
                     name = name.substr( tagMatch[ 0 ].length );
                 }
@@ -319,7 +319,7 @@ class TodoDataProvider
         var flat =
             relativePath.startsWith( ".." ) ||
             rootFolder === this.defaultRootFolder ||
-            this._context.workspaceState.get( 'flat', false );
+            this._context.workspaceState.get( 'flat', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'flat', false ) );
 
         var parent;
 
@@ -330,7 +330,7 @@ class TodoDataProvider
                 return e.type === PATH && e.file === this;
             };
 
-            if( this._context.workspaceState.get( 'grouped', false ) && todoElement.tag )
+            if( this._context.workspaceState.get( 'grouped', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'grouped', false ) ) && todoElement.tag )
             {
                 parent = getRootTagElement( todoElement.tag ).elements;
             }
@@ -370,7 +370,7 @@ class TodoDataProvider
                 return e.pathLabel === undefined && e.type === PATH && e.name === this;
             };
 
-            if( this._context.workspaceState.get( 'grouped', false ) && todoElement.tag )
+            if( this._context.workspaceState.get( 'grouped', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'grouped', false ) ) && todoElement.tag )
             {
                 parent = getRootTagElement( todoElement.tag ).elements;
             }
@@ -488,9 +488,9 @@ class TodoDataProvider
         var flat =
             relativePath.startsWith( ".." ) ||
             rootFolder === this.defaultRootFolder ||
-            this._context.workspaceState.get( 'flat' );
+            this._context.workspaceState.get( 'flat', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'flat', false ) );
 
-        if( !this._context.workspaceState.get( 'grouped', false ) )
+        if( !this._context.workspaceState.get( 'grouped', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'grouped', false ) ) )
         {
             if( flat )
             {

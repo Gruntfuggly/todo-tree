@@ -101,19 +101,23 @@ The extension can be customised as follows:
 | todo-tree.ripgrep | <tt>""</tt> | Normally, the extension will locate ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed. |
 | todo-tree.ripgrepArgs | <tt>""</tt> | Use this to pass additional arguments to ripgrep. e.g. <tt>"-i"</tt> to make the search case insensitive. *Use with caution!* |
 | todo-tree.ripgrepMaxBuffer | <tt>200</tt> | By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly. |
-| todo-tree.icons* | <tt>{}</tt> | Use alternative icons from the octicon set for specific tags, e.g. <tt>{"TODO":"pin", "FIXME":"issue-opened"}</tt> |
-| todo-tree.iconColour* | <tt>"green"</tt> | Use this to change the colour of the icon for TODOs in the tree. Can be hex (e.g. "#FF80FF" ) or one of <tt>"red"</tt>, <tt>"green"</tt>, <tt>"blue"</tt>, <tt>"yellow"</tt>, <tt>"magenta"</tt>, <tt>"cyan"</tt> or <tt>"grey"</tt>. |
-| todo-tree.iconColours* | <tt>{}</tt> | Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javascript regex. e.g. <tt>{"TODO": "#FF80FF","^BUG": "red"}</tt>. *Note: The colours are applied **after** the search results, so don't forget to modify todo-tree.tags if you want to add new tags!* |
+| todo-tree.icons<sup>1</sup> | <tt>{}</tt> | Use alternative icons from the octicon set for specific tags, e.g. <tt>{"TODO":"pin", "FIXME":"issue-opened"}</tt> |
+| todo-tree.iconColour<sup>1</sup> | <tt>"green"</tt> | Use this to change the colour of the icon for TODOs in the tree. Can be hex (e.g. "#FF80FF" ) or one of <tt>"red"</tt>, <tt>"green"</tt>, <tt>"blue"</tt>, <tt>"yellow"</tt>, <tt>"magenta"</tt>, <tt>"cyan"</tt> or <tt>"grey"</tt>. |
+| todo-tree.iconColours<sup>1</sup> | <tt>{}</tt> | Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javascript regex. e.g. <tt>{"TODO": "#FF80FF","^BUG": "red"}</tt>. *Note: The colours are applied **after** the search results, so don't forget to modify todo-tree.tags if you want to add new tags!* |
 | todo-tree.showInExplorer | <tt>true</tt> | The tree is now also available in the activity bar. If you no longer want to see it in the explorer view, set this to false. |
 | todo-tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. *Note: this does not the apply to the search*. |
-| todo-tree.highlight* | <tt>false</tt> | Set this to true to highlight tags in files. |
+| todo-tree.highlight<sup>1</sup> | <tt>false</tt> | Set this to true to highlight tags in files. |
 | todo-tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
 | todo-tree.trackFile | <tt>true</tt> | Set to false if you want to prevent tracking the open file in the tree view. |
 | todo-tree.defaultHighlight | <tt>{}</tt> | Set default highlights. E.g. `{"foreground":"white","background":"red","icon":"check","type":"text"}` |
 | todo-tree.customHighlight | <tt>{}</tt> | Set highlights per tag. E.g. `{"TODO":{"foreground":"white","type":"text"},"FIXME":{"icon":"beaker"}}` |
+| todo-tree.expanded<sup>1</sup> | <tt>false</tt> | Set to true if you want new trees to be expanded by default |
+| todo-tree.flat<sup>1</sup> | <tt>false</tt> | Set to true if you want new trees to be flat by default |
+| todo-tree.grouped<sup>1</sup> | <tt>false</tt> | Set to true if you want new trees to be grouped by default |
 
-*deprecated - Please use `todo-tree.defaultHighlight` and `todo-tree.customHighlight` instead.
+<sup>1</sup> Deprecated - Please use `todo-tree.defaultHighlight` and `todo-tree.customHighlight` instead.
 
+<sup>2</sup> Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.
 
 ### Excluding files and folders
 

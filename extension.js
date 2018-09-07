@@ -284,10 +284,11 @@ function activate( context )
 
     function setButtons()
     {
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', false ) );
+        var c = vscode.workspace.getConfiguration( 'todo-tree' );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', c.get( 'expanded', false ) ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', c.get( 'flat', false ) ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-grouped', context.workspaceState.get( 'grouped', c.get( 'grouped', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-filtered', context.workspaceState.get( 'filtered', false ) );
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', false ) );
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-grouped', context.workspaceState.get( 'grouped', false ) );
     }
 
     function refreshFile( filename )
@@ -448,7 +449,7 @@ function activate( context )
             return;
         }
 
-        vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
         {
             selectedDocument = file;
             vscode.workspace.openTextDocument( file ).then( function( document )
@@ -461,7 +462,7 @@ function activate( context )
                     vscode.commands.executeCommand( 'workbench.action.focusActiveEditorGroup' );
                 } );
             } );
-        } );
+        } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filter', function()
         {
@@ -499,7 +500,7 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.addTag', addTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeTag', removeTag ) );
 
-        vscode.window.onDidChangeActiveTextEditor( function( e )
+        context.subscriptions.push( vscode.window.onDidChangeActiveTextEditor( function( e )
         {
             if( e && e.document )
             {
@@ -532,7 +533,7 @@ function activate( context )
 
                 documentChanged( e.document );
             }
-        } );
+        } ) );
 
         context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( e =>
         {

@@ -1,5 +1,8 @@
+# v0.0.85 - 2018-09-07
+- Restore 'expanded', 'flat' and 'grouped' default configuration settings  (fixes [#68](https://github.com/Gruntfuggly/todo-tree/issues/68))
+
 # v0.0.84 - 2018-09-06
-- Fix tree elements not appearing when there is no workspace
+- Fix tree elements not appearing when there is no workspace (fixes [#67](https://github.com/Gruntfuggly/todo-tree/issues/67))
 - Use workspaceState for view state instead of workspace settings
 - Remove redundant settings from README.md
 - Fix a bunch of typos in various files

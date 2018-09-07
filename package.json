@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.84",
+    "version": "0.0.85",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -310,6 +310,21 @@
                     "type": "object",
                     "description": "Custom configuration for highlighting",
                     "default": {}
+                },
+                "todo-tree.expanded": {
+                    "type": "boolean",
+                    "description": "Set to true if you want the tree to be fully expanded by default",
+                    "default": false
+                },
+                "todo-tree.grouped": {
+                    "type": "boolean",
+                    "description": "Set to true if you want the tree to be grouped by tag by default",
+                    "default": false
+                },
+                "todo-tree.flat": {
+                    "type": "boolean",
+                    "description": "Set to true to show a flat list of files by default",
+                    "default": false
                 }
             }
         }
