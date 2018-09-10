@@ -195,31 +195,31 @@
             "properties": {
                 "todo-tree.regex": {
                     "type": "string",
-                    "description": "Regular expression for matching TODOs. Note: $TAGS will be replaced by the tag list",
-                    "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])"
+                    "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
+                    "markdownDescription": "Regular expression for matching TODOs. Note: $TAGS will be replaced by the tag list"
                 },
                 "todo-tree.tags": {
                     "type": "array",
-                    "description": "List of tags",
                     "default": [
                         "TODO",
                         "FIXME"
-                    ]
+                    ],
+                    "markdownDescription": "List of tags"
                 },
                 "todo-tree.rootFolder": {
                     "type": "string",
-                    "description": "Folder in which to run the search (defaults to the workspace folder)",
-                    "default": ""
+                    "default": "",
+                    "markdownDescription": "Folder in which to run the search (defaults to the workspace folder)"
                 },
                 "todo-tree.globs": {
                     "type": "array",
-                    "description": "Globs for use in limiting search results, e.g. [\"!**/unit-tests\"]",
-                    "default": []
+                    "default": [],
+                    "markdownDescription": "Globs for use in limiting search results, e.g. `[\"!**/unit-tests\"]`"
                 },
                 "todo-tree.ripgrep": {
                     "type": "string",
-                    "description": "Location of your version of ripgrep",
-                    "default": ""
+                    "default": "",
+                    "markdownDescription": "Location of your version of ripgrep"
                 },
                 "todo-tree.iconColour": {
                     "type": "string",
@@ -233,42 +233,42 @@
                         "grey"
                     ],
                     "default": "green",
-                    "description": "The colour of the icon in the tree view. Can be a hex code (e.g. '#FF80FF'), or be one of 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan' or 'grey'"
+                    "markdownDescription": "~~The colour of the icon in the tree view. Can be a hex code (e.g. '#FF80FF'), or be one of 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan' or 'grey'~~  \n*Deprecated - use defaultHighlight and customHighlight instead*"
                 },
                 "todo-tree.iconColours": {
                     "type": "object",
                     "default": {},
-                    "description": "Set the icon colour based on the tag. Colours can be defined as hex codes, or from the `iconColour` list, e.g.  { \"BUG\":\"red\", \"FIXME\":\"#A188FF\" } "
+                    "markdownDescription": "~~Set the icon colour based on the tag. Colours can be defined as hex codes, or from the `iconColour` list, e.g. `{ \"BUG\":\"red\", \"FIXME\":\"#A188FF\" }`~~<  \n*Deprecated - use defaultHighlight and customHighlight instead*"
                 },
                 "todo-tree.icons": {
                     "type": "object",
                     "default": {},
-                    "description": "Use alternate icons from the octicons set for specified tags, e.g.  { \"TODO\":\"flame\", \"FIXME\":\"bug\" }"
+                    "markdownDescription": "~~Use alternate icons from the octicons set for specified tags, e.g. `{ \"TODO\":\"flame\", \"FIXME\":\"bug\" }`~~  \n*Deprecated - use defaultHighlight and customHighlight instead*"
                 },
                 "todo-tree.debug": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Turn on diagnostic logging (reload required)"
+                    "markdownDescription": "Turn on diagnostic logging (reload required)"
                 },
                 "todo-tree.ripgrepArgs": {
                     "type": "string",
-                    "description": "Additional arguments to pass to ripgrep (Use with caution!)",
-                    "default": ""
+                    "default": "",
+                    "markdownDescription": "Additional arguments to pass to ripgrep (Use with caution!)"
                 },
                 "todo-tree.showInExplorer": {
                     "type": "boolean",
-                    "description": "If true, show the tree in the explorer. Set to false if you only want to use the dedicated tree in the activity bar",
-                    "default": true
+                    "default": true,
+                    "markdownDescription": "If true, show the tree in the explorer. Set to false if you only want to use the dedicated tree in the activity bar"
                 },
                 "todo-tree.filterCaseSensitive": {
                     "type": "boolean",
-                    "description": "Set to true if you want the filtering to be case sensitive",
-                    "default": false
+                    "default": false,
+                    "markdownDescription": "Set to true if you want the filtering to be case sensitive"
                 },
                 "todo-tree.autoRefresh": {
                     "type": "boolean",
-                    "description": "Set to true if you would rather the tree was not refreshed automatically",
-                    "default": true
+                    "default": true,
+                    "markdownDescription": "Set to true if you would rather the tree was not refreshed automatically"
                 },
                 "todo-tree.highlight": {
                     "type": "string",
@@ -278,53 +278,53 @@
                         "text",
                         "line"
                     ],
-                    "description": "Enable highlighting of tags within files",
-                    "default": "none"
+                    "default": "none",
+                    "markdownDescription": "~~Enable highlighting of tags within files~~  \n*Deprecated - use defaultHighlight and customHighlight instead*"
                 },
                 "todo-tree.highlightDelay": {
                     "type": "integer",
-                    "description": "Delay before highlighting tags within files (milliseconds)",
-                    "default": 500
+                    "default": 500,
+                    "markdownDescription": "Delay before highlighting tags within files (milliseconds)"
                 },
                 "todo-tree.showTagsFromOpenFilesOnly": {
                     "type": "boolean",
-                    "description": "Disable scanning of the workspace for TODOs",
-                    "default": false
+                    "default": false,
+                    "markdownDescription": "Disable scanning of the workspace for TODOs"
                 },
                 "todo-tree.ripgrepMaxBuffer": {
                     "type": "integer",
-                    "description": "Size of the buffer to use for retrieving output from ripgrep (kilobytes)",
-                    "default": 200
+                    "default": 200,
+                    "markdownDescription": "Size of the buffer to use for retrieving output from ripgrep (kilobytes)"
                 },
                 "todo-tree.trackFile": {
                     "type": "boolean",
-                    "description": "If enabled, the current file is tracked in the tree view",
-                    "default": true
+                    "default": true,
+                    "markdownDescription": "If enabled, the current file is tracked in the tree view"
                 },
                 "todo-tree.defaultHighlight": {
                     "type": "object",
-                    "description": "Default configuration for highlighting, see https://github.com/Gruntfuggly/todo-tree#highlighting",
-                    "default": {}
+                    "default": {},
+                    "markdownDescription": "Default configuration for highlighting. [Read more...](https://github.com/Gruntfuggly/todo-tree#highlighting)"
                 },
                 "todo-tree.customHighlight": {
                     "type": "object",
-                    "description": "Custom configuration for highlighting, see https://github.com/Gruntfuggly/todo-tree#highlighting",
-                    "default": {}
+                    "default": {},
+                    "markdownDescription": "Custom configuration for highlighting, [Read more...](https://github.com/Gruntfuggly/todo-tree#highlighting)"
                 },
                 "todo-tree.expanded": {
                     "type": "boolean",
-                    "description": "Set to true if you want the tree to be fully expanded by default",
-                    "default": false
+                    "default": false,
+                    "markdownDescription": "Set to true if you want the tree to be fully expanded by default"
                 },
                 "todo-tree.grouped": {
                     "type": "boolean",
-                    "description": "Set to true if you want the tree to be grouped by tag by default",
-                    "default": false
+                    "default": false,
+                    "markdownDescription": "Set to true if you want the tree to be grouped by tag by default"
                 },
                 "todo-tree.flat": {
                     "type": "boolean",
-                    "description": "Set to true to show a flat list of files by default",
-                    "default": false
+                    "default": false,
+                    "markdownDescription": "Set to true to show a flat list of files by default"
                 }
             }
         }
