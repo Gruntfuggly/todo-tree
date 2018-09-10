@@ -14,13 +14,15 @@ Highlighting tags is configurable. Use `defaultHighlight` to set up highlights f
 
 Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
-`foreground` - used to set the colour of the icon in the tree view, the foreground colour of the highlight in the editor and the marker in the ruler.
+`foreground` - used to set the foreground colour of the highlight in the editor and the marker in the ruler.
 
 `background` - used to set the background colour of the highlight in the editor.
 
 Foreground and background colours can be one of "red", "green", "blue", "yellow", "magenta", "cyan" or "grey". RGB values can also be used.
 
 `icon` - used to set a different icon in the tree view. Must be a valid octicon - will default to a tick if it's not.
+
+`iconColour` - used to set the colour of the icon in the tree. If not specified, it will try to use the foreground colour, the background colour and then the older settings, in that order.
 
 `type` - used to control how much is highlighted in the editor. Valid values are:
 
@@ -35,7 +37,8 @@ Example:
     "icon": "alert",
     "type": "text",
     "foreground": "red",
-    "background": "white"
+    "background": "white",
+    "iconColour": "blue"
 },
 customHighlight: " {
     "TODO": {
@@ -43,7 +46,8 @@ customHighlight: " {
         "type": "line"
     },
     "FIXME": {
-        "foreground": "black"
+        "foreground": "black",
+        "iconColour": "yellow"
     }
 }
 ```

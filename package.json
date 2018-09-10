@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.85",
+    "version": "0.0.86",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -191,7 +191,7 @@
         ],
         "configuration": {
             "type": "object",
-            "title": "todo-tree configuration",
+            "title": "Todo Tree",
             "properties": {
                 "todo-tree.regex": {
                     "type": "string",
@@ -303,12 +303,12 @@
                 },
                 "todo-tree.defaultHighlight": {
                     "type": "object",
-                    "description": "Default configuration for highlighting",
+                    "description": "Default configuration for highlighting, see https://github.com/Gruntfuggly/todo-tree#highlighting",
                     "default": {}
                 },
                 "todo-tree.customHighlight": {
                     "type": "object",
-                    "description": "Custom configuration for highlighting",
+                    "description": "Custom configuration for highlighting, see https://github.com/Gruntfuggly/todo-tree#highlighting",
                     "default": {}
                 },
                 "todo-tree.expanded": {

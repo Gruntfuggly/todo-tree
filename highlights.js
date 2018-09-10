@@ -163,7 +163,7 @@ function getIconColour( tag )
     var foreground = getAttribute( tag, 'foreground', undefined );
     var background = getAttribute( tag, 'background', undefined );
 
-    return foreground ? foreground : ( background ? background : defaultIconColour );
+    return getAttribute( tag, 'iconColour', foreground ? foreground : ( background ? background : defaultIconColour ) );
 }
 
 function getType( tag )

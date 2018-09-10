@@ -1,3 +1,6 @@
+# v0.0.86 - 2018-09-10
+- Allow the icon colour to be explicit set in the custom and default highlight settings.
+
 # v0.0.85 - 2018-09-07
 - Restore 'expanded', 'flat' and 'grouped' default configuration settings  (fixes [#68](https://github.com/Gruntfuggly/todo-tree/issues/68))
 
