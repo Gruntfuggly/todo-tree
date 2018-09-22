@@ -87,7 +87,7 @@ module.exports.search = function ripGrep( cwd, options, searchTerm )
         rgPath = rgPath.replace( / /g, '\\ ' );
     }
 
-    let execString = rgPath + ' --no-messages -H --column --line-number --color never ' + options.additional;
+    let execString = rgPath + ' --no-messages --vimgrep -H --column --line-number --color never ' + options.additional;
     if( options.regex )
     {
         execString = `${execString} -e ${options.regex}`;

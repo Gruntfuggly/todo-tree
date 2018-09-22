@@ -1,3 +1,6 @@
+# v0.0.87 - 2018-09-22
+- Support multiple tags on the same line
+
 # v0.0.86 - 2018-09-10
 - Allow the icon colour to be explicit set in the custom and default highlight settings.
 

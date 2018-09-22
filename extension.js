@@ -111,10 +111,26 @@ function activate( context )
 
     function addToTree( rootFolder )
     {
+        function trimMatchesOnSameLine( dataSet )
+        {
+            dataSet.forEach( function( match )
+            {
+                dataSet.map( function( m )
+                {
+                    if( match.line === m.line && match.column < m.column )
+                    {
+                        match.match = match.match.substr( 0, m.column - 1 );
+                    }
+                } );
+            } );
+        }
+
         debug( "Found " + dataSet.length + " items" );
 
         var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
         var tagRegex = regex.indexOf( "$TAGS" ) > -1 ? new RegExp( "(" + vscode.workspace.getConfiguration( 'todo-tree' ).tags.join( "|" ) + ")" ) : undefined;
+
+        trimMatchesOnSameLine( dataSet );
 
         dataSet.sort( function compare( a, b )
         {
