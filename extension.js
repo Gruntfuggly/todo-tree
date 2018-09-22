@@ -641,7 +641,7 @@ function activate( context )
                 let match;
                 while( ( match = regex.exec( text ) ) !== null )
                 {
-                    var tag = match[ match.length - 1 ];
+                    var tag = match[ 0 ];
                     var type = highlights.getType( tag );
                     if( type !== 'none' )
                     {

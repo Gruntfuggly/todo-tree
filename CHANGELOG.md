@@ -1,3 +1,6 @@
+# v0.0.88 - 2018-09-22
+- Allow customHighlight match by regex
+
 # v0.0.87 - 2018-09-22
 - Support multiple tags on the same line
 

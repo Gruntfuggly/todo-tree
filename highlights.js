@@ -119,12 +119,25 @@ function getDecoration( tag )
 
 function getAttribute( tag, attribute, defaultValue )
 {
+    function getCustomHighlightSettings( customHighlight, tag )
+    {
+        var result;
+        Object.keys( customHighlight ).map( function( t )
+        {
+            var regex = new RegExp( t );
+            if( tag.match( regex ) )
+            {
+                result = customHighlight[ t ];
+            }
+        } );
+        return result;
+    }
+
     var config = vscode.workspace.getConfiguration( 'todo-tree' );
-    var customHighlight = config.get( 'customHighlight' );
-    var tagSettings = customHighlight[ tag ];
+    var tagSettings = getCustomHighlightSettings( config.customHighlight, tag );
     if( tagSettings && tagSettings[ attribute ] !== undefined )
     {
-        return customHighlight[ tag ][ attribute ];
+        return tagSettings[ attribute ];
     }
     else
     {
