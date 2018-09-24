@@ -637,7 +637,7 @@ function activate( context )
             if( editor )
             {
                 const text = editor.document.getText();
-                var regex = new RegExp( getRegex(), 'g' );
+                var regex = new RegExp( getRegex(), 'gm' );
                 let match;
                 while( ( match = regex.exec( text ) ) !== null )
                 {
