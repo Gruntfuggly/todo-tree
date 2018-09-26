@@ -1,3 +1,6 @@
+# v0.0.89 - 2018-09-26
+- Fix stupid label trimming error
+
 # v0.0.88 - 2018-09-22
 - Allow customHighlight match by regex
 

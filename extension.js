@@ -117,7 +117,7 @@ function activate( context )
             {
                 dataSet.map( function( m )
                 {
-                    if( match.line === m.line && match.column < m.column )
+                    if( match.file === m.file && match.line === m.line && match.column < m.column )
                     {
                         match.match = match.match.substr( 0, m.column - 1 );
                     }
