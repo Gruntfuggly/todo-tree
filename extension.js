@@ -2,25 +2,26 @@
 
 var vscode = require( 'vscode' );
 var ripgrep = require( './ripgrep' );
-var TreeView = require( "./dataProvider" );
-var fs = require( 'fs' );
 var path = require( 'path' );
 var minimatch = require( 'minimatch' );
-var highlights = require( './highlights.js' );
 
-var defaultRootFolder = "/";
-var lastRootFolder = defaultRootFolder;
+var tree = require( "./tree.js" );
+var highlights = require( './highlights.js' );
+var config = require( './config.js' );
+var utils = require( './utils.js' );
+
 var dataSet = [];
 var searchList = [];
 var currentFilter;
-var highlightTimer = {};
 var interrupted = false;
 var selectedDocument;
 
 function activate( context )
 {
-    var decorations = {};
-    var provider = new TreeView.TodoDataProvider( context, defaultRootFolder );
+    config.init( context );
+    highlights.init( context );
+
+    var provider = new tree.TreeNodeProvider( context );
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
     var outputChannel = vscode.workspace.getConfiguration( 'todo-tree' ).debug ? vscode.window.createOutputChannel( "todo-tree" ) : undefined;
 
@@ -35,91 +36,17 @@ function activate( context )
         }
     }
 
-    function exeName()
-    {
-        var isWin = /^win/.test( process.platform );
-        return isWin ? "rg.exe" : "rg";
-    }
-
-    function getRgPath()
-    {
-        var rgPath = "";
-
-        rgPath = exePathIsDefined( vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep );
-        if( rgPath ) return rgPath;
-
-        rgPath = exePathIsDefined( path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules/vscode-ripgrep/bin/", exeName() ) );
-        if( rgPath ) return rgPath;
-
-        rgPath = exePathIsDefined( path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules.asar.unpacked/vscode-ripgrep/bin/", exeName() ) );
-        if( rgPath ) return rgPath;
-
-        return rgPath;
-    }
-
-    function exePathIsDefined( rgExePath )
-    {
-        return fs.existsSync( rgExePath ) ? rgExePath : undefined;
-    }
-
-    function getRootFolder()
-    {
-        function workspaceFolder()
-        {
-            var definition;
-            var editor = vscode.window.activeTextEditor;
-            if( editor )
-            {
-                var workspace = vscode.workspace.getWorkspaceFolder( editor.document.uri );
-                if( workspace )
-                {
-                    definition = workspace.uri.fsPath;
-                }
-            }
-            return definition;
-        }
-
-        var rootFolder = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
-        if( rootFolder === "" )
-        {
-            rootFolder = workspaceFolder();
-            if( !rootFolder )
-            {
-                rootFolder = lastRootFolder;
-            }
-        }
-        else
-        {
-            var envRegex = new RegExp( "\\$\\{(.*?)\\}", "g" );
-            rootFolder = rootFolder.replace( envRegex, function( match, name )
-            {
-                if( name === "workspaceFolder" )
-                {
-                    return workspaceFolder();
-                }
-                return process.env[ name ];
-            } );
-        }
-
-        if( !rootFolder )
-        {
-            rootFolder = defaultRootFolder;
-        }
-
-        return path.resolve( rootFolder );
-    }
-
-    function addToTree( rootFolder )
+    function addToTree()
     {
         function trimMatchesOnSameLine( dataSet )
         {
-            dataSet.forEach( function( match )
+            dataSet.forEach( function( entry )
             {
-                dataSet.map( function( m )
+                dataSet.map( function( e )
                 {
-                    if( match.file === m.file && match.line === m.line && match.column < m.column )
+                    if( entry.match.file === e.match.file && entry.match.line === e.match.line && entry.match.column < e.match.column )
                     {
-                        match.match = match.match.substr( 0, m.column - 1 );
+                        entry.match.match = entry.match.match.substr( 0, e.match.column - 1 );
                     }
                 } );
             } );
@@ -127,23 +54,15 @@ function activate( context )
 
         debug( "Found " + dataSet.length + " items" );
 
-        var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
-        var flags = '';
-        if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
-        {
-            flags += 'i';
-        }
-        var tagRegex = regex.indexOf( "$TAGS" ) > -1 ? new RegExp( "(" + vscode.workspace.getConfiguration( 'todo-tree' ).tags.join( "|" ) + ")", flags ) : undefined;
-
         trimMatchesOnSameLine( dataSet );
 
         dataSet.sort( function compare( a, b )
         {
-            return a.file > b.file ? 1 : b.file > a.file ? -1 : a.line > b.line ? 1 : -1;
+            return a.match.file > b.match.file ? 1 : b.match.file > a.match.file ? -1 : a.match.line > b.match.line ? 1 : -1;
         } );
-        dataSet.map( function( match )
+        dataSet.map( function( entry )
         {
-            provider.add( rootFolder, match, tagRegex );
+            provider.add( entry.match );
         } );
 
         if( interrupted === false )
@@ -155,7 +74,7 @@ function activate( context )
         provider.refresh( true );
     }
 
-    function search( rootFolder, options, done )
+    function search( entry, options, done, doneArgument )
     {
         ripgrep.search( "/", options ).then( matches =>
         {
@@ -164,18 +83,18 @@ function activate( context )
                 matches.forEach( match =>
                 {
                     debug( " Match: " + JSON.stringify( match ) );
-                    dataSet.push( match );
+                    dataSet.push( { folder: entry.folder, rootName: entry.rootName, match: match } );
                 } );
             }
             else if( options.filename )
             {
-                dataSet.filter( match =>
+                dataSet.filter( entry =>
                 {
-                    return match.file === options.filename;
+                    return entry.match.file === options.filename;
                 } );
             }
 
-            done();
+            done( doneArgument );
 
         } ).catch( e =>
         {
@@ -185,21 +104,8 @@ function activate( context )
                 message += " (" + e.stderr + ")";
             }
             vscode.window.showErrorMessage( "todo-tree: " + message );
-            done();
+            done( doneArgument );
         } );
-    }
-
-    function getRegex()
-    {
-        var config = vscode.workspace.getConfiguration( 'todo-tree' );
-
-        var regex = config.regex;
-        if( regex.indexOf( "($TAGS)" ) > -1 )
-        {
-            regex = regex.replace( "$TAGS", config.tags.join( "|" ) );
-        }
-
-        return regex;
     }
 
     function getOptions( filename )
@@ -207,8 +113,8 @@ function activate( context )
         var config = vscode.workspace.getConfiguration( 'todo-tree' );
 
         var options = {
-            regex: "\"" + getRegex() + "\"",
-            rgPath: getRgPath()
+            regex: "\"" + utils.getRegex() + "\"",
+            rgPath: utils.getRgPath()
         };
         var globs = config.globs;
         if( globs && globs.length > 0 )
@@ -232,23 +138,35 @@ function activate( context )
         return options;
     }
 
-    function searchWorkspace( searchList )
+    function searchWorkspaces( searchList )
     {
         if( vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly !== true )
         {
-            var rootFolder = getRootFolder();
-            if( rootFolder !== defaultRootFolder )
+            vscode.workspace.workspaceFolders.map( function( folder )
             {
-                lastRootFolder = rootFolder;
-
-                searchList.push( { folder: rootFolder } );
-            }
+                searchList.push( {
+                    folder: folder.uri.path,
+                    rootName: vscode.workspace.workspaceFolders.length === 1 ? "" : folder.name
+                } );
+            } );
         }
     }
 
     function searchOutOfWorkspaceDocuments( searchList )
     {
-        var rootFolder = getRootFolder();
+        function isInWorkspace( filePath )
+        {
+            var result = false;
+            vscode.workspace.workspaceFolders.map( function( folder )
+            {
+                if( filePath.indexOf( folder.uri.fsPath ) === 0 )
+                {
+                    result = true;
+                }
+            } );
+            return result;
+        }
+
         var documents = vscode.workspace.textDocuments;
 
         documents.map( function( document, index )
@@ -256,73 +174,104 @@ function activate( context )
             if( document.uri && document.uri.scheme === "file" )
             {
                 var filePath = vscode.Uri.parse( document.uri.path ).fsPath;
-                if( rootFolder === defaultRootFolder ||
-                    !filePath.startsWith( rootFolder ) ||
+                if( !isInWorkspace( filePath ) ||
                     vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly === true )
                 {
-                    searchList.push( { file: filePath } );
+                    searchList.push( { file: filePath, folder: "/", rootName: "" } );
                 }
             }
         } );
     }
 
-    function iterateSearchList()
+    function iterateSearchList( done )
     {
         if( searchList.length > 0 )
         {
             var entry = searchList.pop();
 
-            debug( "Search: " + JSON.stringify( entry ) );
-
             if( entry.file )
             {
-                search( getRootFolder(), getOptions( entry.file ), iterateSearchList );
+                search( entry, getOptions( entry.file ), iterateSearchList, done );
             }
             else if( entry.folder )
             {
-                search( entry.folder, getOptions( entry.folder ), iterateSearchList );
+                search( entry, getOptions( entry.folder ), iterateSearchList, done );
             }
         }
         else
         {
-            addToTree( getRootFolder() );
+            addToTree();
+            if( done )
+            {
+                done();
+            }
         }
     }
 
     function rebuild()
     {
+        function getRootFolder()
+        {
+            var rootFolder = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'rootFolder' );
+            var envRegex = new RegExp( "\\$\\{(.*?)\\}", "g" );
+            rootFolder = rootFolder.replace( envRegex, function( match, name )
+            {
+                if( name === "workspaceFolder" && vscode.workspace.workspaceFolders.length === 1 )
+                {
+                    return vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
+                }
+                return process.env[ name ];
+            } );
+
+            return rootFolder;
+        }
+
         dataSet = [];
-        provider.clear();
+        searchList = [];
+
+        provider.clear( vscode.workspace.workspaceFolders );
         clearFilter();
 
         interrupted = false;
 
-        status.text = "todo-tree: Scanning " + getRootFolder() + "...";
+        status.text = "todo-tree: Scanning...";
         status.show();
         status.command = "todo-tree.stopScan";
         status.tooltip = "Click to interrupt scan";
 
-        searchOutOfWorkspaceDocuments( searchList );
-        searchWorkspace( searchList );
+        var rootFolder = getRootFolder();
+        if( rootFolder )
+        {
+            searchList.push( { folder: rootFolder, rootName: "" } );
+        }
+        else
+        {
+            searchOutOfWorkspaceDocuments( searchList );
+            searchWorkspaces( searchList );
+        }
 
-        iterateSearchList( searchList );
+        iterateSearchList();
     }
 
-    function setButtons()
+    function setButtonsAndContext()
     {
         var c = vscode.workspace.getConfiguration( 'todo-tree' );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', c.get( 'expanded', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', c.get( 'flat', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-grouped', context.workspaceState.get( 'grouped', c.get( 'grouped', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-filtered', context.workspaceState.get( 'filtered', false ) );
+
+        var children = provider.getChildren();
+        var empty = children.length === 1 && children[ 0 ].empty === true;
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', empty === false );
     }
 
-    function refreshFile( filename )
+    function refreshFile( filename, done )
     {
-        provider.clear();
-        dataSet = dataSet.filter( match =>
+        provider.clear( vscode.workspace.workspaceFolders );
+        dataSet = dataSet.filter( entry =>
         {
-            return match.file !== filename;
+            return entry.match.file !== filename;
         } );
 
         var globs = vscode.workspace.getConfiguration( 'todo-tree' ).globs;
@@ -339,48 +288,25 @@ function activate( context )
         }
         if( add === true )
         {
-            searchList = [ { file: filename } ];
-            iterateSearchList();
+            searchList = [ { file: filename, folder: "/", rootName: "" } ];
+            iterateSearchList( done );
         }
     }
 
     function refresh()
     {
-        provider.clear();
+        provider.clear( vscode.workspace.workspaceFolders );
         provider.rebuild();
-        addToTree( getRootFolder() );
-        setButtons();
+        addToTree();
+        setButtonsAndContext();
     }
 
-    function showFlatView()
-    {
-        context.workspaceState.update( 'flat', true ).then( refresh );
-    }
-
-    function showTreeView()
-    {
-        context.workspaceState.update( 'flat', false ).then( refresh );
-    }
-
-    function collapse()
-    {
-        context.workspaceState.update( 'expanded', false ).then( refresh );
-    }
-
-    function expand()
-    {
-        context.workspaceState.update( 'expanded', true ).then( refresh );
-    }
-
-    function groupByTag()
-    {
-        context.workspaceState.update( 'grouped', true ).then( refresh );
-    }
-
-    function ungroupByTag()
-    {
-        context.workspaceState.update( 'grouped', false ).then( refresh );
-    }
+    function showFlatView() { context.workspaceState.update( 'flat', true ).then( refresh ); }
+    function showTreeView() { context.workspaceState.update( 'flat', false ).then( refresh ); }
+    function collapse() { context.workspaceState.update( 'expanded', false ).then( refresh ); }
+    function expand() { context.workspaceState.update( 'expanded', true ).then( refresh ); }
+    function groupByTag() { context.workspaceState.update( 'grouped', true ).then( refresh ); }
+    function ungroupByTag() { context.workspaceState.update( 'grouped', false ).then( refresh ); }
 
     function clearFilter()
     {
@@ -388,7 +314,7 @@ function activate( context )
         context.workspaceState.update( 'filtered', false );
         provider.clearFilter();
         provider.refresh();
-        setButtons();
+        setButtonsAndContext();
     }
 
     function addTag()
@@ -466,10 +392,37 @@ function activate( context )
             }
         }
 
-        migrateSettings();
+        function showInTree( uri )
+        {
+            if( vscode.workspace.getConfiguration( 'todo-tree' ).trackFile === true )
+            {
+                provider.getElement( uri.fsPath, function( element )
+                {
+                    if( todoTreeViewExplorer.visible === true )
+                    {
+                        todoTreeViewExplorer.reveal( element, { focus: false, select: true } );
+                    }
+                    if( todoTreeView.visible === true )
+                    {
+                        todoTreeView.reveal( element, { focus: false, select: true } );
+                    }
+                } );
+            }
+        }
+
+        function documentChanged( document )
+        {
+            vscode.window.visibleTextEditors.map( editor =>
+            {
+                if( document === editor.document )
+                {
+                    highlights.triggerHighlight( editor );
+                }
+            } );
+        }
 
         // We can't do anything if we can't find ripgrep
-        if( !getRgPath() )
+        if( !utils.getRgPath() )
         {
             vscode.window.showErrorMessage( "todo-tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
             return;
@@ -492,7 +445,7 @@ function activate( context )
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filter', function()
         {
-            vscode.window.showInputBox( { prompt: "Filter TODOs" } ).then(
+            vscode.window.showInputBox( { prompt: "Filter tree" } ).then(
                 function( term )
                 {
                     currentFilter = term;
@@ -501,7 +454,7 @@ function activate( context )
                         context.workspaceState.update( 'filtered', true );
                         provider.filter( currentFilter );
                         provider.refresh();
-                        setButtons();
+                        setButtonsAndContext();
                     }
                 } );
         } ) );
@@ -534,28 +487,18 @@ function activate( context )
                 {
                     debug( "onDidChangeActiveTextEditor (uri:" + JSON.stringify( e.document.uri ) + ")" );
 
-                    var workspace = vscode.workspace.getWorkspaceFolder( e.document.uri );
-                    var configuredWorkspace = vscode.workspace.getConfiguration( 'todo-tree' ).rootFolder;
-
-                    if( !workspace || configuredWorkspace )
+                    if( e.document.uri && e.document.uri.scheme === "file" )
                     {
-                        if( e.document.uri && e.document.uri.scheme === "file" )
+                        refreshFile( e.document.fileName, function()
                         {
-                            refreshFile( e.document.fileName );
-                        }
-                    }
-                    else if( workspace.uri && ( workspace.uri.fsPath !== lastRootFolder ) )
-                    {
-                        rebuild();
+                            if( selectedDocument !== e.document.fileName )
+                            {
+                                showInTree( e.document.uri );
+                            }
+                            selectedDocument = undefined;
+                        } );
                     }
                 }
-
-                if( selectedDocument !== e.document.fileName )
-                {
-                    showInTree( e.document.fileName );
-                }
-
-                selectedDocument = undefined;
 
                 documentChanged( e.document );
             }
@@ -601,7 +544,6 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.ripgrep" ) ||
                     e.affectsConfiguration( "todo-tree.ripgrepArgs" ) ||
                     e.affectsConfiguration( "todo-tree.ripgrepMaxBuffer" ) ||
-                    e.affectsConfiguration( "todo-tree.rootFolder" ) ||
                     e.affectsConfiguration( "todo-tree.showTagsFromOpenFilesOnly" ) ||
                     e.affectsConfiguration( "todo-tree.tags" ) )
                 {
@@ -610,121 +552,23 @@ function activate( context )
                 }
                 else
                 {
-                    provider.clear();
+                    provider.clear( vscode.workspace.workspaceFolders );
                     provider.rebuild();
-                    addToTree( getRootFolder() );
+                    addToTree();
                     documentChanged();
                 }
 
                 vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
-                setButtons();
+                setButtonsAndContext();
             }
         } ) );
 
-        function showInTree( filename )
+        context.subscriptions.push( vscode.workspace.onDidChangeWorkspaceFolders( function()
         {
-            if( vscode.workspace.getConfiguration( 'todo-tree' ).trackFile === true )
-            {
-                var element = provider.getElement( getRootFolder(), filename );
-                if( element )
-                {
-                    if( todoTreeViewExplorer.visible === true )
-                    {
-                        todoTreeViewExplorer.reveal( element, { focus: false, select: true } );
-                    }
-                    if( todoTreeView.visible === true )
-                    {
-                        todoTreeView.reveal( element, { focus: false, select: true } );
-                    }
-                }
-            }
-        }
-
-        function highlight( editor )
-        {
-            var documentHighlights = {};
-
-            if( editor )
-            {
-                const text = editor.document.getText();
-                var flags = 'gm';
-                if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
-                {
-                    flags += 'i';
-                }
-                var regex = new RegExp( getRegex(), flags );
-                let match;
-                while( ( match = regex.exec( text ) ) !== null )
-                {
-                    var tag = match[ 0 ];
-                    var type = highlights.getType( tag );
-                    if( type !== 'none' )
-                    {
-                        var startPos = editor.document.positionAt( match.index );
-                        var endPos = editor.document.positionAt( match.index + match[ 0 ].length );
-
-                        if( type === 'text' )
-                        {
-                            endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
-                        }
-
-                        if( type === 'line' )
-                        {
-                            endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
-                            startPos = new vscode.Position( endPos.line, 0 );
-                        }
-
-                        const decoration = { range: new vscode.Range( startPos, endPos ) };
-                        if( documentHighlights[ tag ] === undefined )
-                        {
-                            documentHighlights[ tag ] = [];
-                        }
-                        documentHighlights[ tag ].push( decoration );
-                    }
-                }
-
-                if( decorations[ editor.id ] )
-                {
-                    decorations[ editor.id ].forEach( decoration =>
-                    {
-                        decoration.dispose();
-                    } );
-                }
-
-                decorations[ editor.id ] = [];
-                Object.keys( documentHighlights ).forEach( tag =>
-                {
-                    var decoration = highlights.getDecoration( tag );
-                    decorations[ editor.id ].push( decoration );
-                    editor.setDecorations( decoration, documentHighlights[ tag ] );
-                } );
-            }
-        }
-
-        function triggerHighlight( editor )
-        {
-            if( editor )
-            {
-                if( highlightTimer[ editor.id ] )
-                {
-                    clearTimeout( highlightTimer[ editor.id ] );
-                }
-                highlightTimer[ editor.id ] = setTimeout( highlight, vscode.workspace.getConfiguration( 'todo-tree' ).highlightDelay, editor );
-            }
-        }
-
-        function documentChanged( document )
-        {
-            var visibleEditors = vscode.window.visibleTextEditors;
-
-            visibleEditors.map( editor =>
-            {
-                if( document === undefined || document === editor.document )
-                {
-                    triggerHighlight( editor );
-                }
-            } );
-        }
+            provider.clear( vscode.workspace.workspaceFolders );
+            provider.rebuild();
+            rebuild();
+        } ) );
 
         context.subscriptions.push( vscode.workspace.onDidChangeTextDocument( function( e )
         {
@@ -732,13 +576,13 @@ function activate( context )
         } ) );
 
         context.subscriptions.push( outputChannel );
-        context.subscriptions.push( decorations );
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
 
         highlights.refreshComplementaryColours();
 
-        setButtons();
+        migrateSettings();
+        setButtonsAndContext();
         rebuild();
 
         if( vscode.window.activeTextEditor )

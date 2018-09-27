@@ -99,8 +99,8 @@
         "commands": [
             {
                 "command": "todo-tree.showFlatView",
-                "title": "Show flat view",
-                "category": "todo-tree",
+                "title": "Show Flat View",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/flat.svg",
                     "light": "resources/icons/light/flat.svg"
@@ -108,8 +108,8 @@
             },
             {
                 "command": "todo-tree.showTreeView",
-                "title": "Show tree view",
-                "category": "todo-tree",
+                "title": "Show Tree View",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/tree.svg",
                     "light": "resources/icons/light/tree.svg"
@@ -118,7 +118,7 @@
             {
                 "command": "todo-tree.refresh",
                 "title": "Refresh",
-                "category": "todo-tree",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/refresh.svg",
                     "light": "resources/icons/light/refresh.svg"
@@ -126,8 +126,8 @@
             },
             {
                 "command": "todo-tree.expand",
-                "title": "Expand all",
-                "category": "todo-tree",
+                "title": "Expand Tree",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/expand.svg",
                     "light": "resources/icons/light/expand.svg"
@@ -135,8 +135,8 @@
             },
             {
                 "command": "todo-tree.collapse",
-                "title": "Collapse all",
-                "category": "todo-tree",
+                "title": "Collapse Tree",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/collapse.svg",
                     "light": "resources/icons/light/collapse.svg"
@@ -144,8 +144,8 @@
             },
             {
                 "command": "todo-tree.filter",
-                "title": "Filter",
-                "category": "todo-tree",
+                "title": "Filter Tree",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/filter.svg",
                     "light": "resources/icons/light/filter.svg"
@@ -153,8 +153,8 @@
             },
             {
                 "command": "todo-tree.filterClear",
-                "title": "Clear filter",
-                "category": "todo-tree",
+                "title": "Clear Filter",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/clear-filter.svg",
                     "light": "resources/icons/light/clear-filter.svg"
@@ -163,7 +163,7 @@
             {
                 "command": "todo-tree.groupByTag",
                 "title": "Group by Tag",
-                "category": "todo-tree",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/tag.svg",
                     "light": "resources/icons/light/tag.svg"
@@ -172,7 +172,7 @@
             {
                 "command": "todo-tree.ungroupByTag",
                 "title": "Ungroup by Tag",
-                "category": "todo-tree",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/notag.svg",
                     "light": "resources/icons/light/notag.svg"
@@ -181,12 +181,12 @@
             {
                 "command": "todo-tree.addTag",
                 "title": "Add Tag",
-                "category": "todo-tree"
+                "category": "Todo Tree"
             },
             {
                 "command": "todo-tree.removeTag",
                 "title": "Remove Tag",
-                "category": "todo-tree"
+                "category": "Todo Tree"
             }
         ],
         "configuration": {

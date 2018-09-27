@@ -1,5 +1,7 @@
 var vscode = require( 'vscode' );
 
+var utils = require( './utils.js' );
+
 var defaultColours = [ "red", "green", "blue", "yellow", "magenta", "cyan", "grey" ];
 
 var defaultLightColours = {
@@ -23,6 +25,13 @@ var defaultDarkColours = {
 };
 
 var complementaryColours = {};
+var decorations = {};
+var highlightTimer = {};
+
+function init( context )
+{
+    context.subscriptions.push( decorations );
+}
 
 function isHexColour( colour )
 {
@@ -241,6 +250,80 @@ function refreshComplementaryColours()
     } );
 }
 
+function highlight( editor )
+{
+    var documentHighlights = {};
+
+    if( editor )
+    {
+        var text = editor.document.getText();
+        var flags = 'gm';
+        if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
+        {
+            flags += 'i';
+        }
+        var regex = new RegExp( utils.getRegex(), flags );
+        var match;
+        while( ( match = regex.exec( text ) ) !== null )
+        {
+            var tag = match[ 0 ];
+            var type = getType( tag );
+            if( type !== 'none' )
+            {
+                var startPos = editor.document.positionAt( match.index );
+                var endPos = editor.document.positionAt( match.index + match[ 0 ].length );
+
+                if( type === 'text' )
+                {
+                    endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
+                }
+
+                if( type === 'line' )
+                {
+                    endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
+                    startPos = new vscode.Position( endPos.line, 0 );
+                }
+
+                var decoration = { range: new vscode.Range( startPos, endPos ) };
+                if( documentHighlights[ tag ] === undefined )
+                {
+                    documentHighlights[ tag ] = [];
+                }
+                documentHighlights[ tag ].push( decoration );
+            }
+        }
+
+        if( decorations[ editor.id ] )
+        {
+            decorations[ editor.id ].forEach( decoration =>
+            {
+                decoration.dispose();
+            } );
+        }
+
+        decorations[ editor.id ] = [];
+        Object.keys( documentHighlights ).forEach( tag =>
+        {
+            var decoration = getDecoration( tag );
+            decorations[ editor.id ].push( decoration );
+            editor.setDecorations( decoration, documentHighlights[ tag ] );
+        } );
+    }
+}
+
+function triggerHighlight( editor )
+{
+    if( editor )
+    {
+        if( highlightTimer[ editor.id ] )
+        {
+            clearTimeout( highlightTimer[ editor.id ] );
+        }
+        highlightTimer[ editor.id ] = setTimeout( highlight, vscode.workspace.getConfiguration( 'todo-tree' ).highlightDelay, editor );
+    }
+}
+
+module.exports.init = init;
 module.exports.getForeground = getForeground;
 module.exports.getBackground = getBackground;
 module.exports.getIcon = getIcon;
@@ -249,6 +332,6 @@ module.exports.getType = getType;
 module.exports.getOtherColours = getOtherColours;
 module.exports.getDecoration = getDecoration;
 module.exports.refreshComplementaryColours = refreshComplementaryColours;
-
+module.exports.triggerHighlight = triggerHighlight;
 
 
