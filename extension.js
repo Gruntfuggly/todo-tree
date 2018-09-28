@@ -474,7 +474,7 @@ function activate( context )
                 {
                     var position = new vscode.Position( line, 0 );
                     editor.selection = new vscode.Selection( position, position );
-                    editor.revealRange( editor.selection, vscode.TextEditorRevealType.Default );
+                    editor.revealRange( editor.selection, vscode.TextEditorRevealType.InCenter );
                     vscode.commands.executeCommand( 'workbench.action.focusActiveEditorGroup' );
                 } );
             } );
