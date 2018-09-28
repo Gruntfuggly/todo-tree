@@ -1,3 +1,7 @@
+# v0.0.90 - 2018-09-28
+- Allow proper highlighting without using tags setting
+- Reveal items in the middle of the window ([#76](https://github.com/Gruntfuggly/todo-tree/issues/76)
+
 # v0.0.89 - 2018-09-26
 - Fix stupid label trimming error
 
