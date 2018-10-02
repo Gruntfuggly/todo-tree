@@ -63,6 +63,13 @@ class TodoDataProvider
             var roots = elements.filter( e => e.visible );
             if( roots.length > 0 )
             {
+                if( this._context.workspaceState.get( 'grouped', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'grouped', false ) ) )
+                {
+                    roots.sort( function( a, b )
+                    {
+                        return a.name > b.name;
+                    } );
+                }
                 return roots;
             }
             return [ { name: "Nothing found" } ];

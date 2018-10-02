@@ -1,3 +1,6 @@
+# v0.0.91 - 2018-10-02
+- Sort tree alphabetically when grouping by tag
+
 # v0.0.90 - 2018-09-28
 - Allow proper highlighting without using tags setting
 - Reveal items in the middle of the window ([#76](https://github.com/Gruntfuggly/todo-tree/issues/76)
