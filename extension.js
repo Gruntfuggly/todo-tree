@@ -128,7 +128,12 @@ function activate( context )
         debug( "Found " + dataSet.length + " items" );
 
         var regex = vscode.workspace.getConfiguration( 'todo-tree' ).regex;
-        var tagRegex = regex.indexOf( "$TAGS" ) > -1 ? new RegExp( "(" + vscode.workspace.getConfiguration( 'todo-tree' ).tags.join( "|" ) + ")" ) : undefined;
+        var flags = '';
+        if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
+        {
+            flags += 'i';
+        }
+        var tagRegex = regex.indexOf( "$TAGS" ) > -1 ? new RegExp( "(" + vscode.workspace.getConfiguration( 'todo-tree' ).tags.join( "|" ) + ")", flags ) : undefined;
 
         trimMatchesOnSameLine( dataSet );
 
@@ -218,6 +223,11 @@ function activate( context )
         options.outputChannel = outputChannel;
         options.additional = config.ripgrepArgs;
         options.maxBuffer = config.ripgrepMaxBuffer;
+
+        if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
+        {
+            options.additional += '-i ';
+        }
 
         return options;
     }
@@ -637,7 +647,12 @@ function activate( context )
             if( editor )
             {
                 const text = editor.document.getText();
-                var regex = new RegExp( getRegex(), 'gm' );
+                var flags = 'gm';
+                if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
+                {
+                    flags += 'i';
+                }
+                var regex = new RegExp( getRegex(), flags );
                 let match;
                 while( ( match = regex.exec( text ) ) !== null )
                 {

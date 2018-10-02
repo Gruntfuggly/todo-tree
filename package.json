@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.91",
+    "version": "0.0.92",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -255,6 +255,11 @@
                     "default": "",
                     "markdownDescription": "Additional arguments to pass to ripgrep (Use with caution!)"
                 },
+                "todo-tree.regexCaseSensitive": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Use a case sensitive regular expression"
+                },
                 "todo-tree.showInExplorer": {
                     "type": "boolean",
                     "default": true,
@@ -263,7 +268,7 @@
                 "todo-tree.filterCaseSensitive": {
                     "type": "boolean",
                     "default": false,
-                    "markdownDescription": "Set to true if you want the filtering to be case sensitive"
+                    "markdownDescription": "Set to true if you want the view filtering to be case sensitive"
                 },
                 "todo-tree.autoRefresh": {
                     "type": "boolean",

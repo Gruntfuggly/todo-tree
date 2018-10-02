@@ -1,3 +1,6 @@
+# v0.0.92 - 2018-10-02
+- Add support for case insensitive tag matching
+
 # v0.0.91 - 2018-10-02
 - Sort tree alphabetically when grouping by tag
 

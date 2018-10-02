@@ -124,7 +124,13 @@ function getAttribute( tag, attribute, defaultValue )
         var result;
         Object.keys( customHighlight ).map( function( t )
         {
-            var regex = new RegExp( t );
+            var flags = '';
+            if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
+            {
+                flags += 'i';
+            }
+            var regex = new RegExp( t, flags );
+
             if( tag.match( regex ) )
             {
                 result = customHighlight[ t ];
