@@ -1,0 +1,81 @@
+/* 0.5.5> review clubs, teams, groups, users.
+write a test script for create delete and see if all keys are still in sync
+*/
+
+/*
+backlog1> Add news feed section
+- notifications
+- following
+- announcements */
+
+/*
+backlog1> optimize arango queries
+set indexes etc. */
+
+/*
+backlog1> add weight to repetitions
+skill is strength ? exercise allows for weight set.
+workout lbs vs metric. How to round when switching.
+https://github.com/ben-ng/convert-units */
+
+/*
+backlog1> create a radarchart of indexes
+with a selectable time frame (last 7 days, last month, last quarter)
+ballControlIndex = hours/perday
+strengthIndex = hoursxweight/ perday
+enduranceIndex = hours/perday
+scoreIndex = maxscore per skill / nr of skills */
+
+/*
+backlog2> Buglist connected to Bitbucket API
+Users should be able to report bugs
+in the app: title: 'something[_key]'
+in bitbucket : title 'something[_key]'
+keep app in sync with title _key using bitbucket API
+link duplicates within the app. only the master links to bitbucket */
+
+/* backlog2> Official coaches can make them self available for tests
+location
+days/hours available
+players can search for nearby coaches, requests can choose slots of 5 min?
+*/
+
+/* proposal> make req.broadcast = [] so we can broadcast certain actions
+multiple times serverside
+Right now we have to use methodCB on the client to initiate another actions
+Not sure if there's a use case for this. */
+
+/*
+backlog1> socket.onConnect, then get data with modified date after last
+connection
+When someone goes offline we need to timestamp it.
+(this can be done onDisconnect() server side, set dateOffline)
+Use this timestamp to get all modified data from the server,
+when reconnecting again
+for r in skill filter r.dateModified > dateOffline */[image: image.png]
+
+/*
+backlog2> stripe payments */
+
+/*
+backlog1> Auto notification, invite to do a game after one hour practice
+Build a cron job that queries per skill, and finds users
+with total practice time after last test. */
+
+/* backlog2> Put findList inside getters?
+advantage: auto fetch from server.
+tricky: need to put treshhold on it. (findRecord already works via
+session._key..) */
+
+/*
+backlog2>
+Add navmenu's in Help section
+example: (use scroll links)
+in HelpSkill add HelpSkillList, HelpSkillDemo, HelpSkillPractice etc.. */
+
+/*
+backlog2> Rename requestSet
+editBuckets getBuckets?? */
+
+/* investigate> Do we need to filter AccountUsergroup in yearSeason?
+will currently show all history (prev seasons) */

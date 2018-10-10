@@ -1,0 +1,21 @@
+
+
+
+/headerreport
+ipsum lorum
+«/CheckPath.Function»
+«/GetBo.Normal»
+/
+
+/ErrorMSG.Return
+/
+
+/CheckPath.Function
+ipsum lorum
+/
+
+/GetBo.Normal
+ipsum lorum
+/
+
+// TODO
