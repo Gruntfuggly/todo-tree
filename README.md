@@ -33,14 +33,14 @@ Foreground and background colours can be one of "red", "green", "blue", "yellow"
 Example:
 
 ```
-"defaultHighlight": {
+"todo-tree.defaultHighlight": {
     "icon": "alert",
     "type": "text",
     "foreground": "red",
     "background": "white",
     "iconColour": "blue"
 },
-customHighlight: " {
+"todo-tree.customHighlight": {
     "TODO": {
         "icon": "check",
         "type": "line"
