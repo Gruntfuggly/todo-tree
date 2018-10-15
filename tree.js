@@ -240,7 +240,11 @@ class TreeNodeProvider
 
         if( node.fsPath )
         {
-            treeItem.resourceUri = new vscode.Uri.file( node.fsPath );
+            if( config.showBadges() )
+            {
+                treeItem.resourceUri = new vscode.Uri.file( node.fsPath );
+            }
+
             treeItem.tooltip = node.fsPath;
 
             if( node.type === PATH )

@@ -27,8 +27,14 @@ function showFilterCaseSensitive()
     return vscode.workspace.getConfiguration( 'todo-tree' ).get( 'filterCaseSensitive', false );
 }
 
+function showBadges()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree' ).get( 'showBadges', false );
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
 module.exports.shouldFlatten = shouldFlatten;
 module.exports.showFilterCaseSensitive = showFilterCaseSensitive;
+module.exports.showBadges = showBadges;

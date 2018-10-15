@@ -306,6 +306,11 @@
                     "default": true,
                     "markdownDescription": "If enabled, the current file is tracked in the tree view"
                 },
+                "todo-tree.showBadges": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "If enabled, badges and SCM state are shown in the tree view"
+                },
                 "todo-tree.defaultHighlight": {
                     "type": "object",
                     "default": {},
