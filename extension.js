@@ -272,6 +272,7 @@ function activate( context )
 
     function refreshFile( filename, done )
     {
+        provider.rebuild();
         provider.clear( vscode.workspace.workspaceFolders );
         dataSet = dataSet.filter( entry =>
         {
@@ -521,11 +522,14 @@ function activate( context )
 
         context.subscriptions.push( vscode.workspace.onDidCloseTextDocument( e =>
         {
-            if( e.uri.scheme === "file" && e.isClosed !== true )
+            if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
             {
-                if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
+                if( e.uri.scheme === "file" && vscode.workspace.getWorkspaceFolder( vscode.Uri.file( e.fileName ) ) === undefined )
                 {
-                    refreshFile( e.fileName );
+                    dataSet = dataSet.filter( entry =>
+                    {
+                        return entry.match.file !== e.fileName;
+                    } );
                 }
             }
         } ) );
