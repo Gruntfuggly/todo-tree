@@ -28,6 +28,10 @@ function activate( context )
     var todoTreeViewExplorer = vscode.window.createTreeView( "todo-tree-view-explorer", { treeDataProvider: provider } );
     var todoTreeView = vscode.window.createTreeView( "todo-tree-view", { treeDataProvider: provider } );
 
+    context.subscriptions.push( provider );
+    context.subscriptions.push( todoTreeViewExplorer );
+    context.subscriptions.push( todoTreeView );
+
     function debug( text )
     {
         if( outputChannel )
@@ -596,6 +600,7 @@ function activate( context )
 
 function deactivate()
 {
+    provider.clear( [] );
 }
 
 exports.activate = activate;
