@@ -241,7 +241,7 @@ class TreeNodeProvider
 
         if( node.fsPath )
         {
-            if( config.showBadges() )
+            if( config.showBadges() && !node.tag )
             {
                 treeItem.resourceUri = new vscode.Uri.file( node.fsPath );
             }
