@@ -194,7 +194,8 @@ class TreeNodeProvider
     {
         if( node === undefined )
         {
-            var rootNodes = nodes.filter( isVisible );
+            var rootNodes = nodes.length === 1 ? nodes[ 0 ].nodes : nodes;
+            rootNodes = rootNodes.filter( isVisible );
             if( rootNodes.length > 0 )
             {
                 if( config.shouldGroup() )
