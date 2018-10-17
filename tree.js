@@ -194,7 +194,7 @@ class TreeNodeProvider
     {
         if( node === undefined )
         {
-            var rootNodes = nodes.length === 1 ? nodes[ 0 ].nodes : nodes;
+            var rootNodes = nodes.length === 10000 ? nodes[ 0 ].nodes : nodes;
             rootNodes = rootNodes.filter( isVisible );
             if( rootNodes.length > 0 )
             {
@@ -390,6 +390,47 @@ class TreeNodeProvider
             todoNode.parent = childNode;
             childNode.todos.push( todoNode );
         }
+    }
+
+    reset( filename, children )
+    {
+        if( children === undefined )
+        {
+            children = nodes;
+        }
+        children.forEach( function( child )
+        {
+            if( child.nodes !== undefined )
+            {
+                this.reset( filename, child.nodes );
+            }
+            if( child.fsPath === filename )
+            {
+                child.todos = [];
+            }
+        }, this );
+    }
+
+    remove( filename, children )
+    {
+        var root = children === undefined;
+        if( children === undefined )
+        {
+            children = nodes;
+        }
+        children = children.filter( function( child )
+        {
+            if( child.nodes !== undefined )
+            {
+                child.nodes = this.remove( filename, child.nodes );
+            }
+            return child.fsPath !== filename;
+        }, this );
+        if( root )
+        {
+            nodes = children;
+        }
+        return children;
     }
 
     getElement( filename, found, children )
