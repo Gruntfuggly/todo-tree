@@ -236,11 +236,13 @@ class TreeNodeProvider
         let treeItem = new vscode.TreeItem( node.label + ( node.pathLabel ? ( " " + node.pathLabel ) : "" ) );
 
         treeItem.id = node.id;
+        treeItem.fsPath = node.fsPath;
 
         treeItem.collapsibleState = vscode.TreeItemCollapsibleState.None;
 
         if( node.fsPath )
         {
+            treeItem.node = node;
             if( config.showBadges() && !node.tag )
             {
                 treeItem.resourceUri = new vscode.Uri.file( node.fsPath );
@@ -250,7 +252,14 @@ class TreeNodeProvider
 
             if( node.type === PATH )
             {
-                treeItem.collapsibleState = config.shouldExpand() ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
+                if( node.expanded !== undefined )
+                {
+                    treeItem.collapsibleState = ( node.expanded === true ) ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
+                }
+                else
+                {
+                    treeItem.collapsibleState = config.shouldExpand() ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
+                }
 
                 if( node.isWorkspaceNode || node.tag )
                 {
@@ -384,6 +393,8 @@ class TreeNodeProvider
         {
             childNode.todos = [];
         }
+
+        childNode.expanded = result.expanded;
 
         if( childNode.todos.find( findTodoNode, todoNode ) === undefined )
         {

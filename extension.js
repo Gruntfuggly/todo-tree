@@ -381,6 +381,7 @@ function activate( context )
 
         function showInTree( uri )
         {
+            // TODO Test removal of out of workspace file after workspace removed
             if( vscode.workspace.getConfiguration( 'todo-tree' ).trackFile === true )
             {
                 provider.getElement( uri.fsPath, function( element )
@@ -454,6 +455,23 @@ function activate( context )
             status.command = "todo-tree.refresh";
             interrupted = true;
         } ) );
+
+        function setExpanded( element, expanded )
+        {
+            console.log( JSON.stringify( element.fsPath ) + ":" + expanded );
+            searchResults.forEach( function( result )
+            {
+                if( result.file.indexOf( element.fsPath ) > -1 )
+                {
+                    result.expanded = expanded;
+                }
+            } );
+        }
+
+        context.subscriptions.push( todoTreeViewExplorer.onDidExpandElement( function( e ) { setExpanded( e.element, true ); } ) );
+        context.subscriptions.push( todoTreeView.onDidExpandElement( function( e ) { setExpanded( e.element, true ); } ) );
+        context.subscriptions.push( todoTreeViewExplorer.onDidCollapseElement( function( e ) { setExpanded( e.element, false ); } ) );
+        context.subscriptions.push( todoTreeView.onDidCollapseElement( function( e ) { setExpanded( e.element, false ); } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filterClear', clearFilter ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', rebuild ) );
