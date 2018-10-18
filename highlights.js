@@ -257,12 +257,7 @@ function highlight( editor )
     if( editor )
     {
         var text = editor.document.getText();
-        var flags = 'gm';
-        if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
-        {
-            flags += 'i';
-        }
-        var regex = new RegExp( utils.getRegex(), flags );
+        var regex = utils.getRegex();
         var match;
         while( ( match = regex.exec( text ) ) !== null )
         {

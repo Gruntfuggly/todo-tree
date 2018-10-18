@@ -130,7 +130,7 @@ function activate( context )
         var config = vscode.workspace.getConfiguration( 'todo-tree' );
 
         var options = {
-            regex: "\"" + utils.getRegex() + "\"",
+            regex: "\"" + utils.getRegexSource() + "\"",
             rgPath: utils.getRgPath()
         };
         var globs = config.globs;
@@ -250,29 +250,29 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', empty === false );
     }
 
-    function refreshFile( filename )
+    function refreshFile( document )
     {
-        var globs = vscode.workspace.getConfiguration( 'todo-tree' ).globs;
-        var add = globs.length === 0;
-        if( !add )
+        if( utils.shouldIgnore( document.fileName ) === false )
         {
-            globs.forEach( glob =>
-            {
-                if( minimatch( filename, glob ) )
-                {
-                    add = true;
-                }
-            } );
-        }
-        if( add === true )
-        {
-            searchResults.filter( match =>
-            {
-                return match.file !== filename;
-            } );
+            var text = document.getText();
+            var regex = utils.getRegex();
 
-            provider.reset( filename );
-            search( getOptions( filename ), addResultsToTree );
+            var match;
+            while( ( match = regex.exec( text ) ) !== null )
+            {
+                var position = document.positionAt( match.index );
+                var line = document.lineAt( position.line );
+                var result = {
+                    file: document.fileName,
+                    line: position.line + 1,
+                    column: position.character + 1,
+                    match: line.text
+                };
+                searchResults.push( result );
+            }
+
+            provider.reset( document.fileName );
+            addResultsToTree();
         }
     }
 
@@ -506,24 +506,24 @@ function activate( context )
             }
         } ) );
 
-        context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( e =>
+        context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( document =>
         {
-            if( e.uri.scheme === "file" && path.basename( e.fileName ) !== "settings.json" )
+            if( document.uri.scheme === "file" && path.basename( document.fileName ) !== "settings.json" )
             {
                 if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
                 {
-                    refreshFile( e.fileName );
+                    refreshFile( document );
                 }
             }
         } ) );
 
-        context.subscriptions.push( vscode.workspace.onDidOpenTextDocument( e =>
+        context.subscriptions.push( vscode.workspace.onDidOpenTextDocument( document =>
         {
             if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
             {
-                if( e.uri.scheme === "file" && vscode.workspace.getWorkspaceFolder( vscode.Uri.file( e.fileName ) ) === undefined )
+                if( document.uri.scheme === "file" && vscode.workspace.getWorkspaceFolder( vscode.Uri.file( document.fileName ) ) === undefined )
                 {
-                    refreshFile( e.fileName );
+                    refreshFile( document );
                 }
             }
         } ) );

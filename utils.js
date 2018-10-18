@@ -103,7 +103,7 @@ function extractTag( text )
     return { tag: tagMatch ? tagMatch[ 0 ] : "", withoutTag: text };
 }
 
-function getRegex()
+function getRegexSource()
 {
     var config = vscode.workspace.getConfiguration( 'todo-tree' );
 
@@ -114,6 +114,17 @@ function getRegex()
     }
 
     return regex;
+}
+
+function getRegex()
+{
+    var flags = 'gm';
+    if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
+    {
+        flags += 'i';
+    }
+
+    return RegExp( getRegexSource(), flags );
 }
 
 function exeName()
@@ -143,10 +154,33 @@ function getRgPath()
     return rgPath;
 }
 
+function shouldIgnore( filename ) // TODO remove
+{
+    var globs = vscode.workspace.getConfiguration( 'todo-tree' ).globs;
+
+    var result = false;
+
+    if( globs.length > 0 )
+    {
+        result = true;
+        globs.map( function( glob )
+        {
+            if( minimatch( filename, glob ) )
+            {
+                result = false;
+            }
+        } );
+    }
+
+    return result;
+}
+
 module.exports.hash = hash;
 module.exports.resetHashCache = resetHashCache;
 module.exports.isHexColour = isHexColour;
 module.exports.removeBlockComments = removeBlockComments;
 module.exports.extractTag = extractTag;
+module.exports.getRegexSource = getRegexSource;
 module.exports.getRegex = getRegex;
 module.exports.getRgPath = getRgPath;
+module.exports.shouldIgnore = shouldIgnore;
