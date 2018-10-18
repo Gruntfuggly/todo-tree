@@ -1,43 +1,11 @@
 var vscode = require( 'vscode' );
 var path = require( 'path' );
 var fs = require( 'fs' );
+var minimatch = require( 'minimatch' );
 
 var config = require( './config.js' );
 
 var commentPatterns = require( 'comment-patterns' );
-
-var usedHashes = {};
-
-function hash( text )
-{
-    var hash = 0;
-    if( text.length === 0 )
-    {
-        return hash;
-    }
-    for( var i = 0; i < text.length; i++ )
-    {
-        var char = text.charCodeAt( i );
-        hash = ( ( hash << 5 ) - hash ) + char;
-        hash = hash & hash; // Convert to 32bit integer
-    }
-
-    hash = Math.abs( hash ) % 1000000;
-
-    while( usedHashes[ hash ] !== undefined )
-    {
-        hash++;
-    }
-
-    usedHashes[ hash ] = true;
-
-    return hash;
-}
-
-function resetHashCache()
-{
-    usedHashes = {};
-}
 
 function isHexColour( rgb )
 {
@@ -154,7 +122,7 @@ function getRgPath()
     return rgPath;
 }
 
-function shouldIgnore( filename ) // TODO remove
+function shouldIgnore( filename )
 {
     var globs = vscode.workspace.getConfiguration( 'todo-tree' ).globs;
 
@@ -175,8 +143,6 @@ function shouldIgnore( filename ) // TODO remove
     return result;
 }
 
-module.exports.hash = hash;
-module.exports.resetHashCache = resetHashCache;
 module.exports.isHexColour = isHexColour;
 module.exports.removeBlockComments = removeBlockComments;
 module.exports.extractTag = extractTag;

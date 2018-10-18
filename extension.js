@@ -3,7 +3,6 @@
 var vscode = require( 'vscode' );
 var ripgrep = require( './ripgrep' );
 var path = require( 'path' );
-var minimatch = require( 'minimatch' );
 
 var tree = require( "./tree.js" );
 var highlights = require( './highlights.js' );
@@ -15,9 +14,13 @@ var searchList = [];
 var currentFilter;
 var interrupted = false;
 var selectedDocument;
+var refreshTimeout;
 
 function activate( context )
 {
+    var buildCounter = context.workspaceState.get( 'buildCounter', 1 );
+    context.workspaceState.update( 'buildCounter', ++buildCounter );
+
     config.init( context );
     highlights.init( context );
 
@@ -40,6 +43,15 @@ function activate( context )
         }
     }
 
+    function refreshTree()
+    {
+        clearTimeout( refreshTimeout );
+        refreshTimeout = setTimeout( function()
+        {
+            provider.refresh();
+            setButtonsAndContext();
+        }, 200 );
+    }
     function addResultsToTree()
     {
         function trimMatchesOnSameLine( searchResults )
@@ -79,7 +91,15 @@ function activate( context )
         }
 
         provider.filter( currentFilter );
-        provider.refresh( true );
+        refreshTree();
+    }
+
+    function removeFileFromSearchResults( filename )
+    {
+        searchResults = searchResults.filter( match =>
+        {
+            return match.file !== filename;
+        } );
     }
 
     function search( options, done )
@@ -106,10 +126,7 @@ function activate( context )
             }
             else if( options.filename )
             {
-                searchResults.filter( match =>
-                {
-                    return match.file === options.filename;
-                } );
+                removeFileFromSearchResults( options.filename );
             }
 
             onComplete();
@@ -188,7 +205,11 @@ function activate( context )
         if( searchList.length > 0 )
         {
             var entry = searchList.pop();
-            search( getOptions( entry ), ( searchList.length > 0 ) ? iterateSearchList : addResultsToTree );
+            search( getOptions( entry ), ( searchList.length > 0 ) ? iterateSearchList : function()
+            {
+                addResultsToTree();
+                setButtonsAndContext();
+            } );
         }
     }
 
@@ -247,6 +268,7 @@ function activate( context )
 
         var children = provider.getChildren();
         var empty = children.length === 1 && children[ 0 ].empty === true;
+
         vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', empty === false );
     }
 
@@ -300,8 +322,7 @@ function activate( context )
         currentFilter = undefined;
         context.workspaceState.update( 'filtered', false );
         provider.clearFilter();
-        provider.refresh();
-        setButtonsAndContext();
+        refreshTree();
     }
 
     function addTag()
@@ -381,7 +402,6 @@ function activate( context )
 
         function showInTree( uri )
         {
-            // TODO Test removal of out of workspace file after workspace removed
             if( vscode.workspace.getConfiguration( 'todo-tree' ).trackFile === true )
             {
                 provider.getElement( uri.fsPath, function( element )
@@ -441,8 +461,7 @@ function activate( context )
                     {
                         context.workspaceState.update( 'filtered', true );
                         provider.filter( currentFilter );
-                        provider.refresh();
-                        setButtonsAndContext();
+                        refreshTree();
                     }
                 } );
         } ) );
@@ -458,7 +477,6 @@ function activate( context )
 
         function setExpanded( element, expanded )
         {
-            console.log( JSON.stringify( element.fsPath ) + ":" + expanded );
             searchResults.forEach( function( result )
             {
                 if( result.file.indexOf( element.fsPath ) > -1 )
@@ -490,13 +508,11 @@ function activate( context )
             {
                 if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
                 {
-                    debug( "onDidChangeActiveTextEditor (uri:" + JSON.stringify( e.document.uri ) + ")" );
-
                     if( e.document.uri && e.document.uri.scheme === "file" )
                     {
                         if( selectedDocument !== e.document.fileName )
                         {
-                            showInTree( e.document.uri );
+                            setTimeout( showInTree, 500, e.document.uri );
                         }
                         selectedDocument = undefined;
                     }
@@ -528,14 +544,15 @@ function activate( context )
             }
         } ) );
 
-        context.subscriptions.push( vscode.workspace.onDidCloseTextDocument( e =>
+        context.subscriptions.push( vscode.workspace.onDidCloseTextDocument( document =>
         {
             if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
             {
-                if( e.uri.scheme === "file" && vscode.workspace.getWorkspaceFolder( vscode.Uri.file( e.fileName ) ) === undefined )
+                if( document.uri.scheme === "file" && vscode.workspace.getWorkspaceFolder( vscode.Uri.file( document.fileName ) ) === undefined )
                 {
-                    provider.remove( e.fileName );
-                    provider.refresh();
+                    removeFileFromSearchResults( document.fileName );
+                    provider.remove( document.fileName );
+                    refreshTree();
                 }
             }
         } ) );

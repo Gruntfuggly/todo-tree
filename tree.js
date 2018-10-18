@@ -14,6 +14,7 @@ const PATH = "path";
 const TODO = "todo";
 
 var buildCounter = 1;
+var nodeCounter = 1;
 
 var isVisible = function( e )
 {
@@ -42,7 +43,7 @@ var findTodoNode = function( node )
 
 function createWorkspaceRootNode( folder )
 {
-    var id = ( buildCounter * 1000000 ) + parseInt( utils.hash( folder.uri.fsPath ) );
+    var id = ( buildCounter * 1000000 ) + nodeCounter++;
     return {
         isWorkspaceNode: true,
         type: PATH,
@@ -57,7 +58,7 @@ function createWorkspaceRootNode( folder )
 
 function createPathNode( folder, pathElements )
 {
-    var id = ( buildCounter * 1000000 ) + parseInt( utils.hash( folder + pathElements.join() + fsPath ) );
+    var id = ( buildCounter * 1000000 ) + nodeCounter++;
     var fsPath = pathElements.length > 0 ? path.join( folder, pathElements.join( path.sep ) ) : folder;
 
     return {
@@ -74,7 +75,7 @@ function createPathNode( folder, pathElements )
 
 function createFlatNode( fsPath, rootNode )
 {
-    var id = ( buildCounter * 1000000 ) + parseInt( utils.hash( fsPath ) );
+    var id = ( buildCounter * 1000000 ) + nodeCounter++;
     var pathLabel = path.dirname( rootNode === undefined ? fsPath : path.relative( rootNode.fsPath, fsPath ) );
 
     return {
@@ -91,7 +92,7 @@ function createFlatNode( fsPath, rootNode )
 
 function createTodoNode( result )
 {
-    var id = ( buildCounter * 1000000 ) + parseInt( utils.hash( JSON.stringify( result.match ) ) );
+    var id = ( buildCounter * 1000000 ) + nodeCounter++;
     var label = utils.removeBlockComments( result.match.substr( result.column - 1 ), result.file );
     var extracted = utils.extractTag( label );
 
@@ -188,14 +189,16 @@ class TreeNodeProvider
 
         this._onDidChangeTreeData = new vscode.EventEmitter();
         this.onDidChangeTreeData = this._onDidChangeTreeData.event;
+
+        buildCounter = _context.workspaceState.get( 'buildCounter', 1 );
     }
 
     getChildren( node )
     {
         if( node === undefined )
         {
-            var rootNodes = nodes.length === 10000 ? nodes[ 0 ].nodes : nodes;
-            rootNodes = rootNodes.filter( isVisible );
+            // var rootNodes = ( nodes.length === 1 && nodes[ 0 ].isWorkspace === true ) ? nodes[ 0 ].nodes : nodes;
+            var rootNodes = nodes.filter( isVisible );
             if( rootNodes.length > 0 )
             {
                 if( config.shouldGroup() )
@@ -294,7 +297,6 @@ class TreeNodeProvider
 
     clear( folders )
     {
-        utils.resetHashCache();
         nodes = [];
 
         workspaceFolders = folders;
@@ -303,11 +305,12 @@ class TreeNodeProvider
         {
             nodes.push( createWorkspaceRootNode( folder ) );
         } );
+
+        this._onDidChangeTreeData.fire();
     }
 
     rebuild()
     {
-        utils.resetHashCache();
         buildCounter = ( buildCounter + 1 ) % 100;
     }
 
