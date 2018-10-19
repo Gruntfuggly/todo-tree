@@ -236,7 +236,15 @@ class TreeNodeProvider
 
     getTreeItem( node )
     {
-        let treeItem = new vscode.TreeItem( node.label + ( node.pathLabel ? ( " " + node.pathLabel ) : "" ) );
+        var treeItem;
+        try
+        {
+            treeItem = new vscode.TreeItem( node.label + ( node.pathLabel ? ( " " + node.pathLabel ) : "" ) );
+        }
+        catch( e )
+        {
+            console.log( "Failed to create tree item: " + e );
+        }
 
         treeItem.id = node.id;
         treeItem.fsPath = node.fsPath;
