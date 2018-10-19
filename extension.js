@@ -590,10 +590,7 @@ function activate( context )
                 }
                 else
                 {
-                    provider.clear( vscode.workspace.workspaceFolders );
-                    provider.rebuild();
-                    addResultsToTree();
-                    documentChanged();
+                    refresh();
                 }
 
                 vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
