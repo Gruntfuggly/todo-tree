@@ -16,6 +16,8 @@ const TODO = "todo";
 var buildCounter = 1;
 var nodeCounter = 1;
 
+var expandedNodes = {};
+
 var isVisible = function( e )
 {
     return e.visible === true;
@@ -39,6 +41,11 @@ var findPathNode = function( node )
 var findTodoNode = function( node )
 {
     return node.name === this.label.toString() && node.line === this.line;
+};
+
+var sortByLabel = function( a, b )
+{
+    return a.label > b.label ? 1 : b.label > a.label ? -1 : a.line > b.line ? 1 : -1;
 };
 
 function createWorkspaceRootNode( folder )
@@ -131,6 +138,7 @@ function locateFlatChildNode( rootNode, result, tag )
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tag ] );
             parentNode.tag = tag;
             parentNodes.push( parentNode );
+            parentNodes.sort( sortByLabel );
         }
         parentNodes = parentNode.nodes;
     }
@@ -140,6 +148,7 @@ function locateFlatChildNode( rootNode, result, tag )
     {
         childNode = createFlatNode( result.file, rootNode );
         parentNodes.push( childNode );
+        parentNodes.sort( sortByLabel );
     }
 
     return childNode;
@@ -159,6 +168,7 @@ function locateTreeChildNode( rootNode, pathElements, tag )
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tag ] );
             parentNode.tag = tag;
             parentNodes.push( parentNode );
+            parentNodes.sort( sortByLabel );
         }
         parentNodes = parentNode.nodes;
     }
@@ -170,6 +180,7 @@ function locateTreeChildNode( rootNode, pathElements, tag )
         {
             childNode = createPathNode( rootNode.fsPath, pathElements.slice( 0, level + 1 ) );
             parentNodes.push( childNode );
+            parentNodes.sort( sortByLabel );
             parentNodes = childNode.nodes;
         }
         else
@@ -191,6 +202,7 @@ class TreeNodeProvider
         this.onDidChangeTreeData = this._onDidChangeTreeData.event;
 
         buildCounter = _context.workspaceState.get( 'buildCounter', 1 );
+        expandedNodes = _context.workspaceState.get( 'expandedNodes', {} );
     }
 
     getChildren( node )
@@ -267,9 +279,9 @@ class TreeNodeProvider
 
             if( node.type === PATH )
             {
-                if( node.expanded !== undefined )
+                if( expandedNodes[ node.fsPath ] !== undefined )
                 {
-                    treeItem.collapsibleState = ( node.expanded === true ) ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
+                    treeItem.collapsibleState = ( expandedNodes[ node.fsPath ] === true ) ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
                 }
                 else
                 {
@@ -415,6 +427,7 @@ class TreeNodeProvider
         {
             todoNode.parent = childNode;
             childNode.todos.push( todoNode );
+            childNode.todos.sort( sortByLabel );
         }
     }
 
@@ -450,7 +463,13 @@ class TreeNodeProvider
             {
                 child.nodes = this.remove( filename, child.nodes );
             }
-            return child.fsPath !== filename && child.nodes.length > 0;
+            var shouldRemove = ( child.fsPath === filename ) || ( child.nodes.length + child.todos.length === 0 );
+            if( shouldRemove && child.isWorkspaceNode !== true )
+            {
+                delete expandedNodes[ child.fsPath ];
+                this._context.workspaceState.update( 'expandedNodes', expandedNodes );
+            }
+            return shouldRemove === false;
         }, this );
         if( root )
         {
@@ -476,6 +495,18 @@ class TreeNodeProvider
                 return this.getElement( filename, found, child.nodes );
             }
         }, this );
+    }
+
+    setExpanded( path, expanded )
+    {
+        expandedNodes[ path ] = expanded;
+        this._context.workspaceState.update( 'expandedNodes', expandedNodes );
+    }
+
+    clearExpansionState()
+    {
+        expandedNodes = {};
+        this._context.workspaceState.update( 'expandedNodes', expandedNodes );
     }
 }
 

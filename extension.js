@@ -274,8 +274,9 @@ function activate( context )
 
     function refreshFile( document )
     {
+        var matchesFound = false;
+
         removeFileFromSearchResults( document.fileName );
-        provider.remove( document.fileName );
 
         if( utils.shouldIgnore( document.fileName ) === false )
         {
@@ -294,11 +295,19 @@ function activate( context )
                     match: line.text
                 };
                 searchResults.push( result );
+                matchesFound = true;
             }
-
-            provider.reset( document.fileName );
-            addResultsToTree();
         }
+
+        if( matchesFound === true )
+        {
+            provider.reset( document.fileName );
+        }
+        else
+        {
+            provider.remove( document.fileName );
+        }
+        addResultsToTree();
     }
 
     function refresh()
@@ -313,10 +322,16 @@ function activate( context )
         setButtonsAndContext();
     }
 
+    function clearExpansionStateAndRefresh()
+    {
+        provider.clearExpansionState();
+        refresh();
+    }
+
+    function collapse() { context.workspaceState.update( 'expanded', false ).then( clearExpansionStateAndRefresh ); }
+    function expand() { context.workspaceState.update( 'expanded', true ).then( clearExpansionStateAndRefresh ); }
     function showFlatView() { context.workspaceState.update( 'flat', true ).then( refresh ); }
     function showTreeView() { context.workspaceState.update( 'flat', false ).then( refresh ); }
-    function collapse() { context.workspaceState.update( 'expanded', false ).then( refresh ); }
-    function expand() { context.workspaceState.update( 'expanded', true ).then( refresh ); }
     function groupByTag() { context.workspaceState.update( 'grouped', true ).then( refresh ); }
     function ungroupByTag() { context.workspaceState.update( 'grouped', false ).then( refresh ); }
 
@@ -478,21 +493,10 @@ function activate( context )
             interrupted = true;
         } ) );
 
-        function setExpanded( element, expanded )
-        {
-            searchResults.forEach( function( result )
-            {
-                if( result.file.indexOf( element.fsPath ) > -1 )
-                {
-                    result.expanded = expanded;
-                }
-            } );
-        }
-
-        context.subscriptions.push( todoTreeViewExplorer.onDidExpandElement( function( e ) { setExpanded( e.element, true ); } ) );
-        context.subscriptions.push( todoTreeView.onDidExpandElement( function( e ) { setExpanded( e.element, true ); } ) );
-        context.subscriptions.push( todoTreeViewExplorer.onDidCollapseElement( function( e ) { setExpanded( e.element, false ); } ) );
-        context.subscriptions.push( todoTreeView.onDidCollapseElement( function( e ) { setExpanded( e.element, false ); } ) );
+        context.subscriptions.push( todoTreeViewExplorer.onDidExpandElement( function( e ) { provider.setExpanded( e.element.fsPath, true ); } ) );
+        context.subscriptions.push( todoTreeView.onDidExpandElement( function( e ) { provider.setExpanded( e.element.fsPath, true ); } ) );
+        context.subscriptions.push( todoTreeViewExplorer.onDidCollapseElement( function( e ) { provider.setExpanded( e.element.fsPath, false ); } ) );
+        context.subscriptions.push( todoTreeView.onDidCollapseElement( function( e ) { provider.setExpanded( e.element.fsPath, false ); } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filterClear', clearFilter ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', rebuild ) );
