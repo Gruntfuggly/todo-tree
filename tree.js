@@ -438,7 +438,7 @@ class TreeNodeProvider
             {
                 child.nodes = this.remove( filename, child.nodes );
             }
-            return child.fsPath !== filename;
+            return child.fsPath !== filename && child.nodes.length > 0;
         }, this );
         if( root )
         {
