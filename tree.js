@@ -197,7 +197,10 @@ class TreeNodeProvider
     {
         if( node === undefined )
         {
-            // var rootNodes = ( nodes.length === 1 && nodes[ 0 ].isWorkspace === true ) ? nodes[ 0 ].nodes : nodes;
+            var availableNodes = nodes.filter( function( node )
+            {
+                return node.nodes.length + node.todos.length > 0;
+            } );
             var rootNodes = nodes.filter( isVisible );
             if( rootNodes.length > 0 )
             {
@@ -210,7 +213,8 @@ class TreeNodeProvider
                 }
                 return rootNodes;
             }
-            return [ { label: "Nothing found", empty: nodes.length === 0 } ];
+
+            return [ { label: "Nothing found", empty: availableNodes.length === 0 } ];
         }
         else if( node.type === PATH )
         {

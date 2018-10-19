@@ -274,6 +274,9 @@ function activate( context )
 
     function refreshFile( document )
     {
+        removeFileFromSearchResults( document.fileName );
+        provider.remove( document.fileName );
+
         if( utils.shouldIgnore( document.fileName ) === false )
         {
             var text = document.getText();
