@@ -544,7 +544,9 @@ function activate( context )
         {
             if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
             {
-                if( document.uri.scheme === "file" && vscode.workspace.getWorkspaceFolder( vscode.Uri.file( document.fileName ) ) === undefined )
+                if( document.uri.scheme === "file" &&
+                    ( vscode.workspace.getWorkspaceFolder( vscode.Uri.file( document.fileName ) ) === undefined ||
+                        vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly === true ) )
                 {
                     refreshFile( document );
                 }

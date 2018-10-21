@@ -114,6 +114,8 @@ The extension can be customised as follows:
 | todo-tree.highlight<sup>1</sup> | <tt>false</tt> | Set this to true to highlight tags in files. |
 | todo-tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
 | todo-tree.trackFile | <tt>true</tt> | Set to false if you want to prevent tracking the open file in the tree view. |
+| todo-tree.showBadges | <tt>true</tt> | Set to false to disable SCM status and badges in the tree. Note: This also unfortunately turns off themed icons. |
+| todo-tree.showTagsFromOpenFilesOnly | <tt>false</tt> | Set to true to only show TODOs in opened files. |
 | todo-tree.defaultHighlight | <tt>{}</tt> | Set default highlights. E.g. `{"foreground":"white","background":"red","icon":"check","type":"text"}` |
 | todo-tree.customHighlight | <tt>{}</tt> | Set highlights per tag. E.g. `{"TODO":{"foreground":"white","type":"text"},"FIXME":{"icon":"beaker"}}` |
 | todo-tree.expanded<sup>1</sup> | <tt>false</tt> | Set to true if you want new trees to be expanded by default |
