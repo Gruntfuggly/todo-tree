@@ -78,7 +78,9 @@ function getRegexSource()
     var regex = config.regex;
     if( regex.indexOf( "($TAGS)" ) > -1 )
     {
-        regex = regex.replace( "$TAGS", config.tags.join( "|" ) );
+        var tags = config.tags.join( "|" );
+        tags = tags.replace( /\\/g, '\\x5c' );
+        regex = regex.replace( "$TAGS", tags );
     }
 
     return regex;

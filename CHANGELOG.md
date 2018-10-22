@@ -8,6 +8,7 @@
 - Fix configuration example and rust regex link ([#82](https://github.com/Gruntfuggly/todo-tree/issues/82) and [#79](https://github.com/Gruntfuggly/todo-tree/issues/79))
 - Support multiple workspaces properly
 - Preserve expansion state when changing view and reloading the window
+- Replace backslashes in the tags list with \\x5c
 
 # v0.0.92 - 2018-10-02
 - Add support for case insensitive tag matching
