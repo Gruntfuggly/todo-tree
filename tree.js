@@ -192,6 +192,14 @@ function locateTreeChildNode( rootNode, pathElements, tag )
     return childNode;
 }
 
+function addWorkspaceFolders()
+{
+    workspaceFolders.map( function( folder )
+    {
+        nodes.push( createWorkspaceRootNode( folder ) );
+    } );
+}
+
 class TreeNodeProvider
 {
     constructor( _context )
@@ -325,10 +333,7 @@ class TreeNodeProvider
 
         workspaceFolders = folders;
 
-        workspaceFolders.map( function( folder )
-        {
-            nodes.push( createWorkspaceRootNode( folder ) );
-        } );
+        addWorkspaceFolders();
 
         this._onDidChangeTreeData.fire();
     }
@@ -397,6 +402,11 @@ class TreeNodeProvider
 
     add( result )
     {
+        if( nodes.length === 0 )
+        {
+            addWorkspaceFolders();
+        }
+
         var rootNode = locateWorkspaceNode( nodes, result.file );
         var todoNode = createTodoNode( result );
 

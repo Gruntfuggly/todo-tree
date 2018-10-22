@@ -1,3 +1,6 @@
+# v0.0.94 - 2018-10-22
+- Set workspaces when first TODO is added
+
 # v0.0.93 - 2018-10-21
 - Major refactor to simplify and remove unused code
 - Stop using ripgrep for single file updates
