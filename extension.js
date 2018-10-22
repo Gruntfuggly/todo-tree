@@ -178,7 +178,7 @@ function activate( context )
         {
             vscode.workspace.workspaceFolders.map( function( folder )
             {
-                searchList.push( folder.uri.path );
+                searchList.push( folder.uri.fsPath );
             } );
         }
     }
