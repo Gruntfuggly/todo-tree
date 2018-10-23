@@ -286,6 +286,10 @@ function activate( context )
             var match;
             while( ( match = regex.exec( text ) ) !== null )
             {
+                while( text[ match.index ] === '\n' || text[ match.index ] === '\r' )
+                {
+                    match.index++;
+                }
                 var position = document.positionAt( match.index );
                 var line = document.lineAt( position.line );
                 var result = {
