@@ -1,3 +1,6 @@
+# v0.0.96 - 2018-10-23
+- Don't sort tags within files
+
 # v0.0.95 - 2018-10-22
 - Fix workspace paths
 - Replace backslashes in the tags list with \\x5c

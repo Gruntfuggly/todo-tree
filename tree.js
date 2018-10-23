@@ -437,7 +437,6 @@ class TreeNodeProvider
         {
             todoNode.parent = childNode;
             childNode.todos.push( todoNode );
-            childNode.todos.sort( sortByLabel );
         }
     }
 
