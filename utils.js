@@ -68,7 +68,7 @@ function extractTag( text )
         }
     }
 
-    return { tag: tagMatch ? tagMatch[ 0 ] : "", withoutTag: text };
+    return { tag: tagMatch ? tagMatch[ 0 ] : "", withoutTag: text.trim() };
 }
 
 function getRegexSource()

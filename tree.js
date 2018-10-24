@@ -106,7 +106,7 @@ function createTodoNode( result )
     return {
         type: TODO,
         fsPath: result.file,
-        label: extracted.withoutTag,
+        label: extracted.withoutTag ? extracted.withoutTag : "line " + result.line,
         tag: extracted.tag,
         line: result.line - 1,
         id: id,
