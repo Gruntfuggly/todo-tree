@@ -472,8 +472,8 @@ class TreeNodeProvider
             {
                 child.nodes = this.remove( filename, child.nodes );
             }
-            var shouldRemove = ( child.fsPath === filename ) || ( child.nodes.length + child.todos.length === 0 );
-            if( shouldRemove && child.isWorkspaceNode !== true )
+            var shouldRemove = ( child.fsPath === filename ) || ( child.nodes.length + child.todos.length === 0 ) && child.isWorkspaceNode !== true;
+            if( shouldRemove )
             {
                 delete expandedNodes[ child.fsPath ];
                 this._context.workspaceState.update( 'expandedNodes', expandedNodes );
