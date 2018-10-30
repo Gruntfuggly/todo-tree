@@ -104,7 +104,12 @@ module.exports.search = function ripGrep( cwd, options, searchTerm )
 
     if( options.filename )
     {
-        execString += " \"" + options.filename + "\"";
+        var filename = options.filename;
+        if( isWin && filename.slice( -1 ) === "\\" )
+        {
+            filename = filename.substr( 0, filename.length - 1 );
+        }
+        execString += " \"" + filename + "\"";
     }
     else
     {
