@@ -1,3 +1,8 @@
+# v0.0.97 - 2018-10-30
+- Fix trailing slash on windows paths
+- Remove leading newlines from matches in files
+- Show 'line <n>' for tags with no content when grouping by tag
+
 # v0.0.96 - 2018-10-23
 - Don't sort tags within files
 
