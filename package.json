@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.97",
+    "version": "0.0.98",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -248,7 +248,7 @@
                 "todo-tree.debug": {
                     "type": "boolean",
                     "default": false,
-                    "markdownDescription": "Turn on diagnostic logging (reload required)"
+                    "markdownDescription": "Create a debug channel in the Output view"
                 },
                 "todo-tree.ripgrepArgs": {
                     "type": "string",

@@ -145,6 +145,10 @@ Tracking the file in the tree view when grouping by tag will reveal the first ta
 When there is no current workspace, default icons will be shown in the tree.
 
 
+## Donate
+
+If you find this extension useful, please feel free to donate <a href="https://paypal.me/Gruntfuggly">here</a>. Thanks!
+
 ### Credits
 
 Uses a modified version of <a href="https://www.npmjs.com/package/ripgrep-js">ripgrep-js</a>.

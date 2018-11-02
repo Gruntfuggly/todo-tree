@@ -26,14 +26,29 @@ function activate( context )
 
     var provider = new tree.TreeNodeProvider( context );
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
-    var outputChannel = vscode.workspace.getConfiguration( 'todo-tree' ).debug ? vscode.window.createOutputChannel( "todo-tree" ) : undefined;
 
     var todoTreeViewExplorer = vscode.window.createTreeView( "todo-tree-view-explorer", { treeDataProvider: provider } );
     var todoTreeView = vscode.window.createTreeView( "todo-tree-view", { treeDataProvider: provider } );
 
+    var outputChannel;
+
     context.subscriptions.push( provider );
+    context.subscriptions.push( status );
     context.subscriptions.push( todoTreeViewExplorer );
     context.subscriptions.push( todoTreeView );
+
+    function resetOutputChannel()
+    {
+        if( outputChannel )
+        {
+            outputChannel.dispose();
+            outputChannel = undefined;
+        }
+        if( vscode.workspace.getConfiguration( 'todo-tree' ).debug === true )
+        {
+            outputChannel = vscode.window.createOutputChannel( "Todo Tree" );
+        }
+    }
 
     function debug( text )
     {
@@ -583,6 +598,11 @@ function activate( context )
                     highlights.refreshComplementaryColours();
                 }
 
+                if( e.affectsConfiguration( "todo-tree.debug" ) )
+                {
+                    resetOutputChannel();
+                }
+
                 if( e.affectsConfiguration( "todo-tree.globs" ) ||
                     e.affectsConfiguration( "todo-tree.regex" ) ||
                     e.affectsConfiguration( "todo-tree.ripgrep" ) ||
@@ -619,6 +639,8 @@ function activate( context )
         context.subscriptions.push( outputChannel );
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
+
+        resetOutputChannel();
 
         highlights.refreshComplementaryColours();
 

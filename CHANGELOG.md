@@ -1,3 +1,6 @@
+# v0.0.98 - 2018-11-02
+- Allow debug channel to be enabled/disabled without reloading the window
+
 # v0.0.97 - 2018-10-30
 - Fix trailing slash on windows paths
 - Remove leading newlines from matches in files
