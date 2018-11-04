@@ -15,6 +15,9 @@
         "vscode": "^1.5.0"
     },
     "repository": "https://github.com/Gruntfuggly/todo-tree",
+    "tscripts": {
+        "test": "node ./node_modules/qunit/bin/qunit test/tests.js"
+    },
     "categories": [
         "Other"
     ],
@@ -364,5 +367,8 @@
         "micromatch": "^3.1.10",
         "minimatch": "^3.0.4",
         "octicons": "^7.4.0"
+    },
+    "devDependencies": {
+        "qunit": "^2.8.0"
     }
 }

@@ -1,0 +1,11 @@
+sudo: false
+
+os:
+  - osx
+  - linux
+
+before_install:
+  - npm install qunit
+
+script:
+  - ./node_modules/qunit/bin/qunit test/tests.js
