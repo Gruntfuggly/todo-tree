@@ -191,10 +191,13 @@ function activate( context )
     {
         if( vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly !== true )
         {
-            vscode.workspace.workspaceFolders.map( function( folder )
+            if( vscode.workspace.workspaceFolders )
             {
-                searchList.push( folder.uri.fsPath );
-            } );
+                vscode.workspace.workspaceFolders.map( function( folder )
+                {
+                    searchList.push( folder.uri.fsPath );
+                } );
+            }
         }
     }
 

@@ -1,3 +1,6 @@
+# v0.0.99 - 2018-11-04
+- Trap errors when there are no workspaces
+
 # v0.0.98 - 2018-11-02
 - Allow debug channel to be enabled/disabled without reloading the window
 

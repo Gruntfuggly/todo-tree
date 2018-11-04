@@ -194,10 +194,13 @@ function locateTreeChildNode( rootNode, pathElements, tag )
 
 function addWorkspaceFolders()
 {
-    workspaceFolders.map( function( folder )
+    if( workspaceFolders )
     {
-        nodes.push( createWorkspaceRootNode( folder ) );
-    } );
+        workspaceFolders.map( function( folder )
+        {
+            nodes.push( createWorkspaceRootNode( folder ) );
+        } );
+    }
 }
 
 class TreeNodeProvider
