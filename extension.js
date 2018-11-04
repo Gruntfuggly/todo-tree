@@ -23,6 +23,7 @@ function activate( context )
 
     config.init( context );
     highlights.init( context );
+    utils.init( config );
 
     var provider = new tree.TreeNodeProvider( context );
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
@@ -158,20 +159,25 @@ function activate( context )
 
     function getOptions( filename )
     {
-        var config = vscode.workspace.getConfiguration( 'todo-tree' );
+        var c = vscode.workspace.getConfiguration( 'todo-tree' );
 
         var options = {
             regex: "\"" + utils.getRegexSource() + "\"",
-            rgPath: utils.getRgPath()
+            rgPath: config.ripgrepPath()
         };
+        var globs = c.globs;
+        if( globs && globs.length > 0 )
+        {
+            options.globs = globs;
+        }
         if( filename )
         {
             options.filename = filename;
         }
 
         options.outputChannel = outputChannel;
-        options.additional = config.ripgrepArgs;
-        options.maxBuffer = config.ripgrepMaxBuffer;
+        options.additional = c.ripgrepArgs;
+        options.maxBuffer = c.ripgrepMaxBuffer;
 
         if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
         {
@@ -209,9 +215,9 @@ function activate( context )
             if( document.uri && document.uri.scheme === "file" )
             {
                 refreshFile( document );
-            }
+                }
         } );
-    }
+            }
 
     function applyGlobs()
     {
@@ -225,7 +231,7 @@ function activate( context )
             searchResults = searchResults.filter( function( match )
             {
                 return utils.isIncluded( match.file, includeGlobs, excludeGlobs );
-            } );
+        } );
 
             debug( "Remaining items: " + searchResults.length );
         }
@@ -269,19 +275,19 @@ function activate( context )
                         path = path.replace( /\$\{workspaceFolder\}/g, folder.uri.fsPath );
                         rootFolders.push( path );
                     } );
+                    }
+                    else
+                    {
+                        valid = false;
+                    }
                 }
-                else
-                {
-                    valid = false;
-                }
-            }
 
             rootFolders.forEach( function( path )
             {
                 rootFolder = rootFolder.replace( envRegex, function( match, name )
                 {
-                    return process.env[ name ];
-                } );
+                return process.env[ name ];
+            } );
             } );
 
             var includes = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'includedWorkspaces', [] );
@@ -573,14 +579,14 @@ function activate( context )
                 {
                     if( document.fileName === undefined || isIncluded( document.fileName ) )
                     {
-                        highlights.triggerHighlight( editor );
-                    }
+                    highlights.triggerHighlight( editor );
+                }
                 }
             } );
         }
 
         // We can't do anything if we can't find ripgrep
-        if( !utils.getRgPath() )
+        if( !config.ripgrepPath() )
         {
             vscode.window.showErrorMessage( "todo-tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
             return;

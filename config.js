@@ -1,4 +1,6 @@
 var vscode = require( 'vscode' );
+var fs = require( 'fs' );
+var path = require( 'path' );
 
 var context;
 
@@ -37,6 +39,47 @@ function showBadges()
     return vscode.workspace.getConfiguration( 'todo-tree' ).get( 'showBadges', false );
 }
 
+function regex()
+{
+    return {
+        tags: vscode.workspace.getConfiguration( 'todo-tree' ).get( 'tags' ),
+        regex: vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regex' ),
+        caseSensitive: vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' )
+    };
+}
+
+function ripgrepPath()
+{
+    function exeName()
+    {
+        var isWin = /^win/.test( process.platform );
+        return isWin ? "rg.exe" : "rg";
+    }
+
+    function exePathIsDefined( rgExePath )
+    {
+        return fs.existsSync( rgExePath ) ? rgExePath : undefined;
+    }
+
+    var rgPath = "";
+
+    rgPath = exePathIsDefined( vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep );
+    if( rgPath ) return rgPath;
+
+    rgPath = exePathIsDefined( path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules/vscode-ripgrep/bin/", exeName() ) );
+    if( rgPath ) return rgPath;
+
+    rgPath = exePathIsDefined( path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules.asar.unpacked/vscode-ripgrep/bin/", exeName() ) );
+    if( rgPath ) return rgPath;
+
+    return rgPath;
+}
+
+function globs()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree' ).globs;
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -44,3 +87,6 @@ module.exports.shouldFlatten = shouldFlatten;
 module.exports.showFilterCaseSensitive = showFilterCaseSensitive;
 module.exports.isRegexCaseSensitive = isRegexCaseSensitive;
 module.exports.showBadges = showBadges;
+module.exports.regex = regex;
+module.exports.ripgrepPath = ripgrepPath;
+module.exports.globs = globs;

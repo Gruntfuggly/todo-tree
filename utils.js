@@ -1,12 +1,14 @@
-var vscode = require( 'vscode' );
-var path = require( 'path' );
-var fs = require( 'fs' );
 var minimatch = require( 'minimatch' );
 var micromatch = require( 'micromatch' );
 
-var config = require( './config.js' );
+var config;
 
 var commentPatterns = require( 'comment-patterns' );
+
+function init( configuration )
+{
+    config = configuration;
+}
 
 function isHexColour( rgb )
 {
@@ -49,15 +51,14 @@ function removeBlockComments( text, fileName )
 
 function extractTag( text )
 {
-    var c = vscode.workspace.getConfiguration( 'todo-tree' );
-    var regex = c.get( 'regex' );
-    var flags = c.get( 'regexCaseSensitive' ) ? '' : 'i';
+    var c = config.regex();
+    var flags = c.caseSensitive ? '' : 'i';
     var tagMatch;
     var originalTag;
 
-    if( regex.indexOf( "$TAGS" ) > -1 )
+    if( c.regex.indexOf( "$TAGS" ) > -1 )
     {
-        var tagRegex = new RegExp( "(" + c.get( 'tags' ).join( "|" ) + ")", flags );
+        var tagRegex = new RegExp( "(" + c.tags.join( "|" ) + ")", flags );
 
         tagMatch = tagRegex.exec( text );
         if( tagMatch )
@@ -82,23 +83,21 @@ function extractTag( text )
 
 function getRegexSource()
 {
-    var config = vscode.workspace.getConfiguration( 'todo-tree' );
-
-    var regex = config.regex;
-    if( regex.indexOf( "($TAGS)" ) > -1 )
+    var c = config.regex();
+    if( c.regex.indexOf( "($TAGS)" ) > -1 )
     {
-        var tags = config.tags.join( "|" );
+        var tags = c.tags.join( "|" );
         tags = tags.replace( /\\/g, '\\x5c' );
-        regex = regex.replace( "$TAGS", tags );
+        c.regex = c.regex.replace( "$TAGS", tags );
     }
 
-    return regex;
+    return c.regex;
 }
 
 function getRegex()
 {
     var flags = 'gm';
-    if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
+    if( config.regex().caseSensitive === false )
     {
         flags += 'i';
     }
@@ -106,31 +105,25 @@ function getRegex()
     return RegExp( getRegexSource(), flags );
 }
 
-function exeName()
+function shouldIgnore( filename )
 {
-    var isWin = /^win/.test( process.platform );
-    return isWin ? "rg.exe" : "rg";
-}
+    var globs = config.globs();
 
-function exePathIsDefined( rgExePath )
-{
-    return fs.existsSync( rgExePath ) ? rgExePath : undefined;
-}
+    var result = false;
 
-function getRgPath()
-{
-    var rgPath = "";
+    if( globs.length > 0 )
+    {
+        result = true;
+        globs.map( function( glob )
+        {
+            if( minimatch( filename, glob ) )
+            {
+                result = false;
+            }
+        } );
+    }
 
-    rgPath = exePathIsDefined( vscode.workspace.getConfiguration( 'todo-tree' ).ripgrep );
-    if( rgPath ) return rgPath;
-
-    rgPath = exePathIsDefined( path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules/vscode-ripgrep/bin/", exeName() ) );
-    if( rgPath ) return rgPath;
-
-    rgPath = exePathIsDefined( path.join( path.dirname( path.dirname( require.main.filename ) ), "node_modules.asar.unpacked/vscode-ripgrep/bin/", exeName() ) );
-    if( rgPath ) return rgPath;
-
-    return rgPath;
+    return result;
 }
 
 function isIncluded( name, includes, excludes )
@@ -143,10 +136,11 @@ function isIncluded( name, includes, excludes )
     return included;
 }
 
+module.exports.init = init;
 module.exports.isHexColour = isHexColour;
 module.exports.removeBlockComments = removeBlockComments;
 module.exports.extractTag = extractTag;
 module.exports.getRegexSource = getRegexSource;
 module.exports.getRegex = getRegex;
-module.exports.getRgPath = getRgPath;
+module.exports.shouldIgnore = shouldIgnore;
 module.exports.isIncluded = isIncluded;
