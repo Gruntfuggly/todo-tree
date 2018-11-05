@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.99",
+    "version": "0.0.100",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -345,7 +345,7 @@
         "publisherDisplayName": "Gruntfuggly"
     },
     "dependencies": {
-        "comment-patterns": "^0.9.0",
+        "comment-patterns": "^0.10.1",
         "minimatch": "^3.0.4",
         "octicons": "^7.4.0"
     }

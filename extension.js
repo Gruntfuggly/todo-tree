@@ -235,18 +235,26 @@ function activate( context )
     {
         function getRootFolder()
         {
+            var valid = true;
             var rootFolder = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'rootFolder' );
             var envRegex = new RegExp( "\\$\\{(.*?)\\}", "g" );
             rootFolder = rootFolder.replace( envRegex, function( match, name )
             {
-                if( name === "workspaceFolder" && vscode.workspace.workspaceFolders.length === 1 )
+                if( name === "workspaceFolder" )
                 {
-                    return vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
+                    if( vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length === 1 )
+                    {
+                        return vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
+                    }
+                    else
+                    {
+                        valid = false;
+                    }
                 }
                 return process.env[ name ];
             } );
 
-            return rootFolder;
+            return valid ? rootFolder : undefined;
         }
 
         searchResults = [];

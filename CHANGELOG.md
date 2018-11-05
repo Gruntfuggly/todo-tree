@@ -1,3 +1,6 @@
+# v0.0.100 - 2018-11-05
+- Handle situation where there are no workspace folders better
+
 # v0.0.99 - 2018-11-04
 - Trap errors when there are no workspaces
 
