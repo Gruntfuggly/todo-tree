@@ -306,6 +306,21 @@
                     "default": true,
                     "markdownDescription": "If enabled, the current file is tracked in the tree view"
                 },
+                "todo-tree.watchGlobs": {
+                    "type": "array",
+                    "default": [],
+                    "markdownDescription": "A glob to match files in the workspace which should automatically update the tree."
+                },
+                "todo-tree.ignoreGlobs": {
+                    "type": "array",
+                    "default": [],
+                    "markdownDescription": "A glob to match files in the workspace which should not automatically update the tree."
+                },
+                "todo-tree.watchDotFiles": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Set to true to include files and folders starting with dots (.) when using the `watchGlobs` and `ignoreGlobs`"
+                },
                 "todo-tree.showBadges": {
                     "type": "boolean",
                     "default": true,

@@ -156,6 +156,20 @@ function isIncluded( name, includes, excludes )
     return included;
 }
 
+function isWatchedFile( filename )
+{
+    var watchGlobs = vscode.workspace.getConfiguration( 'todo-tree' ).watchGlobs;
+    var ignoreGlobs = vscode.workspace.getConfiguration( 'todo-tree' ).ignoreGlobs;
+    var dot = vscode.workspace.getConfiguration( 'todo-tree' ).watchDotFiles;
+
+    var watched = micromatch.isMatch( filename, watchGlobs, { dot: dot } );
+    if( watched === true && micromatch.isMatch( filename, ignoreGlobs, { dot: dot } ) )
+    {
+        watched = false;
+    }
+    return watched;
+}
+
 module.exports.isHexColour = isHexColour;
 module.exports.removeBlockComments = removeBlockComments;
 module.exports.extractTag = extractTag;
@@ -164,3 +178,4 @@ module.exports.getRegex = getRegex;
 module.exports.getRgPath = getRgPath;
 module.exports.shouldIgnore = shouldIgnore;
 module.exports.isIncluded = isIncluded;
+module.exports.isWatchedFile = isWatchedFile;

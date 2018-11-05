@@ -462,7 +462,7 @@ class TreeNodeProvider
         }, this );
     }
 
-    remove( filename, children )
+    remove( onRemoved, filename, children )
     {
         var root = children === undefined;
         if( children === undefined )
@@ -473,13 +473,17 @@ class TreeNodeProvider
         {
             if( child.nodes !== undefined )
             {
-                child.nodes = this.remove( filename, child.nodes );
+                child.nodes = this.remove( onRemoved, filename, child.nodes );
             }
             var shouldRemove = ( child.fsPath === filename ) || ( child.nodes.length + child.todos.length === 0 ) && child.isWorkspaceNode !== true;
             if( shouldRemove )
             {
                 delete expandedNodes[ child.fsPath ];
                 this._context.workspaceState.update( 'expandedNodes', expandedNodes );
+                if( onRemoved )
+                {
+                    onRemoved( child.fsPath );
+                }
             }
             return shouldRemove === false;
         }, this );

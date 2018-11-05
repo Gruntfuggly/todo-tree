@@ -105,6 +105,9 @@ The extension can be customised as follows:
 | todo-tree.globs | <tt>[]</tt> | If you want to modify the files which are searched, you can define a list of <a href="https://www.npmjs.com/package/glob">globs</a>.|
 | todo-tree.includedWorkspaces | <tt>[]</tt> | A list of workspace names to include as roots in the tree (wildcards can be used). An empty array includes all workspace folders. |
 | todo-tree.excludedWorkspaces | <tt>[]</tt> | A list of workspace names to exclude as roots in the tree (wildcards can be used). |
+| todo-tree.watchGlobs | <tt>[]</tt>| A list of globs specifying files to update the tree automatically when changed. *Note: only files and folders within the workspace can be watched* |
+| todo-tree.ignoreGlobs | <tt>[]</tt>| A list of globs specifying files to ignore when updating the tree automatically. These globs are applied after the `watchGlobs` |
+| todo-tree.watchDotFiles | <tt>false</tt> | Set to true to include files and folders starting with dots (.) when using the `watchGlobs` and `ignoreGlobs` |
 | todo-tree.ripgrep | <tt>""</tt> | Normally, the extension will locate ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed. |
 | todo-tree.ripgrepArgs | <tt>""</tt> | Use this to pass additional arguments to ripgrep. e.g. <tt>"-i"</tt> to make the search case insensitive. *Use with caution!* |
 | todo-tree.ripgrepMaxBuffer | <tt>200</tt> | By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly. |
@@ -116,6 +119,7 @@ The extension can be customised as follows:
 | todo-tree.highlight<sup>1</sup> | <tt>false</tt> | Set this to true to highlight tags in files. |
 | todo-tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
 | todo-tree.trackFile | <tt>true</tt> | Set to false if you want to prevent tracking the open file in the tree view. |
+| todo-tree.fileWatchGlob | <tt>"{!.*,**}/*.*"</tt> | A glob to match files in the workspace which should automatically update the tree. The default matches all files with extensions in non-hidden folders. Set to empty to ignore file changes. |
 | todo-tree.showBadges | <tt>true</tt> | Set to false to disable SCM status and badges in the tree. Note: This also unfortunately turns off themed icons. |
 | todo-tree.showTagsFromOpenFilesOnly | <tt>false</tt> | Set to true to only show TODOs in opened files. |
 | todo-tree.defaultHighlight | <tt>{}</tt> | Set default highlights. E.g. `{"foreground":"white","background":"red","icon":"check","type":"text"}` |

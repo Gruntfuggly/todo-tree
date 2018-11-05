@@ -31,6 +31,7 @@ function activate( context )
     var todoTreeView = vscode.window.createTreeView( "todo-tree-view", { treeDataProvider: provider } );
 
     var outputChannel;
+    var fileSystemWatcher;
 
     context.subscriptions.push( provider );
     context.subscriptions.push( status );
@@ -50,6 +51,68 @@ function activate( context )
         }
     }
 
+    function resetFileSystemWatcher()
+    {
+        function checkForExternalFileChanged( uri )
+        {
+            if( utils.isWatchedFile( uri.fsPath ) )
+            {
+                debug( uri.fsPath + " changed" );
+                if( vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly !== true )
+                {
+                    if( isVisible( uri ) === false )
+                    {
+                        removeFileFromSearchResults( uri.fsPath );
+                        provider.remove( null, uri.fsPath );
+                        searchList.push( uri.fsPath );
+                        iterateSearchList();
+                    }
+                }
+            }
+        }
+
+        if( fileSystemWatcher )
+        {
+            fileSystemWatcher.dispose();
+            fileSystemWatcher = undefined;
+        }
+
+        var watchGlobs = vscode.workspace.getConfiguration( 'todo-tree' ).watchGlobs;
+
+        if( watchGlobs && watchGlobs.length > 0 )
+        {
+            fileSystemWatcher = vscode.workspace.createFileSystemWatcher( "**/*" );
+
+            context.subscriptions.push( fileSystemWatcher );
+
+            fileSystemWatcher.onDidChange( checkForExternalFileChanged );
+            fileSystemWatcher.onDidCreate( checkForExternalFileChanged );
+
+            fileSystemWatcher.onDidDelete( function( uri )
+            {
+                if( utils.isWatchedFile( uri.fsPath ) )
+                {
+                    debug( uri.fsPath + " deleted" );
+                    removeFileFromSearchResults( uri.fsPath );
+                    provider.remove( refreshTree, uri.fsPath );
+                }
+            } );
+        }
+    }
+
+    function isVisible( uri )
+    {
+        var visible = false;
+        vscode.window.visibleTextEditors.map( function( editor )
+        {
+            if( editor.document && editor.document.uri.fsPath === uri.fsPath )
+            {
+                visible = true;
+            }
+        } );
+        return visible;
+    }
+
     function debug( text )
     {
         if( outputChannel )
@@ -67,6 +130,7 @@ function activate( context )
             setButtonsAndContext();
         }, 200 );
     }
+
     function addResultsToTree()
     {
         function trimMatchesOnSameLine( searchResults )
@@ -82,8 +146,6 @@ function activate( context )
                 } );
             } );
         }
-
-        debug( "Found " + searchResults.length + " items" );
 
         trimMatchesOnSameLine( searchResults );
 
@@ -195,6 +257,7 @@ function activate( context )
             var excludes = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'excludedWorkspaces', [] );
             if( vscode.workspace.workspaceFolders )
             {
+<<<<<<< HEAD
                 vscode.workspace.workspaceFolders.map( function( folder )
                 {
                     if( utils.isIncluded( folder.name, includes, excludes ) )
@@ -202,6 +265,12 @@ function activate( context )
                         searchList.push( folder.uri.fsPath );
                     }
                 } );
+=======
+            vscode.workspace.workspaceFolders.map( function( folder )
+            {
+                searchList.push( folder.uri.fsPath );
+            } );
+>>>>>>> Detect external file changes and update tree
             }
         }
     }
@@ -230,6 +299,7 @@ function activate( context )
             var entry = searchList.pop();
             search( getOptions( entry ), ( searchList.length > 0 ) ? iterateSearchList : function()
             {
+                debug( "Found " + searchResults.length + " items" );
                 addResultsToTree();
                 setButtonsAndContext();
             } );
@@ -340,7 +410,7 @@ function activate( context )
         }
         else
         {
-            provider.remove( document.fileName );
+            provider.remove( null, document.fileName );
         }
         addResultsToTree();
     }
@@ -577,14 +647,9 @@ function activate( context )
 
         context.subscriptions.push( vscode.workspace.onDidOpenTextDocument( document =>
         {
-            if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
+            if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true && document.uri.scheme === "file" )
             {
-                if( document.uri.scheme === "file" &&
-                    ( vscode.workspace.getWorkspaceFolder( vscode.Uri.file( document.fileName ) ) === undefined ||
-                        vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly === true ) )
-                {
-                    refreshFile( document );
-                }
+                refreshFile( document );
             }
         } ) );
 
@@ -595,8 +660,7 @@ function activate( context )
                 if( document.uri.scheme === "file" && vscode.workspace.getWorkspaceFolder( vscode.Uri.file( document.fileName ) ) === undefined )
                 {
                     removeFileFromSearchResults( document.fileName );
-                    provider.remove( document.fileName );
-                    refreshTree();
+                    provider.remove( refreshTree, document.fileName );
                 }
             }
         } ) );
@@ -617,6 +681,12 @@ function activate( context )
                 if( e.affectsConfiguration( "todo-tree.debug" ) )
                 {
                     resetOutputChannel();
+                }
+
+                if( e.affectsConfiguration( "todo-tree.watchGlobs" ) ||
+                    e.affectsConfiguration( "todo-tree.ignoreGlobs" ) )
+                {
+                    resetFileSystemWatcher();
                 }
 
                 if( e.affectsConfiguration( "todo-tree.globs" ) ||
@@ -670,6 +740,8 @@ function activate( context )
         {
             documentChanged( vscode.window.activeTextEditor.document );
         }
+
+        resetFileSystemWatcher();
     }
 
     register();
