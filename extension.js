@@ -238,28 +238,49 @@ function activate( context )
 
     function rebuild()
     {
-        function getRootFolder()
+        function getRootFolders()
         {
+            var rootFolders = [];
             var valid = true;
             var rootFolder = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'rootFolder' );
             var envRegex = new RegExp( "\\$\\{(.*?)\\}", "g" );
-            rootFolder = rootFolder.replace( envRegex, function( match, name )
+            if( rootFolder.indexOf( "${workspaceFolder}" ) > -1 )
             {
-                if( name === "workspaceFolder" )
+                if( vscode.workspace.workspaceFolders )
                 {
-                    if( vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length === 1 )
+                    vscode.workspace.workspaceFolders.map( function( folder )
                     {
-                        return vscode.workspace.workspaceFolders[ 0 ].uri.fsPath;
-                    }
-                    else
-                    {
-                        valid = false;
-                    }
+                        var path = rootFolder;
+                        path = path.replace( /\$\{workspaceFolder\}/g, folder.uri.fsPath );
+                        rootFolders.push( path );
+                    } );
                 }
-                return process.env[ name ];
+                else
+                {
+                    valid = false;
+                }
+            }
+
+            rootFolders.forEach( function( path )
+            {
+                rootFolder = rootFolder.replace( envRegex, function( match, name )
+                {
+                    return process.env[ name ];
+                } );
             } );
 
-            return valid ? rootFolder : undefined;
+            var includes = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'includedWorkspaces', [] );
+            var excludes = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'excludedWorkspaces', [] );
+
+            if( valid === true )
+            {
+                rootFolders = rootFolders.filter( function( folder )
+                {
+                    return utils.isIncluded( folder, includes, excludes );
+                } );
+            }
+
+            return valid === true ? rootFolders : undefined;
         }
 
         searchResults = [];
@@ -275,12 +296,9 @@ function activate( context )
         status.command = "todo-tree.stopScan";
         status.tooltip = "Click to interrupt scan";
 
-        var rootFolder = getRootFolder();
-        if( rootFolder )
-        {
-            searchList.push( rootFolder );
-        }
-        else
+        searchList = getRootFolders();
+
+        if( searchList.length === 0 )
         {
             searchOutOfWorkspaceDocuments( searchList );
             searchWorkspaces( searchList );
