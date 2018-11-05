@@ -10,9 +10,10 @@ function init( configuration )
     config = configuration;
 }
 
-function isHexColour( rgb )
+function isHexColour( colour )
 {
-    return ( typeof rgb === "string" ) && ( rgb.length === 3 || rgb.length === 6 ) && !isNaN( parseInt( rgb, 16 ) );
+    var hex = colour.split( / / )[ 0 ].replace( /[^\da-fA-F]/g, '' );
+    return ( typeof colour === "string" ) && ( hex.length === 3 || hex.length === 6 ) && !isNaN( parseInt( hex, 16 ) );
 }
 
 function removeBlockComments( text, fileName )

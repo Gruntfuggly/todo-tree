@@ -33,12 +33,6 @@ function init( context )
     context.subscriptions.push( decorations );
 }
 
-function isHexColour( colour )
-{
-    var hex = colour.split( / / )[ 0 ].replace( /[^\da-fA-F]/g, '' );
-    return ( typeof colour === "string" ) && ( hex.length === 3 || hex.length === 6 ) && !isNaN( parseInt( hex, 16 ) );
-}
-
 function complementaryColour( colour )
 {
     var hex = colour.split( / / )[ 0 ].replace( /[^\da-fA-F]/g, '' );
@@ -73,7 +67,7 @@ function getDecoration( tag )
 
     if( foregroundColour )
     {
-        if( !isHexColour( foregroundColour ) )
+        if( !utils.isHexColour( foregroundColour ) )
         {
             if( defaultColours.indexOf( foregroundColour ) > -1 )
             {
@@ -90,7 +84,7 @@ function getDecoration( tag )
 
     if( backgroundColour )
     {
-        if( backgroundColour !== undefined && !isHexColour( backgroundColour ) )
+        if( backgroundColour !== undefined && !utils.isHexColour( backgroundColour ) )
         {
             if( defaultColours.indexOf( backgroundColour ) > -1 )
             {
@@ -243,7 +237,7 @@ function refreshComplementaryColours()
 
     otherColours.forEach( function( colour )
     {
-        if( isHexColour( colour ) )
+        if( utils.isHexColour( colour ) )
         {
             complementaryColours[ colour ] = complementaryColour( colour );
         }

@@ -5,7 +5,8 @@ os:
   - linux
 
 before_install:
-  - npm install qunit
+  - npm install
+  - npm install -g node-qunit
 
 script:
-  - ./node_modules/qunit/bin/qunit test/tests.js
+  - qunit -c utils.js -t test/tests.js
