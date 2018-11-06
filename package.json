@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.100",
+    "version": "0.0.101",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -311,6 +311,16 @@
                     "default": true,
                     "markdownDescription": "If enabled, badges and SCM state are shown in the tree view"
                 },
+                "todo-tree.includedWorkspaces": {
+                    "type": "array",
+                    "default": [],
+                    "markdownDescription": "An array of workspace names to include as roots in the tree (wildcards can be used). An empty array includes all workspace folders."
+                },
+                "todo-tree.excludedWorkspaces": {
+                    "type": "array",
+                    "default": [],
+                    "markdownDescription": "An array of workspace names to exclude as roots in the tree (wildcards can be used)."
+                },
                 "todo-tree.defaultHighlight": {
                     "type": "object",
                     "default": {},
@@ -346,6 +356,7 @@
     },
     "dependencies": {
         "comment-patterns": "^0.10.1",
+        "micromatch": "^3.1.10",
         "minimatch": "^3.0.4",
         "octicons": "^7.4.0"
     }

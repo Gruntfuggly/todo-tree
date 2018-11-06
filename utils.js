@@ -2,6 +2,7 @@ var vscode = require( 'vscode' );
 var path = require( 'path' );
 var fs = require( 'fs' );
 var minimatch = require( 'minimatch' );
+var micromatch = require( 'micromatch' );
 
 var config = require( './config.js' );
 
@@ -145,6 +146,16 @@ function shouldIgnore( filename )
     return result;
 }
 
+function isIncluded( name, includes, excludes )
+{
+    var included = includes.length === 0 || micromatch.isMatch( name, includes );
+    if( included === true && micromatch.isMatch( name, excludes ) )
+    {
+        included = false;
+    }
+    return included;
+}
+
 module.exports.isHexColour = isHexColour;
 module.exports.removeBlockComments = removeBlockComments;
 module.exports.extractTag = extractTag;
@@ -152,3 +163,4 @@ module.exports.getRegexSource = getRegexSource;
 module.exports.getRegex = getRegex;
 module.exports.getRgPath = getRgPath;
 module.exports.shouldIgnore = shouldIgnore;
+module.exports.isIncluded = isIncluded;

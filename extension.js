@@ -191,11 +191,16 @@ function activate( context )
     {
         if( vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly !== true )
         {
+            var includes = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'includedWorkspaces', [] );
+            var excludes = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'excludedWorkspaces', [] );
             if( vscode.workspace.workspaceFolders )
             {
                 vscode.workspace.workspaceFolders.map( function( folder )
                 {
-                    searchList.push( folder.uri.fsPath );
+                    if( utils.isIncluded( folder.name, includes, excludes ) )
+                    {
+                        searchList.push( folder.uri.fsPath );
+                    }
                 } );
             }
         }
@@ -620,6 +625,8 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.ripgrepArgs" ) ||
                     e.affectsConfiguration( "todo-tree.ripgrepMaxBuffer" ) ||
                     e.affectsConfiguration( "todo-tree.showTagsFromOpenFilesOnly" ) ||
+                    e.affectsConfiguration( "todo-tree.includedWorkspaces" ) ||
+                    e.affectsConfiguration( "todo-tree.excludedWorkspaces" ) ||
                     e.affectsConfiguration( "todo-tree.tags" ) )
                 {
                     rebuild();

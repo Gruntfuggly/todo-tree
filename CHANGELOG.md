@@ -1,3 +1,6 @@
+# v0.0.101 - 2018-11-06
+- Provide configuration for included/excluded workspace folders
+
 # v0.0.100 - 2018-11-05
 - Handle situation where there are no workspace folders better
 
