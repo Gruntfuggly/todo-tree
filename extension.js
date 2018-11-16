@@ -204,7 +204,7 @@ function activate( context )
         }
     }
 
-    function searchOutOfWorkspaceDocuments( searchList )
+    function refreshOpenFiles()
     {
         var documents = vscode.workspace.textDocuments;
 
@@ -212,11 +212,7 @@ function activate( context )
         {
             if( document.uri && document.uri.scheme === "file" )
             {
-                if( vscode.workspace.getWorkspaceFolder( document.uri ) === undefined ||
-                    vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly === true )
-                {
-                    searchList.push( document.uri.fsPath );
-                }
+                refreshFile( document );
             }
         } );
     }
@@ -232,6 +228,11 @@ function activate( context )
                 addResultsToTree();
                 setButtonsAndContext();
             } );
+        }
+        else
+        {
+            addResultsToTree();
+            setButtonsAndContext();
         }
     }
 
@@ -299,11 +300,12 @@ function activate( context )
 
         if( searchList.length === 0 )
         {
-            searchOutOfWorkspaceDocuments( searchList );
             searchWorkspaces( searchList );
         }
 
         iterateSearchList();
+
+        refreshOpenFiles();
     }
 
     function setButtonsAndContext()
@@ -370,6 +372,9 @@ function activate( context )
         } );
         provider.clear( vscode.workspace.workspaceFolders );
         provider.rebuild();
+
+        refreshOpenFiles();
+
         addResultsToTree();
         setButtonsAndContext();
     }
@@ -596,9 +601,7 @@ function activate( context )
         {
             if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
             {
-                if( document.uri.scheme === "file" &&
-                    ( vscode.workspace.getWorkspaceFolder( vscode.Uri.file( document.fileName ) ) === undefined ||
-                        vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly === true ) )
+                if( document.uri.scheme === "file" )
                 {
                     refreshFile( document );
                 }
