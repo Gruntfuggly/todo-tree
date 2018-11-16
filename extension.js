@@ -83,8 +83,6 @@ function activate( context )
             } );
         }
 
-        debug( "Found " + searchResults.length + " items" );
-
         trimMatchesOnSameLine( searchResults );
 
         searchResults.sort( function compare( a, b )
@@ -230,6 +228,7 @@ function activate( context )
             var entry = searchList.pop();
             search( getOptions( entry ), ( searchList.length > 0 ) ? iterateSearchList : function()
             {
+                debug( "Found " + searchResults.length + " items" );
                 addResultsToTree();
                 setButtonsAndContext();
             } );
