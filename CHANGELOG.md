@@ -1,3 +1,8 @@
+# v0.0.102 - 2018-11-17
+- Make globs work properly (at last!)
+- Fix showTagsFromOpenFilesOnly option
+- Expand ${workspaceFolder} in rootFolder for all workspaces
+
 # v0.0.101 - 2018-11-06
 - Provide configuration for included/excluded workspace folders
 

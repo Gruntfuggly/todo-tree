@@ -125,27 +125,6 @@ function getRgPath()
     return rgPath;
 }
 
-function shouldIgnore( filename )
-{
-    var globs = vscode.workspace.getConfiguration( 'todo-tree' ).globs;
-
-    var result = false;
-
-    if( globs.length > 0 )
-    {
-        result = true;
-        globs.map( function( glob )
-        {
-            if( minimatch( filename, glob ) )
-            {
-                result = false;
-            }
-        } );
-    }
-
-    return result;
-}
-
 function isIncluded( name, includes, excludes )
 {
     var included = includes.length === 0 || micromatch.isMatch( name, includes );
@@ -162,5 +141,4 @@ module.exports.extractTag = extractTag;
 module.exports.getRegexSource = getRegexSource;
 module.exports.getRegex = getRegex;
 module.exports.getRgPath = getRgPath;
-module.exports.shouldIgnore = shouldIgnore;
 module.exports.isIncluded = isIncluded;

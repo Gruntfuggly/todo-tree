@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.101",
+    "version": "0.0.102",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -211,10 +211,15 @@
                     "default": "",
                     "markdownDescription": "Folder in which to run the search (defaults to the workspace folder)"
                 },
-                "todo-tree.globs": {
+                "todo-tree.includeGlobs": {
                     "type": "array",
                     "default": [],
-                    "markdownDescription": "Globs for use in limiting search results, e.g. `[\"!**/unit-tests\"]`"
+                    "markdownDescription": "Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders"
+                },
+                "todo-tree.excludeGlobs": {
+                    "type": "array",
+                    "default": [],
+                    "markdownDescription": "Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. `[\"**/*.txt\"]` to ignore all .txt files"
                 },
                 "todo-tree.ripgrep": {
                     "type": "string",
@@ -263,7 +268,7 @@
                 "todo-tree.showInExplorer": {
                     "type": "boolean",
                     "default": true,
-                    "markdownDescription": "If true, show the tree in the explorer. Set to false if you only want to use the dedicated tree in the activity bar"
+                    "markdownDescription": "Show the tree in the explorer view"
                 },
                 "todo-tree.filterCaseSensitive": {
                     "type": "boolean",
@@ -273,7 +278,7 @@
                 "todo-tree.autoRefresh": {
                     "type": "boolean",
                     "default": true,
-                    "markdownDescription": "Set to true if you would rather the tree was not refreshed automatically"
+                    "markdownDescription": "Refresh the tree when files are opened or saved"
                 },
                 "todo-tree.highlight": {
                     "type": "string",
@@ -304,12 +309,12 @@
                 "todo-tree.trackFile": {
                     "type": "boolean",
                     "default": true,
-                    "markdownDescription": "If enabled, the current file is tracked in the tree view"
+                    "markdownDescription": "Track the current file in the tree view"
                 },
                 "todo-tree.showBadges": {
                     "type": "boolean",
                     "default": true,
-                    "markdownDescription": "If enabled, badges and SCM state are shown in the tree view"
+                    "markdownDescription": "Show badges and SCM state in the tree view"
                 },
                 "todo-tree.includedWorkspaces": {
                     "type": "array",
@@ -334,17 +339,17 @@
                 "todo-tree.expanded": {
                     "type": "boolean",
                     "default": false,
-                    "markdownDescription": "Set to true if you want the tree to be fully expanded by default"
+                    "markdownDescription": "When opening new workspaces, show the tree initially fully expanded"
                 },
                 "todo-tree.grouped": {
                     "type": "boolean",
                     "default": false,
-                    "markdownDescription": "Set to true if you want the tree to be grouped by tag by default"
+                    "markdownDescription": "When opening new workspaces, show the tree initially grouped by tag"
                 },
                 "todo-tree.flat": {
                     "type": "boolean",
                     "default": false,
-                    "markdownDescription": "Set to true to show a flat list of files by default"
+                    "markdownDescription": "When opening new workspaces, show the tree initially as flat list of files"
                 }
             }
         }
