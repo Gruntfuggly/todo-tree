@@ -1,3 +1,6 @@
+# v0.0.103 - 2018-11-19
+- Fix globs migration error
+
 # v0.0.102 - 2018-11-17
 - Make globs work properly (at last!)
 - Fix showTagsFromOpenFilesOnly option

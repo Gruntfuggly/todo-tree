@@ -497,7 +497,8 @@ function activate( context )
                 config.update( 'customHighlight', customHighlight, true );
             }
 
-            if( config.get( 'globs' ).length > 0 && context.workspaceState.get( 'globsMigrated' ) !== true )
+            var globs = config.get( 'globs' );
+            if( globs && globs.length > 0 && context.workspaceState.get( 'globsMigrated' ) !== true )
             {
                 var prompt = "'todo-tree.globs' has been deprecated. Please use 'todo-tree.includeGlobs' and 'todo-tree.excludeGlobs' instead.";
                 var migrate = "Migrate settings";
