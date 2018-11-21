@@ -67,6 +67,7 @@ function activate( context )
             setButtonsAndContext();
         }, 200 );
     }
+
     function addResultsToTree()
     {
         function trimMatchesOnSameLine( searchResults )
@@ -675,7 +676,7 @@ function activate( context )
         {
             if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
             {
-                if( document.uri.scheme === "file" && vscode.workspace.getWorkspaceFolder( vscode.Uri.file( document.fileName ) ) === undefined )
+                if( document.uri.scheme === "file" )
                 {
                     removeFileFromSearchResults( document.fileName );
                     provider.remove( document.fileName );
