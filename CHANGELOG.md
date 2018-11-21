@@ -1,3 +1,7 @@
+# v0.0.104 - 2018-11-21
+- Don't use case sensitive group nodes if regexCaseSensitive if false
+- Remove items from tree when file is closed and showTagsFromOpenFilesOnly is true
+
 # v0.0.103 - 2018-11-19
 - Fix globs migration error
 
