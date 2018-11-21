@@ -687,7 +687,7 @@ function activate( context )
         {
             if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
             {
-                if( document.uri.scheme === "file" )
+                if( document.uri.scheme === "file" && vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly === true )
                 {
                     removeFileFromSearchResults( document.fileName );
                     provider.remove( document.fileName );
