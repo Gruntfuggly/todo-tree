@@ -25,7 +25,11 @@ var isVisible = function( e )
 
 var findTagNode = function( node )
 {
-    return node.type === PATH && node.tag === this.toString();
+    if( config.isRegexCaseSensitive() )
+    {
+        return node.type === PATH && node.tag === this.toString();
+    }
+    return node.type === PATH && node.tag.toLowerCase() === this.toString().toLowerCase();
 };
 
 var findExactPath = function( node )
