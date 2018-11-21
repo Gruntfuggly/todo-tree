@@ -1,3 +1,7 @@
+# v0.0.105 - 2018-11-21
+- Don't add entries for open files if already found by search
+- Don't remove items from tree when file is closed and showTagsFromOpenFilesOnly is false
+
 # v0.0.104 - 2018-11-21
 - Don't use case sensitive group nodes if regexCaseSensitive if false
 - Remove items from tree when file is closed and showTagsFromOpenFilesOnly is true
