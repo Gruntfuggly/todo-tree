@@ -371,8 +371,19 @@ function activate( context )
                     column: position.character + 1,
                     match: line.text
                 };
-                searchResults.push( result );
-                matchesFound = true;
+                var found = false;
+                searchResults.map( function( s )
+                {
+                    if( s.file === result.file && s.line == result.line && s.column == result.column )
+                    {
+                        found = true;
+                    }
+                } );
+                if( found === false )
+                {
+                    searchResults.push( result );
+                    matchesFound = true;
+                }
             }
         }
 
