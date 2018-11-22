@@ -53,7 +53,7 @@ function extractTag( text )
     var regex = c.get( 'regex' );
     var flags = c.get( 'regexCaseSensitive' ) ? '' : 'i';
     var tagMatch;
-    var originalTag = text;
+    var originalTag;
 
     if( regex.indexOf( "$TAGS" ) > -1 )
     {
@@ -69,9 +69,9 @@ function extractTag( text )
             }
             c.get( 'tags' ).map( function( tag )
             {
-                if( tag.toLowerCase() == text.toLowerCase() )
+                if( tag.toLowerCase() == tagMatch[ 0 ].toLowerCase() )
                 {
-                    originalTag = tag;
+                    originalTag = tagMatch[ 0 ];
                 }
             } );
         }

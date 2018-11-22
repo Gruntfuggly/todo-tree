@@ -1,3 +1,6 @@
+# v0.0.106 - 2018-11-22
+- Fix tag extraction function
+
 # v0.0.105 - 2018-11-21
 - Don't add entries for open files if already found by search
 - Don't remove items from tree when file is closed and showTagsFromOpenFilesOnly is false
