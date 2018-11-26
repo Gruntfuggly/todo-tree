@@ -109,27 +109,6 @@ QUnit.test( "utils.getRegex can remove the case insensitive flag", function( ass
     assert.equal( utils.getRegex().flags, "gm" );
 } );
 
-QUnit.test( "utils.shouldIgnore returns false if no globs are defined", function( assert )
-{
-    var testConfig = stubs.getTestConfig();
-    utils.init( testConfig );
-    assert.ok( utils.shouldIgnore( "filename.txt" ) === false );
-} );
-
-QUnit.test( "utils.shouldIgnore returns true if filename matches globs", function( assert )
-{
-    var testConfig = stubs.getTestConfig();
-    testConfig.globsList = [ "*.txt" ];
-    utils.init( testConfig );
-    assert.ok( utils.shouldIgnore( "filename.txt" ) === false );
-    assert.ok( utils.shouldIgnore( "filename.cpp" ) === true );
-
-    testConfig.globsList = [ "*.txt", "*.js" ];
-    utils.init( testConfig );
-    assert.ok( utils.shouldIgnore( "filename.js" ) === false );
-    assert.ok( utils.shouldIgnore( "filename.txt" ) === false );
-} );
-
 QUnit.test( "utils.isIncluded returns true when no includes or excludes are specified", function( assert )
 {
     assert.ok( utils.isIncluded( "filename.js", [], [] ) === true );
