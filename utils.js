@@ -69,11 +69,11 @@ function extractTag( text )
             {
                 text = text.substr( tagMatch[ 0 ].length );
             }
-            c.get( 'tags' ).map( function( tag )
+            c.tags.map( function( tag )
             {
                 if( tag.toLowerCase() == tagMatch[ 0 ].toLowerCase() )
                 {
-                    originalTag = tagMatch[ 0 ];
+                    originalTag = tag;
                 }
             } );
         }

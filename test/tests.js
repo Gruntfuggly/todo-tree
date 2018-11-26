@@ -58,13 +58,24 @@ QUnit.test( "utils.extractTag can be case sensitive", function( assert )
     utils.init( testConfig );
 
     var result = utils.extractTag( "before todo after" );
-    assert.equal( result.tag, "todo" );
+    assert.equal( result.tag, "TODO" );
     assert.equal( result.withoutTag, "after" );
 
     testConfig.shouldBeCaseSensitive = true;
     result = utils.extractTag( "before todo after" );
     assert.equal( result.tag, "" );
     assert.equal( result.withoutTag, "before todo after" );
+} );
+
+QUnit.test( "utils.extractTag returns tag from tags list, not the match", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.shouldGroupFlag = true;
+    utils.init( testConfig );
+
+    var result = utils.extractTag( "before todo after" );
+    assert.equal( result.tag, "TODO" );
+    assert.equal( result.withoutTag, "after" );
 } );
 
 QUnit.test( "utils.getRegexSource returns the regex source without expanded tags if they aren't present", function( assert )

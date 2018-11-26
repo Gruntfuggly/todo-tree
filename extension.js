@@ -215,9 +215,9 @@ function activate( context )
             if( document.uri && document.uri.scheme === "file" )
             {
                 refreshFile( document );
-                }
-        } );
             }
+        } );
+    }
 
     function applyGlobs()
     {
@@ -231,7 +231,7 @@ function activate( context )
             searchResults = searchResults.filter( function( match )
             {
                 return utils.isIncluded( match.file, includeGlobs, excludeGlobs );
-        } );
+            } );
 
             debug( "Remaining items: " + searchResults.length );
         }
@@ -275,19 +275,19 @@ function activate( context )
                         path = path.replace( /\$\{workspaceFolder\}/g, folder.uri.fsPath );
                         rootFolders.push( path );
                     } );
-                    }
-                    else
-                    {
-                        valid = false;
-                    }
                 }
+                else
+                {
+                    valid = false;
+                }
+            }
 
             rootFolders.forEach( function( path )
             {
                 rootFolder = rootFolder.replace( envRegex, function( match, name )
                 {
-                return process.env[ name ];
-            } );
+                    return process.env[ name ];
+                } );
             } );
 
             var includes = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'includedWorkspaces', [] );
@@ -536,7 +536,7 @@ function activate( context )
                             }
                             else
                             {
-                                includeGlobs.push( glob );
+                                includeGlobs.push( glob ); // TODO wtf?
                             }
                         } );
 
@@ -579,8 +579,8 @@ function activate( context )
                 {
                     if( document.fileName === undefined || isIncluded( document.fileName ) )
                     {
-                    highlights.triggerHighlight( editor );
-                }
+                        highlights.triggerHighlight( editor );
+                    }
                 }
             } );
         }

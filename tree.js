@@ -29,7 +29,7 @@ var findTagNode = function( node )
     {
         return node.type === PATH && node.tag === this.toString();
     }
-    return node.type === PATH && node.tag.toLowerCase() === this.toString().toLowerCase();
+    return node.type === PATH && node.tag && node.tag.toLowerCase() === this.toString().toLowerCase();
 };
 
 var findExactPath = function( node )
