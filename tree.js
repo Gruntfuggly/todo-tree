@@ -44,12 +44,22 @@ var findPathNode = function( node )
 
 var findTodoNode = function( node )
 {
-    return node.name === this.label.toString() && node.line === this.line;
+    return node.label === this.label.toString() && node.line === this.line;
 };
 
 var sortByLabel = function( a, b )
 {
     return a.label > b.label ? 1 : b.label > a.label ? -1 : a.line > b.line ? 1 : -1;
+};
+
+var sortByFilenameAndLine = function( a, b )
+{
+    return a.fsPath > b.fsPath ? 1 : b.fsPath > a.fsPath ? -1 : a.line > b.line ? 1 : -1;
+};
+
+var sortByTagAndLine = function( a, b )
+{
+    return a.tag > b.tag ? 1 : b.tag > a.tag ? -1 : a.line > b.line ? 1 : -1;
 };
 
 function createWorkspaceRootNode( folder )
@@ -101,6 +111,23 @@ function createFlatNode( fsPath, rootNode )
     };
 }
 
+function createTagNode( fsPath, tag )
+{
+    var id = ( buildCounter * 1000000 ) + nodeCounter++;
+
+    return {
+        isRootTagNode: true,
+        type: PATH,
+        label: tag,
+        fsPath: tag,
+        nodes: [],
+        todos: [],
+        id: id,
+        tag: tag,
+        visible: true
+    };
+}
+
 function createTodoNode( result )
 {
     var id = ( buildCounter * 1000000 ) + nodeCounter++;
@@ -142,7 +169,7 @@ function locateFlatChildNode( rootNode, result, tag )
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tag ] );
             parentNode.tag = tag;
             parentNodes.push( parentNode );
-            parentNodes.sort( sortByLabel );
+            parentNodes.sort( sortByFilenameAndLine );
         }
         parentNodes = parentNode.nodes;
     }
@@ -152,7 +179,7 @@ function locateFlatChildNode( rootNode, result, tag )
     {
         childNode = createFlatNode( result.file, rootNode );
         parentNodes.push( childNode );
-        parentNodes.sort( sortByLabel );
+        parentNodes.sort( sortByFilenameAndLine );
     }
 
     return childNode;
@@ -198,7 +225,7 @@ function locateTreeChildNode( rootNode, pathElements, tag )
 
 function addWorkspaceFolders()
 {
-    if( workspaceFolders )
+    if( workspaceFolders && config.shouldShowTagsOnly() === false )
     {
         workspaceFolders.map( function( folder )
         {
@@ -226,7 +253,7 @@ class TreeNodeProvider
         {
             var availableNodes = nodes.filter( function( node )
             {
-                return node.nodes.length + node.todos.length > 0;
+                return node.nodes === undefined || ( node.nodes.length + node.todos.length > 0 );
             } );
             var rootNodes = nodes.filter( isVisible );
             if( rootNodes.length > 0 )
@@ -291,6 +318,10 @@ class TreeNodeProvider
             }
 
             treeItem.tooltip = node.fsPath;
+            if( node.line !== undefined )
+            {
+                treeItem.tooltip += ", line " + ( node.line + 1 );
+            }
 
             if( node.type === PATH )
             {
@@ -341,8 +372,6 @@ class TreeNodeProvider
         workspaceFolders = folders;
 
         addWorkspaceFolders();
-
-        this._onDidChangeTreeData.fire();
     }
 
     rebuild()
@@ -352,6 +381,18 @@ class TreeNodeProvider
 
     refresh()
     {
+        if( config.shouldShowTagsOnly() )
+        {
+            nodes.sort( config.shouldGroup() ? sortByTagAndLine : sortByFilenameAndLine );
+            nodes.forEach( function( node )
+            {
+                if( node.todos )
+                {
+                    node.todos.sort( sortByFilenameAndLine );
+                }
+            } );
+        }
+
         this._onDidChangeTreeData.fire();
     }
 
@@ -418,7 +459,33 @@ class TreeNodeProvider
         var todoNode = createTodoNode( result );
 
         var childNode;
-        if( config.shouldFlatten() || rootNode === undefined )
+        if( config.shouldShowTagsOnly() )
+        {
+            if( config.shouldGroup() )
+            {
+                if( todoNode.tag )
+                {
+                    childNode = nodes.find( findTagNode, todoNode.tag );
+                    if( childNode === undefined )
+                    {
+                        childNode = createTagNode( result.file, todoNode.tag );
+                        nodes.push( childNode );
+                    }
+                }
+                else if( nodes.find( findTodoNode, todoNode ) === undefined )
+                {
+                    nodes.push( todoNode );
+                }
+            }
+            else
+            {
+                if( nodes.find( findTodoNode, todoNode ) === undefined )
+                {
+                    nodes.push( todoNode );
+                }
+            }
+        }
+        else if( config.shouldFlatten() || rootNode === undefined )
         {
             childNode = locateFlatChildNode( rootNode, result, todoNode.tag );
         }
@@ -433,40 +500,24 @@ class TreeNodeProvider
             childNode = locateTreeChildNode( rootNode, pathElements, todoNode.tag );
         }
 
-        if( childNode.todos === undefined )
+        if( childNode )
         {
-            childNode.todos = [];
-        }
+            if( childNode.todos === undefined )
+            {
+                childNode.todos = [];
+            }
 
-        childNode.expanded = result.expanded;
+            childNode.expanded = result.expanded;
 
-        if( childNode.todos.find( findTodoNode, todoNode ) === undefined )
-        {
-            todoNode.parent = childNode;
-            childNode.todos.push( todoNode );
+            if( childNode.todos.find( findTodoNode, todoNode ) === undefined )
+            {
+                todoNode.parent = childNode;
+                childNode.todos.push( todoNode );
+            }
         }
     }
 
     reset( filename, children )
-    {
-        if( children === undefined )
-        {
-            children = nodes;
-        }
-        children.forEach( function( child )
-        {
-            if( child.nodes !== undefined )
-            {
-                this.reset( filename, child.nodes );
-            }
-            if( child.fsPath === filename )
-            {
-                child.todos = [];
-            }
-        }, this );
-    }
-
-    remove( filename, children )
     {
         var root = children === undefined;
         if( children === undefined )
@@ -475,18 +526,92 @@ class TreeNodeProvider
         }
         children = children.filter( function( child )
         {
+            var keep = true;
             if( child.nodes !== undefined )
             {
-                child.nodes = this.remove( filename, child.nodes );
+                this.reset( filename, child.nodes );
             }
-            var shouldRemove = ( child.fsPath === filename ) || ( child.nodes.length + child.todos.length === 0 ) && child.isWorkspaceNode !== true;
-            if( shouldRemove )
+            if( child.type === TODO && !child.tag && child.fsPath == filename ) // no tag (e.g. markdown)
             {
-                delete expandedNodes[ child.fsPath ];
-                this._context.workspaceState.update( 'expandedNodes', expandedNodes );
+                keep = false;
             }
-            return shouldRemove === false;
+            else if( child.type === TODO && child.parent === undefined && child.fsPath == filename ) // top level todo node
+            {
+                keep = false;
+            }
+            else if( child.fsPath === filename || child.isRootTagNode )
+            {
+                if( config.shouldShowTagsOnly() )
+                {
+                    if( child.todos )
+                    {
+                        child.todos = child.todos.filter( function( todo )
+                        {
+                            return todo.fsPath !== filename;
+                        } );
+                    }
+                }
+                else
+                {
+                    child.todos = [];
+                }
+            }
+            return keep;
         }, this );
+
+        if( root )
+        {
+            nodes = children;
+        }
+    }
+
+    remove( filename, children )
+    {
+        function removeNodesByFilename( children, me )
+        {
+            children = children.filter( function( child )
+            {
+                if( child.nodes !== undefined )
+                {
+                    child.nodes = me.remove( filename, child.nodes );
+                }
+                var shouldRemove = ( child.fsPath === filename );
+                if( shouldRemove )
+                {
+                    delete expandedNodes[ child.fsPath ];
+                    me._context.workspaceState.update( 'expandedNodes', expandedNodes );
+                }
+                return shouldRemove === false;
+            }, me );
+        }
+
+        function removeEmptyNodes( children, me )
+        {
+            children = children.filter( function( child )
+            {
+                if( child.nodes !== undefined )
+                {
+                    child.nodes = me.remove( filename, child.nodes );
+                }
+                var shouldRemove = ( child.nodes && child.todos && child.nodes.length + child.todos.length === 0 && child.isWorkspaceNode !== true );
+                if( shouldRemove )
+                {
+                    delete expandedNodes[ child.fsPath ];
+                    me._context.workspaceState.update( 'expandedNodes', expandedNodes );
+                }
+                return shouldRemove === false;
+            }, me );
+        }
+
+        var root = children === undefined;
+        if( children === undefined )
+        {
+            children = nodes;
+        }
+
+        removeNodesByFilename( children, this );
+        removeEmptyNodes( children, this );
+
         if( root )
         {
             nodes = children;

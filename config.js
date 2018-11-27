@@ -24,6 +24,11 @@ function shouldFlatten()
     return context.workspaceState.get( 'flat', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'flat', false ) );
 }
 
+function shouldShowTagsOnly()
+{
+    return context.workspaceState.get( 'tagsOnly', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'tagsOnly', false ) );
+}
+
 function showFilterCaseSensitive()
 {
     return vscode.workspace.getConfiguration( 'todo-tree' ).get( 'filterCaseSensitive', false );
@@ -89,6 +94,7 @@ module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
 module.exports.shouldFlatten = shouldFlatten;
+module.exports.shouldShowTagsOnly = shouldShowTagsOnly;
 module.exports.showFilterCaseSensitive = showFilterCaseSensitive;
 module.exports.isRegexCaseSensitive = isRegexCaseSensitive;
 module.exports.showBadges = showBadges;

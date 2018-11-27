@@ -208,14 +208,21 @@ function activate( context )
 
     function refreshOpenFiles()
     {
+        var editors = vscode.window.visibleTextEditors;
         var documents = vscode.workspace.textDocuments;
 
         documents.map( function( document )
         {
-            if( document.uri && document.uri.scheme === "file" )
+            editors.map( function( editor )
             {
-                refreshFile( document );
-            }
+                if( editor.document === document )
+                {
+                    if( document.uri && document.uri.scheme === "file" )
+                    {
+                        refreshFile( document );
+                    }
+                }
+            } );
         } );
     }
 
@@ -332,10 +339,15 @@ function activate( context )
     function setButtonsAndContext()
     {
         var c = vscode.workspace.getConfiguration( 'todo-tree' );
+        var isTagsOnly = context.workspaceState.get( 'tagsOnly', c.get( 'tagsOnly', false ) );
+        var isGrouped = context.workspaceState.get( 'grouped', c.get( 'grouped', false ) );
+        var isCollapsible = !isTagsOnly || isGrouped;
         vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', c.get( 'expanded', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', c.get( 'flat', false ) ) );
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-grouped', context.workspaceState.get( 'grouped', c.get( 'grouped', false ) ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-tags-only', isTagsOnly );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-grouped', isGrouped );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-filtered', context.workspaceState.get( 'filtered', false ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-collapsible', isCollapsible );
 
         var children = provider.getChildren();
         var empty = children.length === 1 && children[ 0 ].empty === true;
@@ -401,6 +413,7 @@ function activate( context )
         {
             provider.remove( document.fileName );
         }
+
         addResultsToTree();
     }
 
@@ -425,10 +438,26 @@ function activate( context )
         refresh();
     }
 
+    function showFlatView()
+    {
+        context.workspaceState.update( 'tagsOnly', false );
+        context.workspaceState.update( 'flat', true ).then( refresh );
+    }
+
+    function showTagsOnlyView()
+    {
+        context.workspaceState.update( 'flat', false );
+        context.workspaceState.update( 'tagsOnly', true ).then( refresh );
+    }
+
+    function showTreeView()
+    {
+        context.workspaceState.update( 'tagsOnly', false );
+        context.workspaceState.update( 'flat', false ).then( refresh );
+    }
+
     function collapse() { context.workspaceState.update( 'expanded', false ).then( clearExpansionStateAndRefresh ); }
     function expand() { context.workspaceState.update( 'expanded', true ).then( clearExpansionStateAndRefresh ); }
-    function showFlatView() { context.workspaceState.update( 'flat', true ).then( refresh ); }
-    function showTreeView() { context.workspaceState.update( 'flat', false ).then( refresh ); }
     function groupByTag() { context.workspaceState.update( 'grouped', true ).then( refresh ); }
     function ungroupByTag() { context.workspaceState.update( 'grouped', false ).then( refresh ); }
 
@@ -536,7 +565,7 @@ function activate( context )
                             }
                             else
                             {
-                                includeGlobs.push( glob ); // TODO wtf?
+                                includeGlobs.push( glob );
                             }
                         } );
 
@@ -639,6 +668,7 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filterClear', clearFilter ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', rebuild ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showFlatView', showFlatView ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showTagsOnlyView', showTagsOnlyView ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showTreeView', showTreeView ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.expand', expand ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.collapse', collapse ) );
@@ -729,7 +759,8 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.showTagsFromOpenFilesOnly" ) ||
                     e.affectsConfiguration( "todo-tree.includedWorkspaces" ) ||
                     e.affectsConfiguration( "todo-tree.excludedWorkspaces" ) ||
-                    e.affectsConfiguration( "todo-tree.tags" ) )
+                    e.affectsConfiguration( "todo-tree.tags" ) ||
+                    e.affectsConfiguration( "todo-tree.tagsOnly" ) )
                 {
                     rebuild();
                     documentChanged();

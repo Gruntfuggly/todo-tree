@@ -1,3 +1,10 @@
+# v0.0.107 - 2018-11-28
+- Add line number to tooltip
+- Add new minimal view (tags only)
+- Fix context.storagePath creation error
+- Start adding unit tests
+- Fix tag extraction function (properly)
+
 # v0.0.106 - 2018-11-22
 - Fix tag extraction function
 

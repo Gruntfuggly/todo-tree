@@ -25,16 +25,16 @@ function getIcon( context, tag )
             iconName = "check";
         }
 
+        if( !fs.existsSync( context.storagePath ) )
+        {
+            fs.mkdirSync( context.storagePath );
+        }
+
         if( context.storagePath )
         {
             var octiconIconPath = path.join( context.storagePath, "todo-" + iconName + "-" + colourName + ".svg" );
             if( !fs.existsSync( octiconIconPath ) )
             {
-                if( !fs.existsSync( context.storagePath ) )
-                {
-                    fs.mkdirSync( context.storagePath );
-                }
-
                 var octiconIconDefinition = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n" +
                     octicons[ iconName ].toSVG( { "xmlns": "http://www.w3.org/2000/svg", "fill": colour } );
 
