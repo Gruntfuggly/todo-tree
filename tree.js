@@ -47,7 +47,7 @@ var findTodoNode = function( node )
     return node.label === this.label.toString() && node.line === this.line;
 };
 
-var sortByLabel = function( a, b )
+var sortByLabelAndLine = function( a, b )
 {
     return a.label > b.label ? 1 : b.label > a.label ? -1 : a.line > b.line ? 1 : -1;
 };
@@ -199,7 +199,7 @@ function locateTreeChildNode( rootNode, pathElements, tag )
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tag ] );
             parentNode.tag = tag;
             parentNodes.push( parentNode );
-            parentNodes.sort( sortByLabel );
+            parentNodes.sort( sortByLabelAndLine );
         }
         parentNodes = parentNode.nodes;
     }
@@ -211,7 +211,7 @@ function locateTreeChildNode( rootNode, pathElements, tag )
         {
             childNode = createPathNode( rootNode.fsPath, pathElements.slice( 0, level + 1 ) );
             parentNodes.push( childNode );
-            parentNodes.sort( sortByLabel );
+            parentNodes.sort( sortByLabelAndLine );
             parentNodes = childNode.nodes;
         }
         else
@@ -383,12 +383,12 @@ class TreeNodeProvider
     {
         if( config.shouldShowTagsOnly() )
         {
-            nodes.sort( config.shouldGroup() ? sortByTagAndLine : sortByFilenameAndLine );
+            nodes.sort( config.shouldGroup() ? sortByTagAndLine : ( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine ) );
             nodes.forEach( function( node )
             {
                 if( node.todos )
                 {
-                    node.todos.sort( sortByFilenameAndLine );
+                    node.todos.sort( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine );
                 }
             } );
         }

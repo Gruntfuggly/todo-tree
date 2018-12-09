@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.107",
+    "version": "0.0.108",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -352,6 +352,11 @@
                     "type": "object",
                     "default": {},
                     "markdownDescription": "Custom configuration for highlighting, [Read more...](https://github.com/Gruntfuggly/todo-tree#highlighting)"
+                },
+                "todo-tree.sortTagsOnlyViewAlphabetically": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Sort items in the tags only view alphabetically instead of by file and line number"
                 },
                 "todo-tree.expanded": {
                     "type": "boolean",

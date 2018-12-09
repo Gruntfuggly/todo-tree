@@ -128,6 +128,7 @@ The extension can be customised as follows:
 | todo-tree.flat<sup>2</sup> | <tt>false</tt> | Set to true if you want new views to be flat by default |
 | todo-tree.grouped<sup>2</sup> | <tt>false</tt> | Set to true if you want new views to be grouped by default |
 | todo-tree.tagsOnly<sup>2</sup> | <tt>false</tt> | Set to true if you want new views with tags only by default |
+| todo-tree.sortTagsOnlyViewAlphabetically | <tt>false</tt> | Sort items in the tags only view alphabetically instead of by file and line number |
 
 <sup>1</sup> Deprecated - Please use `todo-tree.defaultHighlight` and `todo-tree.customHighlight` instead.
 

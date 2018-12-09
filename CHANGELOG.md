@@ -1,3 +1,6 @@
+# v0.0.108 - 2018-12-09
+- Add option to sort tags only view alphabetically
+
 # v0.0.107 - 2018-11-28
 - Add line number to tooltip
 - Add new minimal view (tags only)
