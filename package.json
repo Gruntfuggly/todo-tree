@@ -204,6 +204,11 @@
                 "command": "todo-tree.removeTag",
                 "title": "Remove Tag",
                 "category": "Todo Tree"
+            },
+            {
+                "command": "todo-tree.toggleStatusBar",
+                "title": "Toggle Status Indication Type",
+                "category": "Todo Tree"
             }
         ],
         "configuration": {
@@ -357,6 +362,16 @@
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "Sort items in the tags only view alphabetically instead of by file and line number"
+                },
+                "todo-tree.statusBar": {
+                    "type": "string",
+                    "enum": [
+                        "none",
+                        "total",
+                        "tags"
+                    ],
+                    "default": "none",
+                    "markdownDescription": "What to show in the status bar - nothing, total count, or counts per tag"
                 },
                 "todo-tree.expanded": {
                     "type": "boolean",

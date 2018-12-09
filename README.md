@@ -129,6 +129,7 @@ The extension can be customised as follows:
 | todo-tree.grouped<sup>2</sup> | <tt>false</tt> | Set to true if you want new views to be grouped by default |
 | todo-tree.tagsOnly<sup>2</sup> | <tt>false</tt> | Set to true if you want new views with tags only by default |
 | todo-tree.sortTagsOnlyViewAlphabetically | <tt>false</tt> | Sort items in the tags only view alphabetically instead of by file and line number |
+| todo-tree.statusBar | <tt>none</tt> | What to show in the status bar - nothing (<tt>none</tt>), total count (<tt>total</tt>), or counts per tag (<tt>tags</tt>) |
 
 <sup>1</sup> Deprecated - Please use `todo-tree.defaultHighlight` and `todo-tree.customHighlight` instead.
 

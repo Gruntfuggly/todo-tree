@@ -102,11 +102,60 @@ function activate( context )
 
         if( interrupted === false )
         {
-            status.hide();
+            updateStatusBar();
         }
 
         provider.filter( currentFilter );
         refreshTree();
+    }
+
+    function updateStatusBar()
+    {
+        var counts = provider.getTagCounts();
+
+        if( vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'total' )
+        {
+            status.text = "$(check):" + counts.total;
+            status.tooltip = "Todo-Tree total";
+            if( counts.total > 0 )
+            {
+                status.show();
+            }
+            else
+            {
+                status.hide();
+            }
+        }
+        else if( vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'tags' )
+        {
+            var text = "$(check) ";
+            Object.keys( counts.tags ).map( function( tag )
+            {
+                text += tag + ":" + counts.tags[ tag ] + " ";
+            } );
+            status.text = text;
+            status.tooltip = "Todo-Tree tags counts";
+            if( Object.keys( counts.tags ).length > 0 )
+            {
+                status.show();
+            }
+            else
+            {
+                status.hide();
+            }
+        }
+        else
+        {
+            status.hide();
+        }
+
+        status.command = "todo-tree.toggleStatusBar";
+    }
+
+    function toggleStatusBar()
+    {
+        var newSetting = vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'total' ? "tags" : "total";
+        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'statusBar', newSetting, true );
     }
 
     function removeFileFromSearchResults( filename )
@@ -676,6 +725,7 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.ungroupByTag', ungroupByTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.addTag', addTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeTag', removeTag ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.toggleStatusBar', toggleStatusBar ) );
 
         context.subscriptions.push( vscode.window.onDidChangeActiveTextEditor( function( e )
         {
@@ -728,6 +778,7 @@ function activate( context )
                     removeFileFromSearchResults( document.fileName );
                     provider.remove( document.fileName );
                     refreshTree();
+                    updateStatusBar();
                 }
             }
         } ) );

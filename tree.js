@@ -16,6 +16,9 @@ const TODO = "todo";
 var buildCounter = 1;
 var nodeCounter = 1;
 
+var totalCount = 0;
+var tagCounts = {};
+
 var expandedNodes = {};
 
 var isVisible = function( e )
@@ -648,6 +651,39 @@ class TreeNodeProvider
     {
         expandedNodes = {};
         this._context.workspaceState.update( 'expandedNodes', expandedNodes );
+    }
+
+    getTagCounts( children )
+    {
+        function countTags( tag )
+        {
+            totalCount++;
+            if( tagCounts[ tag ] === undefined )
+            {
+                tagCounts[ tag ] = 0;
+            }
+            tagCounts[ tag ]++;
+        }
+
+        if( children === undefined )
+        {
+            totalCount = 0;
+            tagCounts = {};
+            children = nodes;
+        }
+        children.map( function( child )
+        {
+            if( child.nodes !== undefined )
+            {
+                this.getTagCounts( child.nodes );
+            }
+            child.todos.map( function( todo )
+            {
+                countTags( todo.tag );
+            } );
+        }, this );
+
+        return { total: totalCount, tags: tagCounts };
     }
 }
 
