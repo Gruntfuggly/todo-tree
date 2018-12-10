@@ -572,7 +572,7 @@ class TreeNodeProvider
     {
         function removeNodesByFilename( children, me )
         {
-            children = children.filter( function( child )
+            return children.filter( function( child )
             {
                 if( child.nodes !== undefined )
                 {
@@ -590,19 +590,19 @@ class TreeNodeProvider
 
         function removeEmptyNodes( children, me )
         {
-            children = children.filter( function( child )
+            return children.filter( function( child )
             {
                 if( child.nodes !== undefined )
                 {
                     child.nodes = me.remove( filename, child.nodes );
                 }
-                var shouldRemove = ( child.nodes && child.todos && child.nodes.length + child.todos.length === 0 && child.isWorkspaceNode !== true );
+                var shouldRemove = ( child.nodes && child.todos && ( child.nodes.length + child.todos.length === 0 ) && ( child.isWorkspaceNode !== true ) );
                 if( shouldRemove )
                 {
                     delete expandedNodes[ child.fsPath ];
                     me._context.workspaceState.update( 'expandedNodes', expandedNodes );
                 }
-                return shouldRemove === false;
+                return shouldRemove !== true;
             }, me );
         }
 
@@ -612,8 +612,8 @@ class TreeNodeProvider
             children = nodes;
         }
 
-        removeNodesByFilename( children, this );
-        removeEmptyNodes( children, this );
+        children = removeNodesByFilename( children, this );
+        children = removeEmptyNodes( children, this );
 
         if( root )
         {
