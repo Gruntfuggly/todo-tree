@@ -1,3 +1,7 @@
+# v0.0.109 - 2018-12-11
+- Add support for showing counts of tags in the status bar
+- Fix showTagsFromOpenFilesOnly
+
 # v0.0.108 - 2018-12-09
 - Add option to sort tags only view alphabetically
 
