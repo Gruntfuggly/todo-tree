@@ -678,10 +678,13 @@ class TreeNodeProvider
             {
                 this.getTagCounts( child.nodes );
             }
-            child.todos.map( function( todo )
+            if( child.todos )
             {
-                countTags( todo.tag );
-            } );
+                child.todos.map( function( todo )
+                {
+                    countTags( todo.tag );
+                } );
+            }
         }, this );
 
         return { total: totalCount, tags: tagCounts };

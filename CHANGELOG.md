@@ -1,3 +1,6 @@
+# v0.0.110 - 2018-12-17
+- Fix bug in tag counting
+
 # v0.0.109 - 2018-12-11
 - Add support for showing counts of tags in the status bar
 - Fix showTagsFromOpenFilesOnly
