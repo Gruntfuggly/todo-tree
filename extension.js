@@ -326,8 +326,12 @@ function activate( context )
                     valid = false;
                 }
             }
+            else if( rootFolder !== "" )
+            {
+                rootFolders.push( rootFolder );
+            }
 
-            rootFolders.forEach( function( path )
+            rootFolders.forEach( function( rootFolder )
             {
                 rootFolder = rootFolder.replace( envRegex, function( match, name )
                 {
@@ -801,6 +805,7 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.ripgrep" ) ||
                     e.affectsConfiguration( "todo-tree.ripgrepArgs" ) ||
                     e.affectsConfiguration( "todo-tree.ripgrepMaxBuffer" ) ||
+                    e.affectsConfiguration( "todo-tree.rootFolder" ) ||
                     e.affectsConfiguration( "todo-tree.showTagsFromOpenFilesOnly" ) ||
                     e.affectsConfiguration( "todo-tree.includedWorkspaces" ) ||
                     e.affectsConfiguration( "todo-tree.excludedWorkspaces" ) ||
