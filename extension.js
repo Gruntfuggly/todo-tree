@@ -127,10 +127,17 @@ function activate( context )
                 status.hide();
             }
         }
-        else if( vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'tags' )
+        else if( vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'tags' ||
+            vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'top three' )
         {
             var text = "$(check) ";
-            Object.keys( counts.tags ).map( function( tag )
+            var sortedTags = Object.keys( counts.tags );
+            sortedTags.sort( function( a, b ) { return counts.tags[ a ] < counts.tags[ b ] ? 1 : counts.tags[ b ] < counts.tags[ a ] ? -1 : a > b ? 1 : -1; } );
+            if( vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'top three' )
+            {
+                sortedTags = sortedTags.splice( 0, 3 );
+            }
+            sortedTags.map( function( tag )
             {
                 text += tag + ":" + counts.tags[ tag ] + " ";
             } );
@@ -155,7 +162,7 @@ function activate( context )
 
     function toggleStatusBar()
     {
-        var newSetting = vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'total' ? "tags" : "total";
+        var newSetting = vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'total' ? "top three" : "total";
         vscode.workspace.getConfiguration( 'todo-tree' ).update( 'statusBar', newSetting, true );
     }
 
