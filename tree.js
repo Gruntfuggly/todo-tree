@@ -16,9 +16,6 @@ const TODO = "todo";
 var buildCounter = 1;
 var nodeCounter = 1;
 
-var totalCount = 0;
-var tagCounts = {};
-
 var expandedNodes = {};
 
 var isVisible = function( e )
@@ -226,6 +223,27 @@ function locateTreeChildNode( rootNode, pathElements, tag )
     return childNode;
 }
 
+function countTags( child, tagCounts )
+{
+    if( child.nodes !== undefined )
+    {
+        countChildTags( child.nodes, tagCounts );
+    }
+    if( child.todos )
+    {
+        child.todos.map( function( todo )
+        {
+            tagCounts[ todo.tag ] = tagCounts[ todo.tag ] === undefined ? 1 : tagCounts[ todo.tag ] + 1;
+        } );
+    }
+}
+
+function countChildTags( children, tagCounts )
+{
+    children.map( function( child ) { return countTags( child, tagCounts ); } );
+    return tagCounts;
+}
+
 function addWorkspaceFolders()
 {
     if( workspaceFolders && config.shouldShowTagsOnly() === false )
@@ -363,6 +381,14 @@ class TreeNodeProvider
                     ]
                 };
             }
+        }
+
+        if( config.shouldShowCounts() && node.type === PATH )
+        {
+            var tagCounts = {};
+            countTags( node, tagCounts );
+            var total = Object.values( tagCounts ).reduce( function( a, b ) { return a + b; }, 0 );
+            treeItem.description = total.toString();
         }
 
         return treeItem;
@@ -516,6 +542,7 @@ class TreeNodeProvider
             {
                 todoNode.parent = childNode;
                 childNode.todos.push( todoNode );
+                childNode.showCount = true;
             }
         }
     }
@@ -654,40 +681,10 @@ class TreeNodeProvider
         this._context.workspaceState.update( 'expandedNodes', expandedNodes );
     }
 
-    getTagCounts( children )
+    getTagCounts()
     {
-        function countTags( tag )
-        {
-            totalCount++;
-            if( tagCounts[ tag ] === undefined )
-            {
-                tagCounts[ tag ] = 0;
-            }
-            tagCounts[ tag ]++;
-        }
-
-        if( children === undefined )
-        {
-            totalCount = 0;
-            tagCounts = {};
-            children = nodes;
-        }
-        children.map( function( child )
-        {
-            if( child.nodes !== undefined )
-            {
-                this.getTagCounts( child.nodes );
-            }
-            if( child.todos )
-            {
-                child.todos.map( function( todo )
-                {
-                    countTags( todo.tag );
-                } );
-            }
-        }, this );
-
-        return { total: totalCount, tags: tagCounts };
+        var tagCounts = {};
+        return countChildTags( nodes, tagCounts );
     }
 }
 

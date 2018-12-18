@@ -380,6 +380,11 @@
                     "default": "none",
                     "markdownDescription": "What to show in the status bar - nothing, total count, or counts per tag"
                 },
+                "todo-tree.showCountsInTree": {
+                    "type":"boolean",
+                    "default": false,
+                    "markdownDescription": "Show counts of TODOs in the tree"
+                },
                 "todo-tree.expanded": {
                     "type": "boolean",
                     "default": false,

@@ -116,9 +116,12 @@ function activate( context )
 
         if( vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'total' )
         {
-            status.text = "$(check):" + counts.total;
+            var total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );
+
+            status.text = "$(check):" + total;
             status.tooltip = "Todo-Tree total";
-            if( counts.total > 0 )
+
+            if( total > 0 )
             {
                 status.show();
             }
@@ -131,19 +134,19 @@ function activate( context )
             vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'top three' )
         {
             var text = "$(check) ";
-            var sortedTags = Object.keys( counts.tags );
-            sortedTags.sort( function( a, b ) { return counts.tags[ a ] < counts.tags[ b ] ? 1 : counts.tags[ b ] < counts.tags[ a ] ? -1 : a > b ? 1 : -1; } );
+            var sortedTags = Object.keys( counts );
+            sortedTags.sort( function( a, b ) { return counts[ a ] < counts[ b ] ? 1 : counts[ b ] < counts[ a ] ? -1 : a > b ? 1 : -1; } );
             if( vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'top three' )
             {
                 sortedTags = sortedTags.splice( 0, 3 );
             }
             sortedTags.map( function( tag )
             {
-                text += tag + ":" + counts.tags[ tag ] + " ";
+                text += tag + ":" + counts[ tag ] + " ";
             } );
             status.text = text;
             status.tooltip = "Todo-Tree tags counts";
-            if( Object.keys( counts.tags ).length > 0 )
+            if( Object.keys( counts ).length > 0 )
             {
                 status.show();
             }
