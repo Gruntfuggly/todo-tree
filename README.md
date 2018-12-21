@@ -20,7 +20,7 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `background` - used to set the background colour of the highlight in the editor.
 
-Foreground and background colours can be one of "red", "green", "blue", "yellow", "magenta", "cyan" or "grey". RGB values can also be used.
+Foreground and background colours can be one of "red", "green", "blue", "yellow", "magenta", "cyan" or "grey". RGB values can also be used (e.g. "#80FF00").
 
 `icon` - used to set a different icon in the tree view. Must be a valid octicon - will default to a tick if it's not.
 
@@ -102,7 +102,7 @@ The extension can be customised as follows:
 | Setting | Default | Description |
 |---------|---------|-------------|
 | todo-tree.rootFolder | <tt>""</tt> | By default, any open workspaces will have a tree in the view. Use this to force another folder to be the root of the tree. You can include environment variables and also use ${workspaceFolder}. e.g. <tt>"todo-tree.rootFolder": "$&#123;workspaceFolder&#125;/test"</tt> or <tt>"todo-tree.rootFolder": "$&#123;HOME&#125;/project"</tt>. *Note: Other open files (outside of the rootFolder) will be shown (as they are opened) with their full path in brackets.* |
-| todo-tree.tags | <tt>["TODO","FIXME"]</tt> |This defines the tags which are recognised as TODOs. This list is automatically inserted into the regex. |
+| todo-tree.tags | <tt>["TODO","FIXME"]</tt> | This defines the tags which are recognised as TODOs. This list is automatically inserted into the regex. |
 | todo-tree.regex | <tt>&#x22;&#x28;&#x28;&#x2f;&#x2f;&#x7c;&#x23;&#x7c;&#x3c;&#x21;&#x2d;&#x2d;&#x7c;&#x3b;&#x7c;&#x2f;&#x5c;&#x5c;&#x2a;&#x29;&#x5c;&#x5c;&#x73;&#x2a;&#x28;&#x24;&#x54;&#x41;&#x47;&#x53;&#x29;&#x7c;&#x5e;&#x5c;&#x5c;&#x73;&#x2a;&#x2d;&#x20;&#x5c;&#x5c;&#x5b;&#x20;&#x5c;&#x5c;&#x5d;&#x29;&#x22;</tt> | This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with <tt>&#47;&#47;</tt>, <tt>#</tt>, <tt>;</tt>, <tt>&lt;!--</tt> or <tt>&#47;*</tt>. This should cover most languages. However if you want to refine it, make sure that the <tt>($TAGS)</tt> is kept. The second part of the expression allows matching of Github markdown task lists. *Note: This is a <a href="https://docs.rs/regex/1.0.0/regex">Rust regular expression</a>, not javascript.* |
 | todo-tree.regexCaseSensitive | <tt>true</tt> | Set to false to allow tags to be matched regardless of case. |
 | todo-tree.includeGlobs | <tt>[]</tt> | Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders. <a href="https://www.npmjs.com/package/glob#glob-primer">Globs help</a> |
@@ -112,28 +112,23 @@ The extension can be customised as follows:
 | todo-tree.ripgrep | <tt>""</tt> | Normally, the extension will locate ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed. |
 | todo-tree.ripgrepArgs | <tt>""</tt> | Use this to pass additional arguments to ripgrep. e.g. <tt>"-i"</tt> to make the search case insensitive. *Use with caution!* |
 | todo-tree.ripgrepMaxBuffer | <tt>200</tt> | By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly. |
-| todo-tree.icons<sup>1</sup> | <tt>{}</tt> | Use alternative icons from the octicon set for specific tags, e.g. <tt>{"TODO":"pin", "FIXME":"issue-opened"}</tt> |
-| todo-tree.iconColour<sup>1</sup> | <tt>"green"</tt> | Use this to change the colour of the icon for TODOs in the tree. Can be hex (e.g. "#FF80FF" ) or one of <tt>"red"</tt>, <tt>"green"</tt>, <tt>"blue"</tt>, <tt>"yellow"</tt>, <tt>"magenta"</tt>, <tt>"cyan"</tt> or <tt>"grey"</tt>. |
-| todo-tree.iconColours<sup>1</sup> | <tt>{}</tt> | Use this if you need different icon colours based on the type of tag. The colours can be hex codes, or from the list above, and the match can be a javascript regex. e.g. <tt>{"TODO": "#FF80FF","^BUG": "red"}</tt>. *Note: The colours are applied **after** the search results, so don't forget to modify todo-tree.tags if you want to add new tags!* |
 | todo-tree.showInExplorer | <tt>true</tt> | The tree is shown in the explorer view and also has it's own view in the activity bar. If you no longer want to see it in the explorer view, set this to false. |
 | todo-tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. *Note: this does not the apply to the search*. |
-| todo-tree.highlight<sup>1</sup> | <tt>false</tt> | Set this to true to highlight tags in files. |
 | todo-tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
 | todo-tree.trackFile | <tt>true</tt> | Set to false if you want to prevent tracking the open file in the tree view. |
 | todo-tree.showBadges | <tt>true</tt> | Set to false to disable SCM status and badges in the tree. Note: This also unfortunately turns off themed icons. |
 | todo-tree.showTagsFromOpenFilesOnly | <tt>false</tt> | Set to true to only show TODOs in open files. |
 | todo-tree.defaultHighlight | <tt>{}</tt> | Set default highlights. E.g. `{"foreground":"white","background":"red","icon":"check","type":"text"}` |
 | todo-tree.customHighlight | <tt>{}</tt> | Set highlights per tag. E.g. `{"TODO":{"foreground":"white","type":"text"},"FIXME":{"icon":"beaker"}}` |
-| todo-tree.expanded<sup>2</sup> | <tt>false</tt> | Set to true if you want new views to be expanded by default |
-| todo-tree.flat<sup>2</sup> | <tt>false</tt> | Set to true if you want new views to be flat by default |
-| todo-tree.grouped<sup>2</sup> | <tt>false</tt> | Set to true if you want new views to be grouped by default |
-| todo-tree.tagsOnly<sup>2</sup> | <tt>false</tt> | Set to true if you want new views with tags only by default |
+| todo-tree.expanded<sup>*</sup> | <tt>false</tt> | Set to true if you want new views to be expanded by default |
+| todo-tree.flat<sup>*</sup> | <tt>false</tt> | Set to true if you want new views to be flat by default |
+| todo-tree.grouped<sup>*</sup> | <tt>false</tt> | Set to true if you want new views to be grouped by default |
+| todo-tree.tagsOnly<sup>*</sup> | <tt>false</tt> | Set to true if you want new views with tags only by default |
 | todo-tree.sortTagsOnlyViewAlphabetically | <tt>false</tt> | Sort items in the tags only view alphabetically instead of by file and line number |
 | todo-tree.statusBar | <tt>none</tt> | What to show in the status bar - nothing (<tt>none</tt>), total count (<tt>total</tt>), or counts per tag (<tt>tags</tt>) |
+| todo-tree.showCountsInTree | <tt>false</tt> | Set to true to show counts of TODOs in the tree |
 
-<sup>1</sup> Deprecated - Please use `todo-tree.defaultHighlight` and `todo-tree.customHighlight` instead.
-
-<sup>2</sup> Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.
+<sup>*</sup> Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.
 
 ### Excluding files and folders
 

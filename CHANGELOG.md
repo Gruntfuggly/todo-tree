@@ -1,3 +1,9 @@
+# v0.0.111 - 2018-12-21
+- Add support for showing counts in the tree
+- Add top three counts option to status bar
+- Remove deprecated settings information from README.md
+- Fix root folder configuration
+
 # v0.0.110 - 2018-12-17
 - Fix bug in tag counting
 
