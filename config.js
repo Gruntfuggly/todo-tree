@@ -34,6 +34,11 @@ function shouldShowCounts()
     return vscode.workspace.getConfiguration( 'todo-tree' ).get( 'showCountsInTree', false );
 }
 
+function shouldShowLineNumbers()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree' ).get( 'showLineNumbersInTree', false );
+}
+
 function showFilterCaseSensitive()
 {
     return vscode.workspace.getConfiguration( 'todo-tree' ).get( 'filterCaseSensitive', false );
@@ -100,12 +105,18 @@ function shouldSortTagsOnlyViewAlphabetically()
     return vscode.workspace.getConfiguration( 'todo-tree' ).sortTagsOnlyViewAlphabetically;
 }
 
+function labelFormat()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree' ).labelFormat;
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
 module.exports.shouldFlatten = shouldFlatten;
 module.exports.shouldShowTagsOnly = shouldShowTagsOnly;
 module.exports.shouldShowCounts = shouldShowCounts;
+module.exports.shouldShowLineNumbers = shouldShowLineNumbers;
 module.exports.showFilterCaseSensitive = showFilterCaseSensitive;
 module.exports.isRegexCaseSensitive = isRegexCaseSensitive;
 module.exports.showBadges = showBadges;
@@ -114,3 +125,4 @@ module.exports.ripgrepPath = ripgrepPath;
 module.exports.globs = globs;
 module.exports.tags = tags;
 module.exports.shouldSortTagsOnlyViewAlphabetically = shouldSortTagsOnlyViewAlphabetically;
+module.exports.labelFormat = labelFormat;

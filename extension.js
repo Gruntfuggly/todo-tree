@@ -796,8 +796,6 @@ function activate( context )
             if( e.affectsConfiguration( "todo-tree" ) )
             {
                 if( e.affectsConfiguration( "todo-tree.iconColour" ) ||
-                    e.affectsConfiguration( "todo-tree.iconColours" ) ||
-                    e.affectsConfiguration( "todo-tree.icons" ) ||
                     e.affectsConfiguration( "todo-tree.defaultHighlight" ) ||
                     e.affectsConfiguration( "todo-tree.customHighlight" ) )
                 {

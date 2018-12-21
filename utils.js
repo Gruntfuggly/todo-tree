@@ -65,10 +65,7 @@ function extractTag( text )
         if( tagMatch )
         {
             text = text.substr( tagMatch.index );
-            if( config.shouldGroup() )
-            {
-                text = text.substr( tagMatch[ 0 ].length );
-            }
+            text = text.substr( tagMatch[ 0 ].length );
             c.tags.map( function( tag )
             {
                 if( tag.toLowerCase() == tagMatch[ 0 ].toLowerCase() )
@@ -116,6 +113,19 @@ function isIncluded( name, includes, excludes )
     return included;
 }
 
+function formatLabel( template, node )
+{
+    var result = template;
+
+    result = result.replace( /\$\{line\}/g, node.line );
+    result = result.replace( /\$\{column\}/g, node.column );
+    result = result.replace( /\$\{tag\}/g, node.tag );
+    result = result.replace( /\$\{after\}/g, node.after );
+    result = result.replace( /\$\{before\}/g, node.before );
+
+    return result;
+}
+
 module.exports.init = init;
 module.exports.isHexColour = isHexColour;
 module.exports.removeBlockComments = removeBlockComments;
@@ -123,3 +133,4 @@ module.exports.extractTag = extractTag;
 module.exports.getRegexSource = getRegexSource;
 module.exports.getRegex = getRegex;
 module.exports.isIncluded = isIncluded;
+module.exports.formatLabel = formatLabel;

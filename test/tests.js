@@ -28,18 +28,7 @@ QUnit.test( "utils.removeBlockComments strips block comments based on filename",
     assert.equal( utils.removeBlockComments( "b /* a */", "x.cpp" ), "b /* a */" );
 } );
 
-QUnit.test( "utils.extractTag removes everything up to tag when not grouped", function( assert )
-{
-    var testConfig = stubs.getTestConfig();
-    testConfig.shouldGroupFlag = false;
-    utils.init( testConfig );
-
-    var result = utils.extractTag( "before TODO after" );
-    assert.equal( result.tag, "TODO" );
-    assert.equal( result.withoutTag, "TODO after" );
-} );
-
-QUnit.test( "utils.extractTag removes everything including tag when grouped", function( assert )
+QUnit.test( "utils.extractTag removes everything including tag", function( assert )
 {
     var testConfig = stubs.getTestConfig();
     testConfig.shouldGroupFlag = true;
@@ -144,4 +133,34 @@ QUnit.test( "utils.isIncluded returns false when name matches includes but also 
     assert.ok( utils.isIncluded( "filename.txt", [ "*.txt" ], [ "*.txt" ] ) === false );
     assert.ok( utils.isIncluded( "filename.js", [ "*.txt" ], [ "*.txt" ] ) === false );
     assert.ok( utils.isIncluded( "filename.js", [ "*.txt", "*.js" ], [ "*.txt" ] ) === true );
+} );
+
+QUnit.test( "utils.formatLabel replaces line number placeholder", function( assert )
+{
+    assert.equal( utils.formatLabel( "Label ${line} content", { line: 23 } ), "Label 23 content" );
+} );
+
+QUnit.test( "utils.formatLabel replaces column number placeholder", function( assert )
+{
+    assert.equal( utils.formatLabel( "Label ${column} content", { column: 78 } ), "Label 78 content" );
+} );
+
+QUnit.test( "utils.formatLabel replaces before text placeholder", function( assert )
+{
+    assert.equal( utils.formatLabel( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
+} );
+
+QUnit.test( "utils.formatLabel replaces tag placeholder", function( assert )
+{
+    assert.equal( utils.formatLabel( "Label ${tag} content", { tag: "TODO" } ), "Label TODO content" );
+} );
+
+QUnit.test( "utils.formatLabel replaces after text placeholder", function( assert )
+{
+    assert.equal( utils.formatLabel( "Label ${after} content", { after: "text after tag" } ), "Label text after tag content" );
+} );
+
+QUnit.test( "utils.formatLabel replaces before text placeholder", function( assert )
+{
+    assert.equal( utils.formatLabel( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
 } );

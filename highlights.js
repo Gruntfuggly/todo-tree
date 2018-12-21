@@ -176,16 +176,10 @@ function getIcon( tag )
 
 function getIconColour( tag )
 {
-    var defaultIconColour = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'iconColour' );
-    var iconColours = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'iconColours' );
-    if( iconColours[ tag ] !== undefined )
-    {
-        defaultIconColour = iconColours[ tag ];
-    }
     var foreground = getAttribute( tag, 'foreground', undefined );
     var background = getAttribute( tag, 'background', undefined );
 
-    return getAttribute( tag, 'iconColour', foreground ? foreground : ( background ? background : defaultIconColour ) );
+    return getAttribute( tag, 'iconColour', foreground ? foreground : ( background ? background : "green" ) );
 }
 
 function getType( tag )

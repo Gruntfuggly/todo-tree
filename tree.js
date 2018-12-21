@@ -131,15 +131,24 @@ function createTagNode( fsPath, tag )
 function createTodoNode( result )
 {
     var id = ( buildCounter * 1000000 ) + nodeCounter++;
-    var label = utils.removeBlockComments( result.match.substr( result.column - 1 ), result.file );
-    var extracted = utils.extractTag( label );
+    var text = utils.removeBlockComments( result.match.substr( result.column - 1 ), result.file );
+    var extracted = utils.extractTag( text );
+    var label = extracted.withoutTag ? extracted.withoutTag : "line " + result.line;
+
+    if( config.shouldGroup() !== true )
+    {
+        label = extracted.tag + " " + label;
+    }
 
     return {
         type: TODO,
         fsPath: result.file,
-        label: extracted.withoutTag ? extracted.withoutTag : "line " + result.line,
+        label: label,
         tag: extracted.tag,
         line: result.line - 1,
+        column: result.column,
+        after: extracted.withoutTag.trim(),
+        before: result.match.substring( 0, result.column - 1 ).trim(),
         id: id,
         visible: true
     };
@@ -342,6 +351,10 @@ class TreeNodeProvider
             if( node.line !== undefined )
             {
                 treeItem.tooltip += ", line " + ( node.line + 1 );
+                if( config.shouldShowLineNumbers() )
+                {
+                    treeItem.label = "Line " + ( node.line + 1 ) + ":" + treeItem.label;
+                }
             }
 
             if( node.type === PATH )
@@ -371,6 +384,11 @@ class TreeNodeProvider
             else if( node.type === TODO )
             {
                 treeItem.iconPath = icons.getIcon( this._context, node.tag ? node.tag : node.label );
+                var format = config.labelFormat();
+                if( format !== "" )
+                {
+                    treeItem.label = utils.formatLabel( format, node ) + ( node.pathLabel ? ( " " + node.pathLabel ) : "" );
+                }
 
                 treeItem.command = {
                     command: "todo-tree.revealTodo",

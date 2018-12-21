@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.110",
+    "version": "0.0.111",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -248,30 +248,6 @@
                     "default": "",
                     "markdownDescription": "Location of your version of ripgrep"
                 },
-                "todo-tree.iconColour": {
-                    "type": "string",
-                    "enum": [
-                        "red",
-                        "green",
-                        "blue",
-                        "yellow",
-                        "magenta",
-                        "cyan",
-                        "grey"
-                    ],
-                    "default": "green",
-                    "markdownDescription": "~~The colour of the icon in the tree view. Can be a hex code (e.g. '#FF80FF'), or be one of 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan' or 'grey'~~  \n*Deprecated - use defaultHighlight and customHighlight instead*"
-                },
-                "todo-tree.iconColours": {
-                    "type": "object",
-                    "default": {},
-                    "markdownDescription": "~~Set the icon colour based on the tag. Colours can be defined as hex codes, or from the `iconColour` list, e.g. `{ \"BUG\":\"red\", \"FIXME\":\"#A188FF\" }`~~<  \n*Deprecated - use defaultHighlight and customHighlight instead*"
-                },
-                "todo-tree.icons": {
-                    "type": "object",
-                    "default": {},
-                    "markdownDescription": "~~Use alternate icons from the octicons set for specified tags, e.g. `{ \"TODO\":\"flame\", \"FIXME\":\"bug\" }`~~  \n*Deprecated - use defaultHighlight and customHighlight instead*"
-                },
                 "todo-tree.debug": {
                     "type": "boolean",
                     "default": false,
@@ -301,17 +277,6 @@
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "Refresh the tree when files are opened or saved"
-                },
-                "todo-tree.highlight": {
-                    "type": "string",
-                    "enum": [
-                        "none",
-                        "tag",
-                        "text",
-                        "line"
-                    ],
-                    "default": "none",
-                    "markdownDescription": "~~Enable highlighting of tags within files~~  \n*Deprecated - use defaultHighlight and customHighlight instead*"
                 },
                 "todo-tree.highlightDelay": {
                     "type": "integer",
@@ -381,9 +346,14 @@
                     "markdownDescription": "What to show in the status bar - nothing, total count, or counts per tag"
                 },
                 "todo-tree.showCountsInTree": {
-                    "type":"boolean",
+                    "type": "boolean",
                     "default": false,
                     "markdownDescription": "Show counts of TODOs in the tree"
+                },
+                "todo-tree.labelFormat": {
+                    "type": "string",
+                    "default": "${tag} ${after}",
+                    "markdownDescription": "Format for tree items"
                 },
                 "todo-tree.expanded": {
                     "type": "boolean",
