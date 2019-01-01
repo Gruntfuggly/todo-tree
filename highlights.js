@@ -2,7 +2,7 @@ var vscode = require( 'vscode' );
 
 var utils = require( './utils.js' );
 
-var defaultColours = [ "red", "green", "blue", "yellow", "magenta", "cyan", "grey" ];
+var defaultColours = [ "red", "green", "blue", "yellow", "magenta", "cyan", "grey", "white", "black" ];
 
 var defaultLightColours = {
     "red": "#CC0000",
@@ -11,7 +11,9 @@ var defaultLightColours = {
     "yellow": "#c8c800",
     "magenta": "#bb60bb",
     "cyan": "#76d6ff",
-    "grey": "#888888"
+    "grey": "#888888",
+    "white": "#ffffff",
+    "black": "#000000"
 };
 
 var defaultDarkColours = {
@@ -21,7 +23,9 @@ var defaultDarkColours = {
     "yellow": "#fffb00",
     "magenta": "#ff85ff",
     "cyan": "#76d6ff",
-    "grey": "#aaaaaa"
+    "grey": "#aaaaaa",
+    "white": "#ffffff",
+    "black": "#000000"
 };
 
 var complementaryColours = {};
@@ -31,6 +35,11 @@ var highlightTimer = {};
 function init( context )
 {
     context.subscriptions.push( decorations );
+}
+
+function getColourList()
+{
+    return defaultColours;
 }
 
 function complementaryColour( colour )
@@ -278,14 +287,14 @@ function highlight( editor )
 
         if( decorations[ editor.id ] )
         {
-            decorations[ editor.id ].forEach( decoration =>
+            decorations[ editor.id ].forEach( function( decoration )
             {
                 decoration.dispose();
             } );
         }
 
         decorations[ editor.id ] = [];
-        Object.keys( documentHighlights ).forEach( tag =>
+        Object.keys( documentHighlights ).forEach( function( tag )
         {
             var decoration = getDecoration( tag );
             decorations[ editor.id ].push( decoration );
@@ -316,5 +325,5 @@ module.exports.getOtherColours = getOtherColours;
 module.exports.getDecoration = getDecoration;
 module.exports.refreshComplementaryColours = refreshComplementaryColours;
 module.exports.triggerHighlight = triggerHighlight;
-
+module.exports.getColourList = getColourList;
 

@@ -5,8 +5,6 @@ var octicons = require( 'octicons' );
 var utils = require( './utils.js' );
 var highlights = require( './highlights.js' );
 
-var defaultColours = [ "red", "green", "blue", "yellow", "magenta", "cyan", "grey" ];
-
 function getIcon( context, tag )
 {
     var colour = highlights.getIconColour( tag );
@@ -70,7 +68,7 @@ function getIcon( context, tag )
         darkIconPath = colouredIconPath;
         lightIconPath = colouredIconPath;
     }
-    else if( defaultColours.indexOf( colourName ) > -1 )
+    else if( highlights.getColourList().indexOf( colourName ) > -1 )
     {
         darkIconPath = context.asAbsolutePath( path.join( "resources/icons", "dark", "todo-" + colour + ".svg" ) );
         lightIconPath = context.asAbsolutePath( path.join( "resources/icons", "light", "todo-" + colour + ".svg" ) );

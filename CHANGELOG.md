@@ -1,3 +1,5 @@
+- Add black and white colours
+
 # v0.0.111 - 2018-12-21
 - Add support for showing counts in the tree
 - Add top three counts option to status bar
