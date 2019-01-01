@@ -1,3 +1,5 @@
+# v0.0.112 - 2019-01-01
+- Fix line number in label format
 - Add black and white colours
 
 # v0.0.111 - 2018-12-21

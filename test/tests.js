@@ -137,7 +137,7 @@ QUnit.test( "utils.isIncluded returns false when name matches includes but also 
 
 QUnit.test( "utils.formatLabel replaces line number placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${line} content", { line: 23 } ), "Label 23 content" );
+    assert.equal( utils.formatLabel( "Label ${line} content", { line: 23 } ), "Label 24 content" ); // line is zero based
 } );
 
 QUnit.test( "utils.formatLabel replaces column number placeholder", function( assert )
