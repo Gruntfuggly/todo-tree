@@ -1,3 +1,7 @@
+# v0.0.113 - 2019-01-10
+- Add opacity option to highlights
+- Removed settings migration code
+
 # v0.0.112 - 2019-01-01
 - Fix line number in label format
 - Add black and white colours
