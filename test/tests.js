@@ -164,3 +164,18 @@ QUnit.test( "utils.formatLabel replaces before text placeholder", function( asse
 {
     assert.equal( utils.formatLabel( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
 } );
+
+QUnit.test( "utils.hexToRgba converts correctly", function( assert )
+{
+    assert.equal( utils.hexToRgba( "#000000", 0 ), "rgba(0,0,0,0)" );
+    assert.equal( utils.hexToRgba( "#000000", 100 ), "rgba(0,0,0,1)" );
+    assert.equal( utils.hexToRgba( "#000000", 50 ), "rgba(0,0,0,0.5)" );
+    assert.equal( utils.hexToRgba( "#FFFFFF", 50 ), "rgba(255,255,255,0.5)" );
+    assert.equal( utils.hexToRgba( "#4080A0", 50 ), "rgba(64,128,160,0.5)" );
+    assert.equal( utils.hexToRgba( "#fff", 50 ), "rgba(255,255,255,0.5)" );
+    assert.equal( utils.hexToRgba( "#48a", 50 ), "rgba(68,136,170,0.5)" );
+    assert.equal( utils.hexToRgba( "#FFFFFFFF", 0 ), "rgba(255,255,255,1)" );
+    assert.equal( utils.hexToRgba( "#FFFF", 0 ), "rgba(255,255,255,1)" );
+    assert.equal( utils.hexToRgba( "#FFFFFF80", 0 ), "rgba(255,255,255,0.5)" );
+    assert.equal( utils.hexToRgba( "#FFF8", 0 ), "rgba(255,255,255,0.53)" );
+} );

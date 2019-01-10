@@ -20,6 +20,8 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `background` - used to set the background colour of the highlight in the editor.
 
+`opacity` - percentage value used with the background colour. 100% will produce an opaque background which will obscure selection and other decorations.
+
 Foreground and background colours can be one of "red", "green", "blue", "yellow", "magenta", "cyan", "grey", "white" or "black". RGB values can also be used (e.g. "#80FF00").
 
 `icon` - used to set a different icon in the tree view. Must be a valid octicon - will default to a tick if it's not.
@@ -40,6 +42,7 @@ Example:
     "type": "text",
     "foreground": "red",
     "background": "white",
+    "opacity": 50,
     "iconColour": "blue"
 },
 "todo-tree.customHighlight": {

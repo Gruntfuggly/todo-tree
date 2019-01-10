@@ -16,6 +16,29 @@ function isHexColour( colour )
     return ( typeof colour === "string" ) && ( hex.length === 3 || hex.length === 6 ) && !isNaN( parseInt( hex, 16 ) );
 }
 
+function hexToRgba( hex, opacity )
+{
+    function toComponent( digits )
+    {
+        return ( digits.length == 1 ) ? parseInt( digits + digits, 16 ) : parseInt( digits, 16 );
+    }
+
+    hex = hex.replace( '#', '' );
+
+    var rgb = hex.substring( 0, ( hex.length == 3 || hex.length == 4 ) ? 3 : 6 );
+
+    var r = toComponent( rgb.substring( 0, rgb.length / 3 ) );
+    var g = toComponent( rgb.substring( rgb.length / 3, 2 * rgb.length / 3 ) );
+    var b = toComponent( rgb.substring( 2 * rgb.length / 3, 3 * rgb.length / 3 ) );
+
+    if( hex.length == 4 || hex.length == 8 )
+    {
+        opacity = parseInt( toComponent( hex.substring( 3 * hex.length / 4, 4 * hex.length / 4 ) ) * 100 / 255 );
+    }
+
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
+}
+
 function removeBlockComments( text, fileName )
 {
     var commentPattern;
@@ -128,6 +151,7 @@ function formatLabel( template, node )
 
 module.exports.init = init;
 module.exports.isHexColour = isHexColour;
+module.exports.hexToRgba = hexToRgba;
 module.exports.removeBlockComments = removeBlockComments;
 module.exports.extractTag = extractTag;
 module.exports.getRegexSource = getRegexSource;

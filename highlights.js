@@ -69,6 +69,8 @@ function getDecoration( tag )
     var foregroundColour = getForeground( tag );
     var backgroundColour = getBackground( tag );
 
+    var opacity = getOpacity( tag );
+
     var lightForegroundColour = foregroundColour;
     var darkForegroundColour = foregroundColour;
     var lightBackgroundColour = backgroundColour;
@@ -107,6 +109,9 @@ function getDecoration( tag )
             }
         }
     }
+
+    lightBackgroundColour = utils.hexToRgba( lightBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
+    darkBackgroundColour = utils.hexToRgba( darkBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
 
     if( lightForegroundColour === undefined )
     {
@@ -176,6 +181,11 @@ function getForeground( tag )
 function getBackground( tag )
 {
     return getAttribute( tag, 'background', undefined );
+}
+
+function getOpacity( tag )
+{
+    return getAttribute( tag, 'opacity', 100 );
 }
 
 function getIcon( tag )
