@@ -1,3 +1,6 @@
+# v0.0.114 - 2019-01-11
+- Fix crash when highlight colour is not defined
+
 # v0.0.113 - 2019-01-10
 - Add opacity option to highlights
 - Removed settings migration code

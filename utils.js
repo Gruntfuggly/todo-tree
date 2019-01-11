@@ -23,20 +23,25 @@ function hexToRgba( hex, opacity )
         return ( digits.length == 1 ) ? parseInt( digits + digits, 16 ) : parseInt( digits, 16 );
     }
 
-    hex = hex.replace( '#', '' );
-
-    var rgb = hex.substring( 0, ( hex.length == 3 || hex.length == 4 ) ? 3 : 6 );
-
-    var r = toComponent( rgb.substring( 0, rgb.length / 3 ) );
-    var g = toComponent( rgb.substring( rgb.length / 3, 2 * rgb.length / 3 ) );
-    var b = toComponent( rgb.substring( 2 * rgb.length / 3, 3 * rgb.length / 3 ) );
-
-    if( hex.length == 4 || hex.length == 8 )
+    if( hex !== undefined )
     {
-        opacity = parseInt( toComponent( hex.substring( 3 * hex.length / 4, 4 * hex.length / 4 ) ) * 100 / 255 );
+        hex = hex.replace( '#', '' );
+
+        var rgb = hex.substring( 0, ( hex.length == 3 || hex.length == 4 ) ? 3 : 6 );
+
+        var r = toComponent( rgb.substring( 0, rgb.length / 3 ) );
+        var g = toComponent( rgb.substring( rgb.length / 3, 2 * rgb.length / 3 ) );
+        var b = toComponent( rgb.substring( 2 * rgb.length / 3, 3 * rgb.length / 3 ) );
+
+        if( hex.length == 4 || hex.length == 8 )
+        {
+            opacity = parseInt( toComponent( hex.substring( 3 * hex.length / 4, 4 * hex.length / 4 ) ) * 100 / 255 );
+        }
+
+        return 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
     }
 
-    return 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
+    return '#0F0';
 }
 
 function removeBlockComments( text, fileName )

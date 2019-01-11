@@ -66,6 +66,12 @@ function complementaryColour( colour )
 
 function getDecoration( tag )
 {
+    function setDefaultBackgroundColours()
+    {
+        lightBackgroundColour = "#ffffff";
+        darkBackgroundColour = "#000000";
+    }
+
     var foregroundColour = getForeground( tag );
     var backgroundColour = getBackground( tag );
 
@@ -76,26 +82,15 @@ function getDecoration( tag )
     var lightBackgroundColour = backgroundColour;
     var darkBackgroundColour = backgroundColour;
 
-    if( foregroundColour )
+    if( foregroundColour && !utils.isHexColour( foregroundColour ) && defaultColours.indexOf( foregroundColour ) > -1 )
     {
-        if( !utils.isHexColour( foregroundColour ) )
-        {
-            if( defaultColours.indexOf( foregroundColour ) > -1 )
-            {
-                lightForegroundColour = defaultLightColours[ foregroundColour ];
-                darkForegroundColour = defaultDarkColours[ foregroundColour ];
-            }
-            else
-            {
-                lightForegroundColour = "#ffffff";
-                darkForegroundColour = "#000000";
-            }
-        }
+        lightForegroundColour = defaultLightColours[ foregroundColour ];
+        darkForegroundColour = defaultDarkColours[ foregroundColour ];
     }
 
     if( backgroundColour )
     {
-        if( backgroundColour !== undefined && !utils.isHexColour( backgroundColour ) )
+        if( !utils.isHexColour( backgroundColour ) )
         {
             if( defaultColours.indexOf( backgroundColour ) > -1 )
             {
@@ -104,10 +99,13 @@ function getDecoration( tag )
             }
             else
             {
-                lightBackgroundColour = "#ffffff";
-                darkBackgroundColour = "#000000";
+                setDefaultBackgroundColours();
             }
         }
+    }
+    else
+    {
+        setDefaultBackgroundColours();
     }
 
     lightBackgroundColour = utils.hexToRgba( lightBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
