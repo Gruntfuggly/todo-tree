@@ -1,3 +1,6 @@
+# v0.0.115 - 2019-01-18
+- Don't set default background colours unless a background is specified
+
 # v0.0.114 - 2019-01-11
 - Fix crash when highlight colour is not defined
 

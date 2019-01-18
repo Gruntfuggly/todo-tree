@@ -102,14 +102,10 @@ function getDecoration( tag )
                 setDefaultBackgroundColours();
             }
         }
-    }
-    else
-    {
-        setDefaultBackgroundColours();
-    }
 
-    lightBackgroundColour = utils.hexToRgba( lightBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
-    darkBackgroundColour = utils.hexToRgba( darkBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
+        lightBackgroundColour = utils.hexToRgba( lightBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
+        darkBackgroundColour = utils.hexToRgba( darkBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
+    }
 
     if( lightForegroundColour === undefined )
     {
