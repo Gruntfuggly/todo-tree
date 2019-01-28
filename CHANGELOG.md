@@ -1,3 +1,6 @@
+# v0.0.116 - 2019-01-28
+- Update to the latest octicons
+
 # v0.0.115 - 2019-01-18
 - Don't set default background colours unless a background is specified
 
