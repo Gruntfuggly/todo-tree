@@ -28,6 +28,10 @@ Foreground and background colours can be one of "red", "green", "blue", "yellow"
 
 `iconColour` - used to set the colour of the icon in the tree. If not specified, it will try to use the foreground colour, the background colour and then the older settings, in that order.
 
+`rulerColour` - used to set the colour of the marker in the overview ruler. If not specified, it will to use the foreground colour.
+
+`rulerLane` - used to set the lane for the marker in the overview ruler. If not specified, it will default to the right hand lane. Use one of "left", "center", "right", or "full".
+
 `type` - used to control how much is highlighted in the editor. Valid values are:
 
  - `tag` - highlights just the tag

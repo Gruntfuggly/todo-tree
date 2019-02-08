@@ -1,3 +1,6 @@
+# v0.0.117 - 2019-02-08
+- Add support for overview ruler configuration
+
 # v0.0.116 - 2019-01-28
 - Update to the latest octicons
 

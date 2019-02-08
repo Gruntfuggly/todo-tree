@@ -2,6 +2,14 @@ var vscode = require( 'vscode' );
 
 var utils = require( './utils.js' );
 
+var lanes =
+{
+    "left": 1,
+    "center": 2,
+    "right": 4,
+    "full": 7
+};
+
 var defaultColours = [ "red", "green", "blue", "yellow", "magenta", "cyan", "grey", "white", "black" ];
 
 var defaultLightColours = {
@@ -116,9 +124,14 @@ function getDecoration( tag )
         darkForegroundColour = complementaryColours[ darkBackgroundColour ];
     }
 
+    var lane = getRulerLane( tag );
+    if( isNan( parseInt( lane ) ) )
+    {
+        lane = lanes[ lane.toLowerCase() ];
+    }
     var decorationOptions = {
-        overviewRulerColor: lightForegroundColour,
-        overviewRulerLane: vscode.OverviewRulerLane.Right,
+        overviewRulerColor: getRulerColour( tag, lightForegroundColour ),
+        overviewRulerLane: lane,
         borderRadius: "0.2em",
     };
 
@@ -175,6 +188,16 @@ function getForeground( tag )
 function getBackground( tag )
 {
     return getAttribute( tag, 'background', undefined );
+}
+
+function getRulerColour( tag, defaultColour )
+{
+    return getAttribute( tag, 'rulerColour', defaultColour );
+}
+
+function getRulerLane( tag )
+{
+    return getAttribute( tag, 'rulerLane', 4 );
 }
 
 function getOpacity( tag )
