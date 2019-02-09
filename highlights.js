@@ -125,7 +125,7 @@ function getDecoration( tag )
     }
 
     var lane = getRulerLane( tag );
-    if( isNan( parseInt( lane ) ) )
+    if( isNaN( parseInt( lane ) ) )
     {
         lane = lanes[ lane.toLowerCase() ];
     }
