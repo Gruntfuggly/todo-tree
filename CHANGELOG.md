@@ -1,3 +1,6 @@
+# v0.0.118 - 2019-02-10
+- Fix isNaN error (thanks to [JakubKoralewski](https://github.com/JakubKoralewski))
+
 # v0.0.117 - 2019-02-08
 - Add support for overview ruler configuration
 
