@@ -8,6 +8,7 @@ var tree = require( "./tree.js" );
 var highlights = require( './highlights.js' );
 var config = require( './config.js' );
 var utils = require( './utils.js' );
+var diagnostics = require( './diagnostics.js' );
 
 var searchResults = [];
 var searchList = [];
@@ -294,6 +295,8 @@ function activate( context )
 
     function iterateSearchList()
     {
+        diagnostics.reset();
+
         if( searchList.length > 0 )
         {
             var entry = searchList.pop();
@@ -465,6 +468,8 @@ function activate( context )
         {
             provider.remove( document.fileName );
         }
+
+        diagnostics.generate( document );
 
         addResultsToTree();
     }

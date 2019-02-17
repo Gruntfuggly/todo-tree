@@ -1,5 +1,6 @@
 var vscode = require( 'vscode' );
 
+var config = require( './config.js' );
 var utils = require( './utils.js' );
 
 var lanes =
@@ -141,86 +142,47 @@ function getDecoration( tag )
     return vscode.window.createTextEditorDecorationType( decorationOptions );
 }
 
-function getAttribute( tag, attribute, defaultValue )
-{
-    function getCustomHighlightSettings( customHighlight, tag )
-    {
-        var result;
-        Object.keys( customHighlight ).map( function( t )
-        {
-            var flags = '';
-            if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
-            {
-                flags += 'i';
-            }
-            var regex = new RegExp( t, flags );
-
-            if( tag.match( regex ) )
-            {
-                result = customHighlight[ t ];
-            }
-        } );
-        return result;
-    }
-
-    var config = vscode.workspace.getConfiguration( 'todo-tree' );
-    var tagSettings = getCustomHighlightSettings( config.customHighlight, tag );
-    if( tagSettings && tagSettings[ attribute ] !== undefined )
-    {
-        return tagSettings[ attribute ];
-    }
-    else
-    {
-        var defaultHighlight = config.get( 'defaultHighlight' );
-        if( defaultHighlight[ attribute ] !== undefined )
-        {
-            return defaultHighlight[ attribute ];
-        }
-    }
-    return defaultValue;
-}
-
 function getForeground( tag )
 {
-    return getAttribute( tag, 'foreground', undefined );
+    return config.getAttribute( tag, 'foreground', undefined );
 }
 
 function getBackground( tag )
 {
-    return getAttribute( tag, 'background', undefined );
+    return config.getAttribute( tag, 'background', undefined );
 }
 
 function getRulerColour( tag, defaultColour )
 {
-    return getAttribute( tag, 'rulerColour', defaultColour );
+    return config.getAttribute( tag, 'rulerColour', defaultColour );
 }
 
 function getRulerLane( tag )
 {
-    return getAttribute( tag, 'rulerLane', 4 );
+    return config.getAttribute( tag, 'rulerLane', 4 );
 }
 
 function getOpacity( tag )
 {
-    return getAttribute( tag, 'opacity', 100 );
+    return config.getAttribute( tag, 'opacity', 100 );
 }
 
 function getIcon( tag )
 {
-    return getAttribute( tag, 'icon', undefined );
+    return config.getAttribute( tag, 'icon', undefined );
 }
 
 function getIconColour( tag )
 {
-    var foreground = getAttribute( tag, 'foreground', undefined );
-    var background = getAttribute( tag, 'background', undefined );
+    var foreground = config.getAttribute( tag, 'foreground', undefined );
+    var background = config.getAttribute( tag, 'background', undefined );
 
-    return getAttribute( tag, 'iconColour', foreground ? foreground : ( background ? background : "green" ) );
+    return config.getAttribute( tag, 'iconColour', foreground ? foreground : ( background ? background : "green" ) );
 }
 
 function getType( tag )
 {
-    return getAttribute( tag, 'type', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'highlight' ) );
+    return config.getAttribute( tag, 'type', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'highlight' ) );
 }
 
 function getOtherColours()
@@ -353,4 +315,3 @@ module.exports.getDecoration = getDecoration;
 module.exports.refreshComplementaryColours = refreshComplementaryColours;
 module.exports.triggerHighlight = triggerHighlight;
 module.exports.getColourList = getColourList;
-

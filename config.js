@@ -110,6 +110,45 @@ function labelFormat()
     return vscode.workspace.getConfiguration( 'todo-tree' ).labelFormat;
 }
 
+function getAttribute( tag, attribute, defaultValue )
+{
+    function getCustomHighlightSettings( customHighlight, tag )
+    {
+        var result;
+        Object.keys( customHighlight ).map( function( t )
+        {
+            var flags = '';
+            if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
+            {
+                flags += 'i';
+            }
+            var regex = new RegExp( t, flags );
+
+            if( tag.match( regex ) )
+            {
+                result = customHighlight[ t ];
+            }
+        } );
+        return result;
+    }
+
+    var config = vscode.workspace.getConfiguration( 'todo-tree' );
+    var tagSettings = getCustomHighlightSettings( config.customHighlight, tag );
+    if( tagSettings && tagSettings[ attribute ] !== undefined )
+    {
+        return tagSettings[ attribute ];
+    }
+    else
+    {
+        var defaultHighlight = config.get( 'defaultHighlight' );
+        if( defaultHighlight[ attribute ] !== undefined )
+        {
+            return defaultHighlight[ attribute ];
+        }
+    }
+    return defaultValue;
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -126,3 +165,4 @@ module.exports.globs = globs;
 module.exports.tags = tags;
 module.exports.shouldSortTagsOnlyViewAlphabetically = shouldSortTagsOnlyViewAlphabetically;
 module.exports.labelFormat = labelFormat;
+module.exports.getAttribute = getAttribute;
