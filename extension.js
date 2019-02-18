@@ -99,6 +99,7 @@ function activate( context )
             {
                 provider.add( match );
                 match.added = true;
+                diagnostics.add( new vscode.Uri.file( match.file ), new vscode.Range( match.line, match.column, match.line, match.column + match.match.length ), match.match );
             }
         } );
 
@@ -109,6 +110,8 @@ function activate( context )
 
         provider.filter( currentFilter );
         refreshTree();
+
+        diagnostics.generate();
     }
 
     function updateStatusBar()
@@ -269,6 +272,8 @@ function activate( context )
 
     function refreshOpenFiles()
     {
+        diagnostics.reset();
+
         Object.keys( openDocuments ).map( function( document )
         {
             refreshFile( openDocuments[ document ] );
@@ -295,8 +300,6 @@ function activate( context )
 
     function iterateSearchList()
     {
-        diagnostics.reset();
-
         if( searchList.length > 0 )
         {
             var entry = searchList.pop();
@@ -366,6 +369,8 @@ function activate( context )
             return valid === true ? rootFolders : undefined;
         }
 
+        diagnostics.reset();
+
         searchResults = [];
         searchList = [];
 
@@ -422,6 +427,8 @@ function activate( context )
     {
         var matchesFound = false;
 
+        diagnostics.resetFile( document.fileName );
+
         removeFileFromSearchResults( document.fileName );
 
         if( isIncluded( document.fileName ) === true )
@@ -444,6 +451,7 @@ function activate( context )
                     column: position.character + 1,
                     match: line.text
                 };
+
                 var found = false;
                 searchResults.map( function( s )
                 {
@@ -469,13 +477,13 @@ function activate( context )
             provider.remove( document.fileName );
         }
 
-        diagnostics.generate( document );
-
         addResultsToTree();
     }
 
     function refresh()
     {
+        diagnostics.reset();
+
         searchResults.forEach( function( match )
         {
             match.added = false;

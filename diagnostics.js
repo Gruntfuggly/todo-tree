@@ -4,6 +4,7 @@ var config = require( './config.js' );
 var utils = require( './utils.js' );
 
 var diagnosticsCollection;
+var diagnostics = {};
 
 function init( context )
 {
@@ -15,35 +16,33 @@ function showDiagnostic( tag )
     return config.getAttribute( tag, 'showDiagnostic', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'highlight' ) ) === true;
 }
 
-function generate( document )
+function generate()
 {
-    console.log( "diagnostics.generate doc:" + document );
-    if( document )
+    Object.keys( diagnostics ).map( function( uri )
     {
-        var diagnostics = [];
-        var text = document.getText();
-        var regex = utils.getRegex();
-        var match;
-        while( ( match = regex.exec( text ) ) !== null )
+        var list = [];
+        diagnostics[ uri ].map( function( diagnostic )
         {
-            var tag = match[ 0 ];
+            list.push( new vscode.Diagnostic( diagnostic.range, diagnostic.text, vscode.DiagnosticSeverity.Information ) );
+        } );
 
-            if( showDiagnostic( tag ) )
-            {
-                console.log( "yep!" );
-                var startPos = document.positionAt( match.index );
-                var endPos = document.positionAt( match.index + match[ 0 ].length );
+        diagnosticsCollection.set( new vscode.Uri.parse( uri ), list );
 
-                diagnostics.push( new vscode.Diagnostic( new vscode.Range( startPos, endPos ), text.substr( match.index, match.index + match[ 0 ].length ), vscode.DiagnosticSeverity.Information ) );
-            }
-            else
-            {
-                console.log( "nope" );
-            }
-        }
+    } );
+}
 
-        diagnosticsCollection.set( document.uri, diagnostics );
+function add( uri, range, text )
+{
+    if( diagnostics[ uri ] === undefined )
+    {
+        diagnostics[ uri ] = [];
     }
+    diagnostics[ uri ].push( { range: range, text: text } );
+}
+
+function resetFile( uri )
+{
+    diagnostics[ uri ] = [];
 }
 
 function reset()
@@ -59,5 +58,7 @@ function reset()
 reset();
 
 module.exports.init = init;
+module.exports.add = add;
 module.exports.generate = generate;
+module.exports.resetFile = resetFile;
 module.exports.reset = reset;
