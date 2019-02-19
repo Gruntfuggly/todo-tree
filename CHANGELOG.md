@@ -1,3 +1,6 @@
+# v0.0.119 - 2019-02-19
+- Use globalStoragePath instead of storagePath
+
 # v0.0.118 - 2019-02-10
 - Fix isNaN error (thanks to [JakubKoralewski](https://github.com/JakubKoralewski))
 

@@ -23,14 +23,14 @@ function getIcon( context, tag )
             iconName = "check";
         }
 
-        if( !fs.existsSync( context.storagePath ) )
+        if( !fs.existsSync( context.globalStoragePath ) )
         {
-            fs.mkdirSync( context.storagePath );
+            fs.mkdirSync( context.globalStoragePath );
         }
 
-        if( context.storagePath )
+        if( context.globalStoragePath )
         {
-            var octiconIconPath = path.join( context.storagePath, "todo-" + iconName + "-" + colourName + ".svg" );
+            var octiconIconPath = path.join( context.globalStoragePath, "todo-" + iconName + "-" + colourName + ".svg" );
             if( !fs.existsSync( octiconIconPath ) )
             {
                 var octiconIconDefinition = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n" +
@@ -45,12 +45,12 @@ function getIcon( context, tag )
     }
     else if( utils.isHexColour( colour.substr( 1 ) ) )
     {
-        var colouredIconPath = path.join( context.storagePath, "todo-" + colourName + ".svg" );
+        var colouredIconPath = path.join( context.globalStoragePath, "todo-" + colourName + ".svg" );
         if( !fs.existsSync( colouredIconPath ) )
         {
-            if( !fs.existsSync( context.storagePath ) )
+            if( !fs.existsSync( context.globalStoragePath ) )
             {
-                fs.mkdirSync( context.storagePath );
+                fs.mkdirSync( context.globalStoragePath );
             }
 
             var colouredIconDefinition =
