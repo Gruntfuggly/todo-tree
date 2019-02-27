@@ -1,3 +1,6 @@
+# v0.0.120 - 2019-02-27
+- Fix error when creating resources
+
 # v0.0.119 - 2019-02-19
 - Use globalStoragePath instead of storagePath
 

@@ -344,7 +344,7 @@ class TreeNodeProvider
             treeItem.node = node;
             if( config.showBadges() && !node.tag )
             {
-                treeItem.resourceUri = new vscode.Uri.file( node.fsPath );
+                treeItem.resourceUri = vscode.Uri.file( node.fsPath );
             }
 
             treeItem.tooltip = node.fsPath;
