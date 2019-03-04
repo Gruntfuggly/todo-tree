@@ -1,5 +1,5 @@
-var minimatch = require( 'minimatch' );
 var micromatch = require( 'micromatch' );
+var path = require( 'path' );
 
 var config;
 
@@ -150,6 +150,10 @@ function formatLabel( template, node )
     result = result.replace( /\$\{tag\}/g, node.tag );
     result = result.replace( /\$\{after\}/g, node.after );
     result = result.replace( /\$\{before\}/g, node.before );
+    if( node.fsPath )
+    {
+        result = result.replace( /\$\{filename\}/g, path.basename( node.fsPath ) );
+    }
 
     return result;
 }

@@ -134,7 +134,7 @@ The extension can be customised as follows:
 | todo-tree.sortTagsOnlyViewAlphabetically | <tt>false</tt> | Sort items in the tags only view alphabetically instead of by file and line number |
 | todo-tree.statusBar | <tt>none</tt> | What to show in the status bar - nothing (<tt>none</tt>), total count (<tt>total</tt>), counts per tag (<tt>tags</tt>) or the counts for the top three tags (<tt>top three</tt>) |
 | todo-tree.showCountsInTree | <tt>false</tt> | Set to true to show counts of TODOs in the tree |
-| todo-tree.labelFormat | <tt>${tag} ${after}</tt> | Format of the TODO item labels. Available placeholders are <tt>${line}</tt>, <tt>${column}</tt>, <tt>${tag}</tt>, <tt>${before}</tt> (text from before the tag) and <tt>${after}</tt> (text from after the tag). |
+| todo-tree.labelFormat | <tt>${tag} ${after}</tt> | Format of the TODO item labels. Available placeholders are <tt>${line}</tt>, <tt>${column}</tt>, <tt>${tag}</tt>, <tt>${before}</tt> (text from before the tag), <tt>${after}</tt> (text from after the tag) and <tt>${filename}</tt>. |
 
 <sup>*</sup> Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.
 

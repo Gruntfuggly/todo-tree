@@ -1,3 +1,7 @@
+# v0.0.121 - 2019-03-04
+- Add support for ${filename} in label format
+- Remove redundant dependency on minimatch
+
 # v0.0.120 - 2019-02-27
 - Fix error when creating resources
 

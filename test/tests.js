@@ -165,6 +165,11 @@ QUnit.test( "utils.formatLabel replaces before text placeholder", function( asse
     assert.equal( utils.formatLabel( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
 } );
 
+QUnit.test( "utils.formatLabel replaces filename placeholder", function( assert )
+{
+    assert.equal( utils.formatLabel( "Label ${filename} content", { fsPath: "/path/to/filename.txt" } ), "Label filename.txt content" );
+} );
+
 QUnit.test( "utils.hexToRgba converts correctly", function( assert )
 {
     assert.equal( utils.hexToRgba( "#000000", 0 ), "rgba(0,0,0,0)" );
