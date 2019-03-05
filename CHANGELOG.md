@@ -1,5 +1,6 @@
 # v0.0.122 - 2019-03-??
 - Set default ripgrepArgs to include "--max-columns=1000"
+- Add word boundary to default regex
 
 # v0.0.121 - 2019-03-04
 - Add support for ${filename} in label format
