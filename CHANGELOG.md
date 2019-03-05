@@ -1,3 +1,6 @@
+# v0.0.122 - 2019-03-??
+- Set default ripgrepArgs to include "--max-columns=1000"
+
 # v0.0.121 - 2019-03-04
 - Add support for ${filename} in label format
 - Remove redundant dependency on minimatch

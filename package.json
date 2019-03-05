@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.121",
+    "version": "0.0.122",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -255,7 +255,7 @@
                 },
                 "todo-tree.ripgrepArgs": {
                     "type": "string",
-                    "default": "",
+                    "default": "--max-columns=1000",
                     "markdownDescription": "Additional arguments to pass to ripgrep (Use with caution!)"
                 },
                 "todo-tree.regexCaseSensitive": {

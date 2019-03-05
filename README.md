@@ -117,7 +117,7 @@ The extension can be customised as follows:
 | todo-tree.includedWorkspaces | <tt>[]</tt> | A list of workspace names to include as roots in the tree (wildcards can be used). An empty array includes all workspace folders |
 | todo-tree.excludedWorkspaces | <tt>[]</tt> | A list of workspace names to exclude as roots in the tree (wildcards can be used). |
 | todo-tree.ripgrep | <tt>""</tt> | Normally, the extension will locate ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed. |
-| todo-tree.ripgrepArgs | <tt>""</tt> | Use this to pass additional arguments to ripgrep. e.g. <tt>"-i"</tt> to make the search case insensitive. *Use with caution!* |
+| todo-tree.ripgrepArgs | <tt>"--max-columns=1000"</tt> | Use this to pass additional arguments to ripgrep. e.g. <tt>"-i"</tt> to make the search case insensitive. *Use with caution!* |
 | todo-tree.ripgrepMaxBuffer | <tt>200</tt> | By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly. |
 | todo-tree.showInExplorer | <tt>true</tt> | The tree is shown in the explorer view and also has it's own view in the activity bar. If you no longer want to see it in the explorer view, set this to false. |
 | todo-tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. *Note: this does not the apply to the search*. |
