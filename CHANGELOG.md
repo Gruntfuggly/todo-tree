@@ -1,4 +1,7 @@
-# v0.0.122 - 2019-03-??
+# v0.0.123 - 2019-03-07
+- Fix default regex (sorry!)
+
+# v0.0.122 - 2019-03-06
 - Set default ripgrepArgs to include "--max-columns=1000"
 - Add word boundary to default regex
 

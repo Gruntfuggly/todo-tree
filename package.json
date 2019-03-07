@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.122",
+    "version": "0.0.123",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -217,7 +217,7 @@
             "properties": {
                 "todo-tree.regex": {
                     "type": "string",
-                    "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)\b|^\\s*- \\[ \\])",
+                    "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)\\b|^\\s*- \\[ \\])",
                     "markdownDescription": "Regular expression for matching TODOs. Note: $TAGS will be replaced by the tag list"
                 },
                 "todo-tree.tags": {
