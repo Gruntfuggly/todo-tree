@@ -1,3 +1,6 @@
+# v0.0.124 - 2019-03-07
+- Fix ripgrep argument combination (sorry again!)
+
 # v0.0.123 - 2019-03-07
 - Fix default regex (sorry!)
 

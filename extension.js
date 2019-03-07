@@ -241,7 +241,7 @@ function activate( context )
 
         if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
         {
-            options.additional += '-i ';
+            options.additional += ' -i ';
         }
 
         return options;
