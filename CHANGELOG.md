@@ -1,3 +1,6 @@
+# v0.0.125 - 2019-03-11
+- Revert adding word boundary from default regex
+
 # v0.0.124 - 2019-03-07
 - Fix ripgrep argument combination (sorry again!)
 
