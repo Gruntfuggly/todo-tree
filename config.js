@@ -90,11 +90,6 @@ function ripgrepPath()
     return rgPath;
 }
 
-function globs()
-{
-    return vscode.workspace.getConfiguration( 'todo-tree' ).globs;
-}
-
 function tags()
 {
     return vscode.workspace.getConfiguration( 'todo-tree' ).tags;
@@ -110,6 +105,11 @@ function labelFormat()
     return vscode.workspace.getConfiguration( 'todo-tree' ).labelFormat;
 }
 
+function matchGlobsAgainstRelativePaths()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree' ).matchGlobsAgainstRelativePaths;
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -122,7 +122,7 @@ module.exports.isRegexCaseSensitive = isRegexCaseSensitive;
 module.exports.showBadges = showBadges;
 module.exports.regex = regex;
 module.exports.ripgrepPath = ripgrepPath;
-module.exports.globs = globs;
 module.exports.tags = tags;
 module.exports.shouldSortTagsOnlyViewAlphabetically = shouldSortTagsOnlyViewAlphabetically;
 module.exports.labelFormat = labelFormat;
+module.exports.matchGlobsAgainstRelativePaths = matchGlobsAgainstRelativePaths;

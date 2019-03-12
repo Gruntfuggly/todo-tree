@@ -225,11 +225,6 @@ function activate( context )
             regex: "\"" + utils.getRegexSource() + "\"",
             rgPath: config.ripgrepPath()
         };
-        var globs = c.globs;
-        if( globs && globs.length > 0 )
-        {
-            options.globs = globs;
-        }
         if( filename )
         {
             options.filename = filename;
@@ -274,7 +269,7 @@ function activate( context )
         } );
     }
 
-    function applyGlobs()
+    function applyGlobs( workspaceFolder )
     {
         var includeGlobs = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'includeGlobs' );
         var excludeGlobs = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'excludeGlobs' );
@@ -285,7 +280,15 @@ function activate( context )
 
             searchResults = searchResults.filter( function( match )
             {
-                return utils.isIncluded( match.file, includeGlobs, excludeGlobs );
+                var filename = match.file;
+
+                // TODO(nscott) relative globs here
+                if( config.matchGlobsAgainstRelativePaths() )
+                {
+                    filename = path.relative( workspaceFolder, filename );
+                }
+
+                return utils.isIncluded( filename, includeGlobs, excludeGlobs );
             } );
 
             debug( "Remaining items: " + searchResults.length );
@@ -300,7 +303,7 @@ function activate( context )
             search( getOptions( entry ), ( searchList.length > 0 ) ? iterateSearchList : function()
             {
                 debug( "Found " + searchResults.length + " items" );
-                applyGlobs();
+                applyGlobs( entry );
                 addResultsToTree();
                 setButtonsAndContext();
             } );
@@ -409,6 +412,8 @@ function activate( context )
 
     function isIncluded( filename )
     {
+        // TODO(nscott) relative globs here
+
         var includeGlobs = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'includeGlobs' );
         var excludeGlobs = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'excludeGlobs' );
 
