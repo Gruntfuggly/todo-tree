@@ -1,3 +1,7 @@
+# v0.0.126 - 2019-03-27
+- Add option to hide tags from tree, but still highlight in files
+- Add link to octicons to README.md
+
 # v0.0.125 - 2019-03-11
 - Revert adding word boundary from default regex
 

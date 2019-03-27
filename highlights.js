@@ -342,6 +342,11 @@ function triggerHighlight( editor )
     }
 }
 
+function shouldHideFromTree( tag )
+{
+    return getAttribute( tag, 'hideFromTree', false );
+}
+
 module.exports.init = init;
 module.exports.getForeground = getForeground;
 module.exports.getBackground = getBackground;
@@ -353,4 +358,5 @@ module.exports.getDecoration = getDecoration;
 module.exports.refreshComplementaryColours = refreshComplementaryColours;
 module.exports.triggerHighlight = triggerHighlight;
 module.exports.getColourList = getColourList;
+module.exports.shouldHideFromTree = shouldHideFromTree;
 

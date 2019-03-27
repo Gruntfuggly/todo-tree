@@ -6,6 +6,7 @@ var path = require( "path" );
 var utils = require( './utils.js' );
 var icons = require( './icons.js' );
 var config = require( './config.js' );
+var highlights = require( './highlights.js' );
 
 var workspaceFolders;
 var nodes = [];
@@ -504,6 +505,11 @@ class TreeNodeProvider
 
         var rootNode = locateWorkspaceNode( nodes, result.file );
         var todoNode = createTodoNode( result );
+
+        if( highlights.shouldHideFromTree( todoNode.tag ) )
+        {
+            return;
+        }
 
         var childNode;
         if( config.shouldShowTagsOnly() )
