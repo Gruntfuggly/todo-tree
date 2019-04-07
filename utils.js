@@ -83,6 +83,7 @@ function extractTag( text )
     var c = config.regex();
     var flags = c.caseSensitive ? '' : 'i';
     var tagMatch;
+    var tagOffset;
     var originalTag;
 
     if( c.regex.indexOf( "$TAGS" ) > -1 )
@@ -92,6 +93,7 @@ function extractTag( text )
         tagMatch = tagRegex.exec( text );
         if( tagMatch )
         {
+            tagOffset = tagMatch.index;
             text = text.substr( tagMatch.index );
             text = text.substr( tagMatch[ 0 ].length );
             c.tags.map( function( tag )
@@ -104,7 +106,7 @@ function extractTag( text )
         }
     }
 
-    return { tag: tagMatch ? originalTag : "", withoutTag: text.trim() };
+    return { tag: tagMatch ? originalTag : "", withoutTag: text.trim(), tagOffset: tagOffset };
 }
 
 function getRegexSource()

@@ -285,12 +285,13 @@ function highlight( editor )
         var match;
         while( ( match = regex.exec( text ) ) !== null )
         {
-            var tag = match[ 0 ];
+            var extracted = utils.extractTag( match[ 0 ] );
+            var tag = extracted.tag;
             var type = getType( tag );
             if( type !== 'none' )
             {
-                var startPos = editor.document.positionAt( match.index );
-                var endPos = editor.document.positionAt( match.index + match[ 0 ].length );
+                var startPos = editor.document.positionAt( match.index + extracted.tagOffset );
+                var endPos = editor.document.positionAt( match.index + extracted.tagOffset + extracted.tag.length );
 
                 if( type === 'text' )
                 {

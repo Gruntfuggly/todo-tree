@@ -67,6 +67,17 @@ QUnit.test( "utils.extractTag returns tag from tags list, not the match", functi
     assert.equal( result.withoutTag, "after" );
 } );
 
+QUnit.test( "utils.extractTag returns the tag offset", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.shouldGroupFlag = true;
+    utils.init( testConfig );
+
+    var result = utils.extractTag( "before todo after" );
+    assert.equal( result.tag, "TODO" );
+    assert.equal( result.tagOffset, 7 );
+} );
+
 QUnit.test( "utils.getRegexSource returns the regex source without expanded tags if they aren't present", function( assert )
 {
     var testConfig = stubs.getTestConfig();
