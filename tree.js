@@ -267,9 +267,10 @@ function addWorkspaceFolders()
 
 class TreeNodeProvider
 {
-    constructor( _context )
+    constructor( _context, debug )
     {
         this._context = _context;
+        this._debug = debug;
 
         this._onDidChangeTreeData = new vscode.EventEmitter();
         this.onDidChangeTreeData = this._onDidChangeTreeData.event;

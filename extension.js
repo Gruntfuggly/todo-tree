@@ -19,6 +19,16 @@ var openDocuments = {};
 
 function activate( context )
 {
+    var outputChannel;
+
+    function debug( text )
+    {
+        if( outputChannel )
+        {
+            outputChannel.appendLine( text );
+        }
+    }
+
     var buildCounter = context.workspaceState.get( 'buildCounter', 1 );
     context.workspaceState.update( 'buildCounter', ++buildCounter );
 
@@ -26,13 +36,11 @@ function activate( context )
     highlights.init( context );
     utils.init( config );
 
-    var provider = new tree.TreeNodeProvider( context );
+    var provider = new tree.TreeNodeProvider( context, debug );
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
 
     var todoTreeViewExplorer = vscode.window.createTreeView( "todo-tree-view-explorer", { treeDataProvider: provider } );
     var todoTreeView = vscode.window.createTreeView( "todo-tree-view", { treeDataProvider: provider } );
-
-    var outputChannel;
 
     context.subscriptions.push( provider );
     context.subscriptions.push( status );
@@ -49,14 +57,6 @@ function activate( context )
         if( vscode.workspace.getConfiguration( 'todo-tree' ).debug === true )
         {
             outputChannel = vscode.window.createOutputChannel( "Todo Tree" );
-        }
-    }
-
-    function debug( text )
-    {
-        if( outputChannel )
-        {
-            outputChannel.appendLine( text );
         }
     }
 
