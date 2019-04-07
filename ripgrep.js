@@ -11,6 +11,7 @@
 'use strict';
 const child_process = require( 'child_process' );
 const fs = require( 'fs' );
+const utils = require( './utils' );
 
 var currentProcess;
 
@@ -20,13 +21,38 @@ function RipgrepError( error, stderr )
     this.stderr = stderr;
 }
 
-function formatResults( stdout )
+function formatResults( stdout, multiline )
 {
     stdout = stdout.trim();
 
     if( !stdout )
     {
         return [];
+    }
+
+    if( multiline === true )
+    {
+        var lines = stdout.split( '\n' ).reverse();
+
+        var results = [];
+        var extraLines = [];
+        lines.map( function( line )
+        {
+            var match = new Match( line );
+            var extracted = utils.extractTag( match.match );
+            if( extracted.tag )
+            {
+                match.extraLines = extraLines.reverse();
+                extraLines = [];
+                results.push( match );
+            }
+            else
+            {
+                extraLines.push( match );
+            }
+        } );
+
+        return results;
     }
 
     return stdout
@@ -88,6 +114,10 @@ module.exports.search = function ripGrep( cwd, options, searchTerm )
     }
 
     let execString = rgPath + ' --no-messages --vimgrep -H --column --line-number --color never ' + options.additional;
+    if( options.multiline )
+    {
+        execString += " -U ";
+    }
     if( options.regex )
     {
         execString = `${execString} -e ${options.regex}`;
@@ -150,7 +180,7 @@ module.exports.search = function ripGrep( cwd, options, searchTerm )
 
         currentProcess.on( 'close', function( code )
         {
-            resolve( formatResults( results ) );
+            resolve( formatResults( results, options.multiline ) );
         } );
 
     } );

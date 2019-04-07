@@ -141,7 +141,7 @@ function createTodoNode( result )
         label = extracted.tag + " " + label;
     }
 
-    return {
+    var todo = {
         type: TODO,
         fsPath: result.file,
         label: label,
@@ -151,8 +151,21 @@ function createTodoNode( result )
         after: extracted.withoutTag.trim(),
         before: result.match.substring( 0, result.column - 1 ).trim(),
         id: id,
-        visible: true
+        visible: true,
+        extraLines: []
     };
+
+    if( result.extraLines )
+    {
+        result.extraLines.map( function( extraLine )
+        {
+            var extraLineNode = createTodoNode( extraLine );
+            extraLineNode.isExtraLine = true;
+            todo.extraLines.push( extraLineNode );
+        } );
+    }
+
+    return todo;
 }
 
 function locateWorkspaceNode( nodes, filename )
@@ -285,7 +298,7 @@ class TreeNodeProvider
         {
             var availableNodes = nodes.filter( function( node )
             {
-                return node.nodes === undefined || ( node.nodes.length + node.todos.length > 0 );
+                return node.nodes === undefined || ( node.nodes.length + ( node.todos ? node.todos.length : 0 ) > 0 );
             } );
             var rootNodes = availableNodes.filter( isVisible );
             if( rootNodes.length > 0 )
@@ -315,7 +328,14 @@ class TreeNodeProvider
         }
         else if( node.type === TODO )
         {
-            return node.text;
+            if( node.extraLines && node.extraLines.length > 0 )
+            {
+                return node.extraLines.filter( isVisible );
+            }
+            else
+            {
+                return node.text;
+            }
         }
     }
 
@@ -385,7 +405,19 @@ class TreeNodeProvider
             }
             else if( node.type === TODO )
             {
-                treeItem.iconPath = icons.getIcon( this._context, node.tag ? node.tag : node.label );
+                if( node.extraLines && node.extraLines.length > 0 )
+                {
+                    treeItem.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+                }
+                if( node.isExtraLine !== true )
+                {
+                    treeItem.iconPath = icons.getIcon( this._context, node.tag ? node.tag : node.label );
+                }
+                else
+                {
+                    treeItem.iconPath = "no-icon";
+                }
+
                 var format = config.labelFormat();
                 if( format !== "" )
                 {
@@ -460,19 +492,25 @@ class TreeNodeProvider
                 var match = matcher.test( child.label );
                 child.visible = !text || match;
             }
-            else
+
+            if( child.nodes !== undefined )
             {
-                if( child.nodes !== undefined )
-                {
-                    this.filter( text, child.nodes );
-                }
-                if( child.todos !== undefined )
-                {
-                    this.filter( text, child.todos );
-                }
+                this.filter( text, child.nodes );
+            }
+            if( child.todos !== undefined )
+            {
+                this.filter( text, child.todos );
+            }
+            if( child.extraLines !== undefined )
+            {
+                this.filter( text, child.extraLines );
+            }
+            if( ( child.nodes && child.nodes.length > 0 ) || ( child.todos && child.todos.length > 0 ) || ( child.extraLines && child.extraLines.length > 0 ) )
+            {
                 var visibleNodes = child.nodes ? child.nodes.filter( isVisible ).length : 0;
                 var visibleTodos = child.todos ? child.todos.filter( isVisible ).length : 0;
-                child.visible = visibleNodes + visibleTodos > 0;
+                var visibleExtraLines = child.extraLines ? child.extraLines.filter( isVisible ).length : 0;
+                child.visible = visibleNodes + visibleTodos + visibleExtraLines > 0;
             }
         } );
     }
@@ -493,6 +531,10 @@ class TreeNodeProvider
             if( child.todos !== undefined )
             {
                 this.clearFilter( child.todos );
+            }
+            if( child.extraLines !== undefined )
+            {
+                this.clearFilter( child.extraLines );
             }
         }, this );
     }

@@ -238,6 +238,7 @@ function activate( context )
         options.outputChannel = outputChannel;
         options.additional = c.ripgrepArgs;
         options.maxBuffer = c.ripgrepMaxBuffer;
+        options.multiline = utils.getRegexSource().indexOf( "\\n" ) > -1;
 
         if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
         {
@@ -417,6 +418,18 @@ function activate( context )
 
     function refreshFile( document )
     {
+        function addResult( offset )
+        {
+            var position = document.positionAt( offset );
+            var line = document.lineAt( position.line );
+            return {
+                file: document.fileName,
+                line: position.line + 1,
+                column: position.character + 1,
+                match: line.text
+            };
+        }
+
         var matchesFound = false;
 
         removeFileFromSearchResults( document.fileName );
@@ -424,7 +437,7 @@ function activate( context )
         if( isIncluded( document.fileName ) === true )
         {
             var text = document.getText();
-            var regex = utils.getRegex();
+            var regex = utils.getRegexForEditorSearch();
 
             var match;
             while( ( match = regex.exec( text ) ) !== null )
@@ -433,14 +446,23 @@ function activate( context )
                 {
                     match.index++;
                 }
-                var position = document.positionAt( match.index );
-                var line = document.lineAt( position.line );
-                var result = {
-                    file: document.fileName,
-                    line: position.line + 1,
-                    column: position.character + 1,
-                    match: line.text
-                };
+                var offset = match.index;
+                var sections = match[ 0 ].split( "\n" );
+
+                var result = addResult( offset );
+
+                if( sections.length > 1 )
+                {
+                    result.extraLines = [];
+                    offset += sections[ 0 ].length + 1;
+                    sections.shift();
+                    sections.map( function( section )
+                    {
+                        result.extraLines.push( addResult( offset ) );
+                        offset += section.length + 1;
+                    } );
+                }
+
                 var found = false;
                 searchResults.map( function( s )
                 {

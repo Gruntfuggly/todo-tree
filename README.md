@@ -140,6 +140,37 @@ The extension can be customised as follows:
 
 <sup>*</sup> Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.
 
+
+### Multiline TODOs
+
+If the regex contains `\n`, then multiline TODOs will be enabled. In this mode, the search results are processed slightly differently. If results are found which do not contain any tags from `todo-tree.tags` it will be assumed that they belong to the previous result that did have a tag. For example, if you set the regex to something like:
+```
+"todo-tree.regex": "(//)\\s*($TAGS).*(\\n\\s*//\\s{2,}.*)*"
+```
+This will now match multiline TODOs where the extra lines have at least two spaces between the comment characters and the TODO item. e.g.
+```
+// TODO multiline example
+//  second line
+//  third line
+```
+
+If you want to match multiline TODOs in C++ style multiline comment blocks, you'll need something like:
+```
+"todo-tree.regex": "(/\\*)\\s*($TAGS).*(\\n\\s*(//|/\\*|\\*\\*)\\s{2,}.*)*"
+```
+which should match:
+```
+/* TODO multiline example
+**  second line
+**  third line
+*/
+```
+
+*Note: If you are modifying settings using the settings GUI, you don't need to escape each backslash.*
+
+**Warning: Multiline TODOs will not work with markdown TODOs and may have other unexpected results. There may also be a reduction in performance.**
+
+
 ### Excluding files and folders
 
 To restrict the set of folders which is searched, you can define `todo-tree.includeGlobs`. This is an array of globs which the search results are matched against. If the results match any of the globs, they will be shown. By default the array is empty, which matches everything.
@@ -159,7 +190,6 @@ Grouping by tag doesn't work for markdown task list items as there is no tag to 
 Tracking the file in the tree view when grouping by tag will reveal the first tag found.
 
 When there is no current workspace, default icons will be shown in the tree.
-
 
 ## Donate
 

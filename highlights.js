@@ -281,7 +281,7 @@ function highlight( editor )
     if( editor )
     {
         var text = editor.document.getText();
-        var regex = utils.getRegex();
+        var regex = utils.getRegexForEditorSearch();
         var match;
         while( ( match = regex.exec( text ) ) !== null )
         {

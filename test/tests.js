@@ -105,19 +105,27 @@ QUnit.test( "utils.getRegexSource returns the regex source and converts backslas
     assert.equal( utils.getRegexSource(), "(ONE\\x5c|\\x5cTWO)" );
 } );
 
-QUnit.test( "utils.getRegex applies the expected default flags", function( assert )
+QUnit.test( "utils.getRegexForRipGrep applies the expected default flags", function( assert )
 {
     var testConfig = stubs.getTestConfig();
     utils.init( testConfig );
-    assert.equal( utils.getRegex().flags, "gim" );
+    assert.equal( utils.getRegexForRipGrep().flags, "gim" );
 } );
 
-QUnit.test( "utils.getRegex can remove the case insensitive flag", function( assert )
+QUnit.test( "utils.getRegexForRipGrep can remove the case insensitive flag", function( assert )
 {
     var testConfig = stubs.getTestConfig();
     testConfig.shouldBeCaseSensitive = true;
     utils.init( testConfig );
-    assert.equal( utils.getRegex().flags, "gm" );
+    assert.equal( utils.getRegexForRipGrep().flags, "gm" );
+} );
+
+QUnit.test( "utils.getRegexForEditorSearch removes extra escape characters", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.regexSource = "\\\\n\\\\s";
+    utils.init( testConfig );
+    assert.equal( utils.getRegexForEditorSearch().source, "\\n\\s" );
 } );
 
 QUnit.test( "utils.isIncluded returns true when no includes or excludes are specified", function( assert )

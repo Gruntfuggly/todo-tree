@@ -122,7 +122,20 @@ function getRegexSource()
     return c.regex;
 }
 
-function getRegex()
+function getRegexForEditorSearch()
+{
+    var flags = 'gm';
+    if( config.regex().caseSensitive === false )
+    {
+        flags += 'i';
+    }
+
+    var source = getRegexSource();
+    source = source.replace( /\\\\/g, "\\" );
+    return RegExp( source, flags );
+}
+
+function getRegexForRipGrep()
 {
     var flags = 'gm';
     if( config.regex().caseSensitive === false )
@@ -132,7 +145,6 @@ function getRegex()
 
     return RegExp( getRegexSource(), flags );
 }
-
 function isIncluded( name, includes, excludes )
 {
     var included = includes.length === 0 || micromatch.isMatch( name, includes );
@@ -166,6 +178,7 @@ module.exports.hexToRgba = hexToRgba;
 module.exports.removeBlockComments = removeBlockComments;
 module.exports.extractTag = extractTag;
 module.exports.getRegexSource = getRegexSource;
-module.exports.getRegex = getRegex;
+module.exports.getRegexForRipGrep = getRegexForRipGrep;
+module.exports.getRegexForEditorSearch = getRegexForEditorSearch;
 module.exports.isIncluded = isIncluded;
 module.exports.formatLabel = formatLabel;
