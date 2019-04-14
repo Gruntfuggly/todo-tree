@@ -1,3 +1,7 @@
+# v0.0.127 - 2019-04-14
+- Support multiline TODOs
+- Save filter state
+
 # v0.0.126 - 2019-03-27
 - Add option to hide tags from tree, but still highlight in files
 - Add link to octicons to README.md
