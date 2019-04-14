@@ -32,6 +32,8 @@ function activate( context )
     var buildCounter = context.workspaceState.get( 'buildCounter', 1 );
     context.workspaceState.update( 'buildCounter', ++buildCounter );
 
+    currentFilter = context.workspaceState.get( 'currentFilter' );
+
     config.init( context );
     highlights.init( context );
     utils.init( config );
@@ -368,7 +370,6 @@ function activate( context )
         searchList = [];
 
         provider.clear( vscode.workspace.workspaceFolders );
-        clearFilter();
 
         interrupted = false;
 
@@ -395,6 +396,7 @@ function activate( context )
         var isTagsOnly = context.workspaceState.get( 'tagsOnly', c.get( 'tagsOnly', false ) );
         var isGrouped = context.workspaceState.get( 'grouped', c.get( 'grouped', false ) );
         var isCollapsible = !isTagsOnly || isGrouped;
+
         vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', c.get( 'expanded', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', c.get( 'flat', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-tags-only', isTagsOnly );
@@ -641,6 +643,7 @@ function activate( context )
                     if( currentFilter )
                     {
                         context.workspaceState.update( 'filtered', true );
+                        context.workspaceState.update( 'currentFilter', currentFilter );
                         provider.filter( currentFilter );
                         refreshTree();
                     }
