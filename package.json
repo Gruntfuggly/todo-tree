@@ -16,7 +16,7 @@
     },
     "repository": "https://github.com/Gruntfuggly/todo-tree",
     "scripts": {
-        "test": "qunit -c utils.js -t test/tests.js"
+        "test": "./node_modules/node-qunit/bin/cli.js -c utils.js -t test/tests.js"
     },
     "categories": [
         "Other"
