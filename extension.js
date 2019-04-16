@@ -404,6 +404,9 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-filtered', context.workspaceState.get( 'filtered', false ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-collapsible', isCollapsible );
 
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-scan-open-files-or-workspace-button', c.get( 'showScanOpenFilesOrWorkspaceButton', false ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-open-files-only', c.get( 'showTagsFromOpenFilesOnly', false ) );
+
         var children = provider.getChildren();
         var empty = children.length === 1 && children[ 0 ].empty === true;
 
@@ -574,6 +577,16 @@ function activate( context )
         } );
     }
 
+    function scanOpenFilesOnly()
+    {
+        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'showTagsFromOpenFilesOnly', true, false );
+    }
+
+    function scanWorkspace()
+    {
+        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'showTagsFromOpenFilesOnly', false, false );
+    }
+
     function register()
     {
         function migrateSettings()
@@ -676,6 +689,8 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.addTag', addTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeTag', removeTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.toggleStatusBar', toggleStatusBar ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanOpenFilesOnly', scanOpenFilesOnly ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanWorkspace', scanWorkspace ) );
 
         context.subscriptions.push( vscode.window.onDidChangeActiveTextEditor( function( e )
         {

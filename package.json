@@ -53,54 +53,64 @@
         "menus": {
             "view/title": [
                 {
+                    "command": "todo-tree.scanOpenFilesOnly",
+                    "when": "view =~ /todo-tree/ && todo-tree-scan-open-files-only == false && todo-tree-show-scan-open-files-or-workspace-button == true",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "todo-tree.scanWorkspace",
+                    "when": "view =~ /todo-tree/ && todo-tree-scan-open-files-only == true && todo-tree-show-scan-open-files-or-workspace-button == true",
+                    "group": "navigation@1"
+                },
+                {
                     "command": "todo-tree.expand",
                     "when": "view =~ /todo-tree/ && todo-tree-expanded == false && todo-tree-collapsible",
-                    "group": "navigation@1"
+                    "group": "navigation@2"
                 },
                 {
                     "command": "todo-tree.collapse",
                     "when": "view =~ /todo-tree/ && todo-tree-expanded == true && todo-tree-collapsible",
-                    "group": "navigation@1"
+                    "group": "navigation@2"
                 },
                 {
                     "command": "todo-tree.showFlatView",
                     "when": "view =~ /todo-tree/ && todo-tree-flat == false && todo-tree-tags-only == false",
-                    "group": "navigation@2"
+                    "group": "navigation@3"
                 },
                 {
                     "command": "todo-tree.showTagsOnlyView",
                     "when": "view =~ /todo-tree/ && todo-tree-flat == true && todo-tree-tags-only == false",
-                    "group": "navigation@2"
+                    "group": "navigation@3"
                 },
                 {
                     "command": "todo-tree.showTreeView",
                     "when": "view =~ /todo-tree/ && todo-tree-flat == false && todo-tree-tags-only == true",
-                    "group": "navigation@2"
+                    "group": "navigation@3"
                 },
                 {
                     "command": "todo-tree.groupByTag",
                     "when": "view =~ /todo-tree/ && todo-tree-grouped == false",
-                    "group": "navigation@3"
+                    "group": "navigation@4"
                 },
                 {
                     "command": "todo-tree.ungroupByTag",
                     "when": "view =~ /todo-tree/ && todo-tree-grouped == true",
-                    "group": "navigation@3"
+                    "group": "navigation@4"
                 },
                 {
                     "command": "todo-tree.filter",
                     "when": "view =~ /todo-tree/ && todo-tree-filtered == false",
-                    "group": "navigation@4"
+                    "group": "navigation@5"
                 },
                 {
                     "command": "todo-tree.filterClear",
                     "when": "view =~ /todo-tree/ && todo-tree-filtered == true",
-                    "group": "navigation@4"
+                    "group": "navigation@5"
                 },
                 {
                     "command": "todo-tree.refresh",
                     "when": "view =~ /todo-tree/",
-                    "group": "navigation@5"
+                    "group": "navigation@6"
                 }
             ]
         },
@@ -193,6 +203,24 @@
                 "icon": {
                     "dark": "resources/icons/dark/notag.svg",
                     "light": "resources/icons/light/notag.svg"
+                }
+            },
+            {
+                "command": "todo-tree.scanOpenFilesOnly",
+                "title": "Scan Open Files Only",
+                "category": "Todo Tree",
+                "icon": {
+                    "dark": "resources/icons/dark/scan-open-files.svg",
+                    "light": "resources/icons/light/scan-open-files.svg"
+                }
+            },
+            {
+                "command": "todo-tree.scanWorkspace",
+                "title": "Scan Workspace",
+                "category": "Todo Tree",
+                "icon": {
+                    "dark": "resources/icons/dark/scan-workspace.svg",
+                    "light": "resources/icons/light/scan-workspace.svg"
                 }
             },
             {
@@ -374,6 +402,11 @@
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "When opening new workspaces, show only tag elements in tree"
+                },
+                "todo-tree.showScanOpenFilesOrWorkspaceButton": {
+                    "type": "boolean",
+                    "default":false,
+                    "markdownDescription":"Show a button on the tree view header to toggle between scanning open files only, or the whole workspace"
                 }
             }
         }

@@ -81,7 +81,7 @@ The source code is available on GitHub [here](https://github.com/Gruntfuggly/tod
 
 ## Controls
 
-The tree view header contains the following buttons:
+The tree view header can contain the following buttons:
 
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/collapse.png" height="16px" align="center"> - Collapse all tree nodes<br>
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/expand.png" height="16px" align="center"> - Expand all tree nodes<br>
@@ -92,7 +92,9 @@ The tree view header contains the following buttons:
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/notag.png" height="16px" align="center"> - Organise the TODOs by file (default)<br>
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/filter.png" height="16px" align="center"> - Only show items in the tree which match the entered filter text<br>
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/clear-filter.png" height="16px" align="center"> - Remove any active filter<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/refresh.png" height="16px" align="center"> - Rebuild the tree
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/refresh.png" height="16px" align="center"> - Rebuild the tree<br>
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/scan-open-files.png" height="16px" align="center"> - Show tags from open files only<br>
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/scan-workspace.png" height="16px" align="center"> - Show tags from workspace<br>
 
 ## Commands
 
@@ -137,6 +139,7 @@ The extension can be customised as follows:
 | todo-tree.statusBar | <tt>none</tt> | What to show in the status bar - nothing (<tt>none</tt>), total count (<tt>total</tt>), counts per tag (<tt>tags</tt>) or the counts for the top three tags (<tt>top three</tt>) |
 | todo-tree.showCountsInTree | <tt>false</tt> | Set to true to show counts of TODOs in the tree |
 | todo-tree.labelFormat | <tt>${tag} ${after}</tt> | Format of the TODO item labels. Available placeholders are <tt>${line}</tt>, <tt>${column}</tt>, <tt>${tag}</tt>, <tt>${before}</tt> (text from before the tag), <tt>${after}</tt> (text from after the tag) and <tt>${filename}</tt>. |
+| todo-tree.showScanOpenFilesOrWorkspaceButton | <tt>false</tt> | Show a button on the tree view header to toggle between scanning open files only, or the whole workspace |
 
 <sup>*</sup> Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.
 
