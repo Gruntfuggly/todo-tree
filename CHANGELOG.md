@@ -1,3 +1,6 @@
+# v0.0.128 - 2019-04-16
+- Use old highlight mechanism if no tag is extracted from the match
+
 # v0.0.127 - 2019-04-14
 - Support multiline TODOs
 - Save filter state

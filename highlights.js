@@ -287,11 +287,21 @@ function highlight( editor )
         {
             var extracted = utils.extractTag( match[ 0 ] );
             var tag = extracted.tag;
+            var offsetStart = match.index;
+            var offsetEnd = offsetStart + match[ 0 ].length;
+
+            var extracted = utils.extractTag( match[ 0 ] );
+            if( extracted.tag && extracted.tag.length > 0 )
+            {
+                tag = extracted.tag;
+                offsetStart = match.index + extracted.tagOffset;
+                offsetEnd = offsetStart + extracted.tag.length;
+            }
             var type = getType( tag );
             if( type !== 'none' )
             {
-                var startPos = editor.document.positionAt( match.index + extracted.tagOffset );
-                var endPos = editor.document.positionAt( match.index + extracted.tagOffset + extracted.tag.length );
+                var startPos = editor.document.positionAt( offsetStart );
+                var endPos = editor.document.positionAt( offsetEnd );
 
                 if( type === 'text' )
                 {
