@@ -450,7 +450,9 @@ function activate( context )
                 while( text[ match.index ] === '\n' || text[ match.index ] === '\r' )
                 {
                     match.index++;
+                    match[ 0 ] = match[ 0 ].substring( 1 );
                 }
+
                 var offset = match.index;
                 var sections = match[ 0 ].split( "\n" );
 

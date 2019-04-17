@@ -1,3 +1,6 @@
+# v0.0.130 - 2019-??-??
+- Fix detection of multiline highlights in open files
+
 # v0.0.129 - 2019-04-17
 - Add "scan open files only"/"scan workspace" toggle button
 - Fix previous fix (sigh)
