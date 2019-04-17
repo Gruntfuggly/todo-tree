@@ -1,3 +1,7 @@
+# v0.0.129 - 2019-04-17
+- Add "scan open files only"/"scan workspace" toggle button
+- Fix previous fix (sigh)
+
 # v0.0.128 - 2019-04-16
 - Use old highlight mechanism if no tag is extracted from the match
 

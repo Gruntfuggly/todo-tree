@@ -285,8 +285,7 @@ function highlight( editor )
         var match;
         while( ( match = regex.exec( text ) ) !== null )
         {
-            var extracted = utils.extractTag( match[ 0 ] );
-            var tag = extracted.tag;
+            var tag = match[ 0 ];
             var offsetStart = match.index;
             var offsetEnd = offsetStart + match[ 0 ].length;
 
