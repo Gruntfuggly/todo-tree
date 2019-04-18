@@ -94,8 +94,7 @@ function extractTag( text )
         if( tagMatch )
         {
             tagOffset = tagMatch.index;
-            text = text.substr( tagMatch.index );
-            text = text.substr( tagMatch[ 0 ].length );
+            text = text.substr( tagMatch.index + tagMatch[ 0 ].length ).trim().replace(/^:\s*/, "");
             c.tags.map( function( tag )
             {
                 if( tag.toLowerCase() == tagMatch[ 0 ].toLowerCase() )
@@ -106,7 +105,7 @@ function extractTag( text )
         }
     }
 
-    return { tag: tagMatch ? originalTag : "", withoutTag: text.trim(), tagOffset: tagOffset };
+    return { tag: tagMatch ? originalTag : "", withoutTag: text, tagOffset: tagOffset };
 }
 
 function getRegexSource()

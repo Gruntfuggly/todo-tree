@@ -78,6 +78,23 @@ QUnit.test( "utils.extractTag returns the tag offset", function( assert )
     assert.equal( result.tagOffset, 7 );
 } );
 
+QUnit.test( "utils.extractTag remove colon from ${after}", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    utils.init( testConfig );
+
+    result = utils.extractTag( "before TODO: after" );
+    assert.equal( result.withoutTag, "after" );
+
+    result = utils.extractTag( "before TODO : after" );
+    assert.equal( result.withoutTag, "after" );
+
+    result = utils.extractTag( "before TODO :after" );
+    assert.equal( result.withoutTag, "after" );
+    result = utils.formatLabel("${tag}: ${after}", { tag: result.tag, after: result.withoutTag })
+    assert.equal( result, "TODO: after" );
+} );
+
 QUnit.test( "utils.getRegexSource returns the regex source without expanded tags if they aren't present", function( assert )
 {
     var testConfig = stubs.getTestConfig();
