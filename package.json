@@ -405,8 +405,8 @@
                 },
                 "todo-tree.showScanOpenFilesOrWorkspaceButton": {
                     "type": "boolean",
-                    "default":false,
-                    "markdownDescription":"Show a button on the tree view header to toggle between scanning open files only, or the whole workspace"
+                    "default": false,
+                    "markdownDescription": "Show a button on the tree view header to toggle between scanning open files only, or the whole workspace"
                 }
             }
         }
