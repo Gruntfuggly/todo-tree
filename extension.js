@@ -220,15 +220,9 @@ function activate( context )
     }
 
     function buildGlobs(includeGlobs, excludeGlobs) {
-        const globs = [];
-        for( const glob of includeGlobs ) {
-            globs.push(glob);
-        }
-
-        for( const glob of excludeGlobs ) {
-            globs.push(`!${glob}`);
-        }
-        return globs;
+        return []
+            .concat(includeGlobs)
+            .concat(excludeGlobs.map(g => `!${g}`));
     }
 
     function getOptions( filename )
