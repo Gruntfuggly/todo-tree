@@ -1,4 +1,7 @@
-# v0.0.130 - 2019-??-??
+# v0.0.130 - 2019-04-25
+- Improve experience for contributors (thanks to [true0r](https://github.com/true0r))
+- Remove colon in format strings (thanks to [true0r](https://github.com/true0r))
+- Fix hideFromTree for complex tags
 - Fix detection of multiline highlights in open files
 
 # v0.0.129 - 2019-04-17
