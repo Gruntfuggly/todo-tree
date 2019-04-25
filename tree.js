@@ -549,7 +549,7 @@ class TreeNodeProvider
         var rootNode = locateWorkspaceNode( nodes, result.file );
         var todoNode = createTodoNode( result );
 
-        if( highlights.shouldHideFromTree( todoNode.tag ) )
+        if( highlights.shouldHideFromTree( todoNode.tag ? todoNode.tag : todoNode.label ) )
         {
             return;
         }
