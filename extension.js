@@ -634,7 +634,7 @@ function activate( context )
             return;
         }
 
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line, column, length ) =>
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line, column, endColumn ) =>
         {
             selectedDocument = file;
             vscode.workspace.openTextDocument( file ).then( function( document )
@@ -643,7 +643,7 @@ function activate( context )
                 {
                     var selectionStart, selectionEnd;
                     var todoStart = new vscode.Position( line, column - 1 );
-                    var todoEnd = new vscode.Position( line, column - 1 + length );
+                    var todoEnd = new vscode.Position( line, endColumn - 1 );
                     var revealBehaviour = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'revealBehaviour' );
 
                     if (revealBehaviour == "end")

@@ -148,7 +148,7 @@ function createTodoNode( result )
         tag: extracted.tag,
         line: result.line - 1,
         column: result.column,
-        length: result.match.length,
+        endColumn: result.column + result.match.length,
         after: extracted.withoutTag.trim(),
         before: result.match.substring( 0, result.column - 1 ).trim(),
         id: id,
@@ -432,7 +432,7 @@ class TreeNodeProvider
                         node.fsPath,
                         node.line,
                         node.column,
-                        node.length
+                        node.endColumn
                     ]
                 };
             }
