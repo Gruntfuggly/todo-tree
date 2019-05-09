@@ -634,15 +634,33 @@ function activate( context )
             return;
         }
 
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line ) =>
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line, column, length ) =>
         {
             selectedDocument = file;
             vscode.workspace.openTextDocument( file ).then( function( document )
             {
                 vscode.window.showTextDocument( document ).then( function( editor )
                 {
-                    var position = new vscode.Position( line, 0 );
-                    editor.selection = new vscode.Selection( position, position );
+                    var selectionStart, selectionEnd;
+                    var todoStart = new vscode.Position( line, column - 1 );
+                    var todoEnd = new vscode.Position( line, column - 1 + length );
+                    var revealBehaviour = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'revealBehaviour' );
+
+                    if (revealBehaviour == "end")
+                    {
+                        selectionStart = todoEnd;
+                        selectionEnd = todoEnd;
+                    } else if (revealBehaviour == "highlight")
+                    {
+                        selectionStart = todoStart;
+                        selectionEnd = todoEnd;
+                    } else
+                    {
+                        selectionStart = todoStart;
+                        selectionEnd = todoStart;
+                    }
+
+                    editor.selection = new vscode.Selection( selectionStart, selectionEnd );
                     editor.revealRange( editor.selection, vscode.TextEditorRevealType.InCenter );
                     vscode.commands.executeCommand( 'workbench.action.focusActiveEditorGroup' );
                 } );
