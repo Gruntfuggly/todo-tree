@@ -124,7 +124,7 @@ The extension can be customised as follows:
 | todo-tree.ripgrepArgs | <tt>"--max-columns=1000"</tt> | Use this to pass additional arguments to ripgrep. e.g. <tt>"-i"</tt> to make the search case insensitive. *Use with caution!* |
 | todo-tree.ripgrepMaxBuffer | <tt>200</tt> | By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly. |
 | todo-tree.showInExplorer | <tt>true</tt> | The tree is shown in the explorer view and also has it's own view in the activity bar. If you no longer want to see it in the explorer view, set this to false. |
-| todo-tree.revealBehaviour | <tt>"start"</tt> | Change the cursor behaviour when selecting a todo from the expolorer. You can choose from: `start` (Moves the cursor to the begining of the todo), `end` (Moves the cursor to the end of the todo) and `highlight` (Selects the todo text).
+| todo-tree.revealBehaviour | <tt>start of todo</tt> | Change the cursor behaviour when selecting a todo from the explorer. You can choose from: `start of todo` (moves the cursor to the beginning of the todo), `end of todo` (moves the cursor to the end of the todo) `highlight todo` (selects the todo text), `start of line` (moves the cursor to the start of the line) and `highlight line` (selected the whole line) |
 | todo-tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. *Note: this does not the apply to the search*. |
 | todo-tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
 | todo-tree.trackFile | <tt>true</tt> | Set to false if you want to prevent tracking the open file in the tree view. |

@@ -644,17 +644,31 @@ function activate( context )
                     var selectionStart, selectionEnd;
                     var todoStart = new vscode.Position( line, column - 1 );
                     var todoEnd = new vscode.Position( line, endColumn - 1 );
+                    var lineStart = new vscode.Position( line, 0 );
+                    var lineEnd = new vscode.Position( line, document.lineAt( line ).text.length );
                     var revealBehaviour = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'revealBehaviour' );
 
-                    if (revealBehaviour == "end")
+                    if( revealBehaviour == "end of todo" )
                     {
                         selectionStart = todoEnd;
                         selectionEnd = todoEnd;
-                    } else if (revealBehaviour == "highlight")
+                    }
+                    else if( revealBehaviour == "highlight todo" )
                     {
                         selectionStart = todoStart;
                         selectionEnd = todoEnd;
-                    } else
+                    }
+                    else if( revealBehaviour == "start of line" )
+                    {
+                        selectionStart = lineStart;
+                        selectionEnd = lineStart;
+                    }
+                    else if( revealBehaviour == "highlight line" )
+                    {
+                        selectionStart = lineStart;
+                        selectionEnd = lineEnd;
+                    }
+                    else
                     {
                         selectionStart = todoStart;
                         selectionEnd = todoStart;

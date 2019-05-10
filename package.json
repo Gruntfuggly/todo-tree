@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.130",
+    "version": "0.0.131",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -297,10 +297,25 @@
                     "markdownDescription": "Show the tree in the explorer view"
                 },
                 "todo-tree.revealBehaviour": {
-                    "type": "string",
                     "default": "start",
+                    "type": "string",
+                    "enum": [
+                        "start of todo",
+                        "end of todo",
+                        "highlight todo",
+                        "start of line" ,
+                        "highlight line"
+                    ],
+                    "markdownEnumDescriptions": [
+                        "Moves the cursor to the beginning of the todo",
+                        "Moves the cursor to the end of the todo",
+                        "Selects the todo text",
+                        "Moves the cursor to the start of the line",
+                        "Selects the whole line"
+                    ],
                     "markdownDescription": "Sets where the cursor is positioned when revealing a todo"
                 },
+
                 "todo-tree.filterCaseSensitive": {
                     "type": "boolean",
                     "default": false,
