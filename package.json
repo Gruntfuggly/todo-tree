@@ -296,6 +296,11 @@
                     "default": true,
                     "markdownDescription": "Show the tree in the explorer view"
                 },
+                "todo-tree.revealBehaviour": {
+                    "type": "string",
+                    "default": "start",
+                    "markdownDescription": "Sets where the cursor is positioned when revealing a todo"
+                },
                 "todo-tree.filterCaseSensitive": {
                     "type": "boolean",
                     "default": false,
@@ -405,8 +410,8 @@
                 },
                 "todo-tree.showScanOpenFilesOrWorkspaceButton": {
                     "type": "boolean",
-                    "default":false,
-                    "markdownDescription":"Show a button on the tree view header to toggle between scanning open files only, or the whole workspace"
+                    "default": false,
+                    "markdownDescription": "Show a button on the tree view header to toggle between scanning open files only, or the whole workspace"
                 }
             }
         }
