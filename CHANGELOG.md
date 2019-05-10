@@ -1,5 +1,6 @@
 # v0.0.131 - 2019-05-10
 - Add configuration for reveal behaviour (thanks to [pd93](https://github.com/pd93))
+- Fixed install instructions in README.md (thanks to [patros](https://github.com/patros))
 
 # v0.0.130 - 2019-04-25
 - Improve experience for contributors (thanks to [true0r](https://github.com/true0r))
