@@ -297,7 +297,7 @@
                     "markdownDescription": "Show the tree in the explorer view"
                 },
                 "todo-tree.revealBehaviour": {
-                    "default": "start",
+                    "default": "start of todo",
                     "type": "string",
                     "enum": [
                         "start of todo",
