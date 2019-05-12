@@ -219,6 +219,12 @@ function activate( context )
         } );
     }
 
+    function buildGlobs(includeGlobs, excludeGlobs) {
+        return []
+            .concat(includeGlobs)
+            .concat(excludeGlobs.map(g => `!${g}`));
+    }
+
     function getOptions( filename )
     {
         var c = vscode.workspace.getConfiguration( 'todo-tree' );
@@ -227,7 +233,7 @@ function activate( context )
             regex: "\"" + utils.getRegexSource() + "\"",
             rgPath: config.ripgrepPath()
         };
-        var globs = c.globs;
+        var globs = buildGlobs(c.includeGlobs, c.excludeGlobs);
         if( globs && globs.length > 0 )
         {
             options.globs = globs;
