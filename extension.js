@@ -552,6 +552,7 @@ function activate( context )
     {
         currentFilter = undefined;
         context.workspaceState.update( 'filtered', false );
+        context.workspaceState.update( 'currentFilter', undefined );
         provider.clearFilter();
         refreshTree();
     }

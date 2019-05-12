@@ -1,5 +1,8 @@
 # v0.0.132 - 2019-05-12
 - Add option to highlight the comment characters in front of the tag
+- Improve glob handling (thanks to [somewhatabstract](https://github.com/somewhatabstract))
+- Prevent finding TODOs in output windows, etc.
+- Fix clearing of filter
 
 # v0.0.131 - 2019-05-10
 - Add configuration for reveal behaviour (thanks to [pd93](https://github.com/pd93))
