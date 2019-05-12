@@ -445,7 +445,7 @@ function activate( context )
 
         removeFileFromSearchResults( document.fileName );
 
-        if( isIncluded( document.fileName ) === true )
+        if( document.uri.scheme === 'file' && isIncluded( document.fileName ) === true )
         {
             var text = document.getText();
             var regex = utils.getRegexForEditorSearch();
@@ -623,7 +623,7 @@ function activate( context )
         {
             vscode.window.visibleTextEditors.map( editor =>
             {
-                if( document === editor.document )
+                if( document === editor.document && editor.document.uri.scheme === 'file' )
                 {
                     if( document.fileName === undefined || isIncluded( document.fileName ) )
                     {
