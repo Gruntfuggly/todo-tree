@@ -306,8 +306,11 @@ function highlight( editor )
                 {
                     endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
                 }
-
-                if( type === 'line' )
+                else if( type === 'tag-and-comment' )
+                {
+                    startPos = editor.document.positionAt( match.index ); // TODO hello
+                }
+                else if( type === 'line' )
                 {
                     endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
                     startPos = new vscode.Position( endPos.line, 0 );

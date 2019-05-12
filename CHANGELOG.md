@@ -1,3 +1,6 @@
+# v0.0.132 - 2019-05-12
+- Add option to highlight the comment characters in front of the tag
+
 # v0.0.131 - 2019-05-10
 - Add configuration for reveal behaviour (thanks to [pd93](https://github.com/pd93))
 - Fixed install instructions in README.md (thanks to [patros](https://github.com/patros))
