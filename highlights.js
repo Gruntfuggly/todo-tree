@@ -302,13 +302,18 @@ function highlight( editor )
                 var startPos = editor.document.positionAt( offsetStart );
                 var endPos = editor.document.positionAt( offsetEnd );
 
-                if( type === 'text' )
+                if( type === 'text-and-comment' )
+                {
+                    startPos = editor.document.positionAt( match.index );
+                    endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
+                }
+                else if( type === 'text' )
                 {
                     endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
                 }
                 else if( type === 'tag-and-comment' )
                 {
-                    startPos = editor.document.positionAt( match.index ); // TODO hello
+                    startPos = editor.document.positionAt( match.index );
                 }
                 else if( type === 'line' )
                 {
