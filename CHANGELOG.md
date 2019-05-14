@@ -1,8 +1,10 @@
-# v0.0.132 - 2019-05-12
+# v0.0.132 - 2019-05-14
 - Add option to highlight the comment characters in front of the tag
+- Add option to highlight the comment characters in front of the tag and text (thanks to [sidpagariya](https://github.com/sidpagariya))
 - Improve glob handling (thanks to [somewhatabstract](https://github.com/somewhatabstract))
 - Prevent finding TODOs in output windows, etc.
 - Fix clearing of filter
+- Add missing icons in README.md
 
 # v0.0.131 - 2019-05-10
 - Add configuration for reveal behaviour (thanks to [pd93](https://github.com/pd93))

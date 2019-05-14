@@ -35,8 +35,9 @@ Foreground and background colours can be one of "red", "green", "blue", "yellow"
 `type` - used to control how much is highlighted in the editor. Valid values are:
 
  - `tag` - highlights just the tag
- - `tag-and-comment` - highlights the comment characters (or the start of the match) and the tag
  - `text` - highlights the tag and any text after the tag
+ - `tag-and-comment` - highlights the comment characters (or the start of the match) and the tag
+ - `text-and-comment` - highlights the comment characters (or the start of the match), the tag and the text after the tag
  - `line` - highlights the entire line containing the tag
 
 `hideFromTree` - used to hide tags from the tree, but still highlight in files
