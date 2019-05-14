@@ -303,7 +303,7 @@
                         "start of todo",
                         "end of todo",
                         "highlight todo",
-                        "start of line" ,
+                        "start of line",
                         "highlight line"
                     ],
                     "markdownEnumDescriptions": [
@@ -315,7 +315,6 @@
                     ],
                     "markdownDescription": "Sets where the cursor is positioned when revealing a todo"
                 },
-
                 "todo-tree.filterCaseSensitive": {
                     "type": "boolean",
                     "default": false,
