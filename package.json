@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.132",
+    "version": "0.0.133",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
@@ -270,6 +270,11 @@
                     "type": "array",
                     "default": [],
                     "markdownDescription": "Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. `[\"**/*.txt\"]` to ignore all .txt files"
+                },
+                "todo-tree.passGlobsToRipgrep": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "By default the globs are passed into ripgrep to narrow the search. Set this to false to apply the globs *after* the search (pre 0.0.132 behaviour)."
                 },
                 "todo-tree.ripgrep": {
                     "type": "string",

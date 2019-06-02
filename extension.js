@@ -219,10 +219,11 @@ function activate( context )
         } );
     }
 
-    function buildGlobs(includeGlobs, excludeGlobs) {
+    function buildGlobs( includeGlobs, excludeGlobs )
+    {
         return []
-            .concat(includeGlobs)
-            .concat(excludeGlobs.map(g => `!${g}`));
+            .concat( includeGlobs )
+            .concat( excludeGlobs.map( g => `!${g}` ) );
     }
 
     function getOptions( filename )
@@ -233,7 +234,8 @@ function activate( context )
             regex: "\"" + utils.getRegexSource() + "\"",
             rgPath: config.ripgrepPath()
         };
-        var globs = buildGlobs(c.includeGlobs, c.excludeGlobs);
+        var globs = c.passGlobsToRipgrep === true ? buildGlobs( c.includeGlobs, c.excludeGlobs ) : undefined;
+
         if( globs && globs.length > 0 )
         {
             options.globs = globs;

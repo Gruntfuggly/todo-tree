@@ -1,3 +1,6 @@
+# v0.0.133 - 2019-06-02
+- Add option to prevent globs being passed to ripgrep
+
 # v0.0.132 - 2019-05-14
 - Add option to highlight the comment characters in front of the tag
 - Add option to highlight the comment characters in front of the tag and text (thanks to [sidpagariya](https://github.com/sidpagariya))
