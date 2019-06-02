@@ -1,3 +1,6 @@
+# v0.0.134 - 2019-06-02
+- Add license
+
 # v0.0.133 - 2019-06-02
 - Add option to prevent globs being passed to ripgrep
 
