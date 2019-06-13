@@ -756,6 +756,33 @@ class TreeNodeProvider
         var tagCounts = {};
         return countChildTags( nodes, tagCounts );
     }
+
+    exportChildren( parent, children )
+    {
+        children.forEach( function( child )
+        {
+            if( child.type === PATH )
+            {
+                parent[ child.label ] = {};
+                this.exportChildren( parent[ child.label ], this.getChildren( child ) );
+            } else
+            {
+                var format = config.labelFormat();
+                parent[ "line " + child.line ] = ( format !== "" ) ?
+                    utils.formatLabel( format, child ) + ( child.pathLabel ? ( " " + child.pathLabel ) : "" ) :
+                    child.label;
+            }
+        }, this );
+        return parent;
+    }
+
+    exportTree()
+    {
+        var exported = {};
+        var children = this.getChildren();
+        exported = this.exportChildren( exported, children );
+        return exported;
+    }
 }
 
 exports.TreeNodeProvider = TreeNodeProvider;

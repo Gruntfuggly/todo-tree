@@ -100,13 +100,18 @@ The tree view header can contain the following buttons:
 
 ## Commands
 
+### Tags
 To make it easier to configure the tags, there are two commands available:
 
-**todo-tree: Add Tag** - allows entry of a new tag for searching
+**Todo Tree: Add Tag** - allows entry of a new tag for searching
 
-**todo-tree: Remove Tag** - shows a list of current tags which can be selected for removing
+**Todo Tree: Remove Tag** - shows a list of current tags which can be selected for removing
 
 *Note: The Remove Tag command can be used to show current tags - just press Escape or Enter with out selecting any to close it.*
+
+### Export
+
+The contents of the tree can be exported as linux style tree using **Todo Tree: Export Tree**, or as JSON using **Todo Tree: Export Tree As JSON**. In both cases an unsaved file will be opened in a new tab, with the tree content as it is currently configured. The file can be closed or saved if required.
 
 ## Configuration
 

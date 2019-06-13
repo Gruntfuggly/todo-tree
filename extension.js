@@ -3,6 +3,7 @@
 var vscode = require( 'vscode' );
 var ripgrep = require( './ripgrep' );
 var path = require( 'path' );
+var treeify = require( 'treeify' );
 
 var tree = require( "./tree.js" );
 var highlights = require( './highlights.js' );
@@ -598,6 +599,31 @@ function activate( context )
         vscode.workspace.getConfiguration( 'todo-tree' ).update( 'showTagsFromOpenFilesOnly', false, false );
     }
 
+    function exportTree( exported, extension )
+    {
+        var newFile = vscode.Uri.parse( 'untitled:' + path.join( vscode.workspace.rootPath, 'todo-tree' + extension ) );
+        vscode.workspace.openTextDocument( newFile ).then( function( document )
+        {
+            var edit = new vscode.WorkspaceEdit();
+            edit.delete( newFile, new vscode.Range(
+                document.positionAt( 0 ),
+                document.positionAt( document.getText().length - 1 )
+            ) );
+            return vscode.workspace.applyEdit( edit ).then( function( success )
+            {
+                var edit = new vscode.WorkspaceEdit();
+                edit.insert( newFile, new vscode.Position( 0, 0 ), exported );
+                return vscode.workspace.applyEdit( edit ).then( function( success )
+                {
+                    if( success )
+                    {
+                        vscode.window.showTextDocument( document );
+                    }
+                } );
+            } );
+        } );
+    }
+
     function register()
     {
         function migrateSettings()
@@ -713,6 +739,16 @@ function activate( context )
             status.tooltip = "Click to restart";
             status.command = "todo-tree.refresh";
             interrupted = true;
+        } ) );
+
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.exportTree', function()
+        {
+            exportTree( treeify.asTree( provider.exportTree(), true ), ".txt" );
+        } ) );
+
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.exportTreeAsJSON', function()
+        {
+            exportTree( JSON.stringify( provider.exportTree(), null, 2 ), ".json" );
         } ) );
 
         context.subscriptions.push( todoTreeViewExplorer.onDidExpandElement( function( e ) { provider.setExpanded( e.element.fsPath, true ); } ) );

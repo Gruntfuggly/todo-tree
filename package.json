@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.134",
+    "version": "0.0.135",
     "license": "MIT",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
@@ -238,6 +238,16 @@
                 "command": "todo-tree.toggleStatusBar",
                 "title": "Toggle Status Indication Type",
                 "category": "Todo Tree"
+            },
+            {
+                "command": "todo-tree.exportTree",
+                "title": "Export Tree",
+                "category": "Todo Tree"
+            },
+            {
+                "command": "todo-tree.exportTreeAsJSON",
+                "title": "Export Tree As JSON",
+                "category": "Todo Tree"
             }
         ],
         "configuration": {
@@ -444,7 +454,8 @@
     "dependencies": {
         "comment-patterns": "^0.10.1",
         "micromatch": "^3.1.10",
-        "octicons": "^8.3.0"
+        "octicons": "^8.3.0",
+        "treeify": "^1.1.0"
     },
     "devDependencies": {
         "node-qunit": "^1.0.0",
