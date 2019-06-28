@@ -1,3 +1,6 @@
+# v0.0.136 - 2019-06-28
+- Add option to highlight line to full width of the editor
+
 # v0.0.135 - 2019-06-13
 - Add tree export feature
 

@@ -39,6 +39,7 @@ Foreground and background colours can be one of "red", "green", "blue", "yellow"
  - `tag-and-comment` - highlights the comment characters (or the start of the match) and the tag
  - `text-and-comment` - highlights the comment characters (or the start of the match), the tag and the text after the tag
  - `line` - highlights the entire line containing the tag
+ - `whole-line` - highlights the entire line containing the tag to the full width of the editor
 
 `hideFromTree` - used to hide tags from the tree, but still highlight in files
 

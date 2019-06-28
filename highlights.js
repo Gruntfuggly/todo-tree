@@ -133,6 +133,7 @@ function getDecoration( tag )
         overviewRulerColor: getRulerColour( tag, lightForegroundColour ),
         overviewRulerLane: lane,
         borderRadius: "0.2em",
+        isWholeLine: getType( tag ) === 'whole-line'
     };
 
     decorationOptions.light = { backgroundColor: lightBackgroundColour, color: lightForegroundColour };
@@ -315,10 +316,10 @@ function highlight( editor )
                 {
                     startPos = editor.document.positionAt( match.index );
                 }
-                else if( type === 'line' )
+                else if( type === 'line' || type === 'whole-line' )
                 {
                     endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
-                    startPos = new vscode.Position( endPos.line, 0 );
+                    startPos = new vscode.Position( startPos.line, 0 );
                 }
 
                 var decoration = { range: new vscode.Range( startPos, endPos ) };
