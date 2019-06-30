@@ -12,8 +12,9 @@ function init( configuration )
 
 function isHexColour( colour )
 {
-    var hex = colour.split( / / )[ 0 ].replace( /[^\da-fA-F]/g, '' );
-    return ( typeof colour === "string" ) && ( hex.length === 3 || hex.length === 6 ) && !isNaN( parseInt( hex, 16 ) );
+    var withoutHash = colour.indexOf( '#' ) === 0 ? colour.substring( 1 ) : colour;
+    var hex = withoutHash.split( / / )[ 0 ].replace( /[^\da-fA-F]/g, '' );
+    return ( typeof colour === "string" ) && hex.length === withoutHash.length && ( hex.length === 3 || hex.length === 6 ) && !isNaN( parseInt( hex, 16 ) );
 }
 
 function hexToRgba( hex, opacity )
@@ -94,7 +95,7 @@ function extractTag( text )
         if( tagMatch )
         {
             tagOffset = tagMatch.index;
-            text = text.substr( tagMatch.index + tagMatch[ 0 ].length ).trim().replace(/^:\s*/, "");
+            text = text.substr( tagMatch.index + tagMatch[ 0 ].length ).trim().replace( /^:\s*/, "" );
             c.tags.map( function( tag )
             {
                 if( tag.toLowerCase() == tagMatch[ 0 ].toLowerCase() )

@@ -1,3 +1,5 @@
+# v0.0.137 - 2019-06-30
+- Fix error in isHex function
 - Add folder filtering context menu
 - Make multiline TODO highlights work properly
 - Add option to disable hiding the tree when it is empty

@@ -14,7 +14,11 @@ QUnit.test( "utils.isHexColour strips non RGB values", function( assert )
     assert.ok( utils.isHexColour( "#ff00ff" ) === true );
     assert.ok( utils.isHexColour( "#0ff" ) === true );
     assert.ok( utils.isHexColour( "bedding" ) === false );
-    assert.ok( utils.isHexColour( "inbed" ) === true );
+    assert.ok( utils.isHexColour( "inbed" ) === false );
+    assert.ok( utils.isHexColour( "magneta" ) === false );
+    assert.ok( utils.isHexColour( "#bed" ) === true );
+    assert.ok( utils.isHexColour( "face" ) === false );
+    assert.ok( utils.isHexColour( "ace" ) === true );
 } );
 
 QUnit.test( "utils.removeBlockComments strips block comments based on filename", function( assert )
@@ -91,7 +95,7 @@ QUnit.test( "utils.extractTag remove colon from ${after}", function( assert )
 
     result = utils.extractTag( "before TODO :after" );
     assert.equal( result.withoutTag, "after" );
-    result = utils.formatLabel("${tag}: ${after}", { tag: result.tag, after: result.withoutTag })
+    result = utils.formatLabel( "${tag}: ${after}", { tag: result.tag, after: result.withoutTag } )
     assert.equal( result, "TODO: after" );
 } );
 
