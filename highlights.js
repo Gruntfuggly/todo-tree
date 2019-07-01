@@ -289,7 +289,6 @@ function highlight( editor )
             var tag = match[ 0 ];
             var offsetStart = match.index;
             var offsetEnd = offsetStart + match[ 0 ].length;
-            var fullOffsetEnd = offsetStart + match[ 0 ].length;
 
             var extracted = utils.extractTag( match[ 0 ] );
             if( extracted.tag && extracted.tag.length > 0 )
@@ -303,7 +302,7 @@ function highlight( editor )
             {
                 var startPos = editor.document.positionAt( offsetStart );
                 var endPos = editor.document.positionAt( offsetEnd );
-                var fullEndPos = editor.document.positionAt( offsetStart + match[ 0 ].length );
+                var fullEndPos = editor.document.positionAt( match.index + match[ 0 ].length );
 
                 if( type === 'text-and-comment' )
                 {

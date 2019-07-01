@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.137",
+    "version": "0.0.138",
     "license": "MIT",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
@@ -269,8 +269,8 @@
             },
             {
                 "command": "todo-tree.showOnlyThisFolder",
-                "title":"Only Show This Folder",
-                "category":"Todo Tree",
+                "title": "Only Show This Folder",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/filter.svg",
                     "light": "resources/icons/light/filter.svg"
@@ -278,26 +278,26 @@
             },
             {
                 "command": "todo-tree.showOnlyThisFolderAndSubfolders",
-                "title":"Only Show This Folder And Subfolders",
-                "category":"Todo Tree",
+                "title": "Only Show This Folder And Subfolders",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/filter.svg",
                     "light": "resources/icons/light/filter.svg"
                 }
             },
             {
-                "command":"todo-tree.excludeThisFolder",
-                "title":"Hide This Folder",
-                "category":"Todo Tree",
+                "command": "todo-tree.excludeThisFolder",
+                "title": "Hide This Folder",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/filter.svg",
                     "light": "resources/icons/light/filter.svg"
                 }
             },
             {
-                "command":"todo-tree.resetFolderFilter",
-                "title":"Reset Folder Filter",
-                "category":"Todo Tree",
+                "command": "todo-tree.resetFolderFilter",
+                "title": "Reset Folder Filter",
+                "category": "Todo Tree",
                 "icon": {
                     "dark": "resources/icons/dark/clear-filter.svg",
                     "light": "resources/icons/light/clear-filter.svg"
@@ -498,9 +498,9 @@
                     "markdownDescription": "Show a button on the tree view header to toggle between scanning open files only, or the whole workspace"
                 },
                 "todo-tree.hideTreeWhenEmpty": {
-                    "type":"boolean",
-                    "default":"true",
-                    "markdownDescription":"Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present." 
+                    "type": "boolean",
+                    "default": "true",
+                    "markdownDescription": "Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present."
                 }
             }
         }

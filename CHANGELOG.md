@@ -1,3 +1,6 @@
+# v0.0.138 - 2019-07-01
+- Fix multiline highlight
+
 # v0.0.137 - 2019-06-30
 - Fix error in isHex function
 - Add folder filtering context menu
