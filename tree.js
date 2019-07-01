@@ -74,11 +74,12 @@ function createWorkspaceRootNode( folder )
         todos: [],
         fsPath: folder.uri.fsPath,
         id: id,
-        visible: true
+        visible: true,
+        isFolder: true
     };
 }
 
-function createPathNode( folder, pathElements )
+function createPathNode( folder, pathElements, isFolder )
 {
     var id = ( buildCounter * 1000000 ) + nodeCounter++;
     var fsPath = pathElements.length > 0 ? path.join( folder, pathElements.join( path.sep ) ) : folder;
@@ -91,7 +92,8 @@ function createPathNode( folder, pathElements )
         nodes: [],
         todos: [],
         id: id,
-        visible: true
+        visible: true,
+        isFolder: isFolder
     };
 }
 
@@ -233,7 +235,7 @@ function locateTreeChildNode( rootNode, pathElements, tag )
         childNode = parentNodes.find( findPathNode, element );
         if( childNode === undefined )
         {
-            childNode = createPathNode( rootNode.fsPath, pathElements.slice( 0, level + 1 ) );
+            childNode = createPathNode( rootNode.fsPath, pathElements.slice( 0, level + 1 ), level < pathElements.length - 1 );
             parentNodes.push( childNode );
             parentNodes.sort( sortByLabelAndLine );
             parentNodes = childNode.nodes;
@@ -314,7 +316,7 @@ class TreeNodeProvider
                 return rootNodes;
             }
 
-            return [ { label: "Nothing found", empty: availableNodes.length === 0 } ];
+            return [ { label: "Nothing found", empty: availableNodes.length === 0, isFolder: true } ];
         }
         else if( node.type === PATH )
         {
@@ -444,6 +446,11 @@ class TreeNodeProvider
             countTags( node, tagCounts );
             var total = Object.values( tagCounts ).reduce( function( a, b ) { return a + b; }, 0 );
             treeItem.description = total.toString();
+        }
+
+        if( node.isFolder )
+        {
+            treeItem.contextValue = "folder";
         }
 
         return treeItem;

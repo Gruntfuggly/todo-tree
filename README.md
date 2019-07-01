@@ -8,7 +8,7 @@ Found TODOs can also be highlighted in open files.
 
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/screenshot.png">
 
-*Note: The tree will only appear in the explorer pane when the extension finds some TODOs.*
+*Note: The tree will only appear in the explorer pane when the extension finds some TODOs, unless `todo-tree.hideTreeWhenEmpty` is set to false.*
 
 ## Highlighting
 
@@ -99,6 +99,20 @@ The tree view header can contain the following buttons:
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/scan-open-files.png" height="16px" align="center"> - Show tags from open files only<br>
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/scan-workspace.png" height="16px" align="center"> - Show tags from workspace<br>
 
+## Folder Filter Context Menu
+
+Right clicking on a folder in the tree will bring up a context menu with the following options:
+
+**Hide This Folder** - removes the folder from the tree
+
+**Only Show This Folder** - remove all other folders and subfolders from the tree
+
+**Only Show This Folder And Subfolders** - remove other folders from the tree, but keep subfolders
+
+**Reset Folder Filter** - reset any folders previously filtered using the above
+
+*Note: The current filters are shown in the debug log. Also, the filter can always be reset by right clicking the **Nothing Found** item in the tree. If your tree becomes invisible because everything is filtered and `hideTreeWhenEmpty` is set to true, you can reset the filter by pressing **F1** and selecting the **Todo Tree: Reset Folder Filter** command.*
+
 ## Commands
 
 ### Tags
@@ -112,7 +126,7 @@ To make it easier to configure the tags, there are two commands available:
 
 ### Export
 
-The contents of the tree can be exported as linux style tree using **Todo Tree: Export Tree**, or as JSON using **Todo Tree: Export Tree As JSON**. In both cases an unsaved file will be opened in a new tab, with the tree content as it is currently configured. The file can be closed or saved if required.
+The contents of the tree can be exported as a linux style tree using **Todo Tree: Export Tree**, or as JSON using **Todo Tree: Export Tree As JSON**. In both cases an unsaved file will be opened in a new tab, with the tree content as it is currently configured. The file can be closed or saved if required.
 
 ## Configuration
 
@@ -132,6 +146,7 @@ The extension can be customised as follows:
 | todo-tree.ripgrepArgs | <tt>"--max-columns=1000"</tt> | Use this to pass additional arguments to ripgrep. e.g. <tt>"-i"</tt> to make the search case insensitive. *Use with caution!* |
 | todo-tree.ripgrepMaxBuffer | <tt>200</tt> | By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly. |
 | todo-tree.showInExplorer | <tt>true</tt> | The tree is shown in the explorer view and also has it's own view in the activity bar. If you no longer want to see it in the explorer view, set this to false. |
+| todo-tree.hideTreeWhenEmpty | <tt>true</tt> | Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present. |
 | todo-tree.revealBehaviour | <tt>start of todo</tt> | Change the cursor behaviour when selecting a todo from the explorer. You can choose from: `start of todo` (moves the cursor to the beginning of the todo), `end of todo` (moves the cursor to the end of the todo) `highlight todo` (selects the todo text), `start of line` (moves the cursor to the start of the line) and `highlight line` (selected the whole line) |
 | todo-tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. *Note: this does not the apply to the search*. |
 | todo-tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
@@ -189,7 +204,7 @@ To restrict the set of folders which is searched, you can define `todo-tree.incl
 
 To exclude folders/files from your search you can define `todo-tree.excludeGlobs`. If the search results match any of these globs, then the results will be ignored.
 
-There is also support
+You can also include and exclude folders from the tree using the context menu. This folder filter is applied separately to the include/exclude globs.
 
 *Note: By default, ripgrep ignores files and folders from your `.gitignore` or `.ignore` files. If you want to include these files, set* `todo-tree.ripgrepArgs` *to* `--no-ignore`.
 

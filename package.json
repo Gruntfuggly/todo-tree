@@ -113,6 +113,24 @@
                     "when": "view =~ /todo-tree/",
                     "group": "navigation@6"
                 }
+            ],
+            "view/item/context": [
+                {
+                    "command": "todo-tree.showOnlyThisFolder",
+                    "when": "view =~ /todo-tree/ && viewItem == folder"
+                },
+                {
+                    "command": "todo-tree.showOnlyThisFolderAndSubfolders",
+                    "when": "view =~ /todo-tree/ && viewItem == folder"
+                },
+                {
+                    "command": "todo-tree.excludeThisFolder",
+                    "when": "view =~ /todo-tree/ && viewItem == folder"
+                },
+                {
+                    "command": "todo-tree.resetFolderFilter",
+                    "when": "view =~ /todo-tree/"
+                }
             ]
         },
         "commands": [
@@ -248,6 +266,42 @@
                 "command": "todo-tree.exportTreeAsJSON",
                 "title": "Export Tree As JSON",
                 "category": "Todo Tree"
+            },
+            {
+                "command": "todo-tree.showOnlyThisFolder",
+                "title":"Only Show This Folder",
+                "category":"Todo Tree",
+                "icon": {
+                    "dark": "resources/icons/dark/filter.svg",
+                    "light": "resources/icons/light/filter.svg"
+                }
+            },
+            {
+                "command": "todo-tree.showOnlyThisFolderAndSubfolders",
+                "title":"Only Show This Folder And Subfolders",
+                "category":"Todo Tree",
+                "icon": {
+                    "dark": "resources/icons/dark/filter.svg",
+                    "light": "resources/icons/light/filter.svg"
+                }
+            },
+            {
+                "command":"todo-tree.excludeThisFolder",
+                "title":"Hide This Folder",
+                "category":"Todo Tree",
+                "icon": {
+                    "dark": "resources/icons/dark/filter.svg",
+                    "light": "resources/icons/light/filter.svg"
+                }
+            },
+            {
+                "command":"todo-tree.resetFolderFilter",
+                "title":"Reset Folder Filter",
+                "category":"Todo Tree",
+                "icon": {
+                    "dark": "resources/icons/dark/clear-filter.svg",
+                    "light": "resources/icons/light/clear-filter.svg"
+                }
             }
         ],
         "configuration": {
@@ -442,6 +496,11 @@
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "Show a button on the tree view header to toggle between scanning open files only, or the whole workspace"
+                },
+                "todo-tree.hideTreeWhenEmpty": {
+                    "type":"boolean",
+                    "default":"true",
+                    "markdownDescription":"Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present." 
                 }
             }
         }
