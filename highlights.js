@@ -289,6 +289,7 @@ function highlight( editor )
             var tag = match[ 0 ];
             var offsetStart = match.index;
             var offsetEnd = offsetStart + match[ 0 ].length;
+            var fullOffsetEnd = offsetStart + match[ 0 ].length;
 
             var extracted = utils.extractTag( match[ 0 ] );
             if( extracted.tag && extracted.tag.length > 0 )
@@ -302,15 +303,16 @@ function highlight( editor )
             {
                 var startPos = editor.document.positionAt( offsetStart );
                 var endPos = editor.document.positionAt( offsetEnd );
+                var fullEndPos = editor.document.positionAt( offsetStart + match[ 0 ].length );
 
                 if( type === 'text-and-comment' )
                 {
                     startPos = editor.document.positionAt( match.index );
-                    endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
+                    endPos = new vscode.Position( fullEndPos.line, editor.document.lineAt( fullEndPos.line ).range.end.character );
                 }
                 else if( type === 'text' )
                 {
-                    endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
+                    endPos = new vscode.Position( fullEndPos.line, editor.document.lineAt( fullEndPos.line ).range.end.character );
                 }
                 else if( type === 'tag-and-comment' )
                 {
@@ -318,7 +320,7 @@ function highlight( editor )
                 }
                 else if( type === 'line' || type === 'whole-line' )
                 {
-                    endPos = new vscode.Position( endPos.line, editor.document.lineAt( endPos.line ).range.end.character );
+                    endPos = new vscode.Position( fullEndPos.line, editor.document.lineAt( fullEndPos.line ).range.end.character );
                     startPos = new vscode.Position( startPos.line, 0 );
                 }
 

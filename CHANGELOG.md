@@ -1,3 +1,5 @@
+- Make multiline TODO highlights work properly
+
 # v0.0.136 - 2019-06-28
 - Add option to highlight line to full width of the editor
 
