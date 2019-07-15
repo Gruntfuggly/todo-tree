@@ -164,6 +164,7 @@ The extension can be customised as follows:
 | todo-tree.showCountsInTree | <tt>false</tt> | Set to true to show counts of TODOs in the tree |
 | todo-tree.labelFormat | <tt>${tag} ${after}</tt> | Format of the TODO item labels. Available placeholders are <tt>${line}</tt>, <tt>${column}</tt>, <tt>${tag}</tt>, <tt>${before}</tt> (text from before the tag), <tt>${after}</tt> (text from after the tag) and <tt>${filename}</tt>. |
 | todo-tree.showScanOpenFilesOrWorkspaceButton | <tt>false</tt> | Show a button on the tree view header to toggle between scanning open files only, or the whole workspace |
+| todo-tree.hideIconsWhenGroupedByTag | <tt>false</tt> | Hide item icons when grouping by tag. |
 
 <sup>*</sup> Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.
 

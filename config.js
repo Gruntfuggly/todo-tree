@@ -39,6 +39,11 @@ function shouldShowLineNumbers()
     return vscode.workspace.getConfiguration( 'todo-tree' ).get( 'showLineNumbersInTree', false );
 }
 
+function shouldHideIconsWhenGroupedByTag()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree' ).get( 'hideIconsWhenGroupedByTag', false );
+}
+
 function showFilterCaseSensitive()
 {
     return vscode.workspace.getConfiguration( 'todo-tree' ).get( 'filterCaseSensitive', false );
@@ -117,6 +122,7 @@ module.exports.shouldFlatten = shouldFlatten;
 module.exports.shouldShowTagsOnly = shouldShowTagsOnly;
 module.exports.shouldShowCounts = shouldShowCounts;
 module.exports.shouldShowLineNumbers = shouldShowLineNumbers;
+module.exports.shouldHideIconsWhenGroupedByTag = shouldHideIconsWhenGroupedByTag;
 module.exports.showFilterCaseSensitive = showFilterCaseSensitive;
 module.exports.isRegexCaseSensitive = isRegexCaseSensitive;
 module.exports.showBadges = showBadges;

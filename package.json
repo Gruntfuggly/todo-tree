@@ -499,8 +499,13 @@
                 },
                 "todo-tree.hideTreeWhenEmpty": {
                     "type": "boolean",
-                    "default": "true",
+                    "default": true,
                     "markdownDescription": "Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present."
+                },
+                "todo-tree.hideIconsWhenGroupedByTag": {
+                    "type":"boolean",
+                    "default" :false,
+                    "markdownDescription": "Save some space by hiding the item icons when grouped by tag"
                 }
             }
         }

@@ -412,13 +412,17 @@ class TreeNodeProvider
                 {
                     treeItem.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
                 }
-                if( node.isExtraLine !== true )
+
+                if( config.shouldHideIconsWhenGroupedByTag() !== true || config.shouldGroup() !== true )
                 {
-                    treeItem.iconPath = icons.getIcon( this._context, node.tag ? node.tag : node.label );
-                }
-                else
-                {
-                    treeItem.iconPath = "no-icon";
+                    if( node.isExtraLine !== true )
+                    {
+                        treeItem.iconPath = icons.getIcon( this._context, node.tag ? node.tag : node.label );
+                    }
+                    else
+                    {
+                        treeItem.iconPath = "no-icon";
+                    }
                 }
 
                 var format = config.labelFormat();
