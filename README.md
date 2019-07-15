@@ -22,6 +22,8 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `opacity` - percentage value used with the background colour. 100% will produce an opaque background which will obscure selection and other decorations.
 
+`fontWeight`, `fontStyle`, `textDecoration` - can be used to style the highlight with standard CSS values.
+
 Foreground and background colours can be one of "red", "green", "blue", "yellow", "magenta", "cyan", "grey", "white" or "black". RGB values can also be used (e.g. "#80FF00").
 
 `icon` - used to set a different icon in the tree view. Must be a valid octicon (see https://octicons.github.com/). Defaults to a tick if it's not valid.

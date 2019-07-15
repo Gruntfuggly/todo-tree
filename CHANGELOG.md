@@ -1,5 +1,6 @@
 # v0.0.139 - 2019-07-15
 - Add option to hide icons when grouping by tag
+- Add support for fontStyle, fontWeight and textDecoration to highlights
 
 # v0.0.138 - 2019-07-01
 - Fix multiline highlight

@@ -133,7 +133,10 @@ function getDecoration( tag )
         overviewRulerColor: getRulerColour( tag, lightForegroundColour ),
         overviewRulerLane: lane,
         borderRadius: "0.2em",
-        isWholeLine: getType( tag ) === 'whole-line'
+        isWholeLine: getType( tag ) === 'whole-line',
+        fontWeight: getFontWeight( tag ),
+        fontStyle: getFontStyle( tag ),
+        textDecoration: getTextDecoration( tag )
     };
 
     decorationOptions.light = { backgroundColor: lightBackgroundColour, color: lightForegroundColour };
@@ -204,6 +207,21 @@ function getRulerLane( tag )
 function getOpacity( tag )
 {
     return getAttribute( tag, 'opacity', 100 );
+}
+
+function getFontStyle( tag )
+{
+    return getAttribute( tag, 'fontStyle', 'normal' );
+}
+
+function getFontWeight( tag )
+{
+    return getAttribute( tag, 'fontWeight', 'normal' );
+}
+
+function getTextDecoration( tag )
+{
+    return getAttribute( tag, 'textDecoration', '' );
 }
 
 function getIcon( tag )
