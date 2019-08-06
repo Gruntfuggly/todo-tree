@@ -1,3 +1,5 @@
+- Add option to hide ruler markers
+
 # v0.0.139 - 2019-07-15
 - Add option to hide icons when grouping by tag
 - Add support for fontStyle, fontWeight and textDecoration to highlights

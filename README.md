@@ -32,7 +32,7 @@ Foreground and background colours can be one of "red", "green", "blue", "yellow"
 
 `rulerColour` - used to set the colour of the marker in the overview ruler. If not specified, it will to use the foreground colour.
 
-`rulerLane` - used to set the lane for the marker in the overview ruler. If not specified, it will default to the right hand lane. Use one of "left", "center", "right", or "full".
+`rulerLane` - used to set the lane for the marker in the overview ruler. If not specified, it will default to the right hand lane. Use one of "left", "center", "right", or "full". You can also use "none" to disable the ruler markers.
 
 `type` - used to control how much is highlighted in the editor. Valid values are:
 

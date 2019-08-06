@@ -4,6 +4,7 @@ var utils = require( './utils.js' );
 
 var lanes =
 {
+    "none": undefined,
     "left": 1,
     "center": 2,
     "right": 4,
@@ -130,14 +131,18 @@ function getDecoration( tag )
         lane = lanes[ lane.toLowerCase() ];
     }
     var decorationOptions = {
-        overviewRulerColor: getRulerColour( tag, lightForegroundColour ),
-        overviewRulerLane: lane,
         borderRadius: "0.2em",
         isWholeLine: getType( tag ) === 'whole-line',
         fontWeight: getFontWeight( tag ),
         fontStyle: getFontStyle( tag ),
         textDecoration: getTextDecoration( tag )
     };
+
+    if( lane !== undefined )
+    {
+        decorationOptions.overviewRulerColor = getRulerColour( tag, lightForegroundColour );
+        decorationOptions.overviewRulerLane = lane;
+    }
 
     decorationOptions.light = { backgroundColor: lightBackgroundColour, color: lightForegroundColour };
     decorationOptions.dark = { backgroundColor: darkBackgroundColour, color: darkForegroundColour };

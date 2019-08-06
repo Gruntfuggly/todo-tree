@@ -904,6 +904,10 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.customHighlight" ) )
                 {
                     highlights.refreshComplementaryColours();
+                    if( vscode.window.activeTextEditor )
+                    {
+                        documentChanged( vscode.window.activeTextEditor.document );
+                    }
                 }
 
                 if( e.affectsConfiguration( "todo-tree.debug" ) )
