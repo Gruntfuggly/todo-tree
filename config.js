@@ -115,6 +115,11 @@ function labelFormat()
     return vscode.workspace.getConfiguration( 'todo-tree' ).labelFormat;
 }
 
+function clickingStatusBarShouldRevealTree()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree' ).statusBarClickBehaviour === "reveal";
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -132,3 +137,4 @@ module.exports.globs = globs;
 module.exports.tags = tags;
 module.exports.shouldSortTagsOnlyViewAlphabetically = shouldSortTagsOnlyViewAlphabetically;
 module.exports.labelFormat = labelFormat;
+module.exports.clickingStatusBarShouldRevealTree = clickingStatusBarShouldRevealTree;

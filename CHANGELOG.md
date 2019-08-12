@@ -1,4 +1,5 @@
 - Add option to hide ruler markers
+- Add option to reveal tree when clicking the status bar
 
 # v0.0.139 - 2019-07-15
 - Add option to hide icons when grouping by tag

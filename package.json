@@ -253,11 +253,6 @@
                 "category": "Todo Tree"
             },
             {
-                "command": "todo-tree.toggleStatusBar",
-                "title": "Toggle Status Indication Type",
-                "category": "Todo Tree"
-            },
-            {
                 "command": "todo-tree.exportTree",
                 "title": "Export Tree",
                 "category": "Todo Tree"
@@ -461,6 +456,19 @@
                     ],
                     "default": "none",
                     "markdownDescription": "What to show in the status bar - nothing, total count, or counts per tag"
+                },
+                "todo-tree.statusBarClickBehaviour": {
+                    "type":"string",
+                    "enum":[
+                        "cycle",
+                        "reveal"
+                    ],
+                    "markdownEnumDescriptions": [
+                        "Toggle between showing total count and the top three tag counts",
+                        "Reveal the tree view"
+                    ],
+                    "default":"reveal",
+                    "markdownDescription":"What to do when the status bar is clicked"
                 },
                 "todo-tree.showCountsInTree": {
                     "type": "boolean",

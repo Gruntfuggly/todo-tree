@@ -163,13 +163,28 @@ function activate( context )
             status.hide();
         }
 
-        status.command = "todo-tree.toggleStatusBar";
+        status.command = "todo-tree.onStatusBarClicked";
     }
 
-    function toggleStatusBar()
+    function onStatusBarClicked()
     {
-        var newSetting = vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'total' ? "top three" : "total";
-        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'statusBar', newSetting, true );
+        if( config.clickingStatusBarShouldRevealTree() )
+        {
+            var showInExplorer = vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer;
+            if( showInExplorer === true )
+            {
+                todoTreeViewExplorer.reveal( provider.getFirstNode(), { focus: false, select: false } );
+            }
+            if( todoTreeView.visible === false && showInExplorer === false )
+            {
+                vscode.commands.executeCommand( 'workbench.view.extension.todo-tree-container' );
+            }
+        }
+        else
+        {
+            var newSetting = vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'total' ? "top three" : "total";
+            vscode.workspace.getConfiguration( 'todo-tree' ).update( 'statusBar', newSetting, true );
+        }
     }
 
     function removeFileFromSearchResults( filename )
@@ -830,7 +845,7 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.ungroupByTag', ungroupByTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.addTag', addTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeTag', removeTag ) );
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.toggleStatusBar', toggleStatusBar ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.onStatusBarClicked', onStatusBarClicked ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanOpenFilesOnly', scanOpenFilesOnly ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanWorkspace', scanWorkspace ) );
 

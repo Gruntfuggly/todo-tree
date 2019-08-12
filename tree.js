@@ -794,6 +794,20 @@ class TreeNodeProvider
         exported = this.exportChildren( exported, children );
         return exported;
     }
+
+    getFirstNode()
+    {
+        var availableNodes = nodes.filter( function( node )
+        {
+            return node.nodes === undefined || ( node.nodes.length + ( node.todos ? node.todos.length : 0 ) > 0 );
+        } );
+        var rootNodes = availableNodes.filter( isVisible );
+        if( rootNodes.length > 0 )
+        {
+            return rootNodes[ 0 ];
+        }
+        return undefined;
+    }
 }
 
 exports.TreeNodeProvider = TreeNodeProvider;
