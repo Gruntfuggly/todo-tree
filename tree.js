@@ -48,19 +48,31 @@ var findTodoNode = function( node )
     return node.label === this.label.toString() && node.line === this.line;
 };
 
+var sortFoldersFirst = function( a, b, same )
+{
+    if( a.isFolder === b.isFolder )
+    {
+        return same( a, b );
+    }
+    else
+    {
+        return b.isFolder ? 1 : -1;
+    }
+};
+
 var sortByLabelAndLine = function( a, b )
 {
-    return a.label > b.label ? 1 : b.label > a.label ? -1 : a.line > b.line ? 1 : -1;
+    return sortFoldersFirst( a, b, function( a, b ) { return a.label > b.label ? 1 : b.label > a.label ? -1 : a.line > b.line ? 1 : -1; } );
 };
 
 var sortByFilenameAndLine = function( a, b )
 {
-    return a.fsPath > b.fsPath ? 1 : b.fsPath > a.fsPath ? -1 : a.line > b.line ? 1 : -1;
+    return sortFoldersFirst( a, b, function( a, b ) { return a.fsPath > b.fsPath ? 1 : b.fsPath > a.fsPath ? -1 : a.line > b.line ? 1 : -1; } );
 };
 
 var sortByTagAndLine = function( a, b )
 {
-    return a.tag > b.tag ? 1 : b.tag > a.tag ? -1 : a.line > b.line ? 1 : -1;
+    return sortFoldersFirst( a, b, function( a, b ) { return a.tag > b.tag ? 1 : b.tag > a.tag ? -1 : a.line > b.line ? 1 : -1; } );
 };
 
 function createWorkspaceRootNode( folder )
