@@ -1,3 +1,4 @@
+# v0.0.141 - 2019-08-13
 - Fix custom coloured icons
 - Sort folders before files
 
