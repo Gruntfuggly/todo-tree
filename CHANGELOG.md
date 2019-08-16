@@ -1,3 +1,7 @@
+# v0.0.141 - 2019-08-13
+- Fix custom coloured icons
+- Sort folders before files
+
 # v0.0.140 - 2019-08-12
 - Update icons to match the 1.37.0 GUI (great work by [johnletey](https://github.com/johnletey) - many thanks!)
 - Add option to hide ruler markers

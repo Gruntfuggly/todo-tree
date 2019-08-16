@@ -155,8 +155,8 @@ The extension can be customised as follows:
 | todo-tree.trackFile | <tt>true</tt> | Set to false if you want to prevent tracking the open file in the tree view. |
 | todo-tree.showBadges | <tt>true</tt> | Set to false to disable SCM status and badges in the tree. Note: This also unfortunately turns off themed icons. |
 | todo-tree.showTagsFromOpenFilesOnly | <tt>false</tt> | Set to true to only show TODOs in open files. |
-| todo-tree.defaultHighlight | <tt>{}</tt> | Set default highlights. E.g. `{"foreground":"white","background":"red","icon":"check","type":"text"}` |
-| todo-tree.customHighlight | <tt>{}</tt> | Set highlights per tag. E.g. `{"TODO":{"foreground":"white","type":"text"},"FIXME":{"icon":"beaker"}}` |
+| todo-tree.defaultHighlight | <tt>{}</tt> | Set default highlights. E.g. `{"foreground":"white", "background":"red", "icon":"check", "type":"text"}` |
+| todo-tree.customHighlight | <tt>{}</tt> | Set highlights per tag. E.g. `{"TODO": {"foreground":"white", "type":"text"}, "FIXME": {"icon":"beaker"}}` |
 | todo-tree.expanded<sup>*</sup> | <tt>false</tt> | Set to true if you want new views to be expanded by default |
 | todo-tree.flat<sup>*</sup> | <tt>false</tt> | Set to true if you want new views to be flat by default |
 | todo-tree.grouped<sup>*</sup> | <tt>false</tt> | Set to true if you want new views to be grouped by default |
