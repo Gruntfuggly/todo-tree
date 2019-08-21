@@ -95,7 +95,15 @@ function extractTag( text )
         if( tagMatch )
         {
             tagOffset = tagMatch.index;
-            text = text.substr( tagMatch.index + tagMatch[ 0 ].length ).trim().replace( /^:\s*/, "" );
+            rightOfTag = text.substr( tagMatch.index + tagMatch[ 0 ].length ).trim().replace( /^:\s*/, "" );
+            if( rightOfTag.length === 0 )
+            {
+                text = text.substr( 0, tagMatch.index );
+            }
+            else
+            {
+                text = rightOfTag;
+            }
             c.tags.map( function( tag )
             {
                 if( tag.toLowerCase() == tagMatch[ 0 ].toLowerCase() )
@@ -105,7 +113,6 @@ function extractTag( text )
             } );
         }
     }
-
     return { tag: tagMatch ? originalTag : "", withoutTag: text, tagOffset: tagOffset };
 }
 

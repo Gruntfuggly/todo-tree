@@ -99,6 +99,15 @@ QUnit.test( "utils.extractTag remove colon from ${after}", function( assert )
     assert.equal( result, "TODO: after" );
 } );
 
+QUnit.test( "utils.extractTag returns text from the start of the line if the tag is on then end", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    utils.init( testConfig );
+
+    result = utils.extractTag( "before TODO" );
+    assert.equal( result.withoutTag, "before " );
+} );
+
 QUnit.test( "utils.getRegexSource returns the regex source without expanded tags if they aren't present", function( assert )
 {
     var testConfig = stubs.getTestConfig();
