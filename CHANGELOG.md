@@ -1,3 +1,7 @@
+# v0.0.142 - 2019-08-21
+- Fix magenta icon
+- Handle tags at the end of lines better
+
 # v0.0.141 - 2019-08-13
 - Fix custom coloured icons
 - Sort folders before files
