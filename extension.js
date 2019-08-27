@@ -634,7 +634,7 @@ function activate( context )
 
     function exportTree( exported, extension )
     {
-        var newFile = vscode.Uri.parse( 'untitled:' + path.join( vscode.workspace.rootPath, 'todo-tree' + extension ) );
+        var newFile = vscode.Uri.parse( 'untitled:' + path.join( os.homedir(), 'todo-tree' + extension ) );
         vscode.workspace.openTextDocument( newFile ).then( function( document )
         {
             var edit = new vscode.WorkspaceEdit();
