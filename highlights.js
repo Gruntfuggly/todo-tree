@@ -131,7 +131,7 @@ function getDecoration( tag )
         lane = lanes[ lane.toLowerCase() ];
     }
     var decorationOptions = {
-        borderRadius: "0.2em",
+        borderRadius: getBorderRadius( tag ),
         isWholeLine: getType( tag ) === 'whole-line',
         fontWeight: getFontWeight( tag ),
         fontStyle: getFontStyle( tag ),
@@ -212,6 +212,11 @@ function getRulerLane( tag )
 function getOpacity( tag )
 {
     return getAttribute( tag, 'opacity', 100 );
+}
+
+function getBorderRadius( tag )
+{
+    return getAttribute( tag, 'borderRadius', '0.2em' );
 }
 
 function getFontStyle( tag )
