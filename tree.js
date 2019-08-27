@@ -45,7 +45,7 @@ var findPathNode = function( node )
 
 var findTodoNode = function( node )
 {
-    return node.label === this.label.toString() && node.line === this.line;
+    return node.label === this.label.toString() && node.fsPath === this.fsPath && node.line === this.line;
 };
 
 var sortFoldersFirst = function( a, b, same )
