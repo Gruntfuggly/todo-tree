@@ -1,3 +1,8 @@
+# v0.0.143 - 2019-08-27
+- Remove use of deprecated rootPath when exporting tree
+- Add option to configure border radius on highlights
+- Check file path when looking for existing todo nodes
+
 # v0.0.142 - 2019-08-21
 - Fix magenta icon
 - Handle tags at the end of lines better
