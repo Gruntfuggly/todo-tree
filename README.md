@@ -28,7 +28,7 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 Foreground and background colours can be one of "red", "green", "blue", "yellow", "magenta", "cyan", "grey", "white" or "black". RGB values can also be used (e.g. "#80FF00").
 
-`icon` - used to set a different icon in the tree view. Must be a valid octicon (see https://octicons.github.com/). Defaults to a tick if it's not valid.
+`icon` - used to set a different icon in the tree view. Must be a valid octicon (see https://octicons.github.com/). Defaults to a tick if it's not valid. You can also use "todo-tree", or "todo-tree-filled" if you want to use the icon from the activity view.
 
 `iconColour` - used to set the colour of the icon in the tree. If not specified, it will try to use the foreground colour, the background colour and then the older settings, in that order.
 
