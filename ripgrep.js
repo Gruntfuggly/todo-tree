@@ -198,18 +198,19 @@ class Match
 {
     constructor( matchText )
     {
-        this.file = "";
+	// Detect file, line number and column which is formatted in the
+	// following format: {file}:{line}:{column}:{code match}
+	var regex = RegExp(/^(?<file>.*):(?<line>\d+):(?<column>\d+):(?<todo>.*)$/);
+	var match = regex.exec(matchText);
+	if (match && match.groups) {
+		this.file = match.groups.file;
+		this.line = match.groups.line
+		this.column = match.groups.column;
+		// Handling potential to-dos are done separately.
+		//this.todo = match.groups.todo.trim();
+	}
 
-        if( matchText.length > 1 && matchText[ 1 ] === ':' )
-        {
-            this.file = matchText.substr( 0, 2 );
-            matchText = matchText.substr( 2 );
-        }
-        matchText = matchText.split( ':' );
-        this.file += matchText.shift();
-        this.line = parseInt( matchText.shift() );
-        this.column = parseInt( matchText.shift() );
-        this.match = matchText.join( ':' );
+	this.match = match[0] || '';
     }
 }
 
