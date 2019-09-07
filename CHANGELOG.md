@@ -1,3 +1,7 @@
+# v0.0.144 - 2019-09-07
+- Improve decoding of ripgrep results (thanks to [Quacky2200](https://github.com/Quacky2200))
+- Allow use of the todo-tree icon in the tree
+
 # v0.0.143 - 2019-08-27
 - Remove use of deprecated rootPath when exporting tree
 - Add option to configure border radius on highlights
