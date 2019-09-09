@@ -213,7 +213,7 @@ function activate( context )
             {
                 matches.forEach( match =>
                 {
-                    debug( " Match: " + JSON.stringify( match ) );
+                    debug( " Match (File): " + JSON.stringify( match ) );
                     searchResults.push( match );
                 } );
             }
@@ -522,6 +522,7 @@ function activate( context )
                 } );
                 if( found === false )
                 {
+                    debug( " Match (Editor):" + JSON.stringify( result ) );
                     searchResults.push( result );
                     matchesFound = true;
                 }

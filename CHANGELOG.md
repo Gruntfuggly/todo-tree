@@ -1,3 +1,6 @@
+# v0.0.146 - 2019-09-09
+- Simplify regex for decoding results and fall back to old method on failure
+
 # v0.0.145 - 2019-09-07
 - Allow use of the todo-tree icon in the tree
 
