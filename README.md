@@ -138,38 +138,40 @@ The extension can be customised as follows:
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| todo-tree.rootFolder | <tt>""</tt> | By default, any open workspaces will have a tree in the view. Use this to force another folder to be the root of the tree. You can include environment variables and also use ${workspaceFolder}. e.g. <tt>"todo-tree.rootFolder": "$&#123;workspaceFolder&#125;/test"</tt> or <tt>"todo-tree.rootFolder": "$&#123;HOME&#125;/project"</tt>. *Note: Other open files (outside of the rootFolder) will be shown (as they are opened) with their full path in brackets.* |
-| todo-tree.tags | <tt>["TODO","FIXME"]</tt> | This defines the tags which are recognised as TODOs. This list is automatically inserted into the regex. |
+| todo-tree.debug | `false` | Show a debug channel in the output view. |
+| todo-tree.rootFolder | `""` | By default, any open workspaces will have a tree in the view. Use this to force another folder to be the root of the tree. You can include environment variables and also use ${workspaceFolder}. e.g. <br>`"todo-tree.rootFolder": "${workspaceFolder}/test"`<br>or<br>`"todo-tree.rootFolder": "${HOME}/project"`<br> *Note: Other open files (outside of the rootFolder) will be shown (as they are opened) with their full path in brackets.* |
+| todo-tree.tags | `["TODO","FIXME"]` | This defines the tags which are recognised as TODOs. This list is automatically inserted into the regex. |
+| todo-tree.revealBehaviour | `start of todo` | Change the cursor behaviour when selecting a todo from the explorer. You can choose from: `start of todo` (moves the cursor to the beginning of the todo), `end of todo` (moves the cursor to the end of the todo) `highlight todo` (selects the todo text), `start of line` (moves the cursor to the start of the line) and `highlight line` (selected the whole line) |
+| todo-tree.statusBar | `none` | What to show in the status bar:<br>`none` (nothing)<br>`total` (total count)<br>`tags` (counts per tag<br>`top three` (counts for the top three tags) |
+| todo-tree.statusBarClickBehaviour | `cycle` | Set the behaviour of clicking the status bar:<br>`cycle` (cycle display formats)<br>`reveal` (reveal the tree) |
+| todo-tree.includeGlobs | `[]` | Globs for use in limiting search results by inclusion, e.g. <br>`[\"**/unit-tests/*.js\"]`<br> to only show .js files in unit-tests subfolders. <a href="https://www.npmjs.com/package/glob#glob-primer">Globs help</a> |
+| todo-tree.excludeGlobs | `[]` | Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. <br>`[\"**/*.txt\"]`<br> to ignore all .txt files |
+| todo-tree.includedWorkspaces | `[]` | A list of workspace names to include as roots in the tree (wildcards can be used). An empty array includes all workspace folders |
+| todo-tree.excludedWorkspaces | `[]` | A list of workspace names to exclude as roots in the tree (wildcards can be used). |
+| todo-tree.passGlobsToRipgrep | `true` | Set this to false to apply the globs *after* the search (legacy behaviour). |
+| todo-tree.highlightDelay | `500` | The delay before highlighting (milliseconds). |
+| todo-tree.defaultHighlight | `{}` | Set default highlights. E.g. <br>`{`<br>&nbsp;&nbsp;`"foreground":"white",`<br>&nbsp;&nbsp;`"background":"red",`<br>&nbsp;&nbsp;`"icon":"check",`<br>&nbsp;&nbsp;`"type":"text"`<br>`}` |
+| todo-tree.customHighlight | `{}` | Set highlights per tag. E.g. <br>`{`<br>&nbsp;&nbsp;`"TODO":{`<br>&nbsp;&nbsp;&nbsp;&nbsp;`"foreground":"white",`<br>&nbsp;&nbsp;&nbsp;`"type":"text"`<br>&nbsp;&nbsp;`},`<br>&nbsp;&nbsp;`"FIXME":{`<br>&nbsp;&nbsp;&nbsp;&nbsp;`"icon":"beaker"`<br>&nbsp;&nbsp;`}`<br>`}` |
 | todo-tree.regex | <tt>&#x22;&#x28;&#x28;&#x2f;&#x2f;&#x7c;&#x23;&#x7c;&#x3c;&#x21;&#x2d;&#x2d;&#x7c;&#x3b;&#x7c;&#x2f;&#x5c;&#x5c;&#x2a;&#x29;&#x5c;&#x5c;&#x73;&#x2a;&#x28;&#x24;&#x54;&#x41;&#x47;&#x53;&#x29;&#x7c;&#x5e;&#x5c;&#x5c;&#x73;&#x2a;&#x2d;&#x20;&#x5c;&#x5c;&#x5b;&#x20;&#x5c;&#x5c;&#x5d;&#x29;&#x22;</tt> | This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with <tt>&#47;&#47;</tt>, <tt>#</tt>, <tt>;</tt>, <tt>&lt;!--</tt> or <tt>&#47;*</tt>. This should cover most languages. However if you want to refine it, make sure that the <tt>($TAGS)</tt> is kept. The second part of the expression allows matching of Github markdown task lists. *Note: This is a <a href="https://docs.rs/regex/1.0.0/regex">Rust regular expression</a>, not javascript.* |
-| todo-tree.regexCaseSensitive | <tt>true</tt> | Set to false to allow tags to be matched regardless of case. |
-| todo-tree.includeGlobs | <tt>[]</tt> | Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders. <a href="https://www.npmjs.com/package/glob#glob-primer">Globs help</a> |
-| todo-tree.excludeGlobs | <tt>[]</tt> | Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. `[\"**/*.txt\"]` to ignore all .txt files |
-| todo-tree.includedWorkspaces | <tt>[]</tt> | A list of workspace names to include as roots in the tree (wildcards can be used). An empty array includes all workspace folders |
-| todo-tree.excludedWorkspaces | <tt>[]</tt> | A list of workspace names to exclude as roots in the tree (wildcards can be used). |
-| todo-tree.ripgrep | <tt>""</tt> | Normally, the extension will locate ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed. |
-| todo-tree.ripgrepArgs | <tt>"--max-columns=1000"</tt> | Use this to pass additional arguments to ripgrep. e.g. <tt>"-i"</tt> to make the search case insensitive. *Use with caution!* |
-| todo-tree.ripgrepMaxBuffer | <tt>200</tt> | By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly. |
-| todo-tree.showInExplorer | <tt>true</tt> | The tree is shown in the explorer view and also has it's own view in the activity bar. If you no longer want to see it in the explorer view, set this to false. |
-| todo-tree.hideTreeWhenEmpty | <tt>true</tt> | Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present. |
-| todo-tree.revealBehaviour | <tt>start of todo</tt> | Change the cursor behaviour when selecting a todo from the explorer. You can choose from: `start of todo` (moves the cursor to the beginning of the todo), `end of todo` (moves the cursor to the end of the todo) `highlight todo` (selects the todo text), `start of line` (moves the cursor to the start of the line) and `highlight line` (selected the whole line) |
-| todo-tree.filterCaseSensitive | <tt>false</tt> | Use this if you need the filtering to be case sensitive. *Note: this does not the apply to the search*. |
-| todo-tree.highlightDelay | <tt>500</tt> | The delay before highlighting (milliseconds). |
-| todo-tree.trackFile | <tt>true</tt> | Set to false if you want to prevent tracking the open file in the tree view. |
-| todo-tree.showBadges | <tt>true</tt> | Set to false to disable SCM status and badges in the tree. Note: This also unfortunately turns off themed icons. |
-| todo-tree.showTagsFromOpenFilesOnly | <tt>false</tt> | Set to true to only show TODOs in open files. |
-| todo-tree.defaultHighlight | <tt>{}</tt> | Set default highlights. E.g. `{"foreground":"white", "background":"red", "icon":"check", "type":"text"}` |
-| todo-tree.customHighlight | <tt>{}</tt> | Set highlights per tag. E.g. `{"TODO": {"foreground":"white", "type":"text"}, "FIXME": {"icon":"beaker"}}` |
-| todo-tree.expanded<sup>*</sup> | <tt>false</tt> | Set to true if you want new views to be expanded by default |
-| todo-tree.flat<sup>*</sup> | <tt>false</tt> | Set to true if you want new views to be flat by default |
-| todo-tree.grouped<sup>*</sup> | <tt>false</tt> | Set to true if you want new views to be grouped by default |
-| todo-tree.tagsOnly<sup>*</sup> | <tt>false</tt> | Set to true if you want new views with tags only by default |
-| todo-tree.sortTagsOnlyViewAlphabetically | <tt>false</tt> | Sort items in the tags only view alphabetically instead of by file and line number |
-| todo-tree.statusBar | <tt>none</tt> | What to show in the status bar - nothing (<tt>none</tt>), total count (<tt>total</tt>), counts per tag (<tt>tags</tt>) or the counts for the top three tags (<tt>top three</tt>) |
-| todo-tree.statusBarClickBehaviour | <tt>cycle</tt> | Set the behaviour of clicking the status bar to either cycle display formats, or reveal the tree. |
-| todo-tree.showCountsInTree | <tt>false</tt> | Set to true to show counts of TODOs in the tree |
-| todo-tree.labelFormat | <tt>${tag} ${after}</tt> | Format of the TODO item labels. Available placeholders are <tt>${line}</tt>, <tt>${column}</tt>, <tt>${tag}</tt>, <tt>${before}</tt> (text from before the tag), <tt>${after}</tt> (text from after the tag) and <tt>${filename}</tt>. |
-| todo-tree.showScanOpenFilesOrWorkspaceButton | <tt>false</tt> | Show a button on the tree view header to toggle between scanning open files only, or the whole workspace |
-| todo-tree.hideIconsWhenGroupedByTag | <tt>false</tt> | Hide item icons when grouping by tag. |
+| todo-tree.regexCaseSensitive | `true` | Set to false to allow tags to be matched regardless of case. |
+| todo-tree.ripgrep | `""` | Normally, the extension will locate ripgrep itself as and when required. If you want to use an alternate version of ripgrep, set this to point to wherever it is installed. |
+| todo-tree.ripgrepArgs | `--max-columns=1000` | Use this to pass additional arguments to ripgrep. e.g. `-i` to make the search case insensitive. *Use with caution!* |
+| todo-tree.ripgrepMaxBuffer | `200` | By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly. |
+| todo-tree.showInExplorer | `true` | The tree is shown in the explorer view and also has it's own view in the activity bar. If you no longer want to see it in the explorer view, set this to false. |
+| todo-tree.hideTreeWhenEmpty | `true` | Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present. |
+| todo-tree.filterCaseSensitive | `false` | Use this if you need the filtering to be case sensitive. <br>*Note: this does not the apply to the search*. |
+| todo-tree.trackFile | `true` | Set to false if you want to prevent tracking the open file in the tree view. |
+| todo-tree.showBadges | `true` | Set to false to disable SCM status and badges in the tree. Note: This also unfortunately turns off themed icons. |
+| todo-tree.showTagsFromOpenFilesOnly | `false` | Set to true to only show TODOs in open files. |
+| todo-tree.expanded<sup>*</sup> | `false` | Set to true if you want new views to be expanded by default |
+| todo-tree.flat<sup>*</sup> | `false` | Set to true if you want new views to be flat by default |
+| todo-tree.grouped<sup>*</sup> | `false` | Set to true if you want new views to be grouped by default |
+| todo-tree.tagsOnly<sup>*</sup> | `false` | Set to true if you want new views with tags only by default |
+| todo-tree.sortTagsOnlyViewAlphabetically | `false` | Sort items in the tags only view alphabetically instead of by file and line number |
+| todo-tree.showCountsInTree | `false` | Set to true to show counts of TODOs in the tree |
+| todo-tree.labelFormat | `${tag} ${after}` | Format of the TODO item labels. Available placeholders are: <br>`${line}`<br>`${column}`<br>`${tag}`<br>`${before}` (text from before the tag)<br> `${after}` (text from after the tag)<br>`${filename}` |
+| todo-tree.showScanOpenFilesOrWorkspaceButton | `false` | Show a button on the tree view header to toggle between scanning open files only, or the whole workspace |
+| todo-tree.hideIconsWhenGroupedByTag | `false` | Hide item icons when grouping by tag. |
 
 <sup>*</sup> Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.
 
