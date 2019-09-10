@@ -1,3 +1,8 @@
+# v0.0.147 - 2019-09-10
+- Fix broken match extraction
+- Fix 'os' library import for export function (thanks to [thalesfsp](https://github.com/thalesfsp))
+- Fix settings table in README.md
+
 # v0.0.146 - 2019-09-09
 - Simplify regex for decoding results and fall back to old method on failure
 

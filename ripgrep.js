@@ -200,7 +200,7 @@ class Match
     {
         // Detect file, line number and column which is formatted in the
         // following format: {file}:{line}:{column}:{code match}
-        var regex = RegExp( /^(?<file>.*):(?<line>\d+):(?<column>\d+):/ );
+        var regex = RegExp( /^(?<file>.*):(?<line>\d+):(?<column>\d+):(?<todo>.*)/ );
 
         var match = regex.exec( matchText );
         if( match && match.groups )
@@ -208,10 +208,7 @@ class Match
             this.file = match.groups.file;
             this.line = match.groups.line;
             this.column = match.groups.column;
-            // Handling potential to-dos are done separately.
-            //this.todo = match.groups.todo.trim();
-
-            this.match = match[ 0 ] || '';
+            this.match = match.groups.todo;
         }
         else // Fall back to old method
         {
