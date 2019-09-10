@@ -4,6 +4,7 @@ var vscode = require( 'vscode' );
 var ripgrep = require( './ripgrep' );
 var path = require( 'path' );
 var treeify = require( 'treeify' );
+var os = require( 'os' );
 
 var tree = require( "./tree.js" );
 var highlights = require( './highlights.js' );
