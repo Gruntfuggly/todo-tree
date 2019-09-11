@@ -1,3 +1,6 @@
+# v0.0.151 - 2019-09-11
+- Use global state (not workspace state) for "Don't Show This Again"
+
 # v0.0.150 - 2019-09-11
 - Make "Open Settings" work for Insiders too
 

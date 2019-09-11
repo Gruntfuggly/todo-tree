@@ -733,7 +733,7 @@ function activate( context )
 
             if( migrated === true )
             {
-                if( context.workspaceState.get( 'migratedVersion', 0 ) < 147 )
+                if( context.globalState.get( 'migratedVersion', 0 ) < 147 )
                 {
                     vscode.window.showInformationMessage( "Your Todo Tree settings have been moved. Please remove the old settings from your settings.json.", "Open Settings", "Don't Show This Again" ).then(
                         button =>
@@ -762,7 +762,7 @@ function activate( context )
                             }
                             else if( button === "Don't Show This Again" )
                             {
-                                context.workspaceState.update( 'migratedVersion', 147 );
+                                context.globalState.update( 'migratedVersion', 147 );
                             }
                         } );
                 }
