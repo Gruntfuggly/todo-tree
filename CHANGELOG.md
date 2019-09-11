@@ -1,3 +1,7 @@
+# v0.0.148 - 2019-09-11
+- Move settings into groups
+- Make settings in README.md easier to read
+
 # v0.0.147 - 2019-09-10
 - Fix broken match extraction
 - Fix 'os' library import for export function (thanks to [thalesfsp](https://github.com/thalesfsp))
