@@ -1,3 +1,6 @@
+# v0.0.150 - 2019-09-11
+- Make "Open Settings" work for Insiders too
+
 # v0.0.149 - 2019-09-11
 - Fix "Ignore" option for settings migration warning
 

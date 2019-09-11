@@ -742,15 +742,16 @@ function activate( context )
                             {
                                 var homeFolder = os.homedir();
                                 var settingsPath;
+                                var app = vscode.version.endsWith( "-insider" ) ? 'Code\ -\ Insiders' : 'Code';
                                 if( process.platform === 'win32' )
                                 {
-                                    settingsPath = path.join( process.env.APPDATA, 'Code', 'User', 'settings.json' );
+                                    settingsPath = path.join( process.env.APPDATA, app, 'User', 'settings.json' );
                                 } else if( process.platform === 'darwin' )
                                 {
-                                    settingsPath = path.join( homeFolder, 'Library', 'Application Support', 'Code', 'User', 'settings.json' );
+                                    settingsPath = path.join( homeFolder, 'Library', 'Application Support', app, 'User', 'settings.json' );
                                 } else
                                 {
-                                    settingsPath = path.join( homeFolder, '.config', 'Code', 'User', 'settings.json' );
+                                    settingsPath = path.join( homeFolder, '.config', app, 'User', 'settings.json' );
                                 }
 
                                 if( settingsPath )
