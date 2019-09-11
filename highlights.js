@@ -158,7 +158,7 @@ function getAttribute( tag, attribute, defaultValue )
         Object.keys( customHighlight ).map( function( t )
         {
             var flags = '';
-            if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
+            if( vscode.workspace.getConfiguration( 'todo-tree.regex' ).get( 'regexCaseSensitive' ) === false )
             {
                 flags += 'i';
             }
@@ -172,7 +172,7 @@ function getAttribute( tag, attribute, defaultValue )
         return result;
     }
 
-    var config = vscode.workspace.getConfiguration( 'todo-tree' );
+    var config = vscode.workspace.getConfiguration( 'todo-tree.highlights' );
     var tagSettings = getCustomHighlightSettings( config.customHighlight, tag );
     if( tagSettings && tagSettings[ attribute ] !== undefined )
     {
@@ -249,7 +249,7 @@ function getIconColour( tag )
 
 function getType( tag )
 {
-    return getAttribute( tag, 'type', vscode.workspace.getConfiguration( 'todo-tree' ).get( 'highlight' ) );
+    return getAttribute( tag, 'type', vscode.workspace.getConfiguration( 'todo-tree.highlights' ).get( 'highlight' ) );
 }
 
 function getOtherColours()
@@ -264,10 +264,9 @@ function getOtherColours()
 
     var colours = [];
 
-    var config = vscode.workspace.getConfiguration( 'todo-tree' );
+    var config = vscode.workspace.getConfiguration( 'todo-tree.highlights' );
     var customHighlight = config.get( 'customHighlight' );
 
-    addColour( config.get( 'iconColour' ) );
     addColour( config.get( 'defaultHighlight' ).foreground );
     addColour( config.get( 'defaultHighlight' ).background );
     Object.keys( customHighlight ).map( function( tag )
@@ -386,7 +385,7 @@ function triggerHighlight( editor )
         {
             clearTimeout( highlightTimer[ editor.id ] );
         }
-        highlightTimer[ editor.id ] = setTimeout( highlight, vscode.workspace.getConfiguration( 'todo-tree' ).highlightDelay, editor );
+        highlightTimer[ editor.id ] = setTimeout( highlight, vscode.workspace.getConfiguration( 'todo-tree.highlights' ).highlightDelay, editor );
     }
 }
 

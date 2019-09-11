@@ -303,12 +303,7 @@
             "type": "object",
             "title": "Todo Tree",
             "properties": {
-                "todo-tree.regex": {
-                    "type": "string",
-                    "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
-                    "markdownDescription": "Regular expression for matching TODOs. Note: $TAGS will be replaced by the tag list"
-                },
-                "todo-tree.tags": {
+                "todo-tree.general.tags": {
                     "type": "array",
                     "default": [
                         "TODO",
@@ -316,52 +311,17 @@
                     ],
                     "markdownDescription": "List of tags"
                 },
-                "todo-tree.rootFolder": {
+                "todo-tree.general.rootFolder": {
                     "type": "string",
                     "default": "",
                     "markdownDescription": "Folder in which to run the search (defaults to the workspace folder)"
                 },
-                "todo-tree.includeGlobs": {
-                    "type": "array",
-                    "default": [],
-                    "markdownDescription": "Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders"
-                },
-                "todo-tree.excludeGlobs": {
-                    "type": "array",
-                    "default": [],
-                    "markdownDescription": "Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. `[\"**/*.txt\"]` to ignore all .txt files"
-                },
-                "todo-tree.passGlobsToRipgrep": {
-                    "type": "boolean",
-                    "default": true,
-                    "markdownDescription": "By default the globs are passed into ripgrep to narrow the search. Set this to false to apply the globs *after* the search (pre 0.0.132 behaviour)."
-                },
-                "todo-tree.ripgrep": {
-                    "type": "string",
-                    "default": "",
-                    "markdownDescription": "Location of your version of ripgrep"
-                },
-                "todo-tree.debug": {
+                "todo-tree.general.debug": {
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "Create a debug channel in the Output view"
                 },
-                "todo-tree.ripgrepArgs": {
-                    "type": "string",
-                    "default": "--max-columns=1000",
-                    "markdownDescription": "Additional arguments to pass to ripgrep (Use with caution!)"
-                },
-                "todo-tree.regexCaseSensitive": {
-                    "type": "boolean",
-                    "default": true,
-                    "markdownDescription": "Use a case sensitive regular expression"
-                },
-                "todo-tree.showInExplorer": {
-                    "type": "boolean",
-                    "default": true,
-                    "markdownDescription": "Show the tree in the explorer view"
-                },
-                "todo-tree.revealBehaviour": {
+                "todo-tree.general.revealBehaviour": {
                     "default": "start of todo",
                     "type": "string",
                     "enum": [
@@ -380,67 +340,7 @@
                     ],
                     "markdownDescription": "Sets where the cursor is positioned when revealing a todo"
                 },
-                "todo-tree.filterCaseSensitive": {
-                    "type": "boolean",
-                    "default": false,
-                    "markdownDescription": "Set to true if you want the view filtering to be case sensitive"
-                },
-                "todo-tree.autoRefresh": {
-                    "type": "boolean",
-                    "default": true,
-                    "markdownDescription": "Refresh the tree when files are opened or saved"
-                },
-                "todo-tree.highlightDelay": {
-                    "type": "integer",
-                    "default": 500,
-                    "markdownDescription": "Delay before highlighting tags within files (milliseconds)"
-                },
-                "todo-tree.showTagsFromOpenFilesOnly": {
-                    "type": "boolean",
-                    "default": false,
-                    "markdownDescription": "Disable scanning of the workspace for TODOs"
-                },
-                "todo-tree.ripgrepMaxBuffer": {
-                    "type": "integer",
-                    "default": 200,
-                    "markdownDescription": "Size of the buffer to use for retrieving output from ripgrep (kilobytes)"
-                },
-                "todo-tree.trackFile": {
-                    "type": "boolean",
-                    "default": true,
-                    "markdownDescription": "Track the current file in the tree view"
-                },
-                "todo-tree.showBadges": {
-                    "type": "boolean",
-                    "default": true,
-                    "markdownDescription": "Show badges and SCM state in the tree view"
-                },
-                "todo-tree.includedWorkspaces": {
-                    "type": "array",
-                    "default": [],
-                    "markdownDescription": "An array of workspace names to include as roots in the tree (wildcards can be used). An empty array includes all workspace folders."
-                },
-                "todo-tree.excludedWorkspaces": {
-                    "type": "array",
-                    "default": [],
-                    "markdownDescription": "An array of workspace names to exclude as roots in the tree (wildcards can be used)."
-                },
-                "todo-tree.defaultHighlight": {
-                    "type": "object",
-                    "default": {},
-                    "markdownDescription": "Default configuration for highlighting. [Read more...](https://github.com/Gruntfuggly/todo-tree#highlighting)"
-                },
-                "todo-tree.customHighlight": {
-                    "type": "object",
-                    "default": {},
-                    "markdownDescription": "Custom configuration for highlighting, [Read more...](https://github.com/Gruntfuggly/todo-tree#highlighting)"
-                },
-                "todo-tree.sortTagsOnlyViewAlphabetically": {
-                    "type": "boolean",
-                    "default": false,
-                    "markdownDescription": "Sort items in the tags only view alphabetically instead of by file and line number"
-                },
-                "todo-tree.statusBar": {
+                "todo-tree.general.statusBar": {
                     "type": "string",
                     "enum": [
                         "none",
@@ -457,9 +357,9 @@
                     "default": "none",
                     "markdownDescription": "What to show in the status bar - nothing, total count, or counts per tag"
                 },
-                "todo-tree.statusBarClickBehaviour": {
-                    "type": "string",
-                    "enum": [
+                "todo-tree.general.statusBarClickBehaviour": {
+                    "type":"string",
+                    "enum":[
                         "cycle",
                         "reveal"
                     ],
@@ -467,52 +367,152 @@
                         "Toggle between showing total count and the top three tag counts",
                         "Reveal the tree view"
                     ],
-                    "default": "reveal",
-                    "markdownDescription": "What to do when the status bar is clicked"
+                    "default":"reveal",
+                    "markdownDescription":"What to do when the status bar is clicked"
                 },
-                "todo-tree.showCountsInTree": {
+                "todo-tree.filtering.includeGlobs": {
+                    "type": "array",
+                    "default": [],
+                    "markdownDescription": "Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders"
+                },
+                "todo-tree.filtering.excludeGlobs": {
+                    "type": "array",
+                    "default": [],
+                    "markdownDescription": "Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. `[\"**/*.txt\"]` to ignore all .txt files"
+                },
+                "todo-tree.filtering.passGlobsToRipgrep": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "By default the globs are passed into ripgrep to narrow the search. Set this to false to apply the globs *after* the search (pre 0.0.132 behaviour)."
+                },
+                "todo-tree.filtering.includedWorkspaces": {
+                    "type": "array",
+                    "default": [],
+                    "markdownDescription": "An array of workspace names to include as roots in the tree (wildcards can be used). An empty array includes all workspace folders."
+                },
+                "todo-tree.filtering.excludedWorkspaces": {
+                    "type": "array",
+                    "default": [],
+                    "markdownDescription": "An array of workspace names to exclude as roots in the tree (wildcards can be used)."
+                },
+                "todo-tree.regex.regex": {
+                    "type": "string",
+                    "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
+                    "markdownDescription": "Regular expression for matching TODOs. Note: $TAGS will be replaced by the tag list"
+                },
+                "todo-tree.regex.regexCaseSensitive": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Use a case sensitive regular expression"
+                },
+                "todo-tree.ripgrep.ripgrep": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Location of your version of ripgrep"
+                },
+                "todo-tree.ripgrep.ripgrepArgs": {
+                    "type": "string",
+                    "default": "--max-columns=1000",
+                    "markdownDescription": "Additional arguments to pass to ripgrep (Use with caution!)"
+                },
+                "todo-tree.ripgrep.ripgrepMaxBuffer": {
+                    "type": "integer",
+                    "default": 200,
+                    "markdownDescription": "Size of the buffer to use for retrieving output from ripgrep (kilobytes)"
+                },
+                "todo-tree.highlights.highlightDelay": {
+                    "type": "integer",
+                    "default": 500,
+                    "markdownDescription": "Delay before highlighting tags within files (milliseconds)"
+                },
+                "todo-tree.highlights.defaultHighlight": {
+                    "type": "object",
+                    "default": {},
+                    "markdownDescription": "Default configuration for highlighting. [Read more...](https://github.com/Gruntfuggly/todo-tree#highlighting)"
+                },
+                "todo-tree.highlights.customHighlight": {
+                    "type": "object",
+                    "default": {},
+                    "markdownDescription": "Custom configuration for highlighting, [Read more...](https://github.com/Gruntfuggly/todo-tree#highlighting)"
+                },
+                "todo-tree.tree.filterCaseSensitive": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Set to true if you want the view filtering to be case sensitive"
+                },
+                "todo-tree.tree.autoRefresh": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Refresh the tree when files are opened or saved"
+                },
+                "todo-tree.tree.showTagsFromOpenFilesOnly": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Disable scanning of the workspace for TODOs"
+                },
+                "todo-tree.tree.trackFile": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Track the current file in the tree view"
+                },
+                "todo-tree.tree.showInExplorer": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Show the tree in the explorer view"
+                },
+                "todo-tree.tree.showBadges": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Show badges and SCM state in the tree view"
+                },
+                "todo-tree.tree.sortTagsOnlyViewAlphabetically": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Sort items in the tags only view alphabetically instead of by file and line number"
+                },
+                "todo-tree.tree.showCountsInTree": {
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "Show counts of TODOs in the tree"
                 },
-                "todo-tree.labelFormat": {
+                "todo-tree.tree.labelFormat": {
                     "type": "string",
                     "default": "${tag} ${after}",
                     "markdownDescription": "Format for tree items"
                 },
-                "todo-tree.expanded": {
+                "todo-tree.tree.expanded": {
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "When opening new workspaces, show the tree initially fully expanded"
                 },
-                "todo-tree.grouped": {
+                "todo-tree.tree.grouped": {
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "When opening new workspaces, show the tree initially grouped by tag"
                 },
-                "todo-tree.flat": {
+                "todo-tree.tree.flat": {
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "When opening new workspaces, show the tree initially as flat list of files"
                 },
-                "todo-tree.tagsOnly": {
+                "todo-tree.tree.tagsOnly": {
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "When opening new workspaces, show only tag elements in tree"
                 },
-                "todo-tree.showScanOpenFilesOrWorkspaceButton": {
+                "todo-tree.tree.showScanOpenFilesOrWorkspaceButton": {
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "Show a button on the tree view header to toggle between scanning open files only, or the whole workspace"
                 },
-                "todo-tree.hideTreeWhenEmpty": {
+                "todo-tree.tree.hideTreeWhenEmpty": {
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present."
                 },
-                "todo-tree.hideIconsWhenGroupedByTag": {
-                    "type": "boolean",
-                    "default": false,
+                "todo-tree.tree.hideIconsWhenGroupedByTag": {
+                    "type":"boolean",
+                    "default" :false,
                     "markdownDescription": "Save some space by hiding the item icons when grouped by tag"
                 }
             }

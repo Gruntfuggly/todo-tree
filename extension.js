@@ -58,7 +58,7 @@ function activate( context )
             outputChannel.dispose();
             outputChannel = undefined;
         }
-        if( vscode.workspace.getConfiguration( 'todo-tree' ).debug === true )
+        if( vscode.workspace.getConfiguration( 'todo-tree.general' ).debug === true )
         {
             outputChannel = vscode.window.createOutputChannel( "Todo Tree" );
         }
@@ -118,7 +118,7 @@ function activate( context )
     {
         var counts = provider.getTagCounts();
 
-        if( vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'total' )
+        if( vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar === 'total' )
         {
             var total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );
 
@@ -134,13 +134,13 @@ function activate( context )
                 status.hide();
             }
         }
-        else if( vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'tags' ||
-            vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'top three' )
+        else if( vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar === 'tags' ||
+            vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar === 'top three' )
         {
             var text = "$(check) ";
             var sortedTags = Object.keys( counts );
             sortedTags.sort( function( a, b ) { return counts[ a ] < counts[ b ] ? 1 : counts[ b ] < counts[ a ] ? -1 : a > b ? 1 : -1; } );
-            if( vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'top three' )
+            if( vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar === 'top three' )
             {
                 sortedTags = sortedTags.splice( 0, 3 );
             }
@@ -183,8 +183,8 @@ function activate( context )
         }
         else
         {
-            var newSetting = vscode.workspace.getConfiguration( 'todo-tree' ).statusBar === 'total' ? "top three" : "total";
-            vscode.workspace.getConfiguration( 'todo-tree' ).update( 'statusBar', newSetting, true );
+            var newSetting = vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar === 'total' ? "top three" : "total";
+            vscode.workspace.getConfiguration( 'todo-tree.general' ).update( 'statusBar', newSetting, true );
         }
     }
 
@@ -247,7 +247,7 @@ function activate( context )
 
     function getOptions( filename )
     {
-        var c = vscode.workspace.getConfiguration( 'todo-tree' );
+        var c = vscode.workspace.getConfiguration( 'todo-tree.filtering' );
 
         var tempIncludeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
         var tempExcludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
@@ -272,7 +272,7 @@ function activate( context )
         options.maxBuffer = c.ripgrepMaxBuffer;
         options.multiline = utils.getRegexSource().indexOf( "\\n" ) > -1;
 
-        if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'regexCaseSensitive' ) === false )
+        if( vscode.workspace.getConfiguration( 'todo-tree.regex' ).get( 'regexCaseSensitive' ) === false )
         {
             options.additional += ' -i ';
         }
@@ -282,10 +282,10 @@ function activate( context )
 
     function searchWorkspaces( searchList )
     {
-        if( vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly !== true )
+        if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).showTagsFromOpenFilesOnly !== true )
         {
-            var includes = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'includedWorkspaces', [] );
-            var excludes = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'excludedWorkspaces', [] );
+            var includes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includedWorkspaces', [] );
+            var excludes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludedWorkspaces', [] );
             if( vscode.workspace.workspaceFolders )
             {
                 vscode.workspace.workspaceFolders.map( function( folder )
@@ -309,8 +309,8 @@ function activate( context )
 
     function applyGlobs()
     {
-        var includeGlobs = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'includeGlobs' );
-        var excludeGlobs = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'excludeGlobs' );
+        var includeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includeGlobs' );
+        var excludeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludeGlobs' );
 
         var tempIncludeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
         var tempExcludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
@@ -336,7 +336,7 @@ function activate( context )
             search( getOptions( entry ), ( searchList.length > 0 ) ? iterateSearchList : function()
             {
                 debug( "Found " + searchResults.length + " items" );
-                if( vscode.workspace.getConfiguration( 'todo-tree' ).get( 'passGlobsToRipgrep' ) !== true )
+                if( vscode.workspace.getConfiguration( 'todo-tree.ripgrep' ).get( 'passGlobsToRipgrep' ) !== true )
                 {
                     applyGlobs();
                 }
@@ -357,7 +357,7 @@ function activate( context )
         {
             var rootFolders = [];
             var valid = true;
-            var rootFolder = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'rootFolder' );
+            var rootFolder = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'rootFolder' );
             var envRegex = new RegExp( "\\$\\{(.*?)\\}", "g" );
             if( rootFolder.indexOf( "${workspaceFolder}" ) > -1 )
             {
@@ -388,8 +388,8 @@ function activate( context )
                 } );
             } );
 
-            var includes = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'includedWorkspaces', [] );
-            var excludes = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'excludedWorkspaces', [] );
+            var includes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includedWorkspaces', [] );
+            var excludes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludedWorkspaces', [] );
 
             if( valid === true )
             {
@@ -429,19 +429,19 @@ function activate( context )
     function setButtonsAndContext()
     {
         var c = vscode.workspace.getConfiguration( 'todo-tree' );
-        var isTagsOnly = context.workspaceState.get( 'tagsOnly', c.get( 'tagsOnly', false ) );
-        var isGrouped = context.workspaceState.get( 'grouped', c.get( 'grouped', false ) );
+        var isTagsOnly = context.workspaceState.get( 'tagsOnly', c.get( 'tree.tagsOnly', false ) );
+        var isGrouped = context.workspaceState.get( 'grouped', c.get( 'tree.grouped', false ) );
         var isCollapsible = !isTagsOnly || isGrouped;
 
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', c.get( 'expanded', false ) ) );
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', c.get( 'flat', false ) ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', c.get( 'tree.expanded', false ) ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', c.get( 'tree.flat', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-tags-only', isTagsOnly );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-grouped', isGrouped );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-filtered', context.workspaceState.get( 'filtered', false ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-collapsible', isCollapsible );
 
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-scan-open-files-or-workspace-button', c.get( 'showScanOpenFilesOrWorkspaceButton', false ) );
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-open-files-only', c.get( 'showTagsFromOpenFilesOnly', false ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-scan-open-files-or-workspace-button', c.get( 'tree.showScanOpenFilesOrWorkspaceButton', false ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-open-files-only', c.get( 'tree.showTagsFromOpenFilesOnly', false ) );
 
         var children = provider.getChildren();
         var empty = children.length === 1 && children[ 0 ].empty === true;
@@ -458,8 +458,8 @@ function activate( context )
 
     function isIncluded( filename )
     {
-        var includeGlobs = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'includeGlobs' );
-        var excludeGlobs = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'excludeGlobs' );
+        var includeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includeGlobs' );
+        var excludeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludeGlobs' );
 
         return utils.isIncluded( filename, includeGlobs, excludeGlobs ) === true;
     }
@@ -601,11 +601,11 @@ function activate( context )
         {
             if( tag )
             {
-                var tags = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'tags' );
+                var tags = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'tags' );
                 if( tags.indexOf( tag ) === -1 )
                 {
                     tags.push( tag );
-                    vscode.workspace.getConfiguration( 'todo-tree' ).update( 'tags', tags, true );
+                    vscode.workspace.getConfiguration( 'todo-tree.general' ).update( 'tags', tags, true );
                 }
             }
         } );
@@ -613,25 +613,25 @@ function activate( context )
 
     function removeTag()
     {
-        var tags = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'tags' );
+        var tags = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'tags' );
         vscode.window.showQuickPick( tags, { matchOnDetail: true, matchOnDescription: true, canPickMany: true, placeHolder: "Select tags to remove" } ).then( function( tagsToRemove )
         {
             tagsToRemove.map( tag =>
             {
                 tags = tags.filter( t => tag != t );
             } );
-            vscode.workspace.getConfiguration( 'todo-tree' ).update( 'tags', tags, true );
+            vscode.workspace.getConfiguration( 'todo-tree.general' ).update( 'tags', tags, true );
         } );
     }
 
     function scanOpenFilesOnly()
     {
-        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'showTagsFromOpenFilesOnly', true, false );
+        vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'showTagsFromOpenFilesOnly', true, false );
     }
 
     function scanWorkspace()
     {
-        vscode.workspace.getConfiguration( 'todo-tree' ).update( 'showTagsFromOpenFilesOnly', false, false );
+        vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'showTagsFromOpenFilesOnly', false, false );
     }
 
     function exportTree( exported, extension )
@@ -669,11 +669,101 @@ function activate( context )
     {
         function migrateSettings()
         {
+            function migrateIfRequired( setting, type, destination )
+            {
+                var details = config.inspect( setting );
+                if( typeof ( details.globalValue ) === type )
+                {
+                    debug( "Migrating global setting '" + setting + "'" );
+                    config.update( destination + "." + setting, details.globalValue, vscode.ConfigurationTarget.Global );
+                    migrated = true;
+                }
+                if( typeof ( details.workspaceValue ) === type )
+                {
+                    debug( "Migrating workspace setting '" + setting + "'" );
+                    config.update( destination + "." + setting, details.workspaceValue, vscode.ConfigurationTarget.Workspace );
+                    migrated = true;
+                }
+                if( typeof ( details.workspaceFolderValue ) === type )
+                {
+                    debug( "Migrating workspace setting '" + setting + "'" );
+                    config.update( destination + "." + setting, details.workspaceFolderValue, vscode.ConfigurationTarget.WorkspaceFolder );
+                    migrated = true;
+                }
+            }
+
+            var config = vscode.workspace.getConfiguration( 'todo-tree' );
+            var migrated = false;
+
+            migrateIfRequired( 'autoRefresh', 'boolean', 'tree' );
+            migrateIfRequired( 'customHighlight', 'object', 'highlights' );
+            migrateIfRequired( 'debug', 'boolean', 'general' );
+            migrateIfRequired( 'defaultHighlight', 'object', 'highlights' );
+            migrateIfRequired( 'excludedWorkspaces', 'array', 'filtering' );
+            migrateIfRequired( 'excludeGlobs', 'array', 'filtering' );
+            migrateIfRequired( 'expanded', 'boolean', 'tree' );
+            migrateIfRequired( 'filterCaseSensitive', 'boolean', 'tree' );
+            migrateIfRequired( 'flat', 'boolean', 'tree' );
+            migrateIfRequired( 'grouped', 'boolean', 'tree' );
+            migrateIfRequired( 'hideIconsWhenGroupedByTag', 'boolean', 'tree' );
+            migrateIfRequired( 'hideTreeWhenEmpty', 'boolean', 'tree' );
+            migrateIfRequired( 'highlightDelay', 'number', 'highlights' );
+            migrateIfRequired( 'includedWorkspaces', 'array', 'filtering' );
+            migrateIfRequired( 'includeGlobs', 'array', 'filtering' );
+            migrateIfRequired( 'labelFormat', 'string', 'tree' );
+            migrateIfRequired( 'passGlobsToRipgrep', 'boolean', 'filtering' );
+            migrateIfRequired( 'regex', 'string', 'regex' );
+            migrateIfRequired( 'regexCaseSensitive', 'boolean', 'regex' );
+            migrateIfRequired( 'revealBehaviour', 'string', 'general' );
+            migrateIfRequired( 'ripgrep', 'string', 'ripgrep' );
+            migrateIfRequired( 'ripgrepArgs', 'string', 'ripgrep' );
+            migrateIfRequired( 'ripgrepMaxBuffer', 'number', 'ripgrep' );
+            migrateIfRequired( 'rootFolder', 'string', 'general' );
+            migrateIfRequired( 'showBadges', 'boolean', 'tree' );
+            migrateIfRequired( 'showCountsInTree', 'boolean', 'tree' );
+            migrateIfRequired( 'showInExplorer', 'boolean', 'tree' );
+            migrateIfRequired( 'showScanOpenFilesOrWorkspaceButton', 'boolean', 'tree' );
+            migrateIfRequired( 'showTagsFromOpenFilesOnly', 'boolean', 'tree' );
+            migrateIfRequired( 'sortTagsOnlyViewAlphabetically', 'boolean', 'tree' );
+            migrateIfRequired( 'statusBar', 'string', 'general' );
+            migrateIfRequired( 'statusBarClickBehaviour', 'string', 'general' );
+            migrateIfRequired( 'tags', 'array', 'general' );
+            migrateIfRequired( 'tagsOnly', 'boolean', 'tree' );
+            migrateIfRequired( 'trackFile', 'boolean', 'tree' );
+
+            if( migrated === true )
+            {
+                vscode.window.showInformationMessage( "Your Todo Tree settings have been moved. Please remove the old settings from your settings.json.", "Open Settings", "Ignore" ).then(
+                    button =>
+                    {
+                        if( button === "Open Settings" )
+                        {
+                            var homeFolder = os.homedir();
+                            var settingsPath;
+                            if( process.platform === 'win32' )
+                            {
+                                settingsPath = path.join( process.env.APPDATA, 'Code', 'User', 'settings.json' );
+                            } else if( process.platform === 'darwin' )
+                            {
+                                settingsPath = path.join( homeFolder, 'Library', 'Application Support', 'Code', 'User', 'settings.json' );
+                            } else
+                            {
+                                settingsPath = path.join( homeFolder, '.config', 'Code', 'User', 'settings.json' );
+                            }
+
+                            if( settingsPath )
+                            {
+                                var document = vscode.workspace.openTextDocument( vscode.Uri.file( settingsPath ) );
+                                vscode.window.showTextDocument( document );
+                            }
+                        }
+                    } );
+            }
         }
 
         function showInTree( uri )
         {
-            if( vscode.workspace.getConfiguration( 'todo-tree' ).trackFile === true )
+            if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).trackFile === true )
             {
                 provider.getElement( uri.fsPath, function( element )
                 {
@@ -722,7 +812,7 @@ function activate( context )
                     var todoEnd = new vscode.Position( line, endColumn - 1 );
                     var lineStart = new vscode.Position( line, 0 );
                     var lineEnd = new vscode.Position( line, document.lineAt( line ).text.length );
-                    var revealBehaviour = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'revealBehaviour' );
+                    var revealBehaviour = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'revealBehaviour' );
 
                     if( revealBehaviour == "end of todo" )
                     {
@@ -857,7 +947,7 @@ function activate( context )
             {
                 openDocuments[ e.document.fileName ] = e.document;
 
-                if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
+                if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
                 {
                     if( e.document.uri && e.document.uri.scheme === "file" )
                     {
@@ -877,7 +967,7 @@ function activate( context )
         {
             if( document.uri.scheme === "file" && path.basename( document.fileName ) !== "settings.json" )
             {
-                if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
+                if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
                 {
                     refreshFile( document );
                 }
@@ -886,7 +976,7 @@ function activate( context )
 
         context.subscriptions.push( vscode.workspace.onDidOpenTextDocument( document =>
         {
-            if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
+            if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
             {
                 if( document.uri.scheme === "file" )
                 {
@@ -900,9 +990,9 @@ function activate( context )
         {
             delete openDocuments[ document.fileName ];
 
-            if( vscode.workspace.getConfiguration( 'todo-tree' ).autoRefresh === true )
+            if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
             {
-                if( document.uri.scheme === "file" && vscode.workspace.getConfiguration( 'todo-tree' ).showTagsFromOpenFilesOnly === true )
+                if( document.uri.scheme === "file" && vscode.workspace.getConfiguration( 'todo-tree.tree' ).showTagsFromOpenFilesOnly === true )
                 {
                     removeFileFromSearchResults( document.fileName );
                     provider.remove( document.fileName );
@@ -916,9 +1006,8 @@ function activate( context )
         {
             if( e.affectsConfiguration( "todo-tree" ) )
             {
-                if( e.affectsConfiguration( "todo-tree.iconColour" ) ||
-                    e.affectsConfiguration( "todo-tree.defaultHighlight" ) ||
-                    e.affectsConfiguration( "todo-tree.customHighlight" ) )
+                if( e.affectsConfiguration( "todo-tree.highlights.defaultHighlight" ) ||
+                    e.affectsConfiguration( "todo-tree.highlights.customHighlight" ) )
                 {
                     highlights.refreshComplementaryColours();
                     if( vscode.window.activeTextEditor )
@@ -927,23 +1016,17 @@ function activate( context )
                     }
                 }
 
-                if( e.affectsConfiguration( "todo-tree.debug" ) )
+                if( e.affectsConfiguration( "todo-tree.general.debug" ) )
                 {
                     resetOutputChannel();
                 }
 
-                if( e.affectsConfiguration( "todo-tree.includeGlobs" ) ||
-                    e.affectsConfiguration( "todo-tree.excludeGlobs" ) ||
+                if( e.affectsConfiguration( "todo-tree.filtering" ) ||
                     e.affectsConfiguration( "todo-tree.regex" ) ||
                     e.affectsConfiguration( "todo-tree.ripgrep" ) ||
-                    e.affectsConfiguration( "todo-tree.ripgrepArgs" ) ||
-                    e.affectsConfiguration( "todo-tree.ripgrepMaxBuffer" ) ||
-                    e.affectsConfiguration( "todo-tree.rootFolder" ) ||
-                    e.affectsConfiguration( "todo-tree.showTagsFromOpenFilesOnly" ) ||
-                    e.affectsConfiguration( "todo-tree.includedWorkspaces" ) ||
-                    e.affectsConfiguration( "todo-tree.excludedWorkspaces" ) ||
-                    e.affectsConfiguration( "todo-tree.tags" ) ||
-                    e.affectsConfiguration( "todo-tree.tagsOnly" ) )
+                    e.affectsConfiguration( "todo-tree.tree" ) ||
+                    e.affectsConfiguration( "todo-tree.general.rootFolder" ) ||
+                    e.affectsConfiguration( "todo-tree.general.tags" ) )
                 {
                     rebuild();
                     documentChanged();
@@ -953,7 +1036,7 @@ function activate( context )
                     refresh();
                 }
 
-                vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
+                vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree.tree' ).showInExplorer );
                 setButtonsAndContext();
             }
         } ) );
@@ -972,7 +1055,7 @@ function activate( context )
 
         context.subscriptions.push( outputChannel );
 
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree.tree' ).showInExplorer );
 
         resetOutputChannel();
 
