@@ -733,31 +733,38 @@ function activate( context )
 
             if( migrated === true )
             {
-                vscode.window.showInformationMessage( "Your Todo Tree settings have been moved. Please remove the old settings from your settings.json.", "Open Settings", "Ignore" ).then(
-                    button =>
-                    {
-                        if( button === "Open Settings" )
+                if( context.workspaceState.get( 'migratedVersion', 0 ) < 147 )
+                {
+                    vscode.window.showInformationMessage( "Your Todo Tree settings have been moved. Please remove the old settings from your settings.json.", "Open Settings", "Don't Show This Again" ).then(
+                        button =>
                         {
-                            var homeFolder = os.homedir();
-                            var settingsPath;
-                            if( process.platform === 'win32' )
+                            if( button === "Open Settings" )
                             {
-                                settingsPath = path.join( process.env.APPDATA, 'Code', 'User', 'settings.json' );
-                            } else if( process.platform === 'darwin' )
-                            {
-                                settingsPath = path.join( homeFolder, 'Library', 'Application Support', 'Code', 'User', 'settings.json' );
-                            } else
-                            {
-                                settingsPath = path.join( homeFolder, '.config', 'Code', 'User', 'settings.json' );
-                            }
+                                var homeFolder = os.homedir();
+                                var settingsPath;
+                                if( process.platform === 'win32' )
+                                {
+                                    settingsPath = path.join( process.env.APPDATA, 'Code', 'User', 'settings.json' );
+                                } else if( process.platform === 'darwin' )
+                                {
+                                    settingsPath = path.join( homeFolder, 'Library', 'Application Support', 'Code', 'User', 'settings.json' );
+                                } else
+                                {
+                                    settingsPath = path.join( homeFolder, '.config', 'Code', 'User', 'settings.json' );
+                                }
 
-                            if( settingsPath )
-                            {
-                                var document = vscode.workspace.openTextDocument( vscode.Uri.file( settingsPath ) );
-                                vscode.window.showTextDocument( document );
+                                if( settingsPath )
+                                {
+                                    var document = vscode.workspace.openTextDocument( vscode.Uri.file( settingsPath ) );
+                                    vscode.window.showTextDocument( document );
+                                }
                             }
-                        }
-                    } );
+                            else if( button === "Don't Show This Again" )
+                            {
+                                context.workspaceState.update( 'migratedVersion', 147 );
+                            }
+                        } );
+                }
             }
         }
 

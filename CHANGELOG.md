@@ -1,3 +1,6 @@
+# v0.0.149 - 2019-09-11
+- Fix "Ignore" option for settings migration warning
+
 # v0.0.148 - 2019-09-11
 - Move settings into groups
 - Make settings in README.md easier to read
