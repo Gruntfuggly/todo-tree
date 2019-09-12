@@ -247,7 +247,7 @@ function activate( context )
 
     function getOptions( filename )
     {
-        var c = vscode.workspace.getConfiguration( 'todo-tree.filtering' );
+        var c = vscode.workspace.getConfiguration( 'todo-tree' );
 
         var tempIncludeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
         var tempExcludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
@@ -256,7 +256,12 @@ function activate( context )
             regex: "\"" + utils.getRegexSource() + "\"",
             rgPath: config.ripgrepPath()
         };
-        var globs = c.passGlobsToRipgrep === true ? buildGlobs( c.includeGlobs, c.excludeGlobs, tempIncludeGlobs, tempExcludeGlobs ) : undefined;
+
+        var globs = c.get( 'filtering.passGlobsToRipgrep' ) === true ? buildGlobs(
+            c.get( 'filtering.includeGlobs' ),
+            c.get( 'filtering.excludeGlobs' ),
+            tempIncludeGlobs,
+            tempExcludeGlobs ) : undefined;
 
         if( globs && globs.length > 0 )
         {
@@ -268,11 +273,11 @@ function activate( context )
         }
 
         options.outputChannel = outputChannel;
-        options.additional = c.ripgrepArgs;
-        options.maxBuffer = c.ripgrepMaxBuffer;
+        options.additional = c.get( 'ripgrep.ripgrepArgs' );
+        options.maxBuffer = c.get( 'ripgrep.ripgrepMaxBuffer' );
         options.multiline = utils.getRegexSource().indexOf( "\\n" ) > -1;
 
-        if( vscode.workspace.getConfiguration( 'todo-tree.regex' ).get( 'regexCaseSensitive' ) === false )
+        if( c.get( 'regex.regexCaseSensitive' ) === false )
         {
             options.additional += ' -i ';
         }
@@ -671,28 +676,28 @@ function activate( context )
         {
             function migrateIfRequired( setting, type, destination )
             {
-                var details = config.inspect( setting );
+                var details = c.inspect( setting );
                 if( details.globalValue && details.globalValue.length !== undefined )
                 {
                     debug( "Migrating global setting '" + setting + "'" );
-                    config.update( destination + "." + setting, details.globalValue, vscode.ConfigurationTarget.Global );
+                    c.update( destination + "." + setting, details.globalValue, vscode.ConfigurationTarget.Global );
                     migrated = true;
                 }
                 if( typeof ( details.workspaceValue ) === type )
                 {
                     debug( "Migrating workspace setting '" + setting + "'" );
-                    config.update( destination + "." + setting, details.workspaceValue, vscode.ConfigurationTarget.Workspace );
+                    c.update( destination + "." + setting, details.workspaceValue, vscode.ConfigurationTarget.Workspace );
                     migrated = true;
                 }
                 if( typeof ( details.workspaceFolderValue ) === type )
                 {
                     debug( "Migrating workspaceFolder setting '" + setting + "'" );
-                    config.update( destination + "." + setting, details.workspaceFolderValue, vscode.ConfigurationTarget.WorkspaceFolder );
+                    c.update( destination + "." + setting, details.workspaceFolderValue, vscode.ConfigurationTarget.WorkspaceFolder );
                     migrated = true;
                 }
             }
 
-            var config = vscode.workspace.getConfiguration( 'todo-tree' );
+            var c = vscode.workspace.getConfiguration( 'todo-tree' );
             var migrated = false;
 
             migrateIfRequired( 'autoRefresh', 'boolean', 'tree' );
@@ -901,6 +906,21 @@ function activate( context )
                 rebuild();
             }
             dumpFolderFilter()
+        } ) );
+
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.resetCache', function()
+        {
+            context.workspaceState.update( 'includeGlobs', [] );
+            context.workspaceState.update( 'excludeGlobs', [] );
+            context.workspaceState.update( 'expandedNodes', [] );
+            context.workspaceState.update( 'buildCounter', undefined );
+            context.workspaceState.update( 'currentFilter', undefined );
+            context.workspaceState.update( 'filtered', undefined );
+            context.workspaceState.update( 'tagsOnly', undefined );
+            context.workspaceState.update( 'flat', undefined );
+            context.workspaceState.update( 'expanded', undefined );
+            context.workspaceState.update( 'grouped', undefined );
+            context.globalState.update( 'migratedVersion', undefined );
         } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.resetFolderFilter', function()

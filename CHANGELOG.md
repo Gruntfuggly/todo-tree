@@ -1,4 +1,7 @@
-- Update README.md with new settings
+# v0.0.153 - 2019-09-12
+- Update README.md with new settings (thanks to [abelmatser](https://github.com/abelmatser))
+- Fix ripgrep arguments
+- Add "Reset Cache" command
 
 # v0.0.152 - 2019-09-12
 - Fix migration of 'tags' setting

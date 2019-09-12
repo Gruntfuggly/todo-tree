@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.152",
+    "version": "0.0.153",
     "license": "MIT",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
@@ -297,6 +297,11 @@
                     "dark": "resources/icons/dark/clear-filter.svg",
                     "light": "resources/icons/light/clear-filter.svg"
                 }
+            },
+            {
+                "command": "todo-tree.resetCache",
+                "title": "Reset Cache",
+                "category": "Todo Tree"
             }
         ],
         "configuration": {
@@ -358,8 +363,8 @@
                     "markdownDescription": "What to show in the status bar - nothing, total count, or counts per tag"
                 },
                 "todo-tree.general.statusBarClickBehaviour": {
-                    "type":"string",
-                    "enum":[
+                    "type": "string",
+                    "enum": [
                         "cycle",
                         "reveal"
                     ],
@@ -367,8 +372,8 @@
                         "Toggle between showing total count and the top three tag counts",
                         "Reveal the tree view"
                     ],
-                    "default":"reveal",
-                    "markdownDescription":"What to do when the status bar is clicked"
+                    "default": "reveal",
+                    "markdownDescription": "What to do when the status bar is clicked"
                 },
                 "todo-tree.filtering.includeGlobs": {
                     "type": "array",
@@ -511,8 +516,8 @@
                     "markdownDescription": "Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present."
                 },
                 "todo-tree.tree.hideIconsWhenGroupedByTag": {
-                    "type":"boolean",
-                    "default" :false,
+                    "type": "boolean",
+                    "default": false,
                     "markdownDescription": "Save some space by hiding the item icons when grouped by tag"
                 }
             }
