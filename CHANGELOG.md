@@ -1,3 +1,7 @@
+# v0.0.152 - 2019-09-12
+- Fix migration of 'tags' setting
+- Open settings in a better way
+
 # v0.0.151 - 2019-09-11
 - Use global state (not workspace state) for "Don't Show This Again"
 
