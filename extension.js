@@ -740,25 +740,7 @@ function activate( context )
                         {
                             if( button === "Open Settings" )
                             {
-                                var homeFolder = os.homedir();
-                                var settingsPath;
-                                var app = vscode.version.endsWith( "-insider" ) ? 'Code\ -\ Insiders' : 'Code';
-                                if( process.platform === 'win32' )
-                                {
-                                    settingsPath = path.join( process.env.APPDATA, app, 'User', 'settings.json' );
-                                } else if( process.platform === 'darwin' )
-                                {
-                                    settingsPath = path.join( homeFolder, 'Library', 'Application Support', app, 'User', 'settings.json' );
-                                } else
-                                {
-                                    settingsPath = path.join( homeFolder, '.config', app, 'User', 'settings.json' );
-                                }
-
-                                if( settingsPath )
-                                {
-                                    var document = vscode.workspace.openTextDocument( vscode.Uri.file( settingsPath ) );
-                                    vscode.window.showTextDocument( document );
-                                }
+                                vscode.commands.executeCommand( 'workbench.action.openSettingsJson', true );
                             }
                             else if( button === "Don't Show This Again" )
                             {
