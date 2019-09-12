@@ -50,7 +50,7 @@ Foreground and background colours can be one of "red", "green", "blue", "yellow"
 Example:
 
 ```
-"todo-tree.defaultHighlight": {
+"todo-tree.highlights.defaultHighlight": {
     "icon": "alert",
     "type": "text",
     "foreground": "red",
@@ -58,7 +58,7 @@ Example:
     "opacity": 50,
     "iconColour": "blue"
 },
-"todo-tree.customHighlight": {
+"todo-tree.highlights.customHighlight": {
     "TODO": {
         "icon": "check",
         "type": "line"
