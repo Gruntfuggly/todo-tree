@@ -8,7 +8,7 @@ Found TODOs can also be highlighted in open files.
 
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/screenshot.png">
 
-*Note: The tree will only appear in the explorer pane when the extension finds some TODOs, unless `todo-tree.hideTreeWhenEmpty` is set to false.*
+*Note: The tree will only appear in the explorer pane when the extension finds some TODOs, unless `todo-tree.tree.hideTreeWhenEmpty` is set to false.*
 
 ## Highlighting
 
@@ -70,7 +70,7 @@ Example:
 }
 ```
 
-*Note: The highlight configuration is separate from the settings for the search. Adding settings in `customHighlight` does not automatically add the tags into `todo-tree.tags`.*
+*Note: The highlight configuration is separate from the settings for the search. Adding settings in `customHighlight` does not automatically add the tags into `todo-tree.general.tags`.*
 
 ## Installing
 
@@ -140,7 +140,7 @@ The extension can be customised as follows (default values in brackets):
 Show a debug channel in the output view.
 
 **todo-tree.general.rootFolder** (`""`)
-By default, any open workspaces will have a tree in the view. Use this to force another folder to be the root of the tree. You can include environment variables and also use ${workspaceFolder}. e.g. `"todo-tree.rootFolder": "${workspaceFolder}/test"` or `"todo-tree.rootFolder": "${HOME}/project"`. *Note: Other open files (outside of the rootFolder) will be shown (as they are opened) with their full path in brackets.*
+By default, any open workspaces will have a tree in the view. Use this to force another folder to be the root of the tree. You can include environment variables and also use ${workspaceFolder}. e.g. `"todo-tree.general.rootFolder": "${workspaceFolder}/test"` or `"todo-tree.general.rootFolder": "${HOME}/project"`. *Note: Other open files (outside of the rootFolder) will be shown (as they are opened) with their full path in brackets.*
 
 **todo-tree.general.tags** (`["TODO","FIXME"]`)
 This defines the tags which are recognised as TODOs. This list is automatically inserted into the regex.
@@ -244,9 +244,9 @@ Hide item icons when grouping by tag.
 
 ### Multiline TODOs
 
-If the regex contains `\n`, then multiline TODOs will be enabled. In this mode, the search results are processed slightly differently. If results are found which do not contain any tags from `todo-tree.tags` it will be assumed that they belong to the previous result that did have a tag. For example, if you set the regex to something like:
+If the regex contains `\n`, then multiline TODOs will be enabled. In this mode, the search results are processed slightly differently. If results are found which do not contain any tags from `todo-tree.general.tags` it will be assumed that they belong to the previous result that did have a tag. For example, if you set the regex to something like:
 ```
-"todo-tree.regex": "(//)\\s*($TAGS).*(\\n\\s*//\\s{2,}.*)*"
+"todo-tree.regex.regex": "(//)\\s*($TAGS).*(\\n\\s*//\\s{2,}.*)*"
 ```
 This will now match multiline TODOs where the extra lines have at least two spaces between the comment characters and the TODO item. e.g.
 ```
@@ -257,7 +257,7 @@ This will now match multiline TODOs where the extra lines have at least two spac
 
 If you want to match multiline TODOs in C++ style multiline comment blocks, you'll need something like:
 ```
-"todo-tree.regex": "(/\\*)\\s*($TAGS).*(\\n\\s*(//|/\\*|\\*\\*)\\s{2,}.*)*"
+"todo-tree.regex.regex": "(/\\*)\\s*($TAGS).*(\\n\\s*(//|/\\*|\\*\\*)\\s{2,}.*)*"
 ```
 which should match:
 ```
@@ -274,17 +274,17 @@ which should match:
 
 ### Excluding files and folders
 
-To restrict the set of folders which is searched, you can define `todo-tree.includeGlobs`. This is an array of globs which the search results are matched against. If the results match any of the globs, they will be shown. By default the array is empty, which matches everything.
+To restrict the set of folders which is searched, you can define `todo-tree.filtering.includeGlobs`. This is an array of globs which the search results are matched against. If the results match any of the globs, they will be shown. By default the array is empty, which matches everything.
 
-To exclude folders/files from your search you can define `todo-tree.excludeGlobs`. If the search results match any of these globs, then the results will be ignored.
+To exclude folders/files from your search you can define `todo-tree.filtering.excludeGlobs`. If the search results match any of these globs, then the results will be ignored.
 
 You can also include and exclude folders from the tree using the context menu. This folder filter is applied separately to the include/exclude globs.
 
-*Note: By default, ripgrep ignores files and folders from your `.gitignore` or `.ignore` files. If you want to include these files, set* `todo-tree.ripgrepArgs` *to* `--no-ignore`.
+*Note: By default, ripgrep ignores files and folders from your `.gitignore` or `.ignore` files. If you want to include these files, set* `todo-tree.ripgrep.ripgrepArgs` *to* `--no-ignore`.
 
 ## Known Issues
 
-Grouping by tag will only work when your configuration defines the tags using the `todo-tree.tags` setting. Older versions of the extension had the tags directly defined in the `todo-tree.regex` whereas now, the regex replaces **$TAGS** with the contents of `todo-tree.tags`.
+Grouping by tag will only work when your configuration defines the tags using the `todo-tree.general.tags` setting. Older versions of the extension had the tags directly defined in the `todo-tree.regex.regex` whereas now, the regex replaces **$TAGS** with the contents of `todo-tree.general.tags`.
 
 Grouping by tag doesn't work for markdown task list items as there is no tag to group with. The tree will show the files alongside the tag groups.
 

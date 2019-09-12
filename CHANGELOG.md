@@ -1,3 +1,5 @@
+- Update README.md with new settings
+
 # v0.0.152 - 2019-09-12
 - Fix migration of 'tags' setting
 - Open settings in a better way
