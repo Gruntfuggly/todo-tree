@@ -672,7 +672,7 @@ function activate( context )
             function migrateIfRequired( setting, type, destination )
             {
                 var details = config.inspect( setting );
-                if( typeof ( details.globalValue ) === type )
+                if( details.globalValue && details.globalValue.length !== undefined )
                 {
                     debug( "Migrating global setting '" + setting + "'" );
                     config.update( destination + "." + setting, details.globalValue, vscode.ConfigurationTarget.Global );
@@ -686,7 +686,7 @@ function activate( context )
                 }
                 if( typeof ( details.workspaceFolderValue ) === type )
                 {
-                    debug( "Migrating workspace setting '" + setting + "'" );
+                    debug( "Migrating workspaceFolder setting '" + setting + "'" );
                     config.update( destination + "." + setting, details.workspaceFolderValue, vscode.ConfigurationTarget.WorkspaceFolder );
                     migrated = true;
                 }
