@@ -123,7 +123,8 @@ function getRegexSource()
     {
         var tags = c.tags.join( "|" );
         tags = tags.replace( /\\/g, '\\x5c' );
-        c.regex = c.regex.replace( "$TAGS", tags );
+        tags = "(" + tags + ")";
+        c.regex = c.regex.split( "($TAGS)" ).join( tags );
     }
 
     return c.regex;
