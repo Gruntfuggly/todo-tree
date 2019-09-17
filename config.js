@@ -115,6 +115,12 @@ function clickingStatusBarShouldRevealTree()
     return vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBarClickBehaviour === "reveal";
 }
 
+function shouldShowHighlights( scheme )
+{
+    var schemes = vscode.workspace.getConfiguration( 'todo-tree.highlights' ).schemes;
+    return schemes && schemes.length && schemes.indexOf( scheme ) !== -1;
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -132,3 +138,4 @@ module.exports.tags = tags;
 module.exports.shouldSortTagsOnlyViewAlphabetically = shouldSortTagsOnlyViewAlphabetically;
 module.exports.labelFormat = labelFormat;
 module.exports.clickingStatusBarShouldRevealTree = clickingStatusBarShouldRevealTree;
+module.exports.shouldShowHighlights = shouldShowHighlights;

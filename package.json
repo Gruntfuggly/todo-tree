@@ -519,6 +519,14 @@
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "Save some space by hiding the item icons when grouped by tag"
+                },
+                "todo-tree.highlights.schemes": {
+                    "type": "array",
+                    "default": [
+                        "file",
+                        "untitled"
+                    ],
+                    "markdownDescription": "Editor schemes to show highlights in. To show highlights in settings files, for instance, add 'vscode-userdata' or for output windows, use 'output'."
                 }
             }
         }

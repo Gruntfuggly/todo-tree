@@ -1,3 +1,5 @@
+- Add setting to control which editor URI schemes should be highlighted
+
 # v0.0.153 - 2019-09-12
 - Update README.md with new settings (thanks to [abelmatser](https://github.com/abelmatser))
 - Fix ripgrep arguments

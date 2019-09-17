@@ -778,7 +778,7 @@ function activate( context )
         {
             vscode.window.visibleTextEditors.map( editor =>
             {
-                if( document === editor.document && editor.document.uri.scheme === 'file' )
+                if( document === editor.document && config.shouldShowHighlights( editor.document.uri.scheme ) )
                 {
                     if( document.fileName === undefined || isIncluded( document.fileName ) )
                     {
