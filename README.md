@@ -8,7 +8,9 @@ Found TODOs can also be highlighted in open files.
 
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/screenshot.png">
 
-*Note: The tree will only appear in the explorer pane when the extension finds some TODOs, unless `todo-tree.tree.hideTreeWhenEmpty` is set to false.*
+*Notes:*
+- *The tree will only appear in the explorer pane when the extension finds some TODOs, unless* `todo-tree.tree.hideTreeWhenEmpty` *is set to false.*
+- *User* `rg.conf` *files are ignored.*
 
 ## Highlighting
 

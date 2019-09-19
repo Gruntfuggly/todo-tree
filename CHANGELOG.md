@@ -1,4 +1,5 @@
 - Add setting to control which editor URI schemes should be highlighted
+- Add --no-config to ripgrep command to prevent parsing of user rg.conf files
 
 # v0.0.153 - 2019-09-12
 - Update README.md with new settings (thanks to [abelmatser](https://github.com/abelmatser))
