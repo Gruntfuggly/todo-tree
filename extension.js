@@ -676,20 +676,25 @@ function activate( context )
         {
             function migrateIfRequired( setting, type, destination )
             {
+                function typeMatch( item, type )
+                {
+                    return typeof ( item ) == type || ( type == 'array' && item && item.length > 0 );
+                }
+
                 var details = c.inspect( setting );
-                if( details.globalValue && details.globalValue.length !== undefined )
+                if( typeMatch( details.globalValue, type ) )
                 {
                     debug( "Migrating global setting '" + setting + "'" );
                     c.update( destination + "." + setting, details.globalValue, vscode.ConfigurationTarget.Global );
                     migrated = true;
                 }
-                if( typeof ( details.workspaceValue ) === type )
+                if( typeMatch( details.workspaceValue, type ) )
                 {
                     debug( "Migrating workspace setting '" + setting + "'" );
                     c.update( destination + "." + setting, details.workspaceValue, vscode.ConfigurationTarget.Workspace );
                     migrated = true;
                 }
-                if( typeof ( details.workspaceFolderValue ) === type )
+                if( typeMatch( details.workspaceFolderValue, type ) )
                 {
                     debug( "Migrating workspaceFolder setting '" + setting + "'" );
                     c.update( destination + "." + setting, details.workspaceFolderValue, vscode.ConfigurationTarget.WorkspaceFolder );
