@@ -122,7 +122,9 @@ function getRegexSource()
     if( c.regex.indexOf( "($TAGS)" ) > -1 )
     {
         var tags = c.tags.join( "|" );
-        tags = tags.replace( /\\/g, '\\x5c' );
+        tags = tags.replace( /\[|\\|\^|\$|\.|\||\?|\*|\+|\(|\)|\{|\}/g, function(x) {
+            return x.replace(x, '\\' + x);
+        });
         tags = "(" + tags + ")";
         c.regex = c.regex.split( "($TAGS)" ).join( tags );
     }
