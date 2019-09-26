@@ -233,3 +233,17 @@ QUnit.test( "utils.hexToRgba converts correctly", function( assert )
     assert.equal( utils.hexToRgba( "#FFFFFF80", 0 ), "rgba(255,255,255,0.5)" );
     assert.equal( utils.hexToRgba( "#FFF8", 0 ), "rgba(255,255,255,0.53)" );
 } );
+
+QUnit.test( "utils.createFolderGlob creates expected globs", function( assert )
+{
+    if( process.platform === 'win32' )
+    {
+        assert.equal( utils.createFolderGlob( "c:\\Users\\name\\workspace\\project\\folder\\subfolder", "c:\\Users\\name\\workspace\\project", "/**/*" ), "**/project/folder/subfolder/**/*" );
+        assert.equal( utils.createFolderGlob( "c:\\Users\\name\\workspace\\project\\folder\\subfolder", "c:\\Users\\name\\workspace\\project", "/**//*" ), "**/project/folder/subfolder/**/*" );
+    }
+    else
+    {
+        assert.equal( utils.createFolderGlob( "/Users/name/workspace/project/folder/subfolder", "/Users/name/workspace/project", "/**/*" ), "/Users/name/workspace/project/folder/subfolder/**/*" );
+        assert.equal( utils.createFolderGlob( "/Users/name/workspace/project/folder/subfolder", "/Users/name/workspace/project", "/**//*" ), "/Users/name/workspace/project/folder/subfolder/**/*" );
+    }
+} );

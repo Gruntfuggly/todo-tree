@@ -884,8 +884,8 @@ function activate( context )
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showOnlyThisFolder', function( node )
         {
-            var glob = node.fsPath + "/*";
-            var includeGlobs = [ glob ];
+            var rootNode = tree.locateWorkspaceNode( node.fsPath );
+            var includeGlobs = [ utils.createFolderGlob( node.fsPath, rootNode.fsPath, "/*" ) ];
             context.workspaceState.update( 'includeGlobs', includeGlobs );
             rebuild();
             dumpFolderFilter();
@@ -893,8 +893,8 @@ function activate( context )
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showOnlyThisFolderAndSubfolders', function( node )
         {
-            var glob = node.fsPath + "/**/*";
-            var includeGlobs = [ glob ];
+            var rootNode = tree.locateWorkspaceNode( node.fsPath );
+            var includeGlobs = [ utils.createFolderGlob( node.fsPath, rootNode.fsPath, "/**/*" ) ];
             context.workspaceState.update( 'includeGlobs', includeGlobs );
             rebuild();
             dumpFolderFilter();
@@ -902,7 +902,8 @@ function activate( context )
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.excludeThisFolder', function( node )
         {
-            var glob = node.fsPath + "/**/*";
+            var rootNode = tree.locateWorkspaceNode( node.fsPath );
+            var glob = utils.createFolderGlob( node.fsPath, rootNode.fsPath, "/**/*" );
             var excludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
             if( excludeGlobs.indexOf( glob ) === -1 )
             {

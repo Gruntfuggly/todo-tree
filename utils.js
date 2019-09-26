@@ -153,10 +153,20 @@ function getRegexForRipGrep()
 
     return RegExp( getRegexSource(), flags );
 }
+
 function isIncluded( name, includes, excludes )
 {
-    var included = includes.length === 0 || micromatch.isMatch( name, includes );
-    if( included === true && micromatch.isMatch( name, excludes ) )
+    var posix_includes = includes.map( function( glob )
+    {
+        return glob.replace( /\\/g, '/' );
+    } );
+    var posix_excludes = excludes.map( function( glob )
+    {
+        return glob.replace( /\\/g, '/' );
+    } );
+
+    var included = posix_includes.length === 0 || micromatch.isMatch( name, posix_includes );
+    if( included === true && micromatch.isMatch( name, posix_excludes ) )
     {
         included = false;
     }
@@ -180,6 +190,24 @@ function formatLabel( template, node )
     return result;
 }
 
+function createFolderGlob( folderPath, rootPath, filter )
+{
+    if( process.platform === 'win32' )
+    {
+        var fp = folderPath.replace( /\\/g, '/' );
+        var rp = rootPath.replace( /\\/g, '/' );
+
+        if( fp.indexOf( rp ) === 0 )
+        {
+            fp = fp.substring( path.dirname( rp ).length );
+        }
+
+        return glob = ( "**" + fp + filter ).replace( /\/\//g, '/' );
+    }
+
+    return ( folderPath + filter ).replace( /\/\//g, '/' );;
+}
+
 module.exports.init = init;
 module.exports.isHexColour = isHexColour;
 module.exports.hexToRgba = hexToRgba;
@@ -190,3 +218,4 @@ module.exports.getRegexForRipGrep = getRegexForRipGrep;
 module.exports.getRegexForEditorSearch = getRegexForEditorSearch;
 module.exports.isIncluded = isIncluded;
 module.exports.formatLabel = formatLabel;
+module.exports.createFolderGlob = createFolderGlob;

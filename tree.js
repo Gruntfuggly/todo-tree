@@ -183,7 +183,7 @@ function createTodoNode( result )
     return todo;
 }
 
-function locateWorkspaceNode( nodes, filename )
+function locateWorkspaceNode( filename )
 {
     var result;
     nodes.map( function( node )
@@ -572,7 +572,7 @@ class TreeNodeProvider
             addWorkspaceFolders();
         }
 
-        var rootNode = locateWorkspaceNode( nodes, result.file );
+        var rootNode = locateWorkspaceNode( result.file );
         var todoNode = createTodoNode( result );
 
         if( highlights.shouldHideFromTree( todoNode.tag ? todoNode.tag : todoNode.label ) )
@@ -823,3 +823,4 @@ class TreeNodeProvider
 }
 
 exports.TreeNodeProvider = TreeNodeProvider;
+exports.locateWorkspaceNode = locateWorkspaceNode;
