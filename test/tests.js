@@ -124,6 +124,11 @@ QUnit.test( "utils.getRegexSource returns the regex source with expanded tags", 
     utils.init( testConfig );
 
     assert.equal( utils.getRegexSource(), "(ONE|TWO)" );
+
+    testConfig.regexSource = "($TAGS)-($TAGS)";
+    utils.init( testConfig );
+
+    assert.equal( utils.getRegexSource(), "(ONE|TWO)-(ONE|TWO)" );
 } );
 
 QUnit.test( "utils.getRegexSource returns the regex source and converts backslashes to hex", function( assert )
