@@ -162,11 +162,12 @@ function getAttribute( tag, attribute, defaultValue )
             {
                 flags += 'i';
             }
+            t = t.replace( /\\/g, '\\\\' );
             var regex = new RegExp( t, flags );
 
             if( tag.match( regex ) )
             {
-                result = customHighlight[ t ];
+                result = customHighlight[ tag ];
             }
         } );
         return result;

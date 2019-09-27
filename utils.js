@@ -79,6 +79,23 @@ function removeBlockComments( text, fileName )
     return text;
 }
 
+function getTagRegex()
+{
+    var c = config.regex();
+    var tags = c.tags;
+    tags = tags.map( function( tag )
+    {
+        tag = tag.replace( /\\/g, '\\\\\\' );
+        tag = tag.replace( /\.|\^|\$|\*|\+|\?|\(|\)|\[|\{|\|/g, function( x )
+        {
+            return x.replace( x, '\\' + x );
+        } );
+        return tag;
+    } );
+    tags = tags.join( '|' );
+    return '(' + tags + ')';
+}
+
 function extractTag( text )
 {
     var c = config.regex();
@@ -89,7 +106,7 @@ function extractTag( text )
 
     if( c.regex.indexOf( "$TAGS" ) > -1 )
     {
-        var tagRegex = new RegExp( "(" + c.tags.join( "|" ) + ")", flags );
+        var tagRegex = new RegExp( getTagRegex(), flags );
 
         tagMatch = tagRegex.exec( text );
         if( tagMatch )
@@ -118,16 +135,13 @@ function extractTag( text )
 
 function getRegexSource()
 {
-    var c = config.regex();
-    if( c.regex.indexOf( "($TAGS)" ) > -1 )
+    var regex = config.regex().regex;
+    if( regex.indexOf( "($TAGS)" ) > -1 )
     {
-        var tags = c.tags.join( "|" );
-        tags = tags.replace( /\\/g, '\\x5c' );
-        tags = "(" + tags + ")";
-        c.regex = c.regex.split( "($TAGS)" ).join( tags );
+        regex = regex.split( "($TAGS)" ).join( getTagRegex() );
     }
 
-    return c.regex;
+    return regex;
 }
 
 function getRegexForEditorSearch()
@@ -139,7 +153,6 @@ function getRegexForEditorSearch()
     }
 
     var source = getRegexSource();
-    source = source.replace( /\\\\/g, "\\" );
     return RegExp( source, flags );
 }
 

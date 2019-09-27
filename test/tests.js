@@ -108,6 +108,18 @@ QUnit.test( "utils.extractTag returns text from the start of the line if the tag
     assert.equal( result.withoutTag, "before " );
 } );
 
+QUnit.test( "utils.extractTag copes with escaped regex characters", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.tagList = [
+        "TO\\DO",
+    ]
+    utils.init( testConfig );
+
+    result = utils.extractTag( "before TO\\DO" );
+    assert.equal( result.tag, "TO\\DO" );
+} );
+
 QUnit.test( "utils.getRegexSource returns the regex source without expanded tags if they aren't present", function( assert )
 {
     var testConfig = stubs.getTestConfig();
@@ -131,13 +143,35 @@ QUnit.test( "utils.getRegexSource returns the regex source with expanded tags", 
     assert.equal( utils.getRegexSource(), "(ONE|TWO)-(ONE|TWO)" );
 } );
 
-QUnit.test( "utils.getRegexSource returns the regex source and converts backslashes to hex", function( assert )
+QUnit.test( "utils.getRegexSource returns the regex source and escapes backslashes", function( assert )
 {
     var testConfig = stubs.getTestConfig();
     testConfig.tagList = [ "ONE\\", "\\TWO" ];
     utils.init( testConfig );
 
-    assert.equal( utils.getRegexSource(), "(ONE\\x5c|\\x5cTWO)" );
+    assert.equal( utils.getRegexSource(), "(ONE\\\\\\|\\\\\\TWO)" );
+} );
+
+QUnit.test( "utils.getRegexSource returns the regex source and escapes other regex characters", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.tagList = [
+        "A.B",
+        "A^B",
+        "A$B",
+        "A*B",
+        "A+B",
+        "A?B",
+        "A(B",
+        "A)B",
+        "A[B",
+        "A{B",
+        "A|B"
+    ];
+
+    utils.init( testConfig );
+
+    assert.equal( utils.getRegexSource(), "(A\\.B|A\\^B|A\\$B|A\\*B|A\\+B|A\\?B|A\\(B|A\\)B|A\\[B|A\\{B|A\\|B)" );
 } );
 
 QUnit.test( "utils.getRegexForRipGrep applies the expected default flags", function( assert )
@@ -153,14 +187,6 @@ QUnit.test( "utils.getRegexForRipGrep can remove the case insensitive flag", fun
     testConfig.shouldBeCaseSensitive = true;
     utils.init( testConfig );
     assert.equal( utils.getRegexForRipGrep().flags, "gm" );
-} );
-
-QUnit.test( "utils.getRegexForEditorSearch removes extra escape characters", function( assert )
-{
-    var testConfig = stubs.getTestConfig();
-    testConfig.regexSource = "\\\\n\\\\s";
-    utils.init( testConfig );
-    assert.equal( utils.getRegexForEditorSearch().source, "\\n\\s" );
 } );
 
 QUnit.test( "utils.isIncluded returns true when no includes or excludes are specified", function( assert )

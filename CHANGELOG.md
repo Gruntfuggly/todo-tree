@@ -1,3 +1,6 @@
+# v0.0.155 - 2019-09-27
+- Handle regex characters in tags properly
+
 # v0.0.154 - 2019-09-25
 - Add setting to control which editor URI schemes should be highlighted
 - Add --no-config to ripgrep command to prevent parsing of user rg.conf files
