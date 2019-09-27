@@ -215,7 +215,7 @@ function createFolderGlob( folderPath, rootPath, filter )
             fp = fp.substring( path.dirname( rp ).length );
         }
 
-        return glob = ( "**" + fp + filter ).replace( /\/\//g, '/' );
+        return glob = ( "**/" + fp + filter ).replace( /\/\//g, '/' );
     }
 
     return ( folderPath + filter ).replace( /\/\//g, '/' );;

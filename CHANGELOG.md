@@ -1,3 +1,5 @@
+- Fix top level folder globs
+
 # v0.0.155 - 2019-09-27
 - Handle regex characters in tags properly
 

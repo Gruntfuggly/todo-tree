@@ -271,6 +271,7 @@ QUnit.test( "utils.createFolderGlob creates expected globs", function( assert )
     {
         assert.equal( utils.createFolderGlob( "c:\\Users\\name\\workspace\\project\\folder\\subfolder", "c:\\Users\\name\\workspace\\project", "/**/*" ), "**/project/folder/subfolder/**/*" );
         assert.equal( utils.createFolderGlob( "c:\\Users\\name\\workspace\\project\\folder\\subfolder", "c:\\Users\\name\\workspace\\project", "/**//*" ), "**/project/folder/subfolder/**/*" );
+        assert.equal( utils.createFolderGlob( "c:\\folder", "c:\\", "/**/*" ), "**/folder/**/*" );
     }
     else
     {
