@@ -1,3 +1,4 @@
+# v0.0.156 - 2019-09-29
 - Fix top level folder globs
 - Add support for including the built in files.exclude setting
 
