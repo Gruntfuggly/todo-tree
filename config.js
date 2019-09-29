@@ -121,6 +121,11 @@ function shouldShowHighlights( scheme )
     return schemes && schemes.length && schemes.indexOf( scheme ) !== -1;
 }
 
+function shouldUseBuiltInExcludes()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.filtering' ).useBuiltInExcludes;
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -139,3 +144,4 @@ module.exports.shouldSortTagsOnlyViewAlphabetically = shouldSortTagsOnlyViewAlph
 module.exports.labelFormat = labelFormat;
 module.exports.clickingStatusBarShouldRevealTree = clickingStatusBarShouldRevealTree;
 module.exports.shouldShowHighlights = shouldShowHighlights;
+module.exports.shouldUseBuiltInExcludes = shouldUseBuiltInExcludes;

@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.155",
+    "version": "0.0.156",
     "license": "MIT",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
@@ -399,6 +399,11 @@
                     "type": "array",
                     "default": [],
                     "markdownDescription": "An array of workspace names to exclude as roots in the tree (wildcards can be used)."
+                },
+                "todo-tree.filtering.useBuiltInExcludes": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "If true, the built in file excludes are also used."
                 },
                 "todo-tree.regex.regex": {
                     "type": "string",

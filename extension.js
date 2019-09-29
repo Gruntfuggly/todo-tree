@@ -238,11 +238,25 @@ function activate( context )
 
     function buildGlobs( includeGlobs, excludeGlobs, tempIncludeGlobs, tempExcludeGlobs )
     {
-        return []
+        var globs = []
             .concat( includeGlobs )
             .concat( tempIncludeGlobs )
             .concat( excludeGlobs.map( g => `!${g}` ) )
             .concat( tempExcludeGlobs.map( g => `!${g}` ) );
+
+        if( config.shouldUseBuiltInExcludes() )
+        {
+            var builtInExcludes = vscode.workspace.getConfiguration( 'files.exclude' );
+            Object.keys( builtInExcludes ).map( function( glob )
+            {
+                if( builtInExcludes.hasOwnProperty( glob ) && builtInExcludes[ glob ] === true )
+                {
+                    globs = globs.concat( '!' + glob );
+                }
+            } );
+        }
+
+        return globs;
     }
 
     function getOptions( filename )
@@ -1020,7 +1034,7 @@ function activate( context )
 
         context.subscriptions.push( vscode.workspace.onDidChangeConfiguration( function( e )
         {
-            if( e.affectsConfiguration( "todo-tree" ) )
+            if( e.affectsConfiguration( "todo-tree" ) || e.affectsConfiguration( 'files.exclude' ) )
             {
                 if( e.affectsConfiguration( "todo-tree.highlights.defaultHighlight" ) ||
                     e.affectsConfiguration( "todo-tree.highlights.customHighlight" ) )
@@ -1042,7 +1056,8 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.ripgrep" ) ||
                     e.affectsConfiguration( "todo-tree.tree" ) ||
                     e.affectsConfiguration( "todo-tree.general.rootFolder" ) ||
-                    e.affectsConfiguration( "todo-tree.general.tags" ) )
+                    e.affectsConfiguration( "todo-tree.general.tags" ) ||
+                    e.affectsConfiguration( "files.exclude" ) )
                 {
                     rebuild();
                     documentChanged();

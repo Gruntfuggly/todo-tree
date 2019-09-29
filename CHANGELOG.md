@@ -1,4 +1,5 @@
 - Fix top level folder globs
+- Add support for including the built in files.exclude setting
 
 # v0.0.155 - 2019-09-27
 - Handle regex characters in tags properly

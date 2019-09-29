@@ -171,6 +171,9 @@ A list of workspace names to exclude as roots in the tree (wildcards can be used
 **todo-tree.filtering.passGlobsToRipgrep** (`true`)
 Set this to false to apply the globs *after* the search (legacy behaviour).
 
+**todo-tree.filtering.useBuiltInExcludes** ('false')
+Set this to true to include the built in file excludes setting.
+
 **todo-tree.highlights.highlightDelay** (`500`)
 The delay before highlighting (milliseconds).
 
