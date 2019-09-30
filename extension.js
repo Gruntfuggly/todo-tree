@@ -236,7 +236,7 @@ function activate( context )
         } );
     }
 
-    function buildGlobs( includeGlobs, excludeGlobs, tempIncludeGlobs, tempExcludeGlobs )
+    function buildGlobsForRipgrep( includeGlobs, excludeGlobs, tempIncludeGlobs, tempExcludeGlobs )
     {
         var globs = []
             .concat( includeGlobs )
@@ -271,7 +271,7 @@ function activate( context )
             rgPath: config.ripgrepPath()
         };
 
-        var globs = c.get( 'filtering.passGlobsToRipgrep' ) === true ? buildGlobs(
+        var globs = c.get( 'filtering.passGlobsToRipgrep' ) === true ? buildGlobsForRipgrep(
             c.get( 'filtering.includeGlobs' ),
             c.get( 'filtering.excludeGlobs' ),
             tempIncludeGlobs,
@@ -480,7 +480,22 @@ function activate( context )
         var includeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includeGlobs' );
         var excludeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludeGlobs' );
 
-        return utils.isIncluded( filename, includeGlobs, excludeGlobs ) === true;
+        var tempIncludeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
+        var tempExcludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
+
+        if( config.shouldUseBuiltInExcludes() )
+        {
+            var builtInExcludes = vscode.workspace.getConfiguration( 'files.exclude' );
+            Object.keys( builtInExcludes ).map( function( glob )
+            {
+                if( builtInExcludes.hasOwnProperty( glob ) && builtInExcludes[ glob ] === true )
+                {
+                    excludeGlobs = excludeGlobs.concat( glob );
+                }
+            } );
+        }
+
+        return utils.isIncluded( filename, includeGlobs.concat( tempIncludeGlobs ), excludeGlobs.concat( tempExcludeGlobs ) ) === true;
     }
 
     function refreshFile( document )
