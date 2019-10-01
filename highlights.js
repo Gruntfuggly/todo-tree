@@ -163,6 +163,11 @@ function getAttribute( tag, attribute, defaultValue )
                 flags += 'i';
             }
             t = t.replace( /\\/g, '\\\\' );
+            t = t.replace( /\.|\^|\$|\*|\+|\?|\(|\)|\[|\{|\|/g, function( x )
+            {
+                return x.replace( x, '\\' + x );
+            } );
+
             var regex = new RegExp( t, flags );
 
             if( tag.match( regex ) )
