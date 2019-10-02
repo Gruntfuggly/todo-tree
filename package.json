@@ -422,7 +422,7 @@
                 },
                 "todo-tree.ripgrep.ripgrepArgs": {
                     "type": "string",
-                    "default": "--max-columns=1000",
+                    "default": "--max-columns=1000 --no-config ",
                     "markdownDescription": "Additional arguments to pass to ripgrep (Use with caution!)"
                 },
                 "todo-tree.ripgrep.ripgrepMaxBuffer": {
