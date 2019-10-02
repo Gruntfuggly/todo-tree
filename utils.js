@@ -86,10 +86,7 @@ function getTagRegex()
     tags = tags.map( function( tag )
     {
         tag = tag.replace( /\\/g, '\\\\\\' );
-        tag = tag.replace( /\.|\^|\$|\*|\+|\?|\(|\)|\[|\{|\|/g, function( x )
-        {
-            return x.replace( x, '\\' + x );
-        } );
+        tag = tag.replace( /[|{}()[\]^$+*?.-]/g, '\\$&' );
         return tag;
     } );
     tags = tags.join( '|' );

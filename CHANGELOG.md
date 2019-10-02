@@ -1,4 +1,5 @@
 - Allow --no-config to be removed
+- Simplify regex escape regexes
 
 # v0.0.157 - 2019-10-01
 - Further improvements to regex chars in tags
