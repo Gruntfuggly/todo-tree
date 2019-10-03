@@ -311,6 +311,8 @@ class TreeNodeProvider
     {
         if( node === undefined )
         {
+            var result = [];
+
             var availableNodes = nodes.filter( function( node )
             {
                 return node.nodes === undefined || ( node.nodes.length + ( node.todos ? node.todos.length : 0 ) > 0 );
@@ -325,10 +327,35 @@ class TreeNodeProvider
                         return a.name > b.name;
                     } );
                 }
-                return rootNodes;
+                result = rootNodes;
             }
 
-            return [ { label: "Nothing found", empty: availableNodes.length === 0, isFolder: true } ];
+            var statusNode = { label: "" };
+            var includeGlobs = this._context.workspaceState.get( 'includeGlobs' ) || [];
+            var excludeGlobs = this._context.workspaceState.get( 'excludeGlobs' ) || [];
+            var totalFilters = includeGlobs.length + excludeGlobs.length;
+            if( totalFilters > 0 )
+            {
+                statusNode.label = totalFilters + " filter" + ( totalFilters === 1 ? '' : 's' ) + " active";
+                statusNode.tooltip = "Right click for filter options";
+            }
+
+            if( result.length === 0 )
+            {
+                if( statusNode.label !== "" )
+                {
+                    statusNode.label += ", ";
+                }
+                statusNode.label += "Nothing found";
+                statusNode.empty = availableNodes.length === 0;
+            }
+
+            if( statusNode.label !== "" )
+            {
+                result.unshift( statusNode );
+            }
+
+            return result;
         }
         else if( node.type === PATH )
         {
@@ -454,6 +481,12 @@ class TreeNodeProvider
                     ]
                 };
             }
+        }
+        else
+        {
+            treeItem.description = node.label;
+            treeItem.label = "";
+            treeItem.tooltip = node.tooltip;
         }
 
         if( config.shouldShowCounts() && node.type === PATH )

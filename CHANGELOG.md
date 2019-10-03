@@ -1,5 +1,6 @@
 - Allow --no-config to be removed
 - Simplify regex escape regexes
+- Show active folder filters in tree
 
 # v0.0.157 - 2019-10-01
 - Further improvements to regex chars in tags
