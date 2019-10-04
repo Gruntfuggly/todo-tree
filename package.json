@@ -311,7 +311,7 @@
                 "todo-tree.general.tags": {
                     "type": "array",
                     "default": [
-			"@todo",
+                        "@todo",
                         "TODO",
                         "FIXME"
                     ],
