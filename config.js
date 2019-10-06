@@ -126,6 +126,11 @@ function shouldUseBuiltInExcludes()
     return vscode.workspace.getConfiguration( 'todo-tree.filtering' ).useBuiltInExcludes;
 }
 
+function shouldIgnoreGitSubmodules()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.filtering' ).ignoreGitSubmodules;
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -145,3 +150,4 @@ module.exports.labelFormat = labelFormat;
 module.exports.clickingStatusBarShouldRevealTree = clickingStatusBarShouldRevealTree;
 module.exports.shouldShowHighlights = shouldShowHighlights;
 module.exports.shouldUseBuiltInExcludes = shouldUseBuiltInExcludes;
+module.exports.shouldIgnoreGitSubmodules = shouldIgnoreGitSubmodules;

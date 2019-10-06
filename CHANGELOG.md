@@ -1,3 +1,5 @@
+- Add option to ignore git submodules
+
 # v0.0.158 - 2019-10-03
 - Allow --no-config to be removed
 - Simplify regex escape regexes

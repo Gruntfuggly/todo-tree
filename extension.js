@@ -236,7 +236,7 @@ function activate( context )
         } );
     }
 
-    function buildGlobsForRipgrep( includeGlobs, excludeGlobs, tempIncludeGlobs, tempExcludeGlobs )
+    function buildGlobsForRipgrep( includeGlobs, excludeGlobs, tempIncludeGlobs, tempExcludeGlobs, submoduleExcludeGlobs )
     {
         var globs = []
             .concat( includeGlobs )
@@ -256,6 +256,11 @@ function activate( context )
             } );
         }
 
+        if( config.shouldIgnoreGitSubmodules() )
+        {
+            globs = globs.concat( submoduleExcludeGlobs.map( g => `!${g}` ) );
+        }
+
         return globs;
     }
 
@@ -265,6 +270,7 @@ function activate( context )
 
         var tempIncludeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
         var tempExcludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
+        var submoduleExcludeGlobs = context.workspaceState.get( 'submoduleExcludeGlobs' ) || [];
 
         var options = {
             regex: "\"" + utils.getRegexSource() + "\"",
@@ -275,7 +281,8 @@ function activate( context )
             c.get( 'filtering.includeGlobs' ),
             c.get( 'filtering.excludeGlobs' ),
             tempIncludeGlobs,
-            tempExcludeGlobs ) : undefined;
+            tempExcludeGlobs,
+            submoduleExcludeGlobs ) : undefined;
 
         if( globs && globs.length > 0 )
         {
@@ -440,6 +447,16 @@ function activate( context )
             searchWorkspaces( searchList );
         }
 
+        if( config.shouldIgnoreGitSubmodules() )
+        {
+            submoduleExcludeGlobs = [];
+            searchList.forEach( function( rootPath )
+            {
+                submoduleExcludeGlobs = submoduleExcludeGlobs.concat( utils.getSubmoduleExcludeGlobs( rootPath ) );
+            } );
+            context.workspaceState.update( 'submoduleExcludeGlobs', submoduleExcludeGlobs );
+        }
+
         iterateSearchList();
 
         refreshOpenFiles();
@@ -518,6 +535,19 @@ function activate( context )
 
         if( document.uri.scheme === 'file' && isIncluded( document.fileName ) === true )
         {
+            var extractExtraLines = function( section )
+            {
+                result.extraLines.push( addResult( offset ) );
+                offset += section.length + 1;
+            };
+            var isMatch = function( s )
+            {
+                if( s.file === result.file && s.line == result.line && s.column == result.column )
+                {
+                    found = true;
+                }
+            };
+
             var text = document.getText();
             var regex = utils.getRegexForEditorSearch();
 
@@ -540,21 +570,11 @@ function activate( context )
                     result.extraLines = [];
                     offset += sections[ 0 ].length + 1;
                     sections.shift();
-                    sections.map( function( section )
-                    {
-                        result.extraLines.push( addResult( offset ) );
-                        offset += section.length + 1;
-                    } );
+                    sections.map( extractExtraLines );
                 }
 
                 var found = false;
-                searchResults.map( function( s )
-                {
-                    if( s.file === result.file && s.line == result.line && s.column == result.column )
-                    {
-                        found = true;
-                    }
-                } );
+                searchResults.map( isMatch );
                 if( found === false )
                 {
                     debug( " Match (Editor):" + JSON.stringify( result ) );
@@ -940,7 +960,7 @@ function activate( context )
                 context.workspaceState.update( 'excludeGlobs', excludeGlobs );
                 rebuild();
             }
-            dumpFolderFilter()
+            dumpFolderFilter();
         } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.resetCache', function()

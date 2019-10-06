@@ -95,7 +95,7 @@ QUnit.test( "utils.extractTag remove colon from ${after}", function( assert )
 
     result = utils.extractTag( "before TODO :after" );
     assert.equal( result.withoutTag, "after" );
-    result = utils.formatLabel( "${tag}: ${after}", { tag: result.tag, after: result.withoutTag } )
+    result = utils.formatLabel( "${tag}: ${after}", { tag: result.tag, after: result.withoutTag } );
     assert.equal( result, "TODO: after" );
 } );
 
@@ -113,7 +113,7 @@ QUnit.test( "utils.extractTag copes with escaped regex characters", function( as
     var testConfig = stubs.getTestConfig();
     testConfig.tagList = [
         "TO\\DO",
-    ]
+    ];
     utils.init( testConfig );
 
     result = utils.extractTag( "before TO\\DO" );

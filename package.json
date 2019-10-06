@@ -405,6 +405,11 @@
                     "default": false,
                     "markdownDescription": "If true, the built in file excludes are also used."
                 },
+                "todo-tree.filtering.ignoreGitSubmodules": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "If true, any subfolders containing a .git folder will be ignored when searching"
+                },
                 "todo-tree.regex.regex": {
                     "type": "string",
                     "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
@@ -543,12 +548,9 @@
     },
     "dependencies": {
         "comment-patterns": "^0.10.1",
+        "find": "^0.3.0",
         "micromatch": "^3.1.10",
         "octicons": "^8.3.0",
         "treeify": "^1.1.0"
-    },
-    "devDependencies": {
-        "node-qunit": "^1.0.0",
-        "qunit": "^2.8.0"
     }
 }

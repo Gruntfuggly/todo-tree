@@ -20,11 +20,11 @@ testConfig.shouldGroup = function()
 testConfig.globs = function()
 {
     return this.globsList;
-}
+};
 testConfig.tags = function()
 {
     return this.tagList;
-}
+};
 
 function getTestConfig()
 {

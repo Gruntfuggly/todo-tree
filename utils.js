@@ -1,5 +1,6 @@
 var micromatch = require( 'micromatch' );
 var path = require( 'path' );
+var find = require( 'find' );
 
 var config;
 
@@ -212,10 +213,24 @@ function createFolderGlob( folderPath, rootPath, filter )
             fp = fp.substring( path.dirname( rp ).length );
         }
 
-        return glob = ( "**/" + fp + filter ).replace( /\/\//g, '/' );
+        return ( "**/" + fp + filter ).replace( /\/\//g, '/' );
     }
 
-    return ( folderPath + filter ).replace( /\/\//g, '/' );;
+    return ( folderPath + filter ).replace( /\/\//g, '/' );
+}
+
+function getSubmoduleExcludeGlobs( rootPath )
+{
+    var submodules = find.dirSync( '.git', rootPath );
+    submodules = submodules.map( function( submodule )
+    {
+        return path.dirname( submodule );
+    } );
+    submodules = submodules.filter( function( submodule )
+    {
+        return submodule != rootPath;
+    } );
+    return submodules;
 }
 
 module.exports.init = init;
@@ -229,3 +244,4 @@ module.exports.getRegexForEditorSearch = getRegexForEditorSearch;
 module.exports.isIncluded = isIncluded;
 module.exports.formatLabel = formatLabel;
 module.exports.createFolderGlob = createFolderGlob;
+module.exports.getSubmoduleExcludeGlobs = getSubmoduleExcludeGlobs;
