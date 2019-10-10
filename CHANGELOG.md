@@ -1,6 +1,7 @@
 - Add option to ignore git submodules
 - Reorder icons to be consistent with the Explorer view
 - Fix white icons in tree
+- Remove cached icons when resetting cache
 
 # v0.0.158 - 2019-10-03
 - Allow --no-config to be removed

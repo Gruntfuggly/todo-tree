@@ -5,6 +5,7 @@ var ripgrep = require( './ripgrep' );
 var path = require( 'path' );
 var treeify = require( 'treeify' );
 var os = require( 'os' );
+var fs = require( 'fs' );
 
 var tree = require( "./tree.js" );
 var highlights = require( './highlights.js' );
@@ -965,9 +966,21 @@ function activate( context )
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.resetCache', function()
         {
+            function purgeFolder( folder )
+            {
+                fs.readdir( folder, function( err, files )
+                {
+                    files.map( function( file )
+                    {
+                        fs.unlinkSync( path.join( folder, file ) );
+                    } );
+                } );
+            }
+
             context.workspaceState.update( 'includeGlobs', [] );
             context.workspaceState.update( 'excludeGlobs', [] );
             context.workspaceState.update( 'expandedNodes', [] );
+            context.workspaceState.update( 'submoduleExcludeGlobs', [] );
             context.workspaceState.update( 'buildCounter', undefined );
             context.workspaceState.update( 'currentFilter', undefined );
             context.workspaceState.update( 'filtered', undefined );
@@ -976,6 +989,8 @@ function activate( context )
             context.workspaceState.update( 'expanded', undefined );
             context.workspaceState.update( 'grouped', undefined );
             context.globalState.update( 'migratedVersion', undefined );
+
+            purgeFolder( context.globalStoragePath );
         } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.resetFolderFilter', function()
