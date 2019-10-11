@@ -176,6 +176,9 @@ Set this to false to apply the globs *after* the search (legacy behaviour).
 **todo-tree.filtering.useBuiltInExcludes** ('false')
 Set this to true to include the built in file excludes setting.
 
+**todo-tree.filtering.ignoreGitSubmodules** ('false')
+If true, any subfolders containing a .git file will be ignored when searching.
+
 **todo-tree.highlights.highlightDelay** (`500`)
 The delay before highlighting (milliseconds).
 

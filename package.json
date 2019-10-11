@@ -411,12 +411,12 @@
                 "todo-tree.filtering.ignoreGitSubmodules": {
                     "type": "boolean",
                     "default": false,
-                    "markdownDescription": "If true, any subfolders containing a .git folder will be ignored when searching"
+                    "markdownDescription": "If true, any subfolders containing a .git file will be ignored when searching."
                 },
                 "todo-tree.regex.regex": {
                     "type": "string",
                     "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
-                    "markdownDescription": "Regular expression for matching TODOs. Note: $TAGS will be replaced by the tag list"
+                    "markdownDescription": "Regular expression for matching TODOs. Note: $TAGS will be replaced by the tag list."
                 },
                 "todo-tree.regex.regexCaseSensitive": {
                     "type": "boolean",

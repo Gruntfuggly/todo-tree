@@ -221,7 +221,7 @@ function createFolderGlob( folderPath, rootPath, filter )
 
 function getSubmoduleExcludeGlobs( rootPath )
 {
-    var submodules = find.dirSync( '.git', rootPath );
+    var submodules = find.fileSync( '.git', rootPath );
     submodules = submodules.map( function( submodule )
     {
         return path.dirname( submodule );
