@@ -1,3 +1,4 @@
+# v0.0.160 - 2019-10-11
 - Fix submodule detection to look for .git file not folder
 
 # v0.0.159 - 2019-10-11
