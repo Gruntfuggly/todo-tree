@@ -1,3 +1,4 @@
+# v0.0.159 - 2019-10-11
 - Add option to ignore git submodules
 - Reorder icons to be consistent with the Explorer view
 - Fix white icons in tree
