@@ -62,7 +62,7 @@ function showBadges()
 function regex()
 {
     return {
-        tags: vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'tags' ),
+        tags: tags(),
         regex: vscode.workspace.getConfiguration( 'todo-tree.regex' ).get( 'regex' ),
         caseSensitive: vscode.workspace.getConfiguration( 'todo-tree.regex' ).get( 'regexCaseSensitive' )
     };
@@ -97,7 +97,7 @@ function ripgrepPath()
 
 function tags()
 {
-    return vscode.workspace.getConfiguration( 'todo-tree.general' ).tags;
+    return vscode.workspace.getConfiguration( 'todo-tree.general' ).tags.sort().reverse();
 }
 
 function shouldSortTagsOnlyViewAlphabetically()

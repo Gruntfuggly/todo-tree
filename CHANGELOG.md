@@ -2,6 +2,7 @@
 - Reorder icons to be consistent with the Explorer view
 - Fix white icons in tree
 - Remove cached icons when resetting cache
+- Sort tags in reverse order to allow more specific tags to be found first
 
 # v0.0.158 - 2019-10-03
 - Allow --no-config to be removed

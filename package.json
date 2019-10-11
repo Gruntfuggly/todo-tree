@@ -314,7 +314,10 @@
                         "TODO",
                         "FIXME"
                     ],
-                    "markdownDescription": "List of tags"
+                    "items": {
+                        "type": "string"
+                    },
+                    "markdownDescription": "List of tags. *Note, if one tag starts with another tag, the longer tag should be specified first to prevent the shorter tag being matched.*"
                 },
                 "todo-tree.general.rootFolder": {
                     "type": "string",

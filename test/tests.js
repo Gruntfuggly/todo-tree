@@ -132,46 +132,45 @@ QUnit.test( "utils.getRegexSource returns the regex source without expanded tags
 QUnit.test( "utils.getRegexSource returns the regex source with expanded tags", function( assert )
 {
     var testConfig = stubs.getTestConfig();
-    testConfig.tagList = [ "ONE", "TWO" ];
+    testConfig.tagList = [ "TWO", "ONE" ];
     utils.init( testConfig );
 
-    assert.equal( utils.getRegexSource(), "(ONE|TWO)" );
+    assert.equal( utils.getRegexSource(), "(TWO|ONE)" );
 
     testConfig.regexSource = "($TAGS)-($TAGS)";
     utils.init( testConfig );
 
-    assert.equal( utils.getRegexSource(), "(ONE|TWO)-(ONE|TWO)" );
+    assert.equal( utils.getRegexSource(), "(TWO|ONE)-(TWO|ONE)" );
 } );
 
 QUnit.test( "utils.getRegexSource returns the regex source and escapes backslashes", function( assert )
 {
     var testConfig = stubs.getTestConfig();
-    testConfig.tagList = [ "ONE\\", "\\TWO" ];
+    testConfig.tagList = [ "\\TWO", "ONE\\" ];
     utils.init( testConfig );
 
-    assert.equal( utils.getRegexSource(), "(ONE\\\\\\|\\\\\\TWO)" );
+    assert.equal( utils.getRegexSource(), "(\\\\\\TWO|ONE\\\\\\)" );
+} );
+
+QUnit.test( "utils.getRegexSource sorts the tags in reverse order to allow more specific tags to be found first", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.tagList = [ "FIXME", "TODO", "TODO(API)" ];
+    utils.init( testConfig );
+
+    assert.equal( utils.getRegexSource(), "(TODO\\(API\\)|TODO|FIXME)" );
 } );
 
 QUnit.test( "utils.getRegexSource returns the regex source and escapes other regex characters", function( assert )
 {
     var testConfig = stubs.getTestConfig();
     testConfig.tagList = [
-        "A.B",
-        "A^B",
-        "A$B",
-        "A*B",
-        "A+B",
-        "A?B",
-        "A(B",
-        "A)B",
-        "A[B",
-        "A{B",
-        "A|B"
+        "A|B", "A{B", "A^B", "A[B", "A?B", "A.B", "A+B", "A*B", "A)B", "A(B", "A$B",
     ];
 
     utils.init( testConfig );
 
-    assert.equal( utils.getRegexSource(), "(A\\.B|A\\^B|A\\$B|A\\*B|A\\+B|A\\?B|A\\(B|A\\)B|A\\[B|A\\{B|A\\|B)" );
+    assert.equal( utils.getRegexSource(), "(A\\|B|A\\{B|A\\^B|A\\[B|A\\?B|A\\.B|A\\+B|A\\*B|A\\)B|A\\(B|A\\$B)" );
 } );
 
 QUnit.test( "utils.getRegexForRipGrep applies the expected default flags", function( assert )

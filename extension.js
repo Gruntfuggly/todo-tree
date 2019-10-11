@@ -671,11 +671,14 @@ function activate( context )
         var tags = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'tags' );
         vscode.window.showQuickPick( tags, { matchOnDetail: true, matchOnDescription: true, canPickMany: true, placeHolder: "Select tags to remove" } ).then( function( tagsToRemove )
         {
-            tagsToRemove.map( tag =>
+            if( tagsToRemove )
             {
-                tags = tags.filter( t => tag != t );
-            } );
-            vscode.workspace.getConfiguration( 'todo-tree.general' ).update( 'tags', tags, true );
+                tagsToRemove.map( tag =>
+                {
+                    tags = tags.filter( t => tag != t );
+                } );
+                vscode.workspace.getConfiguration( 'todo-tree.general' ).update( 'tags', tags, true );
+            }
         } );
     }
 

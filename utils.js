@@ -83,7 +83,7 @@ function removeBlockComments( text, fileName )
 function getTagRegex()
 {
     var c = config.regex();
-    var tags = c.tags;
+    var tags = c.tags.sort().reverse();
     tags = tags.map( function( tag )
     {
         tag = tag.replace( /\\/g, '\\\\\\' );
