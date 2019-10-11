@@ -3,6 +3,7 @@
 - Fix white icons in tree
 - Remove cached icons when resetting cache
 - Sort tags in reverse order to allow more specific tags to be found first
+- Add link to wiki in README.md
 
 # v0.0.158 - 2019-10-03
 - Allow --no-config to be removed

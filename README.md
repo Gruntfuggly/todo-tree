@@ -6,6 +6,8 @@ This extension quickly searches (using <a href="https://github.com/BurntSushi/ri
 
 Found TODOs can also be highlighted in open files.
 
+*Please see the [wiki](https://github.com/Gruntfuggly/todo-tree/wiki/Configuration-Examples) for configuration examples.*
+
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/screenshot.png">
 
 *Notes:*
