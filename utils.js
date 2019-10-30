@@ -13,6 +13,10 @@ function init( configuration )
 
 function isHexColour( colour )
 {
+    if( typeof ( colour ) !== 'string' )
+    {
+        return false;
+    }
     var withoutHash = colour.indexOf( '#' ) === 0 ? colour.substring( 1 ) : colour;
     var hex = withoutHash.split( / / )[ 0 ].replace( /[^\da-fA-F]/g, '' );
     return ( typeof colour === "string" ) && hex.length === withoutHash.length && ( hex.length === 3 || hex.length === 6 ) && !isNaN( parseInt( hex, 16 ) );

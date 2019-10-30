@@ -75,12 +75,6 @@ function complementaryColour( colour )
 
 function getDecoration( tag )
 {
-    function setDefaultBackgroundColours()
-    {
-        lightBackgroundColour = "#ffffff";
-        darkBackgroundColour = "#000000";
-    }
-
     var foregroundColour = getForeground( tag );
     var backgroundColour = getBackground( tag );
 
@@ -91,10 +85,25 @@ function getDecoration( tag )
     var lightBackgroundColour = backgroundColour;
     var darkBackgroundColour = backgroundColour;
 
-    if( foregroundColour && !utils.isHexColour( foregroundColour ) && defaultColours.indexOf( foregroundColour ) > -1 )
+    if( foregroundColour )
     {
-        lightForegroundColour = defaultLightColours[ foregroundColour ];
-        darkForegroundColour = defaultDarkColours[ foregroundColour ];
+        if( !utils.isHexColour( foregroundColour ) )
+        {
+            if( defaultColours.indexOf( foregroundColour ) > -1 )
+            {
+                lightForegroundColour = defaultLightColours[ foregroundColour ];
+                darkForegroundColour = defaultDarkColours[ foregroundColour ];
+            }
+            else if( foregroundColour.match( /(foreground|background)/i ) )
+            {
+                lightForegroundColour = new vscode.ThemeColor( foregroundColour );
+                darkForegroundColour = new vscode.ThemeColor( foregroundColour );
+            } else
+            {
+                lightForegroundColour = new vscode.ThemeColor( 'editor.foreground' );
+                darkForegroundColour = new vscode.ThemeColor( 'editor.foreground' );
+            }
+        }
     }
 
     if( backgroundColour )
@@ -106,14 +115,26 @@ function getDecoration( tag )
                 lightBackgroundColour = defaultLightColours[ backgroundColour ];
                 darkBackgroundColour = defaultDarkColours[ backgroundColour ];
             }
+            else if( backgroundColour.match( /(foreground|background)/i ) )
+            {
+                lightBackgroundColour = new vscode.ThemeColor( backgroundColour );
+                darkBackgroundColour = new vscode.ThemeColor( backgroundColour );
+            }
             else
             {
-                setDefaultBackgroundColours();
+                lightBackgroundColour = new vscode.ThemeColor( 'editor.background' );
+                darkBackgroundColour = new vscode.ThemeColor( 'editor.background' );
             }
         }
 
-        lightBackgroundColour = utils.hexToRgba( lightBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
-        darkBackgroundColour = utils.hexToRgba( darkBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
+        if( utils.isHexColour( lightBackgroundColour ) )
+        {
+            lightBackgroundColour = utils.hexToRgba( lightBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
+        }
+        if( utils.isHexColour( darkBackgroundColour ) )
+        {
+            darkBackgroundColour = utils.hexToRgba( darkBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
+        }
     }
 
     if( lightForegroundColour === undefined )
@@ -142,6 +163,18 @@ function getDecoration( tag )
     {
         decorationOptions.overviewRulerColor = getRulerColour( tag, lightForegroundColour );
         decorationOptions.overviewRulerLane = lane;
+    }
+
+    if( lightBackgroundColour === undefined && lightForegroundColour === undefined )
+    {
+        lightBackgroundColour = vscode.ThemeColor( 'editor.foreground' );
+        lightForegroundColour = new vscode.ThemeColor( 'editor.background' );
+    }
+
+    if( darkBackgroundColour === undefined && darkForegroundColour === undefined )
+    {
+        darkBackgroundColour = vscode.ThemeColor( 'editor.foreground' );
+        darkForegroundColour = new vscode.ThemeColor( 'editor.background' );
     }
 
     decorationOptions.light = { backgroundColor: lightBackgroundColour, color: lightForegroundColour };
@@ -311,57 +344,6 @@ function highlight( editor )
 
     if( editor )
     {
-        var text = editor.document.getText();
-        var regex = utils.getRegexForEditorSearch();
-        var match;
-        while( ( match = regex.exec( text ) ) !== null )
-        {
-            var tag = match[ 0 ];
-            var offsetStart = match.index;
-            var offsetEnd = offsetStart + match[ 0 ].length;
-
-            var extracted = utils.extractTag( match[ 0 ] );
-            if( extracted.tag && extracted.tag.length > 0 )
-            {
-                tag = extracted.tag;
-                offsetStart = match.index + extracted.tagOffset;
-                offsetEnd = offsetStart + extracted.tag.length;
-            }
-            var type = getType( tag );
-            if( type !== 'none' )
-            {
-                var startPos = editor.document.positionAt( offsetStart );
-                var endPos = editor.document.positionAt( offsetEnd );
-                var fullEndPos = editor.document.positionAt( match.index + match[ 0 ].length );
-
-                if( type === 'text-and-comment' )
-                {
-                    startPos = editor.document.positionAt( match.index );
-                    endPos = new vscode.Position( fullEndPos.line, editor.document.lineAt( fullEndPos.line ).range.end.character );
-                }
-                else if( type === 'text' )
-                {
-                    endPos = new vscode.Position( fullEndPos.line, editor.document.lineAt( fullEndPos.line ).range.end.character );
-                }
-                else if( type === 'tag-and-comment' )
-                {
-                    startPos = editor.document.positionAt( match.index );
-                }
-                else if( type === 'line' || type === 'whole-line' )
-                {
-                    endPos = new vscode.Position( fullEndPos.line, editor.document.lineAt( fullEndPos.line ).range.end.character );
-                    startPos = new vscode.Position( startPos.line, 0 );
-                }
-
-                var decoration = { range: new vscode.Range( startPos, endPos ) };
-                if( documentHighlights[ tag ] === undefined )
-                {
-                    documentHighlights[ tag ] = [];
-                }
-                documentHighlights[ tag ].push( decoration );
-            }
-        }
-
         if( decorations[ editor.id ] )
         {
             decorations[ editor.id ].forEach( function( decoration )
@@ -371,12 +353,67 @@ function highlight( editor )
         }
 
         decorations[ editor.id ] = [];
-        Object.keys( documentHighlights ).forEach( function( tag )
+
+        if( vscode.workspace.getConfiguration( 'todo-tree.highlights' ).get( 'enabled', true ) )
         {
-            var decoration = getDecoration( tag );
-            decorations[ editor.id ].push( decoration );
-            editor.setDecorations( decoration, documentHighlights[ tag ] );
-        } );
+            var text = editor.document.getText();
+            var regex = utils.getRegexForEditorSearch();
+            var match;
+            while( ( match = regex.exec( text ) ) !== null )
+            {
+                var tag = match[ 0 ];
+                var offsetStart = match.index;
+                var offsetEnd = offsetStart + match[ 0 ].length;
+
+                var extracted = utils.extractTag( match[ 0 ] );
+                if( extracted.tag && extracted.tag.length > 0 )
+                {
+                    tag = extracted.tag;
+                    offsetStart = match.index + extracted.tagOffset;
+                    offsetEnd = offsetStart + extracted.tag.length;
+                }
+                var type = getType( tag );
+                if( type !== 'none' )
+                {
+                    var startPos = editor.document.positionAt( offsetStart );
+                    var endPos = editor.document.positionAt( offsetEnd );
+                    var fullEndPos = editor.document.positionAt( match.index + match[ 0 ].length );
+
+                    if( type === 'text-and-comment' )
+                    {
+                        startPos = editor.document.positionAt( match.index );
+                        endPos = new vscode.Position( fullEndPos.line, editor.document.lineAt( fullEndPos.line ).range.end.character );
+                    }
+                    else if( type === 'text' )
+                    {
+                        endPos = new vscode.Position( fullEndPos.line, editor.document.lineAt( fullEndPos.line ).range.end.character );
+                    }
+                    else if( type === 'tag-and-comment' )
+                    {
+                        startPos = editor.document.positionAt( match.index );
+                    }
+                    else if( type === 'line' || type === 'whole-line' )
+                    {
+                        endPos = new vscode.Position( fullEndPos.line, editor.document.lineAt( fullEndPos.line ).range.end.character );
+                        startPos = new vscode.Position( startPos.line, 0 );
+                    }
+
+                    var decoration = { range: new vscode.Range( startPos, endPos ) };
+                    if( documentHighlights[ tag ] === undefined )
+                    {
+                        documentHighlights[ tag ] = [];
+                    }
+                    documentHighlights[ tag ].push( decoration );
+                }
+            }
+
+            Object.keys( documentHighlights ).forEach( function( tag )
+            {
+                var decoration = getDecoration( tag );
+                decorations[ editor.id ].push( decoration );
+                editor.setDecorations( decoration, documentHighlights[ tag ] );
+            } );
+        }
     }
 }
 

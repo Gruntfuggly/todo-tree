@@ -3,6 +3,9 @@ var stubs = require( './stubs.js' );
 
 QUnit.test( "utils.isHexColour", function( assert )
 {
+    assert.ok( utils.isHexColour( {} ) === false );
+    assert.ok( utils.isHexColour( [] ) === false );
+    assert.ok( utils.isHexColour( undefined ) === false );
     assert.ok( utils.isHexColour( "" ) === false );
     assert.ok( utils.isHexColour( "red" ) === false );
     assert.ok( utils.isHexColour( "ff0000" ) === true );

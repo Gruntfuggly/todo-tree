@@ -1,3 +1,6 @@
+- Add support for theme colours in highlights
+- Turn on highlighting by default (with inverted editor background/foreground)
+
 # v0.0.160 - 2019-10-11
 - Fix submodule detection to look for .git file not folder
 

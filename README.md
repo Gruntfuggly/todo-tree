@@ -24,13 +24,13 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `background` - used to set the background colour of the highlight in the editor.
 
-`opacity` - percentage value used with the background colour. 100% will produce an opaque background which will obscure selection and other decorations.
+`opacity` - percentage value used with the background colour. 100% will produce an opaque background which will obscure selection and other decorations. *Note: opacity is ignored when theme colours are used.*
 
 `fontWeight`, `fontStyle`, `textDecoration` - can be used to style the highlight with standard CSS values.
 
 `borderRadius` - used to set the border radius of the background of the highlight.
 
-Foreground and background colours can be one of "red", "green", "blue", "yellow", "magenta", "cyan", "grey", "white" or "black". RGB values can also be used (e.g. "#80FF00").
+Foreground and background colours can be one of "red", "green", "blue", "yellow", "magenta", "cyan", "grey", "white" or "black". RGB values can also be used (e.g. "#80FF00"). You can also use colours from the current theme, e.g. `peekViewResult.background`.
 
 `icon` - used to set a different icon in the tree view. Must be a valid octicon (see https://octicons.github.com/). Defaults to a tick if it's not valid. You can also use "todo-tree", or "todo-tree-filled" if you want to use the icon from the activity view.
 
@@ -178,6 +178,9 @@ Set this to true to include the built in file excludes setting.
 
 **todo-tree.filtering.ignoreGitSubmodules** ('false')
 If true, any subfolders containing a .git file will be ignored when searching.
+
+**todo-tree.highlights.enabled** ('true')
+Set this to false to turn off highlighting.
 
 **todo-tree.highlights.highlightDelay** (`500`)
 The delay before highlighting (milliseconds).

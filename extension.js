@@ -755,6 +755,14 @@ function activate( context )
                 }
             }
 
+            function isUnset( settingName )
+            {
+                var setting = vscode.workspace.getConfiguration( 'todo-tree' ).inspect( settingName );
+                return setting.globalValue === undefined &&
+                    setting.workspaceValue === undefined &&
+                    setting.workspaceFolderValue === undefined;
+            }
+
             var c = vscode.workspace.getConfiguration( 'todo-tree' );
             var migrated = false;
 
@@ -798,19 +806,34 @@ function activate( context )
             {
                 if( context.globalState.get( 'migratedVersion', 0 ) < 147 )
                 {
-                    vscode.window.showInformationMessage( "Your Todo Tree settings have been moved. Please remove the old settings from your settings.json.", "Open Settings", "Don't Show This Again" ).then(
-                        button =>
+                    vscode.window.showInformationMessage( "Your Todo Tree settings have been moved. Please remove the old settings from your settings.json.", "Open Settings", "Don't Show This Again" ).then( function( button )
+                    {
+                        if( button === "Open Settings" )
                         {
-                            if( button === "Open Settings" )
-                            {
-                                vscode.commands.executeCommand( 'workbench.action.openSettingsJson', true );
-                            }
-                            else if( button === "Don't Show This Again" )
-                            {
-                                context.globalState.update( 'migratedVersion', 147 );
-                            }
-                        } );
+                            vscode.commands.executeCommand( 'workbench.action.openSettingsJson', true );
+                        }
+                        else if( button === "Don't Show This Again" )
+                        {
+                            context.globalState.update( 'migratedVersion', 147 );
+                        }
+                    } );
                 }
+            }
+
+            if( context.globalState.get( 'migratedVersion', 0 ) < 161 && isUnset( 'highlights.defaultHighlight' ) && isUnset( 'highlights.customHighlight' ) )
+            {
+                vscode.window.showInformationMessage( "Todo Tree highlights are now turned on by default.", "Turn Highlights Off", "Don't Show This Again" ).then( function( button )
+                {
+                    if( button === "Don't Show This Again" )
+                    {
+                        vscode.workspace.getConfiguration( 'todo-tree.highlights' ).update( 'enabled', true, vscode.ConfigurationTarget.Global );
+                    }
+                    else if( button === "Turn Highlights Off" )
+                    {
+                        vscode.workspace.getConfiguration( 'todo-tree.highlights' ).update( 'enabled', false, vscode.ConfigurationTarget.Global );
+                    }
+                    context.globalState.update( 'migratedVersion', 161 );
+                } );
             }
         }
 
@@ -1089,7 +1112,8 @@ function activate( context )
         {
             if( e.affectsConfiguration( "todo-tree" ) || e.affectsConfiguration( 'files.exclude' ) )
             {
-                if( e.affectsConfiguration( "todo-tree.highlights.defaultHighlight" ) ||
+                if( e.affectsConfiguration( "todo-tree.highlights.enabled" ) ||
+                    e.affectsConfiguration( "todo-tree.highlights.defaultHighlight" ) ||
                     e.affectsConfiguration( "todo-tree.highlights.customHighlight" ) )
                 {
                     highlights.refreshComplementaryColours();

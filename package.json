@@ -438,6 +438,11 @@
                     "default": 200,
                     "markdownDescription": "Size of the buffer to use for retrieving output from ripgrep (kilobytes)"
                 },
+                "todo-tree.highlights.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Set to false to disable highlighting"
+                },
                 "todo-tree.highlights.highlightDelay": {
                     "type": "integer",
                     "default": 500,
