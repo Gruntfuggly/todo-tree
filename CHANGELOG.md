@@ -1,3 +1,6 @@
+# v0.0.162 - 2019-11-04
+- Add support for manually revealing the current file in the tree
+
 # v0.0.161 - 2019-10-30
 - Add support for theme colours in highlights
 - Turn on highlighting by default (inverted editor background/foreground)
