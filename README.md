@@ -106,6 +106,7 @@ The tree view header can contain the following buttons:
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/refresh.png" height="16px" align="center"> - Rebuild the tree<br>
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/scan-open-files.png" height="16px" align="center"> - Show tags from open files only<br>
 <img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/scan-workspace.png" height="16px" align="center"> - Show tags from workspace<br>
+<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/reveal.png" height="16px" align="center"> - Show the current file in the tree<br>
 
 ## Folder Filter Context Menu
 
@@ -322,5 +323,7 @@ Tree view icons made by <a href="https://www.flaticon.com/authors/vaadin" title=
 Tag icons made by <a href="https://www.flaticon.com/authors/dave-gandy" title="Dave Gandy">Dave Gandy</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
 
 Tags Icon made by <a href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+
+Reveal Icon made by <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
 
 Lots of the icons have now been updated by [johnletey](https://github.com/johnletey) to match the new VS Code 1.37.0 GUI. Much appreciated!

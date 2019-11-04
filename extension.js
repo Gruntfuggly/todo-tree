@@ -479,6 +479,7 @@ function activate( context )
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-scan-open-files-or-workspace-button', c.get( 'tree.showScanOpenFilesOrWorkspaceButton', false ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-open-files-only', c.get( 'tree.showTagsFromOpenFilesOnly', false ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-reveal-button', !c.get( 'tree.trackFile', false ) );
 
         var children = provider.getChildren();
         var empty = children.length === 1 && children[ 0 ].empty === true;
@@ -839,20 +840,17 @@ function activate( context )
 
         function showInTree( uri )
         {
-            if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).trackFile === true )
+            provider.getElement( uri.fsPath, function( element )
             {
-                provider.getElement( uri.fsPath, function( element )
+                if( todoTreeViewExplorer.visible === true )
                 {
-                    if( todoTreeViewExplorer.visible === true )
-                    {
-                        todoTreeViewExplorer.reveal( element, { focus: false, select: true } );
-                    }
-                    if( todoTreeView.visible === true )
-                    {
-                        todoTreeView.reveal( element, { focus: false, select: true } );
-                    }
-                } );
-            }
+                    todoTreeViewExplorer.reveal( element, { focus: false, select: true } );
+                }
+                if( todoTreeView.visible === true )
+                {
+                    todoTreeView.reveal( element, { focus: false, select: true } );
+                }
+            } );
         }
 
         function documentChanged( document )
@@ -1027,6 +1025,14 @@ function activate( context )
             dumpFolderFilter();
         } ) );
 
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.reveal', function()
+        {
+            if( vscode.window.activeTextEditor )
+            {
+                showInTree( vscode.window.activeTextEditor.document.uri );
+            }
+        } ) );
+
         context.subscriptions.push( todoTreeViewExplorer.onDidExpandElement( function( e ) { provider.setExpanded( e.element.fsPath, true ); } ) );
         context.subscriptions.push( todoTreeView.onDidExpandElement( function( e ) { provider.setExpanded( e.element.fsPath, true ); } ) );
         context.subscriptions.push( todoTreeViewExplorer.onDidCollapseElement( function( e ) { provider.setExpanded( e.element.fsPath, false ); } ) );
@@ -1053,7 +1059,7 @@ function activate( context )
             {
                 openDocuments[ e.document.fileName ] = e.document;
 
-                if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
+                if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true && vscode.workspace.getConfiguration( 'todo-tree.tree' ).trackFile === true )
                 {
                     if( e.document.uri && e.document.uri.scheme === "file" )
                     {
