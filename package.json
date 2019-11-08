@@ -325,8 +325,9 @@
                 "todo-tree.general.tags": {
                     "type": "array",
                     "default": [
-                        "TODO",
-                        "FIXME"
+                        "BUG",
+                        "FIXME",
+                        "TODO"
                     ],
                     "items": {
                         "type": "string"
@@ -469,7 +470,14 @@
                 },
                 "todo-tree.highlights.customHighlight": {
                     "type": "object",
-                    "default": {},
+                    "default": {
+                        "FIXME": {
+                            "icon": "flame"
+                        },
+                        "BUG": {
+                            "icon": "bug"
+                        }
+                    },
                     "markdownDescription": "Custom configuration for highlighting, [Read more...](https://github.com/Gruntfuggly/todo-tree#highlighting)"
                 },
                 "todo-tree.tree.filterCaseSensitive": {

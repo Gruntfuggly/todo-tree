@@ -147,7 +147,7 @@ Show a debug channel in the output view.
 **todo-tree.general.rootFolder** (`""`)
 By default, any open workspaces will have a tree in the view. Use this to force another folder to be the root of the tree. You can include environment variables and also use ${workspaceFolder}. e.g. `"todo-tree.general.rootFolder": "${workspaceFolder}/test"` or `"todo-tree.general.rootFolder": "${HOME}/project"`. *Note: Other open files (outside of the rootFolder) will be shown (as they are opened) with their full path in brackets.*
 
-**todo-tree.general.tags** (`["TODO","FIXME"]`)
+**todo-tree.general.tags** (`["TODO","FIXME","BUG"]`)
 This defines the tags which are recognised as TODOs. This list is automatically inserted into the regex.
 
 **todo-tree.general.revealBehaviour** (`start of todo`)
