@@ -1,4 +1,5 @@
 - Add some default icons and the BUG tag
+- Fix reveal tree from status bar
 
 # v0.0.162 - 2019-11-04
 - Add support for manually revealing the current file in the tree

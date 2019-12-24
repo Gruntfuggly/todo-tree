@@ -172,7 +172,7 @@ function activate( context )
     {
         if( config.clickingStatusBarShouldRevealTree() )
         {
-            var showInExplorer = vscode.workspace.getConfiguration( 'todo-tree' ).showInExplorer;
+            var showInExplorer = vscode.workspace.getConfiguration( 'todo-tree.tree' ).showInExplorer;
             if( showInExplorer === true )
             {
                 todoTreeViewExplorer.reveal( provider.getFirstNode(), { focus: false, select: false } );
