@@ -108,7 +108,20 @@ QUnit.test( "utils.extractTag returns text from the start of the line if the tag
     utils.init( testConfig );
 
     result = utils.extractTag( "before TODO" );
-    assert.equal( result.withoutTag, "before " );
+    assert.equal( result.withoutTag, "before" );
+    assert.equal( result.before, "before" );
+    assert.equal( result.after, "" );
+} );
+
+QUnit.test( "utils.extractTag returns text from before and after the tag", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    utils.init( testConfig );
+
+    result = utils.extractTag( "                before = text; // TODO stuff  ", 32 );
+    assert.equal( result.withoutTag, "stuff" );
+    assert.equal( result.before, "before = text;" );
+    assert.equal( result.after, "stuff" );
 } );
 
 QUnit.test( "utils.extractTag copes with escaped regex characters", function( assert )

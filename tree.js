@@ -147,7 +147,7 @@ function createTodoNode( result )
 {
     var id = ( buildCounter * 1000000 ) + nodeCounter++;
     var text = utils.removeBlockComments( result.match, result.file );
-    var extracted = utils.extractTag( text );
+    var extracted = utils.extractTag( text, result.column );
     var label = ( extracted.withoutTag && extracted.withoutTag.length > 0 ) ? extracted.withoutTag : "line " + result.line;
 
     if( config.shouldGroup() !== true )
@@ -163,8 +163,8 @@ function createTodoNode( result )
         line: result.line - 1,
         column: result.column,
         endColumn: result.column + result.match.length,
-        after: extracted.withoutTag.trim(),
-        before: result.match.substring( 0, result.column - 1 ).trim(),
+        after: extracted.after.trim(),
+        before: extracted.before.trim(),
         id: id,
         visible: true,
         extraLines: []
