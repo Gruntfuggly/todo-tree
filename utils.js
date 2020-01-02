@@ -105,6 +105,8 @@ function extractTag( text )
     var tagMatch;
     var tagOffset;
     var originalTag;
+    var before;
+    var after;
 
     if( c.regex.indexOf( "$TAGS" ) > -1 )
     {
@@ -118,10 +120,14 @@ function extractTag( text )
             if( rightOfTag.length === 0 )
             {
                 text = text.substr( 0, tagMatch.index );
+                after = "";
+                before = text;
             }
             else
             {
                 text = rightOfTag;
+                after = rightOfTag;
+                before = text.substr( 0, tagMatch.index );
             }
             c.tags.map( function( tag )
             {
@@ -132,7 +138,7 @@ function extractTag( text )
             } );
         }
     }
-    return { tag: tagMatch ? originalTag : "", withoutTag: text, tagOffset: tagOffset };
+    return { tag: tagMatch ? originalTag : "", withoutTag: text, before: before, after: after, tagOffset: tagOffset };
 }
 
 function getRegexSource()
@@ -197,6 +203,7 @@ function formatLabel( template, node )
     result = result.replace( /\$\{tag\}/g, node.tag );
     result = result.replace( /\$\{after\}/g, node.after );
     result = result.replace( /\$\{before\}/g, node.before );
+    result = result.replace( /\$\{afterOrBefore\}/g, ( ( node.after === "" ) ? node.before : node.after ) );
     if( node.fsPath )
     {
         result = result.replace( /\$\{filename\}/g, path.basename( node.fsPath ) );
