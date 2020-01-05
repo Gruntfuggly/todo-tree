@@ -152,6 +152,21 @@ function getRegexSource()
     return regex;
 }
 
+function getRegexSourceFaster()
+{
+    /*
+    Replaces all unescaped "(" capturing groups with "(?:" non-capturing groups
+    instead, which doubles performance of the JS regex engine when searching.
+    Our replacement pattern uses negative lookbehind + lookahead to ensure
+    that it never matches escaped "\(" chars or already-modified "(?" groups.
+    Group 1 in the substitution contains any preceding NON-escaping "\".
+    */
+    var regex = getRegexSource();
+    regex = regex.replace( /(?<!\\)((?:\\\\)*)\((?!\?)/g, "$1(?:" );
+
+    return regex;
+}
+
 function getRegexForEditorSearch()
 {
     var flags = 'gm';
@@ -160,8 +175,8 @@ function getRegexForEditorSearch()
         flags += 'i';
     }
 
-    var source = getRegexSource();
-    return RegExp( source, flags );
+    // JavaScript regex performance is doubled by using the faster regex.
+    return RegExp( getRegexSourceFaster(), flags );
 }
 
 function getRegexForRipGrep()
@@ -172,6 +187,7 @@ function getRegexForRipGrep()
         flags += 'i';
     }
 
+    // RipGrep doesn't accept "(?:)" groups, so we'll send the regular regex.
     return RegExp( getRegexSource(), flags );
 }
 
@@ -250,6 +266,7 @@ module.exports.hexToRgba = hexToRgba;
 module.exports.removeBlockComments = removeBlockComments;
 module.exports.extractTag = extractTag;
 module.exports.getRegexSource = getRegexSource;
+module.exports.getRegexSourceFaster = getRegexSourceFaster;
 module.exports.getRegexForRipGrep = getRegexForRipGrep;
 module.exports.getRegexForEditorSearch = getRegexForEditorSearch;
 module.exports.isIncluded = isIncluded;
