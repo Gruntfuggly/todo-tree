@@ -378,57 +378,57 @@ function activate( context )
         }
     }
 
-    function rebuild()
+    function getRootFolders()
     {
-        function getRootFolders()
+        var rootFolders = [];
+        var valid = true;
+        var rootFolder = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'rootFolder' );
+        var envRegex = new RegExp( "\\$\\{(.*?)\\}", "g" );
+        if( rootFolder.indexOf( "${workspaceFolder}" ) > -1 )
         {
-            var rootFolders = [];
-            var valid = true;
-            var rootFolder = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'rootFolder' );
-            var envRegex = new RegExp( "\\$\\{(.*?)\\}", "g" );
-            if( rootFolder.indexOf( "${workspaceFolder}" ) > -1 )
+            if( vscode.workspace.workspaceFolders )
             {
-                if( vscode.workspace.workspaceFolders )
+                vscode.workspace.workspaceFolders.map( function( folder )
                 {
-                    vscode.workspace.workspaceFolders.map( function( folder )
-                    {
-                        var path = rootFolder;
-                        path = path.replace( /\$\{workspaceFolder\}/g, folder.uri.fsPath );
-                        rootFolders.push( path );
-                    } );
-                }
-                else
-                {
-                    valid = false;
-                }
-            }
-            else if( rootFolder !== "" )
-            {
-                rootFolders.push( rootFolder );
-            }
-
-            rootFolders.forEach( function( rootFolder )
-            {
-                rootFolder = rootFolder.replace( envRegex, function( match, name )
-                {
-                    return process.env[ name ];
-                } );
-            } );
-
-            var includes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includedWorkspaces', [] );
-            var excludes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludedWorkspaces', [] );
-
-            if( valid === true )
-            {
-                rootFolders = rootFolders.filter( function( folder )
-                {
-                    return utils.isIncluded( folder, includes, excludes );
+                    var path = rootFolder;
+                    path = path.replace( /\$\{workspaceFolder\}/g, folder.uri.fsPath );
+                    rootFolders.push( path );
                 } );
             }
-
-            return valid === true ? rootFolders : undefined;
+            else
+            {
+                valid = false;
+            }
+        }
+        else if( rootFolder !== "" )
+        {
+            rootFolders.push( rootFolder );
         }
 
+        rootFolders.forEach( function( rootFolder )
+        {
+            rootFolder = rootFolder.replace( envRegex, function( match, name )
+            {
+                return process.env[ name ];
+            } );
+        } );
+
+        var includes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includedWorkspaces', [] );
+        var excludes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludedWorkspaces', [] );
+
+        if( valid === true )
+        {
+            rootFolders = rootFolders.filter( function( folder )
+            {
+                return utils.isIncluded( folder, includes, excludes );
+            } );
+        }
+
+        return valid === true ? rootFolders : undefined;
+    }
+
+    function rebuild()
+    {
         searchResults = [];
         searchList = [];
 
@@ -1100,16 +1100,46 @@ function activate( context )
 
         context.subscriptions.push( vscode.workspace.onDidCloseTextDocument( document =>
         {
+            function removeFromTree( filename )
+            {
+                removeFileFromSearchResults( filename );
+                provider.remove( filename );
+                refreshTree();
+                updateStatusBar();
+            }
+
             delete openDocuments[ document.fileName ];
 
             if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
             {
-                if( document.uri.scheme === "file" && vscode.workspace.getConfiguration( 'todo-tree.tree' ).showTagsFromOpenFilesOnly === true )
+                if( document.uri.scheme === "file" )
                 {
-                    removeFileFromSearchResults( document.fileName );
-                    provider.remove( document.fileName );
-                    refreshTree();
-                    updateStatusBar();
+                    if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).showTagsFromOpenFilesOnly === true )
+                    {
+                        removeFromTree( document.fileName );
+                    }
+                    else
+                    {
+                        var keep = false;
+                        var tempSearchList = getRootFolders();
+
+                        if( tempSearchList.length === 0 )
+                        {
+                            searchWorkspaces( tempSearchList );
+                        }
+
+                        tempSearchList.map( function( path )
+                        {
+                            if( document.fileName.indexOf( path ) === 0 )
+                            {
+                                keep = true;
+                            }
+                        } );
+                        if( !keep )
+                        {
+                            removeFromTree( document.fileName );
+                        }
+                    }
                 }
             }
         } ) );
