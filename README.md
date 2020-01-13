@@ -2,15 +2,16 @@
 
 [![Build Status](https://travis-ci.org/Gruntfuggly/todo-tree.svg?branch=master)](https://travis-ci.org/Gruntfuggly/todo-tree)
 
-This extension quickly searches (using <a href="https://github.com/BurntSushi/ripgrep">ripgrep</a>) your workspace for comment tags like TODO and FIXME, and displays them in a tree view in the explorer pane. Clicking a TODO within the tree will open the file and put the cursor on the line containing the TODO.
+This extension quickly searches (using [ripgrep](href="https://github.com/BurntSushi/ripgrep)) your workspace for comment tags like TODO and FIXME, and displays them in a tree view in the explorer pane. Clicking a TODO within the tree will open the file and put the cursor on the line containing the TODO.
 
 Found TODOs can also be highlighted in open files.
 
 *Please see the [wiki](https://github.com/Gruntfuggly/todo-tree/wiki/Configuration-Examples) for configuration examples.*
 
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/screenshot.png">
+![screenshot](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/screenshot.png)
 
 *Notes:*
+
 - *The tree will only appear in the explorer pane when the extension finds some TODOs, unless* `todo-tree.tree.hideTreeWhenEmpty` *is set to false.*
 - *User* `rg.conf` *files are ignored.*
 
@@ -42,18 +43,18 @@ Foreground and background colours can be one of "red", "green", "blue", "yellow"
 
 `type` - used to control how much is highlighted in the editor. Valid values are:
 
- - `tag` - highlights just the tag
- - `text` - highlights the tag and any text after the tag
- - `tag-and-comment` - highlights the comment characters (or the start of the match) and the tag
- - `text-and-comment` - highlights the comment characters (or the start of the match), the tag and the text after the tag
- - `line` - highlights the entire line containing the tag
- - `whole-line` - highlights the entire line containing the tag to the full width of the editor
+- `tag` - highlights just the tag
+- `text` - highlights the tag and any text after the tag
+- `tag-and-comment` - highlights the comment characters (or the start of the match) and the tag
+- `text-and-comment` - highlights the comment characters (or the start of the match), the tag and the text after the tag
+- `line` - highlights the entire line containing the tag
+- `whole-line` - highlights the entire line containing the tag to the full width of the editor
 
 `hideFromTree` - used to hide tags from the tree, but still highlight in files
 
 Example:
 
-```
+```json
 "todo-tree.highlights.defaultHighlight": {
     "icon": "alert",
     "type": "text",
@@ -125,6 +126,7 @@ Right clicking on a folder in the tree will bring up a context menu with the fol
 ## Commands
 
 ### Tags
+
 To make it easier to configure the tags, there are two commands available:
 
 **Todo Tree: Add Tag** - allows entry of a new tag for searching
@@ -160,7 +162,7 @@ What to show in the status bar - nothing (`none`), total count (`total`), counts
 Set the behaviour of clicking the status bar to either cycle display formats, or reveal the tree.
 
 **todo-tree.filtering.includeGlobs** (`[]`)
-Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders. <a href="https://www.npmjs.com/package/glob#glob-primer">Globs help</a>.
+Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders. [Globs help](https://www.npmjs.com/package/glob#glob-primer).
 
 **todo-tree.filtering.excludeGlobs** (`[]`)
 Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. `[\"**/*.txt\"]` to ignore all .txt files
@@ -196,7 +198,7 @@ Set highlights per tag. E.g. `{"TODO":{"foreground":"white","type":"text"},"FIXM
 Editor schemes to show highlights in. To show highlights in settings files, for instance, add `vscode-userdata` or for output windows, add `output`.
 
 **todo-tree.regex.regex** (<tt>&#x22;&#x28;&#x28;&#x2f;&#x2f;&#x7c;&#x23;&#x7c;&#x3c;&#x21;&#x2d;&#x2d;&#x7c;&#x3b;&#x7c;&#x2f;&#x5c;&#x5c;&#x2a;&#x29;&#x5c;&#x5c;&#x73;&#x2a;&#x28;&#x24;&#x54;&#x41;&#x47;&#x53;&#x29;&#x7c;&#x5e;&#x5c;&#x5c;&#x73;&#x2a;&#x2d;&#x20;&#x5c;&#x5c;&#x5b;&#x20;&#x5c;&#x5c;&#x5d;&#x29;&#x22;</tt>)
-This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with <tt>&#47;&#47;</tt>, <tt>#</tt>, <tt>;</tt>, <tt>&lt;!--</tt> or <tt>&#47;*</tt>. This should cover most languages. However if you want to refine it, make sure that the <tt>($TAGS)</tt> is kept. The second part of the expression allows matching of Github markdown task lists. *Note: This is a <a href="https://docs.rs/regex/1.0.0/regex">Rust regular expression</a>, not javascript.*
+This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with <tt>&#47;&#47;</tt>, <tt>#</tt>, <tt>;</tt>, <tt>&lt;!--</tt> or <tt>&#47;*</tt>. This should cover most languages. However if you want to refine it, make sure that the <tt>($TAGS)</tt> is kept. The second part of the expression allows matching of Github markdown task lists. *Note: This is a [Rust regular expression](https://docs.rs/regex/1.0.0/regex)</a>, not javascript.*
 
 **todo-tree.regex.regexCaseSensitive** (`true`)
 Set to false to allow tags to be matched regardless of case.
@@ -261,22 +263,28 @@ Hide item icons when grouping by tag.
 ### Multiline TODOs
 
 If the regex contains `\n`, then multiline TODOs will be enabled. In this mode, the search results are processed slightly differently. If results are found which do not contain any tags from `todo-tree.general.tags` it will be assumed that they belong to the previous result that did have a tag. For example, if you set the regex to something like:
-```
+
+```json
 "todo-tree.regex.regex": "(//)\\s*($TAGS).*(\\n\\s*//\\s{2,}.*)*"
 ```
+
 This will now match multiline TODOs where the extra lines have at least two spaces between the comment characters and the TODO item. e.g.
-```
+
+```json
 // TODO multiline example
 //  second line
 //  third line
 ```
 
 If you want to match multiline TODOs in C++ style multiline comment blocks, you'll need something like:
-```
+
+```json
 "todo-tree.regex.regex": "(/\\*)\\s*($TAGS).*(\\n\\s*(//|/\\*|\\*\\*)\\s{2,}.*)*"
 ```
+
 which should match:
-```
+
+```json
 /* TODO multiline example
 **  second line
 **  third line
@@ -286,7 +294,6 @@ which should match:
 *Note: If you are modifying settings using the settings GUI, you don't need to escape each backslash.*
 
 **Warning: Multiline TODOs will not work with markdown TODOs and may have other unexpected results. There may also be a reduction in performance.**
-
 
 ### Excluding files and folders
 
@@ -310,20 +317,20 @@ When there is no current workspace, default icons will be shown in the tree.
 
 ## Donate
 
-If you find this extension useful, please feel free to donate <a href="https://paypal.me/Gruntfuggly">here</a>. Thanks!
+If you find this extension useful, please feel free to donate [here](https://paypal.me/Gruntfuggly). Thanks!
 
 ### Credits
 
-Uses a modified version of <a href="https://www.npmjs.com/package/ripgrep-js">ripgrep-js</a>.
+Uses a modified version of [ripgrep-js](https://www.npmjs.com/package/ripgrep-js).
 
-Main icons originally made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+Main icons originally made by [Freepik](http://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
 
-Tree view icons made by <a href="https://www.flaticon.com/authors/vaadin" title="Vaadin">Vaadin</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+Tree view icons made by [Vaadin](https://www.flaticon.com/authors/vaadin) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
 
-Tag icons made by <a href="https://www.flaticon.com/authors/dave-gandy" title="Dave Gandy">Dave Gandy</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+Tag icons made by [Dave Gandy](https://www.flaticon.com/authors/dave-gandy) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
 
-Tags Icon made by <a href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+Tags Icon made by [Vectors Market](https://www.flaticon.com/authors/vectors-market) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
 
-Reveal Icon made by <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+Reveal Icon made by [Gregor Cresnar](https://www.flaticon.com/authors/gregor-cresnar) from [www.flaticon.com](https://www.flaticon.com/)
 
 Lots of the icons have now been updated by [johnletey](https://github.com/johnletey) to match the new VS Code 1.37.0 GUI. Much appreciated!
