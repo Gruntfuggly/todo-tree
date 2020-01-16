@@ -8,6 +8,7 @@ var os = require( 'os' );
 var fs = require( 'fs' );
 
 var tree = require( "./tree.js" );
+var colours = require( './colours.js' );
 var highlights = require( './highlights.js' );
 var config = require( './config.js' );
 var utils = require( './utils.js' );
@@ -1152,7 +1153,7 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.highlights.defaultHighlight" ) ||
                     e.affectsConfiguration( "todo-tree.highlights.customHighlight" ) )
                 {
-                    highlights.refreshComplementaryColours();
+                    colours.refreshComplementaryColours();
                     if( vscode.window.activeTextEditor )
                     {
                         documentChanged( vscode.window.activeTextEditor.document );
@@ -1203,7 +1204,7 @@ function activate( context )
 
         resetOutputChannel();
 
-        highlights.refreshComplementaryColours();
+        colours.refreshComplementaryColours();
 
         migrateSettings();
         setButtonsAndContext();

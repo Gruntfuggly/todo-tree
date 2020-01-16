@@ -2,19 +2,20 @@ var path = require( "path" );
 var fs = require( 'fs' );
 var octicons = require( 'octicons' );
 
+var colours = require( './colours.js' );
 var utils = require( './utils.js' );
-var highlights = require( './highlights.js' );
+var attributes = require( './attributes.js' );
 
 function getIcon( context, tag )
 {
-    var colour = highlights.getIconColour( tag );
+    var colour = attributes.getIconColour( tag );
 
     var darkIconPath = context.asAbsolutePath( path.join( "resources/icons", "dark", "todo-green.svg" ) );
     var lightIconPath = context.asAbsolutePath( path.join( "resources/icons", "light", "todo-green.svg" ) );
 
     var colourName = utils.isHexColour( colour.substr( 1 ) ) ? colour.substr( 1 ) : colour;
 
-    var iconName = highlights.getIcon( tag );
+    var iconName = attributes.getIcon( tag );
 
     if( !fs.existsSync( context.globalStoragePath ) )
     {
@@ -80,7 +81,7 @@ function getIcon( context, tag )
         darkIconPath = colouredIconPath;
         lightIconPath = colouredIconPath;
     }
-    else if( highlights.getColourList().indexOf( colourName ) > -1 )
+    else if( colours.getColourList().indexOf( colourName ) > -1 )
     {
         darkIconPath = context.asAbsolutePath( path.join( "resources/icons", "dark", "todo-" + colour + ".svg" ) );
         lightIconPath = context.asAbsolutePath( path.join( "resources/icons", "light", "todo-" + colour + ".svg" ) );
