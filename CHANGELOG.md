@@ -1,6 +1,9 @@
+# v0.0.163 - 2020-01-20
+
 - Add some default icons and the BUG tag
 - Fix reveal tree from status bar
 - Remove files from tree when files are closed
+- Add option to show icons in gutter
 
 # v0.0.162 - 2019-11-04
 
