@@ -1,3 +1,5 @@
+- Fix missing background colours
+
 # v0.0.163 - 2020-01-20
 
 - Add some default icons and the BUG tag

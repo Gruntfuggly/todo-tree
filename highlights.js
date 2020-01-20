@@ -62,8 +62,8 @@ function getDecoration( tag )
         {
             if( colours.getColourList().indexOf( backgroundColour ) > -1 )
             {
-                lightBackgroundColour = defaultLightColours[ backgroundColour ];
-                darkBackgroundColour = defaultDarkColours[ backgroundColour ];
+                lightBackgroundColour = colours.defaultLightColours[ backgroundColour ];
+                darkBackgroundColour = colours.defaultDarkColours[ backgroundColour ];
             }
             else if( backgroundColour.match( /(foreground|background)/i ) )
             {
