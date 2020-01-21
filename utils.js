@@ -138,6 +138,11 @@ function extractTag( text, matchOffset )
             } );
         }
     }
+    else
+    {
+        before = text;
+        after = text;
+    }
     return { tag: tagMatch ? originalTag : "", withoutTag: text, before: before, after: after, tagOffset: tagOffset };
 }
 

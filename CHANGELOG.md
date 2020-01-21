@@ -1,3 +1,5 @@
+- Fix case where $TAGS is not used in regex
+
 # v0.0.164 - 2020-01-20
 
 - Fix missing background colours
@@ -331,7 +333,7 @@
 
 - Fix trailing slash on windows paths
 - Remove leading newlines from matches in files
-- Show 'line <n>' for tags with no content when grouping by tag
+- Show `line <n>` for tags with no content when grouping by tag
 
 # v0.0.96 - 2018-10-23
 
