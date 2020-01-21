@@ -1,6 +1,7 @@
 var vscode = require( 'vscode' );
 
 var colours = require( './colours.js' );
+var config = require( './config.js' );
 var utils = require( './utils.js' );
 var attributes = require( './attributes.js' );
 var icons = require( './icons.js' );
@@ -219,7 +220,8 @@ function highlight( editor )
                 var extracted = utils.extractTag( match[ 0 ] );
                 if( extracted.tag && extracted.tag.length > 0 )
                 {
-                    tag = extracted.tag;
+                    var tagGroup = config.tagGroup( extracted.tag );
+                    tag = tagGroup ? tagGroup : extracted.tag;
                     offsetStart = match.index + extracted.tagOffset;
                     offsetEnd = offsetStart + extracted.tag.length;
                 }

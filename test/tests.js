@@ -85,7 +85,7 @@ QUnit.test( "utils.extractTag returns the tag offset", function( assert )
     assert.equal( result.tagOffset, 7 );
 } );
 
-QUnit.test( "utils.extractTag remove colon from ${after}", function( assert )
+QUnit.test( "utils.extractTag removes colon from ${after}", function( assert )
 {
     var testConfig = stubs.getTestConfig();
     utils.init( testConfig );
@@ -98,7 +98,7 @@ QUnit.test( "utils.extractTag remove colon from ${after}", function( assert )
 
     result = utils.extractTag( "before TODO :after" );
     assert.equal( result.withoutTag, "after" );
-    result = utils.formatLabel( "${tag}: ${after}", { tag: result.tag, after: result.withoutTag } );
+    result = utils.formatLabel( "${tag}: ${after}", { actualTag: result.tag, after: result.withoutTag } );
     assert.equal( result, "TODO: after" );
 } );
 
@@ -259,7 +259,7 @@ QUnit.test( "utils.formatLabel replaces before text placeholder", function( asse
 
 QUnit.test( "utils.formatLabel replaces tag placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${tag} content", { tag: "TODO" } ), "Label TODO content" );
+    assert.equal( utils.formatLabel( "Label ${tag} content", { actualTag: "TODO" } ), "Label TODO content" );
 } );
 
 QUnit.test( "utils.formatLabel replaces after text placeholder", function( assert )

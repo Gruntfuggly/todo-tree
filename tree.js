@@ -155,11 +155,14 @@ function createTodoNode( result )
         label = extracted.tag + " " + label;
     }
 
+    var tagGroup = config.tagGroup( extracted.tag );
+
     var todo = {
         type: TODO,
         fsPath: result.file,
         label: label,
-        tag: extracted.tag,
+        tag: tagGroup ? tagGroup : extracted.tag,
+        actualTag: extracted.tag,
         line: result.line - 1,
         column: result.column,
         endColumn: result.column + result.match.length,

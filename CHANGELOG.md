@@ -1,4 +1,5 @@
 - Improve fix for case where $TAGS is not used in regex
+- Support tag groups
 
 # v0.0.165 - 2020-01-21
 

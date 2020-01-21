@@ -1165,7 +1165,13 @@ function activate( context )
                     resetOutputChannel();
                 }
 
-                if( e.affectsConfiguration( "todo-tree.filtering" ) ||
+                if( e.affectsConfiguration( "todo-tree.general.tagGroups" ) )
+                {
+                    config.refreshTagGroupLookup();
+                    rebuild();
+                    documentChanged();
+                }
+                else if( e.affectsConfiguration( "todo-tree.filtering" ) ||
                     e.affectsConfiguration( "todo-tree.regex" ) ||
                     e.affectsConfiguration( "todo-tree.ripgrep" ) ||
                     e.affectsConfiguration( "todo-tree.tree" ) ||

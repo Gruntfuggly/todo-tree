@@ -155,6 +155,21 @@ By default, any open workspaces will have a tree in the view. Use this to force 
 **todo-tree.general.tags** (`["TODO","FIXME","BUG"]`)
 This defines the tags which are recognised as TODOs. This list is automatically inserted into the regex.
 
+**todo-tree.general.tagGroups** (`{}`)
+This setting allows multiple tags to be treated as a single group. For example:
+
+```json
+    "todo-tree.general.tagGroups": {
+        "FIXME": [
+            "FIXME",
+            "FIXIT",
+            "FIX",
+        ]
+    },
+```
+
+This treats any of `FIXME`, `FIXIT` or `FIX` as `FIXME`. When the tree is grouped by tag, all of these will appear under the `FIXME` node. This also means that custom highlights are applied to the group, not each tag type. *Note: all tags in the group should also appear in `todo-tree.general.tags`.*
+
 **todo-tree.general.revealBehaviour** (`start of todo`)
 Change the cursor behaviour when selecting a todo from the explorer. Yo.u can choose from: `start of todo` (moves the cursor to the beginning of the todo), `end of todo` (moves the cursor to the end of the todo) `highlight todo` (selects the todo text), `start of line` (moves the cursor to the start of the line) and `highlight line` (selected the whole line)
 

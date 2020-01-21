@@ -4,9 +4,13 @@ var path = require( 'path' );
 
 var context;
 
+var tagGroupLookup = {};
+
 function init( c )
 {
     context = c;
+
+    refreshTagGroupLookup();
 }
 
 function shouldGroup()
@@ -131,6 +135,22 @@ function shouldIgnoreGitSubmodules()
     return vscode.workspace.getConfiguration( 'todo-tree.filtering' ).ignoreGitSubmodules;
 }
 
+function refreshTagGroupLookup()
+{
+    var tagGroups = vscode.workspace.getConfiguration( 'todo-tree.general' ).tagGroups;
+    tagGroupLookup = Object.keys( tagGroups ).reduce( ( acc, propName ) =>
+        tagGroups[ propName ].reduce( ( a, num ) =>
+        {
+            a[ num ] = propName;
+            return a;
+        }, acc ), {} );
+}
+
+function tagGroup( tag )
+{
+    return tagGroupLookup[ tag ];
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -151,3 +171,5 @@ module.exports.clickingStatusBarShouldRevealTree = clickingStatusBarShouldReveal
 module.exports.shouldShowHighlights = shouldShowHighlights;
 module.exports.shouldUseBuiltInExcludes = shouldUseBuiltInExcludes;
 module.exports.shouldIgnoreGitSubmodules = shouldIgnoreGitSubmodules;
+module.exports.refreshTagGroupLookup = refreshTagGroupLookup;
+module.exports.tagGroup = tagGroup;

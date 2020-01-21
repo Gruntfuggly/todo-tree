@@ -200,7 +200,7 @@ function formatLabel( template, node )
 
     result = result.replace( /\$\{line\}/g, ( node.line + 1 ) );
     result = result.replace( /\$\{column\}/g, node.column );
-    result = result.replace( /\$\{tag\}/g, node.tag );
+    result = result.replace( /\$\{tag\}/g, node.actualTag );
     result = result.replace( /\$\{after\}/g, node.after );
     result = result.replace( /\$\{before\}/g, node.before );
     result = result.replace( /\$\{afterOrBefore\}/g, ( ( node.after === "" ) ? node.before : node.after ) );
