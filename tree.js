@@ -163,8 +163,8 @@ function createTodoNode( result )
         line: result.line - 1,
         column: result.column,
         endColumn: result.column + result.match.length,
-        after: extracted.after.trim(),
-        before: extracted.before.trim(),
+        after: extracted.after ? extracted.after.trim() : "",
+        before: extracted.before ? extracted.before.trim() : "",
         id: id,
         visible: true,
         extraLines: []

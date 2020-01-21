@@ -105,8 +105,8 @@ function extractTag( text, matchOffset )
     var tagMatch;
     var tagOffset;
     var originalTag;
-    var before;
-    var after;
+    var before = text;
+    var after = text;
 
     if( c.regex.indexOf( "$TAGS" ) > -1 )
     {
@@ -137,11 +137,6 @@ function extractTag( text, matchOffset )
                 }
             } );
         }
-    }
-    else
-    {
-        before = text;
-        after = text;
     }
     return { tag: tagMatch ? originalTag : "", withoutTag: text, before: before, after: after, tagOffset: tagOffset };
 }

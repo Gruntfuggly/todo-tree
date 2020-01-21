@@ -1,3 +1,5 @@
+- Improve fix for case where $TAGS is not used in regex
+
 # v0.0.165 - 2020-01-21
 
 - Fix case where $TAGS is not used in regex
