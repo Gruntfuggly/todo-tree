@@ -113,7 +113,7 @@ function getDecoration( tag )
 
     if( lane !== undefined )
     {
-        decorationOptions.overviewRulerColor = getRulerColour( tag, lightForegroundColour );
+        decorationOptions.overviewRulerColor = getRulerColour( tag, vscode.ThemeColor( 'editor.foreground' ) );
         decorationOptions.overviewRulerLane = lane;
     }
 
