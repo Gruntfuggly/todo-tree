@@ -1,3 +1,5 @@
+- Use a default colour for ruler highlights
+
 # v0.0.166 - 2020-01-22
 
 - Improve fix for case where $TAGS is not used in regex

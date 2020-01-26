@@ -97,6 +97,18 @@ function getDecoration( tag )
         darkForegroundColour = colours.complementaryColours[ darkBackgroundColour ];
     }
 
+    if( lightBackgroundColour === undefined && lightForegroundColour === undefined )
+    {
+        lightBackgroundColour = vscode.ThemeColor( 'editor.foreground' );
+        lightForegroundColour = new vscode.ThemeColor( 'editor.background' );
+    }
+
+    if( darkBackgroundColour === undefined && darkForegroundColour === undefined )
+    {
+        darkBackgroundColour = vscode.ThemeColor( 'editor.foreground' );
+        darkForegroundColour = new vscode.ThemeColor( 'editor.background' );
+    }
+
     var lane = getRulerLane( tag );
     if( isNaN( parseInt( lane ) ) )
     {
@@ -113,20 +125,8 @@ function getDecoration( tag )
 
     if( lane !== undefined )
     {
-        decorationOptions.overviewRulerColor = getRulerColour( tag, vscode.ThemeColor( 'editor.foreground' ) );
+        decorationOptions.overviewRulerColor = getRulerColour( tag, darkBackgroundColour ? darkBackgroundColour : vscode.ThemeColor( 'editor.foreground' ) );
         decorationOptions.overviewRulerLane = lane;
-    }
-
-    if( lightBackgroundColour === undefined && lightForegroundColour === undefined )
-    {
-        lightBackgroundColour = vscode.ThemeColor( 'editor.foreground' );
-        lightForegroundColour = new vscode.ThemeColor( 'editor.background' );
-    }
-
-    if( darkBackgroundColour === undefined && darkForegroundColour === undefined )
-    {
-        darkBackgroundColour = vscode.ThemeColor( 'editor.foreground' );
-        darkForegroundColour = new vscode.ThemeColor( 'editor.background' );
     }
 
     decorationOptions.light = { backgroundColor: lightBackgroundColour, color: lightForegroundColour };
