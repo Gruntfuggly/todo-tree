@@ -1,3 +1,4 @@
+- Count markdown TODOs as "TODO" when showing totals in the status bar
 - Use a default colour for ruler highlights
 
 # v0.0.166 - 2020-01-22

@@ -274,7 +274,8 @@ function countTags( child, tagCounts )
     {
         child.todos.map( function( todo )
         {
-            tagCounts[ todo.tag ] = tagCounts[ todo.tag ] === undefined ? 1 : tagCounts[ todo.tag ] + 1;
+            var tag = todo.tag ? todo.tag : "TODO";
+            tagCounts[ tag ] = tagCounts[ tag ] === undefined ? 1 : tagCounts[ tag ] + 1;
         } );
     }
 }
