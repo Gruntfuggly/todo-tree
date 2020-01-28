@@ -485,7 +485,7 @@ function activate( context )
         var children = provider.getChildren();
         var empty = children.length === 1 && children[ 0 ].empty === true;
 
-        if( c.get( "hideTreeWhenEmpty" ) === true )
+        if( c.get( "tree.hideTreeWhenEmpty" ) === true )
         {
             vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', empty === false );
         }
