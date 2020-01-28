@@ -225,6 +225,10 @@ function highlight( editor )
                     offsetStart = match.index + extracted.tagOffset;
                     offsetEnd = offsetStart + extracted.tag.length;
                 }
+                else
+                {
+                    offsetStart += match[ 0 ].search( /\S|$/ );
+                }
                 var type = getType( tag );
                 if( type !== 'none' )
                 {

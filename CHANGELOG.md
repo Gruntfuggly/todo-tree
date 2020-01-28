@@ -1,3 +1,4 @@
+- Skip leading whitespace when highlighting
 - Fix hide tree when empty option
 - Count markdown TODOs as "TODO" when showing totals in the status bar
 - Use a default colour for ruler highlights
