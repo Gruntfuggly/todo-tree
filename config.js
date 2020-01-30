@@ -151,6 +151,12 @@ function tagGroup( tag )
     return tagGroupLookup[ tag ];
 }
 
+function shouldCompactFolders()
+{
+    return vscode.workspace.getConfiguration( 'explorer' ).compactFolders &&
+        vscode.workspace.getConfiguration( 'todo-tree.tree' ).disableCompactFolders !== true;
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -173,3 +179,4 @@ module.exports.shouldUseBuiltInExcludes = shouldUseBuiltInExcludes;
 module.exports.shouldIgnoreGitSubmodules = shouldIgnoreGitSubmodules;
 module.exports.refreshTagGroupLookup = refreshTagGroupLookup;
 module.exports.tagGroup = tagGroup;
+module.exports.shouldCompactFolders = shouldCompactFolders;

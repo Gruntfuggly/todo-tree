@@ -1147,7 +1147,9 @@ function activate( context )
 
         context.subscriptions.push( vscode.workspace.onDidChangeConfiguration( function( e )
         {
-            if( e.affectsConfiguration( "todo-tree" ) || e.affectsConfiguration( 'files.exclude' ) )
+            if( e.affectsConfiguration( "todo-tree" ) ||
+                e.affectsConfiguration( 'files.exclude' ) ||
+                e.affectsConfiguration( 'explorer.compactFolders' ) )
             {
                 if( e.affectsConfiguration( "todo-tree.highlights.enabled" ) ||
                     e.affectsConfiguration( "todo-tree.highlights.defaultHighlight" ) ||

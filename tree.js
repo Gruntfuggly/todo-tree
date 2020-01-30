@@ -363,6 +363,14 @@ class TreeNodeProvider
         }
         else if( node.type === PATH )
         {
+            if( config.shouldCompactFolders() )
+            {
+                while( node.nodes && node.nodes.length === 1 && node.nodes[ 0 ].nodes.length > 0 )
+                {
+                    node = node.nodes[ 0 ];
+                }
+            }
+
             if( node.nodes && node.nodes.length > 0 )
             {
                 return node.nodes.filter( isVisible );
@@ -427,6 +435,18 @@ class TreeNodeProvider
 
             if( node.type === PATH )
             {
+                if( config.shouldCompactFolders() )
+                {
+                    var onlyChild = node.nodes.length === 1 ? node.nodes[ 0 ] : undefined;
+                    var onlyChildParent = node;
+                    while( onlyChild && onlyChild.nodes.length > 0 && onlyChildParent.nodes.length === 1 )
+                    {
+                        treeItem.label += "/" + onlyChild.label;
+                        onlyChildParent = onlyChild;
+                        onlyChild = onlyChild.nodes[ 0 ];
+                    }
+                }
+
                 if( expandedNodes[ node.fsPath ] !== undefined )
                 {
                     treeItem.collapsibleState = ( expandedNodes[ node.fsPath ] === true ) ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;

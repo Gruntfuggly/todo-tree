@@ -300,6 +300,9 @@ Show a button on the tree view header to toggle between scanning open files only
 **todo-tree.tree.hideIconsWhenGroupedByTag** (`false`)<br/>
 Hide item icons when grouping by tag.
 
+**todo-tree.tree.disableCompactFolders** (`false`)<br/>
+The tree will normally respect the VSCode's `explorer.compactFolders` setting. Set this to true if you want to disable compact folders in the todo tree.
+
 <sup>*</sup>*Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.*
 
 ### Multiline TODOs
