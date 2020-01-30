@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.167 - 2020-01-30
+
 - Skip leading whitespace when highlighting
 - Fix hide tree when empty option
 - Count markdown TODOs as "TODO" when showing totals in the status bar
@@ -689,7 +691,7 @@
 
 ## v0.0.6 - 2017-11-28
 
-- Only attempt install if todo-tree.ripgrep is undefined and show some info if the install fails
+- Only attempt install if todo-tree.ripgrep is not defined and show some info if the install fails
 
 ## v0.0.5 - 2017-11-28
 
