@@ -191,7 +191,7 @@ function locateWorkspaceNode( filename )
     var result;
     nodes.map( function( node )
     {
-        if( node.isWorkspaceNode && filename.indexOf( node.fsPath ) === 0 )
+        if( node.isWorkspaceNode && ( filename === node.fsPath || filename.indexOf( node.fsPath + path.sep ) === 0 ) )
         {
             result = node;
         }

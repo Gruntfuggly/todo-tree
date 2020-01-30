@@ -1129,9 +1129,9 @@ function activate( context )
                             searchWorkspaces( tempSearchList );
                         }
 
-                        tempSearchList.map( function( path )
+                        tempSearchList.map( function( p )
                         {
-                            if( document.fileName.indexOf( path ) === 0 )
+                            if( document.fileName === p || document.fileName.indexOf( p + path.sep ) === 0 )
                             {
                                 keep = true;
                             }

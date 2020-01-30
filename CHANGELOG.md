@@ -6,6 +6,7 @@
 - Use a default colour for ruler highlights
 - Add better explanation of useBuiltInExcludes setting
 - Add support for compact folders in tree
+- Fix path searches
 
 ## v0.0.166 - 2020-01-22
 
