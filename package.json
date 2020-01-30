@@ -426,7 +426,7 @@
                 "todo-tree.filtering.useBuiltInExcludes": {
                     "type": "boolean",
                     "default": false,
-                    "markdownDescription": "If true, the built in file excludes are also used."
+                    "markdownDescription": "If true, add VSCode's `files.exclude` list (mainly source-control database directories) to the ignored paths."
                 },
                 "todo-tree.filtering.ignoreGitSubmodules": {
                     "type": "boolean",
