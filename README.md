@@ -270,9 +270,6 @@ Set to false if you want to prevent tracking the open file in the tree view.
 **todo-tree.tree.showBadges** (`true`)<br/>
 Set to false to disable SCM status and badges in the tree. Note: This also unfortunately turns off themed icons.
 
-**todo-tree.tree.showTagsFromOpenFilesOnly** (`false`)<br/>
-Set to true to only show TODOs in open files.
-
 **todo-tree.tree.expanded<sup>*</sup>** (`false`)<br/>
 Set to true if you want new views to be expanded by default.
 
@@ -294,8 +291,11 @@ Set to true to show counts of TODOs in the tree.
 **todo-tree.tree.labelFormat** (`${tag} ${after}`)<br/>
 Format of the TODO item labels. Available placeholders are `${line}`, `${column}`, `${tag}`, `${before}` (text from before the tag), `${after}` (text from after the tag), `${filename}` and `${afterOrBefore}` (use "after" text or "before" text if after is empty).
 
-**todo-tree.tree.showScanOpenFilesOrWorkspaceButton** (`false`)<br/>
-Show a button on the tree view header to toggle between scanning open files only, or the whole workspace.
+**todo-tree.tree.scanMode** (`workspace`)<br/>
+By default the extension scans the whole workspace (`workspace`). Use this to limit the search to only open files (`open files`) or only the current file (`current file`).
+
+**todo-tree.tree.showScanModeButton** (`false`)<br/>
+Show a button on the tree view header to switch the scanMode (see above).
 
 **todo-tree.tree.hideIconsWhenGroupedByTag** (`false`)<br/>
 Hide item icons when grouping by tag.
