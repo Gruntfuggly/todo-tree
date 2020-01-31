@@ -294,8 +294,8 @@ Set to true to show counts of TODOs in the tree.
 **todo-tree.tree.labelFormat** (`${tag} ${after}`)<br/>
 Format of the TODO item labels. Available placeholders are `${line}`, `${column}`, `${tag}`, `${before}` (text from before the tag), `${after}` (text from after the tag), `${filename}` and `${afterOrBefore}` (use "after" text or "before" text if after is empty).
 
-**todo-tree.tree.showScanOpenFilesOrWorkspaceButton** (`false`)<br/>
-Show a button on the tree view header to toggle between scanning open files only, or the whole workspace.
+**todo-tree.tree.showScanModeButton** (`false`)<br/>
+Show a button on the tree view header to toggle between scanning the curent file, open files, or the whole workspace.
 
 **todo-tree.tree.hideIconsWhenGroupedByTag** (`false`)<br/>
 Hide item icons when grouping by tag.

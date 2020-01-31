@@ -166,6 +166,15 @@ function activate( context )
             status.hide();
         }
 
+        if( context.workspaceState.get( 'scanMode' ) === 'openFiles' )
+        {
+            status.text += " (in open files)";
+        }
+        else if( context.workspaceState.get( 'scanMode' ) === 'currentFile' )
+        {
+            status.text += " (in current file)";
+        }
+
         status.command = "todo-tree.onStatusBarClicked";
     }
 
@@ -310,7 +319,7 @@ function activate( context )
 
     function searchWorkspaces( searchList )
     {
-        if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).showTagsFromOpenFilesOnly !== true )
+        if( context.workspaceState.get( 'scanMode' ) === 'workspace' )
         {
             var includes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includedWorkspaces', [] );
             var excludes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludedWorkspaces', [] );
@@ -478,8 +487,17 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-filtered', context.workspaceState.get( 'filtered', false ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-collapsible', isCollapsible );
 
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-scan-open-files-or-workspace-button', c.get( 'tree.showScanOpenFilesOrWorkspaceButton', false ) );
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-open-files-only', c.get( 'tree.showTagsFromOpenFilesOnly', false ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-scan-open-files-or-workspace-button', c.get( 'tree.showScanModeButton', false ) );
+
+        if( context.workspaceState.get( 'scanMode' ) === undefined )
+        {
+            context.workspaceState.update( 'scanMode', vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'showTagsFromOpenFilesOnly' ) === true ? 'openFiles' : 'workspace' ).then( refresh );
+        }
+        else
+        {
+            vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-mode', context.workspaceState.get( 'scanMode' ) );
+        }
+
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-reveal-button', !c.get( 'tree.trackFile', false ) );
 
         var children = provider.getChildren();
@@ -538,51 +556,54 @@ function activate( context )
 
         if( document.uri.scheme === 'file' && isIncluded( document.fileName ) === true )
         {
-            var extractExtraLines = function( section )
+            if( context.workspaceState.get( 'scanMode' ) !== 'currentFile' || document.fileName === vscode.window.activeTextEditor.document.fileName )
             {
-                result.extraLines.push( addResult( offset ) );
-                offset += section.length + 1;
-            };
-            var isMatch = function( s )
-            {
-                if( s.file === result.file && s.line == result.line && s.column == result.column )
+                var extractExtraLines = function( section )
                 {
-                    found = true;
-                }
-            };
-
-            var text = document.getText();
-            var regex = utils.getRegexForEditorSearch();
-
-            var match;
-            while( ( match = regex.exec( text ) ) !== null )
-            {
-                while( text[ match.index ] === '\n' || text[ match.index ] === '\r' )
+                    result.extraLines.push( addResult( offset ) );
+                    offset += section.length + 1;
+                };
+                var isMatch = function( s )
                 {
-                    match.index++;
-                    match[ 0 ] = match[ 0 ].substring( 1 );
-                }
+                    if( s.file === result.file && s.line == result.line && s.column == result.column )
+                    {
+                        found = true;
+                    }
+                };
 
-                var offset = match.index;
-                var sections = match[ 0 ].split( "\n" );
+                var text = document.getText();
+                var regex = utils.getRegexForEditorSearch();
 
-                var result = addResult( offset );
-
-                if( sections.length > 1 )
+                var match;
+                while( ( match = regex.exec( text ) ) !== null )
                 {
-                    result.extraLines = [];
-                    offset += sections[ 0 ].length + 1;
-                    sections.shift();
-                    sections.map( extractExtraLines );
-                }
+                    while( text[ match.index ] === '\n' || text[ match.index ] === '\r' )
+                    {
+                        match.index++;
+                        match[ 0 ] = match[ 0 ].substring( 1 );
+                    }
 
-                var found = false;
-                searchResults.map( isMatch );
-                if( found === false )
-                {
-                    debug( " Match (Editor):" + JSON.stringify( result ) );
-                    searchResults.push( result );
-                    matchesFound = true;
+                    var offset = match.index;
+                    var sections = match[ 0 ].split( "\n" );
+
+                    var result = addResult( offset );
+
+                    if( sections.length > 1 )
+                    {
+                        result.extraLines = [];
+                        offset += sections[ 0 ].length + 1;
+                        sections.shift();
+                        sections.map( extractExtraLines );
+                    }
+
+                    var found = false;
+                    searchResults.map( isMatch );
+                    if( found === false )
+                    {
+                        debug( " Match (Editor):" + JSON.stringify( result ) );
+                        searchResults.push( result );
+                        matchesFound = true;
+                    }
                 }
             }
         }
@@ -684,14 +705,19 @@ function activate( context )
         } );
     }
 
-    function scanOpenFilesOnly()
-    {
-        vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'showTagsFromOpenFilesOnly', true, false );
-    }
-
     function scanWorkspace()
     {
-        vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'showTagsFromOpenFilesOnly', false, false );
+        context.workspaceState.update( 'scanMode', 'workspace' ).then( rebuild );
+    }
+
+    function scanOpenFilesOnly()
+    {
+        context.workspaceState.update( 'scanMode', 'openFiles' ).then( rebuild );
+    }
+
+    function scanCurrentFileOnly()
+    {
+        context.workspaceState.update( 'scanMode', 'currentFile' ).then( rebuild );
     }
 
     function exportTree( exported, extension )
@@ -795,7 +821,7 @@ function activate( context )
             migrateIfRequired( 'showBadges', 'boolean', 'tree' );
             migrateIfRequired( 'showCountsInTree', 'boolean', 'tree' );
             migrateIfRequired( 'showInExplorer', 'boolean', 'tree' );
-            migrateIfRequired( 'showScanOpenFilesOrWorkspaceButton', 'boolean', 'tree' );
+            // migrateIfRequired( 'showScanOpenFilesOrWorkspaceButton', 'boolean', 'tree' );
             migrateIfRequired( 'showTagsFromOpenFilesOnly', 'boolean', 'tree' );
             migrateIfRequired( 'sortTagsOnlyViewAlphabetically', 'boolean', 'tree' );
             migrateIfRequired( 'statusBar', 'string', 'general' );
@@ -836,6 +862,16 @@ function activate( context )
                     }
                     context.globalState.update( 'migratedVersion', 161 );
                 } );
+            }
+
+            if( context.globalState.get( 'migratedVersion', 0 ) < 168 )
+            {
+                vscode.workspace.getConfiguration( 'todo-tree.tree' ).update(
+                    'showScanModeButton',
+                    vscode.workspace.getConfiguration( 'todo-tree.tree' ).showScanOpenFilesOrWorkspaceButton,
+                    vscode.ConfigurationTarget.Global );
+
+                context.globalState.update( 'migratedVersion', 168 );
             }
         }
 
@@ -1051,14 +1087,21 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.addTag', addTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeTag', removeTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.onStatusBarClicked', onStatusBarClicked ) );
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanOpenFilesOnly', scanOpenFilesOnly ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanWorkspace', scanWorkspace ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanOpenFilesOnly', scanOpenFilesOnly ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanCurrentFileOnly', scanCurrentFileOnly ) );
 
         context.subscriptions.push( vscode.window.onDidChangeActiveTextEditor( function( e )
         {
             if( e && e.document )
             {
                 openDocuments[ e.document.fileName ] = e.document;
+
+                if( context.workspaceState.get( 'scanMode' ) === 'currentFile' )
+                {
+                    provider.clear( vscode.workspace.workspaceFolders );
+                    refreshFile( e.document );
+                }
 
                 if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true && vscode.workspace.getConfiguration( 'todo-tree.tree' ).trackFile === true )
                 {
@@ -1115,7 +1158,7 @@ function activate( context )
             {
                 if( document.uri.scheme === "file" )
                 {
-                    if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).showTagsFromOpenFilesOnly === true )
+                    if( context.workspaceState.get( 'scanMode' ) !== 'workspace' )
                     {
                         removeFromTree( document.fileName );
                     }
@@ -1172,6 +1215,10 @@ function activate( context )
                     config.refreshTagGroupLookup();
                     rebuild();
                     documentChanged();
+                }
+                else if( e.affectsConfiguration( "todo-tree.tree.showTagsFromOpenFilesOnly" ) )
+                {
+                    context.workspaceState.update( 'scanMode', vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'showTagsFromOpenFilesOnly' ) === true ? 'openFiles' : 'workspace' ).then( rebuild );
                 }
                 else if( e.affectsConfiguration( "todo-tree.filtering" ) ||
                     e.affectsConfiguration( "todo-tree.regex" ) ||

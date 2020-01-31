@@ -60,12 +60,17 @@
                 },
                 {
                     "command": "todo-tree.scanOpenFilesOnly",
-                    "when": "view =~ /todo-tree/ && todo-tree-scan-open-files-only == false && todo-tree-show-scan-open-files-or-workspace-button == true",
+                    "when": "view =~ /todo-tree/ && todo-tree-scan-mode == workspace && todo-tree-show-scan-open-files-or-workspace-button == true",
+                    "group": "navigation@2"
+                },
+                {
+                    "command": "todo-tree.scanCurrentFileOnly",
+                    "when": "view =~ /todo-tree/ && todo-tree-scan-mode == openFiles && todo-tree-show-scan-open-files-or-workspace-button == true",
                     "group": "navigation@2"
                 },
                 {
                     "command": "todo-tree.scanWorkspace",
-                    "when": "view =~ /todo-tree/ && todo-tree-scan-open-files-only == true && todo-tree-show-scan-open-files-or-workspace-button == true",
+                    "when": "view =~ /todo-tree/ && todo-tree-scan-mode == currentFile && todo-tree-show-scan-open-files-or-workspace-button == true",
                     "group": "navigation@2"
                 },
                 {
@@ -236,6 +241,15 @@
                 "icon": {
                     "dark": "resources/icons/dark/scan-open-files.svg",
                     "light": "resources/icons/light/scan-open-files.svg"
+                }
+            },
+            {
+                "command": "todo-tree.scanCurrentFileOnly",
+                "title": "Scan Current File Only",
+                "category": "Todo Tree",
+                "icon": {
+                    "dark": "resources/icons/dark/scan-current-file.svg",
+                    "light": "resources/icons/light/scan-current-file.svg"
                 }
             },
             {
@@ -558,10 +572,10 @@
                     "default": false,
                     "markdownDescription": "When opening new workspaces, show only tag elements in tree"
                 },
-                "todo-tree.tree.showScanOpenFilesOrWorkspaceButton": {
+                "todo-tree.tree.showScanModeButton": {
                     "type": "boolean",
                     "default": false,
-                    "markdownDescription": "Show a button on the tree view header to toggle between scanning open files only, or the whole workspace"
+                    "markdownDescription": "Show a button on the tree view header to change between scanning the current file, open files, or the whole workspace."
                 },
                 "todo-tree.tree.hideTreeWhenEmpty": {
                     "type": "boolean",
