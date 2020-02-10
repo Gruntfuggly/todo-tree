@@ -349,6 +349,10 @@
                     "default": false,
                     "markdownDescription": "Create a debug channel in the Output view"
                 },
+                "todo-tree.general.githubProjectUrl": {
+                    "type": "string",
+                    "markdownDescription": "A URL pointing to an associated GitHub project allowing for issue information to be automatically retreived. e.g. https://api.github.com/repos/Gruntfuggly/todo-tree"
+                },
                 "todo-tree.general.revealBehaviour": {
                     "default": "start of todo",
                     "type": "string",
@@ -590,6 +594,8 @@
         "comment-patterns": "^0.10.1",
         "find": "^0.3.0",
         "micromatch": "^3.1.10",
+        "node-fetch": "^2.6.0",
+        "node-qunit": "^1.0.0",
         "octicons": "^8.3.0",
         "treeify": "^1.1.0"
     }

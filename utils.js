@@ -2,6 +2,8 @@ var micromatch = require( 'micromatch' );
 var path = require( 'path' );
 var find = require( 'find' );
 
+var githubIssueRegex = new RegExp( "\\#(\\d+)" );
+
 var config;
 
 var commentPatterns = require( 'comment-patterns' );
@@ -194,7 +196,7 @@ function isIncluded( name, includes, excludes )
     return included;
 }
 
-function formatLabel( template, node )
+function formatLabel( template, node, formatRegexSource )
 {
     var result = template;
 
@@ -207,6 +209,24 @@ function formatLabel( template, node )
     if( node.fsPath )
     {
         result = result.replace( /\$\{filename\}/g, path.basename( node.fsPath ) );
+    }
+
+    if( formatRegexSource )
+    {
+        var formatRegex = new RegExp( formatRegexSource );
+        var formatMatches = formatRegex.exec( node.match );
+        if( formatMatches !== null && formatMatches.length > 1 )
+        {
+            for( var count = 1; count < formatMatches.length; count++ )
+            {
+                result = result.replace( new RegExp( '\\$\\{' + count + '\\}', 'g' ), formatMatches[ count ] );
+                var githubIssueMatches = githubIssueRegex.exec( formatMatches[ count ] );
+                if( githubIssueMatches !== null )
+                {
+                    node.gitHubIssue = parseInt( githubIssueMatches[ 1 ] );
+                }
+            }
+        }
     }
 
     return result;

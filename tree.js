@@ -2,11 +2,13 @@
 
 var vscode = require( 'vscode' );
 var path = require( "path" );
+const fetch = require( 'node-fetch' );
 
 var utils = require( './utils.js' );
 var icons = require( './icons.js' );
 var config = require( './config.js' );
 var highlights = require( './highlights.js' );
+var attributes = require( './attributes.js' );
 
 var workspaceFolders;
 var nodes = [];
@@ -170,7 +172,8 @@ function createTodoNode( result )
         before: extracted.before ? extracted.before.trim() : "",
         id: id,
         visible: true,
-        extraLines: []
+        extraLines: [],
+        match: result.match
     };
 
     if( result.extraLines )
@@ -400,6 +403,8 @@ class TreeNodeProvider
 
     getTreeItem( node )
     {
+        console.log( "getTreeItem " + node.label );
+        console.log( "gitLabel:" + node.gitLabel );
         var treeItem;
         try
         {
@@ -488,10 +493,36 @@ class TreeNodeProvider
                     }
                 }
 
-                var format = config.labelFormat();
-                if( format !== "" )
+                var format = attributes.getAttribute( node.tag, 'labelFormat' );
+                if( format === undefined )
                 {
-                    treeItem.label = utils.formatLabel( format, node ) + ( node.pathLabel ? ( " " + node.pathLabel ) : "" );
+                    format = config.labelFormat();
+                }
+
+                if( format !== "" && node.gitHubIssueFetched !== true )
+                {
+                    treeItem.label = utils.formatLabel( format, node, attributes.getAttribute( node.tag, 'formatRegex' ) ) + ( node.pathLabel ? ( " " + node.pathLabel ) : "" );
+                    var githubProjectUrl = config.getGithubProjectUrl();
+
+                    if( githubProjectUrl !== undefined && node.gitHubIssue !== undefined )
+                    {
+                        console.log( "Fetching from " + githubProjectUrl + "/issues/" + node.gitHubIssue );
+                        var url = githubProjectUrl + "/issues/" + node.gitHubIssue;
+                        var tree = this;
+                        fetch( url )
+                            .then( function( response )
+                            {
+                                return response.json();
+                            } )
+                            .then( function( issue )
+                            {
+                                // console.log( JSON.stringify( issue, null, 2 ) );
+                                node.label = issue.title;
+                                node.gitLabel = issue.title;
+                                node.gitHubIssueFetched = true;
+                                tree._onDidChangeTreeData.fire();
+                            } );
+                    }
                 }
 
                 treeItem.command = {
@@ -847,9 +878,13 @@ class TreeNodeProvider
                 this.exportChildren( parent[ child.label ], this.getChildren( child ) );
             } else
             {
-                var format = config.labelFormat();
+                var format = attributes.getAttribute( node.tag, 'labelFormat' );
+                if( format === undefined )
+                {
+                    format = config.labelFormat();
+                }
                 parent[ "line " + child.line ] = ( format !== "" ) ?
-                    utils.formatLabel( format, child ) + ( child.pathLabel ? ( " " + child.pathLabel ) : "" ) :
+                    utils.formatLabel( format, child, attributes.getAttribute( node.tag, 'formatRegex' ) ) + ( child.pathLabel ? ( " " + child.pathLabel ) : "" ) :
                     child.label;
             }
         }, this );

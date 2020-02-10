@@ -157,6 +157,11 @@ function shouldCompactFolders()
         vscode.workspace.getConfiguration( 'todo-tree.tree' ).disableCompactFolders !== true;
 }
 
+function getGithubProjectUrl()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.general' ).githubProjectUrl;
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -180,3 +185,4 @@ module.exports.shouldIgnoreGitSubmodules = shouldIgnoreGitSubmodules;
 module.exports.refreshTagGroupLookup = refreshTagGroupLookup;
 module.exports.tagGroup = tagGroup;
 module.exports.shouldCompactFolders = shouldCompactFolders;
+module.exports.getGithubProjectUrl = getGithubProjectUrl;

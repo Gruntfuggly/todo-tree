@@ -277,6 +277,18 @@ QUnit.test( "utils.formatLabel replaces filename placeholder", function( assert 
     assert.equal( utils.formatLabel( "Label ${filename} content", { fsPath: "/path/to/filename.txt" } ), "Label filename.txt content" );
 } );
 
+QUnit.test( "utils.formatLabel replaces regex capture groups", function( assert )
+{
+    assert.equal( utils.formatLabel( "${1} ${2}", { match: "extract (One) and (Two)!" }, ".*\\((.*)\\).*\\((.*)\\).*" ), "One Two" );
+} );
+
+QUnit.test( "utils.formatLabel sets the github issue number in the node if a github issue number is present", function( assert )
+{
+    var node = { match: "extract (#23) number" };
+    utils.formatLabel( "", node, ".*\\((.*)\\).*" );
+    assert.equal( node.gitHubIssue, 23 );
+} );
+
 QUnit.test( "utils.hexToRgba converts correctly", function( assert )
 {
     assert.equal( utils.hexToRgba( "#000000", 0 ), "rgba(0,0,0,0)" );
