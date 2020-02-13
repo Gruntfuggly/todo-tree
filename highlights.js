@@ -31,61 +31,19 @@ function getDecoration( tag )
 
     var opacity = getOpacity( tag );
 
-    var lightForegroundColour = foregroundColour;
-    var darkForegroundColour = foregroundColour;
-    var lightBackgroundColour = backgroundColour;
-    var darkBackgroundColour = backgroundColour;
+    var lightForegroundColour = colours.getConfiguredColour( foregroundColour, new vscode.ThemeColor( 'editor.foreground' ) );
+    var darkForegroundColour = colours.getConfiguredColour( foregroundColour, new vscode.ThemeColor( 'editor.foreground' ) );
 
-    if( foregroundColour )
+    var lightBackgroundColour = colours.getConfiguredColour( backgroundColour, new vscode.ThemeColor( 'editor.background' ) );
+    var darkBackgroundColour = colours.getConfiguredColour( backgroundColour, new vscode.ThemeColor( 'editor.background' ) );
+
+    if( utils.isHexColour( lightBackgroundColour ) )
     {
-        if( !utils.isHexColour( foregroundColour ) )
-        {
-            if( colours.getColourList().indexOf( foregroundColour ) > -1 )
-            {
-                lightForegroundColour = colours.defaultLightColours[ foregroundColour ];
-                darkForegroundColour = colours.defaultDarkColours[ foregroundColour ];
-            }
-            else if( foregroundColour.match( /(foreground|background)/i ) )
-            {
-                lightForegroundColour = new vscode.ThemeColor( foregroundColour );
-                darkForegroundColour = new vscode.ThemeColor( foregroundColour );
-            } else
-            {
-                lightForegroundColour = new vscode.ThemeColor( 'editor.foreground' );
-                darkForegroundColour = new vscode.ThemeColor( 'editor.foreground' );
-            }
-        }
+        lightBackgroundColour = utils.hexToRgba( lightBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
     }
-
-    if( backgroundColour )
+    if( utils.isHexColour( darkBackgroundColour ) )
     {
-        if( !utils.isHexColour( backgroundColour ) )
-        {
-            if( colours.getColourList().indexOf( backgroundColour ) > -1 )
-            {
-                lightBackgroundColour = colours.defaultLightColours[ backgroundColour ];
-                darkBackgroundColour = colours.defaultDarkColours[ backgroundColour ];
-            }
-            else if( backgroundColour.match( /(foreground|background)/i ) )
-            {
-                lightBackgroundColour = new vscode.ThemeColor( backgroundColour );
-                darkBackgroundColour = new vscode.ThemeColor( backgroundColour );
-            }
-            else
-            {
-                lightBackgroundColour = new vscode.ThemeColor( 'editor.background' );
-                darkBackgroundColour = new vscode.ThemeColor( 'editor.background' );
-            }
-        }
-
-        if( utils.isHexColour( lightBackgroundColour ) )
-        {
-            lightBackgroundColour = utils.hexToRgba( lightBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
-        }
-        if( utils.isHexColour( darkBackgroundColour ) )
-        {
-            darkBackgroundColour = utils.hexToRgba( darkBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
-        }
+        darkBackgroundColour = utils.hexToRgba( darkBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
     }
 
     if( lightForegroundColour === undefined )

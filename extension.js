@@ -898,6 +898,7 @@ function activate( context )
                 {
                     if( document.fileName === undefined || isIncluded( document.fileName ) )
                     {
+                        colours.determineLightOrDarkTheme();
                         highlights.triggerHighlight( editor );
                     }
                 }

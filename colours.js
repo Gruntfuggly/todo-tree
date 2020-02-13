@@ -30,6 +30,8 @@ var defaultDarkColours = {
 
 var complementaryColours = {};
 
+var themeIsDark = false;
+
 function getColourList()
 {
     return defaultColours;
@@ -107,8 +109,55 @@ function refreshComplementaryColours()
     } );
 }
 
+function getConfiguredColour( colour, defaultColour )
+{
+    var configuredColour = defaultColour;
+
+    if( colour )
+    {
+        if( utils.isHexColour( colour ) )
+        {
+            configuredColour = colour;
+        }
+        else
+        {
+            if( defaultColours.indexOf( colour ) > -1 )
+            {
+                configuredColour = themeIsDark ? defaultDarkColours[ colour ] : defaultLightColours[ colour ];
+            }
+            else if( colour.match( /(foreground|background)/i ) )
+            {
+                configuredColour = new vscode.ThemeColor( colour );
+            }
+        }
+    }
+
+    return configuredColour;
+}
+
+function determineLightOrDarkTheme()
+{
+    var colorTheme = vscode.workspace.getConfiguration( "workbench" ).get( "colorTheme" );
+    vscode.extensions.all.map( function( extension )
+    {
+        var themes = extension.packageJSON.contributes && extension.packageJSON.contributes.themes;
+        if( themes )
+        {
+            themes.map( function( theme )
+            {
+                if( theme.label === colorTheme )
+                {
+                    themeIsDark = ( theme.uiTheme === 'vs-dark' || theme.uiTheme === 'hc-black' );
+                }
+            } );
+        }
+    } );
+}
+
 module.exports.getColourList = getColourList;
 module.exports.refreshComplementaryColours = refreshComplementaryColours;
 module.exports.complementaryColours = complementaryColours;
 module.exports.defaultLightColours = defaultLightColours;
 module.exports.defaultDarkColours = defaultDarkColours;
+module.exports.getConfiguredColour = getConfiguredColour;
+module.exports.determineLightOrDarkTheme = determineLightOrDarkTheme;
