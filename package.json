@@ -340,8 +340,10 @@
                     "type": "array",
                     "default": [
                         "BUG",
+                        "HACK",
                         "FIXME",
-                        "TODO"
+                        "TODO",
+                        "XXX"
                     ],
                     "items": {
                         "type": "string"

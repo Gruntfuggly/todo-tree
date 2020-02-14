@@ -2,6 +2,7 @@
 
 - Support showing TODOs from current file only
 - Show scan mode indication in status bar item
+- Add HACK and XXX to default tags
 
 ## v0.0.167 - 2020-01-30
 
