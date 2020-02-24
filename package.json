@@ -417,11 +417,17 @@
                 "todo-tree.filtering.includeGlobs": {
                     "type": "array",
                     "default": [],
+                    "items": {
+                        "type": "string"
+                    },
                     "markdownDescription": "Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders"
                 },
                 "todo-tree.filtering.excludeGlobs": {
                     "type": "array",
                     "default": [],
+                    "items": {
+                        "type": "string"
+                    },
                     "markdownDescription": "Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. `[\"**/*.txt\"]` to ignore all .txt files"
                 },
                 "todo-tree.filtering.passGlobsToRipgrep": {
@@ -432,11 +438,17 @@
                 "todo-tree.filtering.includedWorkspaces": {
                     "type": "array",
                     "default": [],
+                    "items": {
+                        "type": "string"
+                    },
                     "markdownDescription": "An array of workspace names to include as roots in the tree (wildcards can be used). An empty array includes all workspace folders."
                 },
                 "todo-tree.filtering.excludedWorkspaces": {
                     "type": "array",
                     "default": [],
+                    "items": {
+                        "type": "string"
+                    },
                     "markdownDescription": "An array of workspace names to exclude as roots in the tree (wildcards can be used)."
                 },
                 "todo-tree.filtering.useBuiltInExcludes": {
@@ -519,6 +531,9 @@
                         "file",
                         "untitled"
                     ],
+                    "items": {
+                        "type": "string"
+                    },
                     "markdownDescription": "Editor schemes to show highlights in. To show highlights in settings files, for instance, add 'vscode-userdata' or for output windows, use 'output'."
                 },
                 "todo-tree.tree.filterCaseSensitive": {
