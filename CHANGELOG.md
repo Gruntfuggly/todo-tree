@@ -4,6 +4,7 @@
 - Show scan mode indication in status bar item
 - Add HACK and XXX to default tags
 - Add support for using built in search excludes
+- Add button icons for README.md
 
 ## v0.0.167 - 2020-01-30
 

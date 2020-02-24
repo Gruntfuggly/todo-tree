@@ -98,19 +98,19 @@ The source code is available on GitHub [here](https://github.com/Gruntfuggly/tod
 
 The tree view header can contain the following buttons:
 
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/collapse.png" height="16px" align="center"> - Collapse all tree nodes<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/expand.png" height="16px" align="center"> - Expand all tree nodes<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/flat.png" height="16px" align="center"> - Show the tree view as a flat list, with the full filename for each TODO<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/tags.png" height="16px" align="center"> - Show the view as a list of tags<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/tree.png" height="16px" align="center"> - Show the tree view as a tree with expandable nodes for each folder (default)<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/tag.png" height="16px" align="center"> - Group the TODOs in the tree by the tag<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/notag.png" height="16px" align="center"> - Organise the TODOs by file (default)<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/filter.png" height="16px" align="center"> - Only show items in the tree which match the entered filter text<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/clear-filter.png" height="16px" align="center"> - Remove any active filter<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/refresh.png" height="16px" align="center"> - Rebuild the tree<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/scan-open-files.png" height="16px" align="center"> - Show tags from open files only<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/scan-workspace.png" height="16px" align="center"> - Show tags from workspace<br>
-<img src="https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/icons/light/reveal.png" height="16px" align="center"> - Show the current file in the tree<br>
+![collapse](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/collapse.png) - Collapse all tree nodes<br>
+![expand](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/expand.png) - Expand all tree nodes<br>
+![flat](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/flat.png) - Show the tree view as a flat list, with the full filename for each TODO<br>
+![tags](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/tags.png) - Show the view as a list of tags<br>
+![tree](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/tree.png) - Show the tree view as a tree with expandable nodes for each folder (default)<br>
+![tag](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/tag.png) - Group the TODOs in the tree by the tag<br>
+![notag](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/notag.png) - Organise the TODOs by file (default)<br>
+![filter](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/filter.png) - Only show items in the tree which match the entered filter text<br>
+![clear-filter](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/clear-filter.png) - Remove any active filter<br>
+![refresh](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/refresh.png) - Rebuild the tree<br>
+![scan-open-files](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/scan-open-files.png) - Show tags from open files only<br>
+![scan-workspace](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/scan-workspace.png) - Show tags from workspace<br>
+![scan-current-file](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/reveal.png) - Show the current file in the tree<br>
 
 ## Folder Filter Context Menu
 
@@ -198,13 +198,13 @@ A list of workspace names to exclude as roots in the tree (wildcards can be used
 **todo-tree.filtering.passGlobsToRipgrep** (`true`)<br/>
 Set this to false to apply the globs *after* the search (legacy behaviour).
 
-**todo-tree.filtering.useBuiltInExcludes** ('none')<br/>
+**todo-tree.filtering.useBuiltInExcludes** (`none`)<br/>
 Set this to use VSCode's built in files or search excludes. Can be one of `none`, `file excludes` (uses Files:Exclude), `search excludes` (Uses Search:Exclude) or `file and search excludes` (uses both).
 
-**todo-tree.filtering.ignoreGitSubmodules** ('false')<br/>
+**todo-tree.filtering.ignoreGitSubmodules** (`false`)<br/>
 If true, any subfolders containing a `.git` file will be ignored when searching.
 
-**todo-tree.highlights.enabled** ('true')<br/>
+**todo-tree.highlights.enabled** (`true`)<br/>
 Set this to false to turn off highlighting.
 
 **todo-tree.highlights.highlightDelay** (`500`)<br/>
