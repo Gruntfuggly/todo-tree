@@ -247,6 +247,19 @@ function activate( context )
         } );
     }
 
+    function addGlobs( source, target, exclude )
+    {
+        Object.keys( source ).map( function( glob )
+        {
+            if( source.hasOwnProperty( glob ) && source[ glob ] === true )
+            {
+                target = target.concat( ( exclude === true ? '!' : '' ) + glob );
+            }
+        } );
+
+        return target;
+    }
+
     function buildGlobsForRipgrep( includeGlobs, excludeGlobs, tempIncludeGlobs, tempExcludeGlobs, submoduleExcludeGlobs )
     {
         var globs = []
@@ -255,16 +268,14 @@ function activate( context )
             .concat( excludeGlobs.map( g => `!${g}` ) )
             .concat( tempExcludeGlobs.map( g => `!${g}` ) );
 
-        if( config.shouldUseBuiltInExcludes() )
+        if( config.shouldUseBuiltInFileExcludes() )
         {
-            var builtInExcludes = vscode.workspace.getConfiguration( 'files.exclude' );
-            Object.keys( builtInExcludes ).map( function( glob )
-            {
-                if( builtInExcludes.hasOwnProperty( glob ) && builtInExcludes[ glob ] === true )
-                {
-                    globs = globs.concat( '!' + glob );
-                }
-            } );
+            globs = addGlobs( vscode.workspace.getConfiguration( 'files.exclude' ), globs, true );
+        }
+
+        if( config.shouldUseBuiltInSearchExcludes() )
+        {
+            globs = addGlobs( vscode.workspace.getConfiguration( 'search.exclude' ), globs, true );
         }
 
         if( config.shouldIgnoreGitSubmodules() )
@@ -513,16 +524,14 @@ function activate( context )
         var tempIncludeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
         var tempExcludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
 
-        if( config.shouldUseBuiltInExcludes() )
+        if( config.shouldUseBuiltInFileExcludes() )
         {
-            var builtInExcludes = vscode.workspace.getConfiguration( 'files.exclude' );
-            Object.keys( builtInExcludes ).map( function( glob )
-            {
-                if( builtInExcludes.hasOwnProperty( glob ) && builtInExcludes[ glob ] === true )
-                {
-                    excludeGlobs = excludeGlobs.concat( glob );
-                }
-            } );
+            excludeGlobs = addGlobs( vscode.workspace.getConfiguration( 'files.exclude' ), excludeGlobs );
+        }
+
+        if( config.shouldUseBuiltInSearchExcludes() )
+        {
+            excludeGlobs = addGlobs( vscode.workspace.getConfiguration( 'search.exclude' ), excludeGlobs );
         }
 
         return utils.isIncluded( filename, includeGlobs.concat( tempIncludeGlobs ), excludeGlobs.concat( tempExcludeGlobs ) ) === true;
@@ -860,6 +869,11 @@ function activate( context )
                     'showScanModeButton',
                     vscode.workspace.getConfiguration( 'todo-tree.tree' ).showScanOpenFilesOrWorkspaceButton,
                     vscode.ConfigurationTarget.Global );
+
+                if( vscode.workspace.getConfiguration( 'todo-tree.filtering' ).useBuiltInExcludes === true )
+                {
+                    vscode.workspace.getConfiguration( 'todo-tree.filtering' ).update( 'useBuiltInExcludes', "file excludes", vscode.ConfigurationTarget.Global );
+                }
 
                 context.globalState.update( 'migratedVersion', 168 );
             }

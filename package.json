@@ -440,9 +440,21 @@
                     "markdownDescription": "An array of workspace names to exclude as roots in the tree (wildcards can be used)."
                 },
                 "todo-tree.filtering.useBuiltInExcludes": {
-                    "type": "boolean",
-                    "default": false,
-                    "markdownDescription": "If true, add VSCode's `files.exclude` list (mainly source-control database directories) to the ignored paths."
+                    "type": "string",
+                    "enum": [
+                        "none",
+                        "file excludes",
+                        "search excludes",
+                        "file and search excludes"
+                    ],
+                    "markdownEnumDescriptions": [
+                        "Don't used any built in excludes",
+                        "Use the Files:Exclude setting",
+                        "Use the Search:Exclude setting",
+                        "Use the Files:Exclude and the Search:Exclude setting"
+                    ],
+                    "default": "none",
+                    "markdownDescription": "Add VSCode's `files.exclude` and/or `search.exclude` list to the ignored paths."
                 },
                 "todo-tree.filtering.ignoreGitSubmodules": {
                     "type": "boolean",

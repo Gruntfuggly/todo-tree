@@ -198,11 +198,11 @@ A list of workspace names to exclude as roots in the tree (wildcards can be used
 **todo-tree.filtering.passGlobsToRipgrep** (`true`)<br/>
 Set this to false to apply the globs *after* the search (legacy behaviour).
 
-**todo-tree.filtering.useBuiltInExcludes** ('false')<br/>
-Set this to true to add VSCode's `files.exclude` list (mainly source-control database directories) to the ignored paths.
+**todo-tree.filtering.useBuiltInExcludes** ('none')<br/>
+Set this to use VSCode's built in files or search excludes. Can be one of `none`, `file excludes` (uses Files:Exclude), `search excludes` (Uses Search:Exclude) or `file and search excludes` (uses both).
 
 **todo-tree.filtering.ignoreGitSubmodules** ('false')<br/>
-If true, any subfolders containing a .git file will be ignored when searching.
+If true, any subfolders containing a `.git` file will be ignored when searching.
 
 **todo-tree.highlights.enabled** ('true')<br/>
 Set this to false to turn off highlighting.

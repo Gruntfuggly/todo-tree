@@ -125,9 +125,16 @@ function shouldShowHighlights( scheme )
     return schemes && schemes.length && schemes.indexOf( scheme ) !== -1;
 }
 
-function shouldUseBuiltInExcludes()
+function shouldUseBuiltInFileExcludes()
 {
-    return vscode.workspace.getConfiguration( 'todo-tree.filtering' ).useBuiltInExcludes;
+    var useBuiltInExcludes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).useBuiltInExcludes;
+    return useBuiltInExcludes === "file exclude" || useBuiltInExcludes === "file and search excludes";
+}
+
+function shouldUseBuiltInSearchExcludes()
+{
+    var useBuiltInExcludes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).useBuiltInExcludes;
+    return useBuiltInExcludes === "search excludes" || useBuiltInExcludes === "file and search excludes";
 }
 
 function shouldIgnoreGitSubmodules()
@@ -175,8 +182,9 @@ module.exports.shouldSortTagsOnlyViewAlphabetically = shouldSortTagsOnlyViewAlph
 module.exports.labelFormat = labelFormat;
 module.exports.clickingStatusBarShouldRevealTree = clickingStatusBarShouldRevealTree;
 module.exports.shouldShowHighlights = shouldShowHighlights;
-module.exports.shouldUseBuiltInExcludes = shouldUseBuiltInExcludes;
 module.exports.shouldIgnoreGitSubmodules = shouldIgnoreGitSubmodules;
 module.exports.refreshTagGroupLookup = refreshTagGroupLookup;
 module.exports.tagGroup = tagGroup;
 module.exports.shouldCompactFolders = shouldCompactFolders;
+module.exports.shouldUseBuiltInFileExcludes = shouldUseBuiltInFileExcludes;
+module.exports.shouldUseBuiltInSearchExcludes = shouldUseBuiltInSearchExcludes;
