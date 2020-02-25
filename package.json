@@ -367,8 +367,8 @@
                 },
                 "todo-tree.general.enableFileWatcher": {
                     "type": "boolean",
-                    "default": true,
-                    "markdownDescription": "Set to false to disable automatic updates when files in the workspace are created, changed or deleted"
+                    "default": false,
+                    "markdownDescription": "Set to true to enable automatic updates when files in the workspace are created, changed or deleted"
                 },
                 "todo-tree.general.revealBehaviour": {
                     "default": "start of todo",
