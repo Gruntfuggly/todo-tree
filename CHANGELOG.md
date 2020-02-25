@@ -6,6 +6,7 @@
 - Add support for using built in search excludes
 - Add button icons for README.md
 - Allow array settings to be modified in the settings GUI
+- Detect external file changes and update tree
 
 ## v0.0.167 - 2020-01-30
 

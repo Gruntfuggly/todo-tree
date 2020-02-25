@@ -149,6 +149,9 @@ The extension can be customised as follows (default values in brackets):
 **todo-tree.general.debug** (`false`)<br/>
 Show a debug channel in the output view.
 
+**todo-tree.general.enableFileWatcher** (`true`)<br/>
+Set this to false to turn off automatic updates when files in the workspace are created, changed or deleted.
+
 **todo-tree.general.rootFolder** (`""`)<br/>
 By default, any open workspaces will have a tree in the view. Use this to force another folder to be the root of the tree. You can include environment variables and also use ${workspaceFolder}. e.g.<br/>
 `"todo-tree.general.rootFolder": "${workspaceFolder}/test"`<br/>

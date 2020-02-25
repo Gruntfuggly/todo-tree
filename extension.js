@@ -48,6 +48,8 @@ function activate( context )
     var todoTreeViewExplorer = vscode.window.createTreeView( "todo-tree-view-explorer", { treeDataProvider: provider } );
     var todoTreeView = vscode.window.createTreeView( "todo-tree-view", { treeDataProvider: provider } );
 
+    var fileSystemWatcher;
+
     context.subscriptions.push( provider );
     context.subscriptions.push( status );
     context.subscriptions.push( todoTreeViewExplorer );
@@ -63,6 +65,44 @@ function activate( context )
         if( vscode.workspace.getConfiguration( 'todo-tree.general' ).debug === true )
         {
             outputChannel = vscode.window.createOutputChannel( "Todo Tree" );
+        }
+    }
+
+    function resetFileSystemWatcher()
+    {
+        function checkForExternalFileChanged( uri )
+        {
+            debug( uri.fsPath + " changed" );
+            removeFileFromSearchResults( uri.fsPath );
+            provider.remove( null, uri.fsPath );
+            searchList.push( uri.fsPath );
+            iterateSearchList();
+        }
+
+        if( fileSystemWatcher )
+        {
+            fileSystemWatcher.dispose();
+            fileSystemWatcher = undefined;
+        }
+
+        if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode === 'workspace' )
+        {
+            if( vscode.workspace.getConfiguration( 'todo-tree.general' ).enableFileWatcher === true )
+            {
+                fileSystemWatcher = vscode.workspace.createFileSystemWatcher( "**/*" );
+
+                context.subscriptions.push( fileSystemWatcher );
+
+                fileSystemWatcher.onDidChange( checkForExternalFileChanged );
+                fileSystemWatcher.onDidCreate( checkForExternalFileChanged );
+
+                fileSystemWatcher.onDidDelete( function( uri )
+                {
+                    debug( uri.fsPath + " deleted" );
+                    removeFileFromSearchResults( uri.fsPath );
+                    provider.remove( refreshTree, uri.fsPath );
+                } );
+            }
         }
     }
 
@@ -615,7 +655,7 @@ function activate( context )
         }
         else
         {
-            provider.remove( document.fileName );
+            provider.remove( null, document.fileName );
         }
 
         addResultsToTree();
@@ -1151,9 +1191,11 @@ function activate( context )
             function removeFromTree( filename )
             {
                 removeFileFromSearchResults( filename );
-                provider.remove( filename );
-                refreshTree();
-                updateStatusBar();
+                provider.remove( function()
+                {
+                    refreshTree();
+                    updateStatusBar();
+                }, filename );
             }
 
             delete openDocuments[ document.fileName ];
@@ -1208,10 +1250,13 @@ function activate( context )
                         documentChanged( vscode.window.activeTextEditor.document );
                     }
                 }
-
-                if( e.affectsConfiguration( "todo-tree.general.debug" ) )
+                else if( e.affectsConfiguration( "todo-tree.general.debug" ) )
                 {
                     resetOutputChannel();
+                }
+                else if( e.affectsConfiguration( "todo-tree.general.enableFileWatcher" ) )
+                {
+                    resetFileSystemWatcher();
                 }
 
                 if( e.affectsConfiguration( "todo-tree.general.tagGroups" ) )
@@ -1279,6 +1324,8 @@ function activate( context )
         {
             documentChanged( vscode.window.activeTextEditor.document );
         }
+
+        resetFileSystemWatcher();
     }
 
     register();

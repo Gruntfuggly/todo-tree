@@ -745,7 +745,7 @@ class TreeNodeProvider
         }
     }
 
-    remove( filename, children )
+    remove( callback, filename, children )
     {
         function removeNodesByFilename( children, me )
         {
@@ -753,13 +753,17 @@ class TreeNodeProvider
             {
                 if( child.nodes !== undefined )
                 {
-                    child.nodes = me.remove( filename, child.nodes );
+                    child.nodes = me.remove( callback, filename, child.nodes );
                 }
                 var shouldRemove = ( child.fsPath === filename );
                 if( shouldRemove )
                 {
                     delete expandedNodes[ child.fsPath ];
                     me._context.workspaceState.update( 'expandedNodes', expandedNodes );
+                    if( callback )
+                    {
+                        callback( child.fsPath );
+                    }
                 }
                 return shouldRemove === false;
             }, me );
@@ -771,13 +775,17 @@ class TreeNodeProvider
             {
                 if( child.nodes !== undefined )
                 {
-                    child.nodes = me.remove( filename, child.nodes );
+                    child.nodes = me.remove( callback, filename, child.nodes );
                 }
                 var shouldRemove = ( child.nodes && child.todos && child.nodes.length + child.todos.length === 0 && child.isWorkspaceNode !== true );
                 if( shouldRemove )
                 {
                     delete expandedNodes[ child.fsPath ];
                     me._context.workspaceState.update( 'expandedNodes', expandedNodes );
+                    if( callback )
+                    {
+                        callback( child.fsPath );
+                    }
                 }
                 return shouldRemove !== true;
             }, me );

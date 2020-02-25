@@ -365,6 +365,11 @@
                     "default": false,
                     "markdownDescription": "Create a debug channel in the Output view"
                 },
+                "todo-tree.general.enableFileWatcher": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Set to false to disable automatic updates when files in the workspace are created, changed or deleted"
+                },
                 "todo-tree.general.revealBehaviour": {
                     "default": "start of todo",
                     "type": "string",
