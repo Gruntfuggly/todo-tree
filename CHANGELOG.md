@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.169 - 2020-02-25
+
 - Turn off file watcher by default
 
 ## v0.0.168 - 2020-02-25
