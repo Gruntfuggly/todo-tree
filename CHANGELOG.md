@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.168 - 2020-02-25
+
 - Support showing TODOs from current file only
 - Show scan mode indication in status bar item
 - Add HACK and XXX to default tags
