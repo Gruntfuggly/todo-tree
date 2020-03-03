@@ -551,6 +551,11 @@
                     "default": true,
                     "markdownDescription": "Refresh the tree when files are opened or saved"
                 },
+                "todo-tree.tree.scanAtStartup": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Normally the tree is built as soon as the window is opened. If you have a large code base and want to manually start the scan, set this to false."
+                },
                 "todo-tree.tree.scanMode": {
                     "type": "string",
                     "default": "workspace",

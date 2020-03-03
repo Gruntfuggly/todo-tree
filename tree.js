@@ -8,6 +8,7 @@ var icons = require( './icons.js' );
 var config = require( './config.js' );
 var highlights = require( './highlights.js' );
 
+var initialised = false;
 var workspaceFolders;
 var nodes = [];
 
@@ -344,7 +345,7 @@ class TreeNodeProvider
                 statusNode.tooltip = "Right click for filter options";
             }
 
-            if( result.length === 0 )
+            if( result.length === 0 && initialised === true )
             {
                 if( statusNode.label !== "" )
                 {
@@ -540,6 +541,7 @@ class TreeNodeProvider
 
     rebuild()
     {
+        initialised = true;
         buildCounter = ( buildCounter + 1 ) % 100;
     }
 

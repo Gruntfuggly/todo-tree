@@ -490,6 +490,9 @@ function activate( context )
 
     function rebuild()
     {
+        todoTreeViewExplorer.message = "";
+        todoTreeView.message = "";
+
         searchResults = [];
         searchList = [];
 
@@ -1308,24 +1311,33 @@ function activate( context )
 
         migrateSettings();
         setButtonsAndContext();
-        rebuild();
 
-        var editors = vscode.window.visibleTextEditors;
-        editors.map( function( editor )
+        if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanAtStartup === true )
         {
-            if( editor.document && editor.document.uri.scheme === "file" )
+            rebuild();
+
+            var editors = vscode.window.visibleTextEditors;
+            editors.map( function( editor )
             {
-                openDocuments[ editor.document.fileName ] = editor.document;
+                if( editor.document && editor.document.uri.scheme === "file" )
+                {
+                    openDocuments[ editor.document.fileName ] = editor.document;
+                }
+                refreshOpenFiles();
+            } );
+
+            if( vscode.window.activeTextEditor )
+            {
+                documentChanged( vscode.window.activeTextEditor.document );
             }
-            refreshOpenFiles();
-        } );
 
-        if( vscode.window.activeTextEditor )
-        {
-            documentChanged( vscode.window.activeTextEditor.document );
+            resetFileSystemWatcher();
         }
-
-        resetFileSystemWatcher();
+        else
+        {
+            todoTreeViewExplorer.message = "Click the refresh button to scan...";
+            todoTreeView.message = "Click the refresh button to scan...";
+        }
     }
 
     register();
