@@ -19,6 +19,7 @@ var currentFilter;
 var interrupted = false;
 var selectedDocument;
 var refreshTimeout;
+var fileWatcherTimeout;
 var openDocuments = {};
 
 function activate( context )
@@ -76,7 +77,12 @@ function activate( context )
             removeFileFromSearchResults( uri.fsPath );
             provider.remove( null, uri.fsPath );
             searchList.push( uri.fsPath );
-            iterateSearchList();
+            searchList = searchList.filter( function( element, index )
+            {
+                return searchList.indexOf( element ) == index;
+            } );
+            clearTimeout( fileWatcherTimeout );
+            fileWatcherTimeout = setTimeout( iterateSearchList, 1000 );
         }
 
         if( fileSystemWatcher )
