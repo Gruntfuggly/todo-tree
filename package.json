@@ -650,6 +650,11 @@
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "Prevent the tree from showing compact folders"
+                },
+                "todo-tree.tree.tooltipFormat": {
+                    "type": "string",
+                    "default": "${filepath}, line ${line}",
+                    "markdownDescription": "Tree item tooltip format"
                 }
             }
         }

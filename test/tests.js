@@ -98,7 +98,7 @@ QUnit.test( "utils.extractTag removes colon from ${after}", function( assert )
 
     result = utils.extractTag( "before TODO :after" );
     assert.equal( result.withoutTag, "after" );
-    result = utils.formatLabel( "${tag}: ${after}", { actualTag: result.tag, after: result.withoutTag } );
+    result = utils.format( "${tag}: ${after}", { actualTag: result.tag, after: result.withoutTag } );
     assert.equal( result, "TODO: after" );
 } );
 
@@ -242,39 +242,44 @@ QUnit.test( "utils.isIncluded returns false when name matches includes but also 
     assert.ok( utils.isIncluded( "filename.js", [ "*.txt", "*.js" ], [ "*.txt" ] ) === true );
 } );
 
-QUnit.test( "utils.formatLabel replaces line number placeholder", function( assert )
+QUnit.test( "utils.format replaces line number placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${line} content", { line: 23 } ), "Label 24 content" ); // line is zero based
+    assert.equal( utils.format( "Label ${line} content", { line: 23 } ), "Label 24 content" ); // line is zero based
 } );
 
-QUnit.test( "utils.formatLabel replaces column number placeholder", function( assert )
+QUnit.test( "utils.format replaces column number placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${column} content", { column: 78 } ), "Label 78 content" );
+    assert.equal( utils.format( "Label ${column} content", { column: 78 } ), "Label 78 content" );
 } );
 
-QUnit.test( "utils.formatLabel replaces before text placeholder", function( assert )
+QUnit.test( "utils.format replaces before text placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
+    assert.equal( utils.format( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
 } );
 
-QUnit.test( "utils.formatLabel replaces tag placeholder", function( assert )
+QUnit.test( "utils.format replaces tag placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${tag} content", { actualTag: "TODO" } ), "Label TODO content" );
+    assert.equal( utils.format( "Label ${tag} content", { actualTag: "TODO" } ), "Label TODO content" );
 } );
 
-QUnit.test( "utils.formatLabel replaces after text placeholder", function( assert )
+QUnit.test( "utils.format replaces after text placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${after} content", { after: "text after tag" } ), "Label text after tag content" );
+    assert.equal( utils.format( "Label ${after} content", { after: "text after tag" } ), "Label text after tag content" );
 } );
 
-QUnit.test( "utils.formatLabel replaces before text placeholder", function( assert )
+QUnit.test( "utils.format replaces before text placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
+    assert.equal( utils.format( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
 } );
 
-QUnit.test( "utils.formatLabel replaces filename placeholder", function( assert )
+QUnit.test( "utils.format replaces filename placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${filename} content", { fsPath: "/path/to/filename.txt" } ), "Label filename.txt content" );
+    assert.equal( utils.format( "Label ${filename} content", { fsPath: "/path/to/filename.txt" } ), "Label filename.txt content" );
+} );
+
+QUnit.test( "utils.format replaces filepath placeholder", function( assert )
+{
+    assert.equal( utils.format( "Label ${filepath} content", { fsPath: "/path/to/filename.txt" } ), "Label /path/to/filename.txt content" );
 } );
 
 QUnit.test( "utils.hexToRgba converts correctly", function( assert )

@@ -38,11 +38,6 @@ function shouldShowCounts()
     return vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'showCountsInTree', false );
 }
 
-function shouldShowLineNumbers()
-{
-    return vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'showLineNumbersInTree', false );
-}
-
 function shouldHideIconsWhenGroupedByTag()
 {
     return vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'hideIconsWhenGroupedByTag', false );
@@ -114,6 +109,11 @@ function labelFormat()
     return vscode.workspace.getConfiguration( 'todo-tree.tree' ).labelFormat;
 }
 
+function tooltipFormat()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.tree' ).tooltipFormat;
+}
+
 function clickingStatusBarShouldRevealTree()
 {
     return vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBarClickBehaviour === "reveal";
@@ -170,7 +170,6 @@ module.exports.shouldExpand = shouldExpand;
 module.exports.shouldFlatten = shouldFlatten;
 module.exports.shouldShowTagsOnly = shouldShowTagsOnly;
 module.exports.shouldShowCounts = shouldShowCounts;
-module.exports.shouldShowLineNumbers = shouldShowLineNumbers;
 module.exports.shouldHideIconsWhenGroupedByTag = shouldHideIconsWhenGroupedByTag;
 module.exports.showFilterCaseSensitive = showFilterCaseSensitive;
 module.exports.isRegexCaseSensitive = isRegexCaseSensitive;
@@ -180,6 +179,7 @@ module.exports.ripgrepPath = ripgrepPath;
 module.exports.tags = tags;
 module.exports.shouldSortTagsOnlyViewAlphabetically = shouldSortTagsOnlyViewAlphabetically;
 module.exports.labelFormat = labelFormat;
+module.exports.tooltipFormat = tooltipFormat;
 module.exports.clickingStatusBarShouldRevealTree = clickingStatusBarShouldRevealTree;
 module.exports.shouldShowHighlights = shouldShowHighlights;
 module.exports.shouldIgnoreGitSubmodules = shouldIgnoreGitSubmodules;

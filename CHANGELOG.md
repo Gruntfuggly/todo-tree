@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Add option to manually start the scan
+- Add configuration for tooltip
 
 ## v0.0.169 - 2020-02-25
 

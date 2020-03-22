@@ -424,15 +424,8 @@ class TreeNodeProvider
                 treeItem.resourceUri = vscode.Uri.file( node.fsPath );
             }
 
-            treeItem.tooltip = node.fsPath;
-            if( node.line !== undefined )
-            {
-                treeItem.tooltip += ", line " + ( node.line + 1 );
-                if( config.shouldShowLineNumbers() )
-                {
-                    treeItem.label = "Line " + ( node.line + 1 ) + ":" + treeItem.label;
-                }
-            }
+            treeItem.tooltip = config.tooltipFormat();
+            treeItem.tooltip = utils.format( config.tooltipFormat(), node );
 
             if( node.type === PATH )
             {
@@ -492,7 +485,7 @@ class TreeNodeProvider
                 var format = config.labelFormat();
                 if( format !== "" )
                 {
-                    treeItem.label = utils.formatLabel( format, node ) + ( node.pathLabel ? ( " " + node.pathLabel ) : "" );
+                    treeItem.label = utils.format( format, node ) + ( node.pathLabel ? ( " " + node.pathLabel ) : "" );
                 }
 
                 treeItem.command = {
@@ -859,7 +852,7 @@ class TreeNodeProvider
             {
                 var format = config.labelFormat();
                 parent[ "line " + child.line ] = ( format !== "" ) ?
-                    utils.formatLabel( format, child ) + ( child.pathLabel ? ( " " + child.pathLabel ) : "" ) :
+                    utils.format( format, child ) + ( child.pathLabel ? ( " " + child.pathLabel ) : "" ) :
                     child.label;
             }
         }, this );
