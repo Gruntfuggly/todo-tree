@@ -96,7 +96,9 @@ function activate( context )
         {
             if( vscode.workspace.getConfiguration( 'todo-tree.general' ).enableFileWatcher === true )
             {
-                fileSystemWatcher = vscode.workspace.createFileSystemWatcher( "**/*" );
+                var glob = vscode.workspace.getConfiguration( 'todo-tree.general' ).fileWatcherGlob;
+
+                fileSystemWatcher = vscode.workspace.createFileSystemWatcher( glob );
 
                 context.subscriptions.push( fileSystemWatcher );
 
@@ -1269,7 +1271,8 @@ function activate( context )
                 {
                     resetOutputChannel();
                 }
-                else if( e.affectsConfiguration( "todo-tree.general.enableFileWatcher" ) )
+                else if( e.affectsConfiguration( "todo-tree.general.enableFileWatcher" ) ||
+                    e.affectsConfiguration( "todo-tree.general.fileWatcherGlob" ) )
                 {
                     resetFileSystemWatcher();
                 }

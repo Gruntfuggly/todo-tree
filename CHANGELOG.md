@@ -4,6 +4,7 @@
 - Add configuration for tooltip
 - Don't refresh when regex is being changed
 - Add more information about globs to README.md
+- Allow file watcher glob to be configured
 
 ## v0.0.169 - 2020-02-25
 

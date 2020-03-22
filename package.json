@@ -370,6 +370,11 @@
                     "default": false,
                     "markdownDescription": "Set to true to enable automatic updates when files in the workspace are created, changed or deleted"
                 },
+                "todo-tree.general.fileWatcherGlob": {
+                    "type": "string",
+                    "default": "**/*",
+                    "markdownDescription": "Glob for use with the file watcher. Change this if the default setting causes performance issues."
+                },
                 "todo-tree.general.revealBehaviour": {
                     "default": "start of todo",
                     "type": "string",
