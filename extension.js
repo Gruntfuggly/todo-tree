@@ -1250,6 +1250,11 @@ function activate( context )
                 e.affectsConfiguration( 'files.exclude' ) ||
                 e.affectsConfiguration( 'explorer.compactFolders' ) )
             {
+                if( e.affectsConfiguration( "todo-tree.regex.regex" ) )
+                {
+                    return;
+                }
+
                 if( e.affectsConfiguration( "todo-tree.highlights.enabled" ) ||
                     e.affectsConfiguration( "todo-tree.highlights.defaultHighlight" ) ||
                     e.affectsConfiguration( "todo-tree.highlights.customHighlight" ) )
