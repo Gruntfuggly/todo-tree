@@ -187,7 +187,7 @@ What to show in the status bar - nothing (`none`), total count (`total`), counts
 Set the behaviour of clicking the status bar to either cycle display formats, or reveal the tree.
 
 **todo-tree.filtering.includeGlobs** (`[]`)<br/>
-Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders. [Globs help](https://www.npmjs.com/package/glob#glob-primer).
+Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders. [Globs help](https://code.visualstudio.com/api/references/vscode-api#GlobPattern). *Note: globs paths are absolute - not relative to the current workspace.*
 
 **todo-tree.filtering.excludeGlobs** (`[]`)<br/>
 Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. `[\"**/*.txt\"]` to ignore all .txt files
@@ -348,7 +348,7 @@ which should match:
 
 ### Excluding files and folders
 
-To restrict the set of folders which is searched, you can define `todo-tree.filtering.includeGlobs`. This is an array of globs which the search results are matched against. If the results match any of the globs, they will be shown. By default the array is empty, which matches everything.
+To restrict the set of folders which is searched, you can define `todo-tree.filtering.includeGlobs`. This is an array of globs which the search results are matched against. If the results match any of the globs, they will be shown. By default the array is empty, which matches everything. See [here](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) for more information on globs. *Note: globs paths are absolute - not relative to the current workspace.*
 
 To exclude folders/files from your search you can define `todo-tree.filtering.excludeGlobs`. If the search results match any of these globs, then the results will be ignored.
 

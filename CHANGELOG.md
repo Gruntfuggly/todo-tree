@@ -3,6 +3,7 @@
 - Add option to manually start the scan
 - Add configuration for tooltip
 - Don't refresh when regex is being changed
+- Add more information about globs to README.md
 
 ## v0.0.169 - 2020-02-25
 
