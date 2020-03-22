@@ -21,6 +21,7 @@ var selectedDocument;
 var refreshTimeout;
 var fileWatcherTimeout;
 var openDocuments = {};
+var provider;
 
 function activate( context )
 {
@@ -43,7 +44,7 @@ function activate( context )
     highlights.init( context );
     utils.init( config );
 
-    var provider = new tree.TreeNodeProvider( context, debug );
+    provider = new tree.TreeNodeProvider( context, debug );
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
 
     var todoTreeViewExplorer = vscode.window.createTreeView( "todo-tree-view-explorer", { treeDataProvider: provider } );
