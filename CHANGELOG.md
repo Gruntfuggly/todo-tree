@@ -1,10 +1,13 @@
 # Todo Tree Change Log
 
+## v0.0.170 - 2020-03-22
+
 - Add option to manually start the scan
 - Add configuration for tooltip
 - Don't refresh when regex is being changed
 - Add more information about globs to README.md
 - Allow file watcher glob to be configured
+- Fix error on deactivate (thanks to [hacke2](https://github.com/hacke2))
 
 ## v0.0.169 - 2020-02-25
 
