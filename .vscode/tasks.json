@@ -1,19 +1,31 @@
 // See https://go.microsoft.com/fwlink/?LinkId=733558
 // for the documentation about the tasks.json format
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "Run tests",
-			"type": "npm",
-			"script": "test",
-			"presentation": {
-				"reveal": "always"
-			},
-			"group": {
-				"kind": "test",
-				"isDefault": true
-			}
-		}
-	]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "ut",
+            "type": "shell",
+            "command": "qunit test/tests.js",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": {
+                "owner": "ut",
+                "fileLocation": [
+                    "absolute"
+                ],
+                "pattern": {
+                    "regexp": "^.*\\((.*):(\\d+):(\\d+)\\)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3
+                }
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        }
+    ]
 }

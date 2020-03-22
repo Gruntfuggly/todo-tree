@@ -292,7 +292,7 @@ Sort items in the tags only view alphabetically instead of by file and line numb
 Set to true to show counts of TODOs in the tree.
 
 **todo-tree.tree.labelFormat** (`${tag} ${after}`)<br/>
-Format of the TODO item labels. Available placeholders are `${line}`, `${column}`, `${tag}`, `${before}` (text from before the tag), `${after}` (text from after the tag), `${filename}` and `${afterOrBefore}` (use "after" text or "before" text if after is empty).
+Format of the TODO item labels. Available placeholders are `${line}`, `${column}`, `${tag}`, `${before}` (text from before the tag), `${after}` (text from after the tag), `${filename}`, `${filepath}` and `${afterOrBefore}` (use "after" text or "before" text if after is empty).
 
 **todo-tree.tree.scanMode** (`workspace`)<br/>
 By default the extension scans the whole workspace (`workspace`). Use this to limit the search to only open files (`open files`) or only the current file (`current file`).
@@ -305,6 +305,9 @@ Hide item icons when grouping by tag.
 
 **todo-tree.tree.disableCompactFolders** (`false`)<br/>
 The tree will normally respect the VSCode's `explorer.compactFolders` setting. Set this to true if you want to disable compact folders in the todo tree.
+
+**todo-tree.tree.tooltipFormat** (`${filepath}, ${line}`)</br>
+Format of the tree item tooltips. Uses the same placeholders as `todo-tree.tree.labelFormat` (see above).
 
 <sup>*</sup>*Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.*
 

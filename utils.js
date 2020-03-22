@@ -194,7 +194,7 @@ function isIncluded( name, includes, excludes )
     return included;
 }
 
-function formatLabel( template, node )
+function format( template, node )
 {
     var result = template;
 
@@ -207,6 +207,7 @@ function formatLabel( template, node )
     if( node.fsPath )
     {
         result = result.replace( /\$\{filename\}/g, path.basename( node.fsPath ) );
+        result = result.replace( /\$\{filepath\}/g, node.fsPath );
     }
 
     return result;
@@ -253,6 +254,6 @@ module.exports.getRegexSource = getRegexSource;
 module.exports.getRegexForRipGrep = getRegexForRipGrep;
 module.exports.getRegexForEditorSearch = getRegexForEditorSearch;
 module.exports.isIncluded = isIncluded;
-module.exports.formatLabel = formatLabel;
+module.exports.format = format;
 module.exports.createFolderGlob = createFolderGlob;
 module.exports.getSubmoduleExcludeGlobs = getSubmoduleExcludeGlobs;
