@@ -286,13 +286,7 @@ function triggerHighlight( editor )
     }
 }
 
-function shouldHideFromTree( tag )
-{
-    return attributes.getAttribute( tag, 'hideFromTree', false );
-}
-
 module.exports.init = init;
 module.exports.getDecoration = getDecoration;
 module.exports.triggerHighlight = triggerHighlight;
-module.exports.shouldHideFromTree = shouldHideFromTree;
 

@@ -1,6 +1,7 @@
 var vscode = require( 'vscode' );
 var fs = require( 'fs' );
 var path = require( 'path' );
+var attributes = require( './attributes.js' );
 
 var context;
 
@@ -164,6 +165,11 @@ function shouldCompactFolders()
         vscode.workspace.getConfiguration( 'todo-tree.tree' ).disableCompactFolders !== true;
 }
 
+function shouldHideFromTree( tag )
+{
+    return attributes.getAttribute( tag, 'hideFromTree', false );
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -188,3 +194,4 @@ module.exports.tagGroup = tagGroup;
 module.exports.shouldCompactFolders = shouldCompactFolders;
 module.exports.shouldUseBuiltInFileExcludes = shouldUseBuiltInFileExcludes;
 module.exports.shouldUseBuiltInSearchExcludes = shouldUseBuiltInSearchExcludes;
+module.exports.shouldHideFromTree = shouldHideFromTree;
