@@ -19,6 +19,7 @@ var currentFilter;
 var interrupted = false;
 var selectedDocument;
 var refreshTimeout;
+var fileRefreshTimeout;
 var fileWatcherTimeout;
 var openDocuments = {};
 var provider;
@@ -83,7 +84,7 @@ function activate( context )
                 return searchList.indexOf( element ) == index;
             } );
             clearTimeout( fileWatcherTimeout );
-            fileWatcherTimeout = setTimeout( iterateSearchList, 1000 );
+            fileWatcherTimeout = setTimeout( iterateSearchList, 500 );
         }
 
         if( fileSystemWatcher )
@@ -958,6 +959,16 @@ function activate( context )
                     }
                 }
             } );
+
+            if( document.uri.scheme === "file" && path.basename( document.fileName ) !== "settings.json" )
+            {
+                if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
+                {
+                    clearTimeout( fileRefreshTimeout );
+                    fileRefreshTimeout = setTimeout( refreshFile, 500, document );
+                }
+            }
+
         }
 
         // We can't do anything if we can't find ripgrep

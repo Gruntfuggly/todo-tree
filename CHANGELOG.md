@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Refresh files after a timeout
+
 ## v0.0.170 - 2020-03-22
 
 - Add option to manually start the scan
