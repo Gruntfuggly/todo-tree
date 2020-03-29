@@ -54,6 +54,8 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `hideFromTree` - used to hide tags from the tree, but still highlight in files
 
+`hideFromStatusBar` - prevents the tag from being included in the status bar counts
+
 Example:
 
 ```json

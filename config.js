@@ -170,6 +170,11 @@ function shouldHideFromTree( tag )
     return attributes.getAttribute( tag, 'hideFromTree', false );
 }
 
+function shouldHideFromStatusBar( tag )
+{
+    return attributes.getAttribute( tag, 'hideFromStatusBar', false );
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -195,3 +200,4 @@ module.exports.shouldCompactFolders = shouldCompactFolders;
 module.exports.shouldUseBuiltInFileExcludes = shouldUseBuiltInFileExcludes;
 module.exports.shouldUseBuiltInSearchExcludes = shouldUseBuiltInSearchExcludes;
 module.exports.shouldHideFromTree = shouldHideFromTree;
+module.exports.shouldHideFromStatusBar = shouldHideFromStatusBar;

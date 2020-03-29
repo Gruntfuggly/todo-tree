@@ -21,7 +21,7 @@ var expandedNodes = {};
 
 var isVisible = function( e )
 {
-    return e.visible === true;
+    return e.visible === true && e.hidden !== true;
 };
 
 var findTagNode = function( node )
@@ -271,7 +271,10 @@ function countTags( child, tagCounts )
         if( node.type === TODO )
         {
             var tag = node.tag ? node.tag : "TODO";
-            tagCounts[ tag ] = tagCounts[ tag ] === undefined ? 1 : tagCounts[ tag ] + 1;
+            if( !config.shouldHideFromStatusBar( tag ) )
+            {
+                tagCounts[ tag ] = tagCounts[ tag ] === undefined ? 1 : tagCounts[ tag ] + 1;
+            }
         }
     }
 
@@ -635,7 +638,7 @@ class TreeNodeProvider
 
         if( config.shouldHideFromTree( todoNode.tag ? todoNode.tag : todoNode.label ) )
         {
-            return;
+            todoNode.hidden = true;
         }
 
         var childNode;
