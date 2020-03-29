@@ -267,17 +267,24 @@ function locateTreeChildNode( rootNode, pathElements, tag )
 
 function countTags( child, tagCounts )
 {
+    function countTag( node )
+    {
+        if( node.type === TODO )
+        {
+            var tag = node.tag ? node.tag : "TODO";
+            tagCounts[ tag ] = tagCounts[ tag ] === undefined ? 1 : tagCounts[ tag ] + 1;
+        }
+    }
+
+    countTag( child );
+
     if( child.nodes !== undefined )
     {
         countChildTags( child.nodes, tagCounts );
     }
     if( child.todos )
     {
-        child.todos.map( function( todo )
-        {
-            var tag = todo.tag ? todo.tag : "TODO";
-            tagCounts[ tag ] = tagCounts[ tag ] === undefined ? 1 : tagCounts[ tag ] + 1;
-        } );
+        child.todos.map( function( node ) { countTag( node ); } );
     }
 }
 

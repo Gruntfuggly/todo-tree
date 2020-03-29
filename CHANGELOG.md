@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Refresh files after a timeout
+- Fix tag counts in tags only view
 
 ## v0.0.170 - 2020-03-22
 
