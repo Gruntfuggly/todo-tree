@@ -244,8 +244,28 @@ function activate( context )
         }
         else
         {
-            var newSetting = vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar === 'total' ? "top three" : "total";
-            vscode.workspace.getConfiguration( 'todo-tree.general' ).update( 'statusBar', newSetting, true );
+            var setting = vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar;
+            if( setting === 'total' )
+            {
+                setting = 'tags';
+            }
+            else if( setting === 'tags' )
+            {
+                var counts = provider.getTagCounts();
+                if( Object.keys( counts ).length > 3 )
+                {
+                    setting = 'top three';
+                }
+                else
+                {
+                    setting = 'total';
+                }
+            }
+            else
+            {
+                setting = 'total';
+            }
+            vscode.workspace.getConfiguration( 'todo-tree.general' ).update( 'statusBar', setting, true );
         }
     }
 

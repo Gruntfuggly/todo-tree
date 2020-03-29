@@ -3,6 +3,7 @@
 - Refresh files after a timeout
 - Fix tag counts in tags only view
 - Add support for hiding tags from the status bar counts
+- Fix cycling of status bar
 
 ## v0.0.170 - 2020-03-22
 
