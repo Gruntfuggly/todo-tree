@@ -400,16 +400,18 @@
                         "none",
                         "total",
                         "tags",
-                        "top three"
+                        "top three",
+                        "current file"
                     ],
                     "markdownEnumDescriptions": [
                         "Only show the scanning status in the status bar",
-                        "Show the total number of TODOs in the status bar",
+                        "Show the total count of tags in the status bar",
                         "Show a breakdown of the count of each tag in the status bar",
-                        "Show the count of the top three tags in the status bar"
+                        "Show the count of the top three tags in the status bar",
+                        "Show the count of tags in the current file in the status bar"
                     ],
                     "default": "none",
-                    "markdownDescription": "What to show in the status bar - nothing, total count, or counts per tag"
+                    "markdownDescription": "What to show in the status bar - nothing, total count, counts per tag, top three counts per tag or count of tags in the current file"
                 },
                 "todo-tree.general.statusBarClickBehaviour": {
                     "type": "string",

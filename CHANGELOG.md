@@ -1,5 +1,8 @@
 # Todo Tree Change Log
 
+- Add "current file" option to status bar
+- Add popup to show current status bar mode
+
 ## v0.0.171 - 2020-03-29
 
 - Refresh files after a timeout

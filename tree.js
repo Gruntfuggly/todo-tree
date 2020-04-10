@@ -264,14 +264,14 @@ function locateTreeChildNode( rootNode, pathElements, tag )
     return childNode;
 }
 
-function countTags( child, tagCounts )
+function countTags( child, tagCounts, fileFilter )
 {
     function countTag( node )
     {
         if( node.type === TODO )
         {
             var tag = node.tag ? node.tag : "TODO";
-            if( !config.shouldHideFromStatusBar( tag ) )
+            if( !config.shouldHideFromStatusBar( tag ) && ( !fileFilter || fileFilter === node.fsPath ) )
             {
                 tagCounts[ tag ] = tagCounts[ tag ] === undefined ? 1 : tagCounts[ tag ] + 1;
             }
@@ -282,7 +282,7 @@ function countTags( child, tagCounts )
 
     if( child.nodes !== undefined )
     {
-        countChildTags( child.nodes, tagCounts );
+        countChildTags( child.nodes, tagCounts, fileFilter );
     }
     if( child.todos )
     {
@@ -290,9 +290,9 @@ function countTags( child, tagCounts )
     }
 }
 
-function countChildTags( children, tagCounts )
+function countChildTags( children, tagCounts, fileFilter )
 {
-    children.map( function( child ) { return countTags( child, tagCounts ); } );
+    children.map( function( child ) { return countTags( child, tagCounts, fileFilter ); } );
     return tagCounts;
 }
 
@@ -843,10 +843,10 @@ class TreeNodeProvider
         this._context.workspaceState.update( 'expandedNodes', expandedNodes );
     }
 
-    getTagCounts()
+    getTagCounts( fileFilter )
     {
         var tagCounts = {};
-        return countChildTags( nodes, tagCounts );
+        return countChildTags( nodes, tagCounts, fileFilter );
     }
 
     exportChildren( parent, children )

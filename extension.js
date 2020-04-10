@@ -24,6 +24,14 @@ var fileWatcherTimeout;
 var openDocuments = {};
 var provider;
 
+var SCAN_MODE_OPEN_FILES = 'open files';
+var SCAN_MODE_CURRENT_FILE = 'current file';
+
+var STATUS_BAR_TOTAL = 'total';
+var STATUS_BAR_TAGS = 'tags';
+var STATUS_BAR_TOP_THREE = 'top three';
+var STATUS_BAR_CURRENT_FILE = 'current file';
+
 function activate( context )
 {
     var outputChannel;
@@ -168,31 +176,35 @@ function activate( context )
 
     function updateStatusBar()
     {
-        var counts = provider.getTagCounts();
+        var statusBar = vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar;
+        var fileFilter;
+        if( statusBar === STATUS_BAR_CURRENT_FILE )
+        {
+            if( vscode.window.activeTextEditor && vscode.window.activeTextEditor.document )
+            {
+                fileFilter = vscode.window.activeTextEditor.document.fileName;
+            }
+        }
 
-        if( vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar === 'total' )
+        var counts = provider.getTagCounts( fileFilter );
+        if( statusBar === STATUS_BAR_TOTAL )
         {
             var total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );
 
             status.text = "$(check):" + total;
             status.tooltip = "Todo-Tree total";
-
-            if( total > 0 )
+            if( total === 0 )
             {
-                status.show();
+                status.text += "None found";
             }
-            else
-            {
-                status.hide();
-            }
+            status.show();
         }
-        else if( vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar === 'tags' ||
-            vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar === 'top three' )
+        else if( statusBar === STATUS_BAR_TAGS || statusBar === STATUS_BAR_CURRENT_FILE || statusBar === STATUS_BAR_TOP_THREE )
         {
             var text = "$(check) ";
             var sortedTags = Object.keys( counts );
             sortedTags.sort( function( a, b ) { return counts[ a ] < counts[ b ] ? 1 : counts[ b ] < counts[ a ] ? -1 : a > b ? 1 : -1; } );
-            if( vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar === 'top three' )
+            if( statusBar === STATUS_BAR_TOP_THREE )
             {
                 sortedTags = sortedTags.splice( 0, 3 );
             }
@@ -201,26 +213,34 @@ function activate( context )
                 text += tag + ":" + counts[ tag ] + " ";
             } );
             status.text = text;
-            status.tooltip = "Todo-Tree tags counts";
-            if( Object.keys( counts ).length > 0 )
+            if( statusBar === STATUS_BAR_CURRENT_FILE )
             {
-                status.show();
+                status.tooltip = "Todo-Tree tags counts in current file";
+            }
+            else if( statusBar === STATUS_BAR_TOP_THREE )
+            {
+                status.tooltip = "Todo-Tree top three tag counts";
             }
             else
             {
-                status.hide();
+                status.tooltip = "Todo-Tree tags counts";
             }
+            if( Object.keys( counts ).length === 0 )
+            {
+                status.text += "None found";
+            }
+            status.show();
         }
         else
         {
             status.hide();
         }
 
-        if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode === 'open files' )
+        if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode === SCAN_MODE_OPEN_FILES )
         {
             status.text += " (in open files)";
         }
-        else if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode === 'current file' )
+        else if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode === SCAN_MODE_CURRENT_FILE )
         {
             status.text += " (in current file)";
         }
@@ -245,25 +265,25 @@ function activate( context )
         else
         {
             var setting = vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar;
-            if( setting === 'total' )
+            if( setting === STATUS_BAR_TOTAL )
             {
-                setting = 'tags';
+                setting = STATUS_BAR_TAGS;
+                vscode.window.showInformationMessage( "Todo Tree: Now showing tag counts" );
             }
-            else if( setting === 'tags' )
+            else if( setting === STATUS_BAR_TAGS )
             {
-                var counts = provider.getTagCounts();
-                if( Object.keys( counts ).length > 3 )
-                {
-                    setting = 'top three';
-                }
-                else
-                {
-                    setting = 'total';
-                }
+                setting = STATUS_BAR_TOP_THREE;
+                vscode.window.showInformationMessage( "Todo Tree: Now showing top three tag counts" );
+            }
+            else if( setting === STATUS_BAR_TOP_THREE )
+            {
+                setting = STATUS_BAR_CURRENT_FILE;
+                vscode.window.showInformationMessage( "Todo Tree: Now showing total tags in current file" );
             }
             else
             {
-                setting = 'total';
+                setting = STATUS_BAR_TOTAL;
+                vscode.window.showInformationMessage( "Todo Tree: Now showing total tags" );
             }
             vscode.workspace.getConfiguration( 'todo-tree.general' ).update( 'statusBar', setting, true );
         }
@@ -630,7 +650,7 @@ function activate( context )
 
         if( document.uri.scheme === 'file' && isIncluded( document.fileName ) === true )
         {
-            if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode !== 'current file' || ( vscode.window.activeTextEditor && document.fileName === vscode.window.activeTextEditor.document.fileName ) )
+            if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode !== SCAN_MODE_CURRENT_FILE || ( vscode.window.activeTextEditor && document.fileName === vscode.window.activeTextEditor.document.fileName ) )
             {
                 var extractExtraLines = function( section )
                 {
@@ -786,12 +806,12 @@ function activate( context )
 
     function scanOpenFilesOnly()
     {
-        vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'scanMode', 'open files', vscode.ConfigurationTarget.Workspace );
+        vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'scanMode', SCAN_MODE_OPEN_FILES, vscode.ConfigurationTarget.Workspace );
     }
 
     function scanCurrentFileOnly()
     {
-        vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'scanMode', 'current file', vscode.ConfigurationTarget.Workspace );
+        vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'scanMode', SCAN_MODE_CURRENT_FILE, vscode.ConfigurationTarget.Workspace );
     }
 
     function exportTree( exported, extension )
@@ -988,7 +1008,6 @@ function activate( context )
                     fileRefreshTimeout = setTimeout( refreshFile, 500, document );
                 }
             }
-
         }
 
         // We can't do anything if we can't find ripgrep
@@ -1184,7 +1203,7 @@ function activate( context )
             {
                 openDocuments[ e.document.fileName ] = e.document;
 
-                if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode === 'current file' )
+                if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode === SCAN_MODE_CURRENT_FILE )
                 {
                     provider.clear( vscode.workspace.workspaceFolders );
                     refreshFile( e.document );
@@ -1200,6 +1219,11 @@ function activate( context )
                         }
                         selectedDocument = undefined;
                     }
+                }
+
+                if( e.document.fileName === undefined || isIncluded( e.document.fileName ) )
+                {
+                    updateStatusBar();
                 }
 
                 documentChanged( e.document );
