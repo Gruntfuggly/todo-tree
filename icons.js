@@ -1,3 +1,4 @@
+var vscode = require( 'vscode' );
 var path = require( "path" );
 var fs = require( 'fs' );
 var octicons = require( 'octicons' );
@@ -42,6 +43,10 @@ function getIcon( context, tag )
 
         darkIconPath = colouredTodoTreeIconPath;
         lightIconPath = colouredTodoTreeIconPath;
+    }
+    else if( iconName && iconName.trim().substr( 0, 2 ) === "$(" )
+    {
+        return new vscode.ThemeIcon( iconName.trim().substr( 2, iconName.trim().length - 3 ) );
     }
     else if( iconName )
     {
