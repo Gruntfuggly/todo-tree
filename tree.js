@@ -146,7 +146,7 @@ function createTagNode( fsPath, tag )
 function createTodoNode( result )
 {
     var id = ( buildCounter * 1000000 ) + nodeCounter++;
-    var text = utils.removeBlockComments( result.match, result.file );
+    var text = utils.removeBlockComments( result.match.substr( result.column - 1 ), result.file );
     var extracted = utils.extractTag( text, result.column );
     var label = ( extracted.withoutTag && extracted.withoutTag.length > 0 ) ? extracted.withoutTag : "line " + result.line;
 

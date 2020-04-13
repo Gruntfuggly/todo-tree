@@ -3,6 +3,7 @@
 - Add "current file" option to status bar
 - Add popup to show current status bar mode
 - Add support for codicons
+- Fix block comment extraction
 
 ## v0.0.171 - 2020-03-29
 
