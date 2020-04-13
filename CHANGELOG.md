@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.172 - 2020-04-13
+
 - Add "current file" option to status bar
 - Add popup to show current status bar mode
 - Add support for codicons
