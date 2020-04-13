@@ -989,23 +989,26 @@ function activate( context )
 
         function documentChanged( document )
         {
-            vscode.window.visibleTextEditors.map( editor =>
+            if( document )
             {
-                if( document === editor.document && config.shouldShowHighlights( editor.document.uri.scheme ) )
+                vscode.window.visibleTextEditors.map( editor =>
                 {
-                    if( document.fileName === undefined || isIncluded( document.fileName ) )
+                    if( document === editor.document && config.shouldShowHighlights( editor.document.uri.scheme ) )
                     {
-                        highlights.triggerHighlight( editor );
+                        if( document.fileName === undefined || isIncluded( document.fileName ) )
+                        {
+                            highlights.triggerHighlight( editor );
+                        }
                     }
-                }
-            } );
+                } );
 
-            if( document.uri.scheme === "file" && path.basename( document.fileName ) !== "settings.json" )
-            {
-                if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
+                if( document.uri.scheme === "file" && path.basename( document.fileName ) !== "settings.json" )
                 {
-                    clearTimeout( fileRefreshTimeout );
-                    fileRefreshTimeout = setTimeout( refreshFile, 500, document );
+                    if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
+                    {
+                        clearTimeout( fileRefreshTimeout );
+                        fileRefreshTimeout = setTimeout( refreshFile, 500, document );
+                    }
                 }
             }
         }
