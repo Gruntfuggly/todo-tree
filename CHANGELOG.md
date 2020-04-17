@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Improve handling of tree view status item (showing active filters)
+- Fix link to codicons in README.md
 
 ## v0.0.172 - 2020-04-13
 
