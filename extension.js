@@ -583,6 +583,8 @@ function activate( context )
         var isTagsOnly = context.workspaceState.get( 'tagsOnly', c.get( 'tree.tagsOnly', false ) );
         var isGrouped = context.workspaceState.get( 'grouped', c.get( 'tree.grouped', false ) );
         var isCollapsible = !isTagsOnly || isGrouped;
+        var includeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
+        var excludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', c.get( 'tree.expanded', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', c.get( 'tree.flat', false ) ) );
@@ -590,6 +592,8 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-grouped', isGrouped );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-filtered', context.workspaceState.get( 'filtered', false ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-collapsible', isCollapsible );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-folder-filter-active', includeGlobs.length + excludeGlobs.length > 0 );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-global-filter-active', currentFilter );
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-scan-mode-button', c.get( 'tree.showScanModeButton', false ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-mode', vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode );

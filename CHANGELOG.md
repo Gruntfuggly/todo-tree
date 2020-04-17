@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Improve handling of tree view status item (showing active filters)
+
 ## v0.0.172 - 2020-04-13
 
 - Add "current file" option to status bar

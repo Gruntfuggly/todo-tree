@@ -138,8 +138,12 @@
                     "when": "view =~ /todo-tree/ && viewItem == folder"
                 },
                 {
+                    "command": "todo-tree.filterClear",
+                    "when": "view =~ /todo-tree/ && todo-tree-global-filter-active"
+                },
+                {
                     "command": "todo-tree.resetFolderFilter",
-                    "when": "view =~ /todo-tree/"
+                    "when": "view =~ /todo-tree/ && todo-tree-folder-filter-active"
                 }
             ]
         },
