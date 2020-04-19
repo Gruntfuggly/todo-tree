@@ -245,8 +245,8 @@ Set highlights per tag (or tag group). Example:
 **todo-tree.highlights.schemes** (`['file','untitled']`)<br/>
 Editor schemes to show highlights in. To show highlights in settings files, for instance, add `vscode-userdata` or for output windows, add `output`.
 
-**todo-tree.regex.regex** (<tt>&#x22;&#x28;&#x28;&#x2f;&#x2f;&#x7c;&#x23;&#x7c;&#x3c;&#x21;&#x2d;&#x2d;&#x7c;&#x3b;&#x7c;&#x2f;&#x5c;&#x5c;&#x2a;&#x29;&#x5c;&#x5c;&#x73;&#x2a;&#x28;&#x24;&#x54;&#x41;&#x47;&#x53;&#x29;&#x7c;&#x5e;&#x5c;&#x5c;&#x73;&#x2a;&#x2d;&#x20;&#x5c;&#x5c;&#x5b;&#x20;&#x5c;&#x5c;&#x5d;&#x29;&#x22;</tt>)<br/>
-This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with <tt>&#47;&#47;</tt>, <tt>#</tt>, <tt>;</tt>, <tt>&lt;!--</tt> or <tt>&#47;*</tt>. This should cover most languages. However if you want to refine it, make sure that the <tt>($TAGS)</tt> is kept. The second part of the expression allows matching of Github markdown task lists. *Note: This is a [Rust regular expression](https://docs.rs/regex/1.0.0/regex)</a>, not javascript.*
+**todo-tree.regex.regex** (`"((//|#|<!--|;|/\\*|'|^)\\s*($TAGS)|^\\s*- \\[ \\])"`)<br/>
+This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with `//`, `#`, `<!--`, `;`, `/*`, or `'`. This should cover most languages. However if you want to refine it, make sure that the `($TAGS)` is kept. The second part of the expression allows matching of Github markdown task lists. *Note: This is a [Rust regular expression](https://docs.rs/regex/1.0.0/regex)</a>, not javascript.*
 
 **todo-tree.regex.regexCaseSensitive** (`true`)<br/>
 Set to false to allow tags to be matched regardless of case.

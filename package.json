@@ -487,7 +487,7 @@
                 },
                 "todo-tree.regex.regex": {
                     "type": "string",
-                    "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
+                    "default": "((//|#|<!--|;|/\\*|'|^)\\s*($TAGS)|^\\s*- \\[ \\])",
                     "markdownDescription": "Regular expression for matching TODOs. *Note: $TAGS will be replaced by the tag list.*"
                 },
                 "todo-tree.regex.regexCaseSensitive": {
