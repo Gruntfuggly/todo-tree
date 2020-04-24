@@ -52,6 +52,11 @@ function hexToRgba( hex, opacity )
 
 function removeBlockComments( text, fileName )
 {
+    if( path.extname( fileName ) === ".jsonc" )
+    {
+        fileName = path.join( path.dirname( fileName ), path.basename( fileName, path.extname( fileName ) ) ) + ".js";
+    }
+
     var commentPattern;
     try
     {
