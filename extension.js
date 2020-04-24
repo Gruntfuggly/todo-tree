@@ -193,10 +193,6 @@ function activate( context )
 
             status.text = "$(check):" + total;
             status.tooltip = "Todo-Tree total";
-            if( total === 0 )
-            {
-                status.text += "None found";
-            }
             status.show();
         }
         else if( statusBar === STATUS_BAR_TAGS || statusBar === STATUS_BAR_CURRENT_FILE || statusBar === STATUS_BAR_TOP_THREE )
@@ -212,7 +208,7 @@ function activate( context )
             {
                 text += tag + ":" + counts[ tag ] + " ";
             } );
-            status.text = text;
+            status.text = text.trim();
             if( statusBar === STATUS_BAR_CURRENT_FILE )
             {
                 status.tooltip = "Todo-Tree tags counts in current file";
@@ -227,7 +223,7 @@ function activate( context )
             }
             if( Object.keys( counts ).length === 0 )
             {
-                status.text += "None found";
+                status.text += ":0";
             }
             status.show();
         }

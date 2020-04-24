@@ -2,6 +2,7 @@
 
 - Improve handling of tree view status item (showing active filters)
 - Fix link to codicons in README.md
+- Don't show 'None Found', just use '0' to keep the status bar item short
 
 ## v0.0.172 - 2020-04-13
 
