@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Fix "Nothing found" indicator
+
 ## v0.0.173 - 2020-04-24
 
 - Improve handling of tree view status item (showing active filters)

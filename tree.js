@@ -375,13 +375,13 @@ class TreeNodeProvider
                 statusNode.tooltip = tooltip + "\nRight click for filter options";
             }
 
-            if( result.length === 0 && initialized === true )
+            if( result.length === 0 )
             {
-                if( statusNode.label !== "" )
+                if( statusNode.label === "" )
                 {
-                    statusNode.label += ", ";
+                    statusNode.label += "Nothing found";
                 }
-                statusNode.label += "Nothing found";
+
                 statusNode.empty = availableNodes.length === 0;
             }
 
