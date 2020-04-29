@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.174 - 2020-04-29
+
 - Fix "Nothing found" indicator
 - Remove colon from status bar when single counts are shown
 
