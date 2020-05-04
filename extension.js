@@ -940,22 +940,6 @@ function activate( context )
                 }
             }
 
-            if( context.globalState.get( 'migratedVersion', 0 ) < 161 && isUnset( 'highlights.defaultHighlight' ) && isUnset( 'highlights.customHighlight' ) )
-            {
-                vscode.window.showInformationMessage( "Todo Tree highlights are now turned on by default.", "Turn Highlights Off", "Don't Show This Again" ).then( function( button )
-                {
-                    if( button === "Don't Show This Again" )
-                    {
-                        vscode.workspace.getConfiguration( 'todo-tree.highlights' ).update( 'enabled', true, vscode.ConfigurationTarget.Global );
-                    }
-                    else if( button === "Turn Highlights Off" )
-                    {
-                        vscode.workspace.getConfiguration( 'todo-tree.highlights' ).update( 'enabled', false, vscode.ConfigurationTarget.Global );
-                    }
-                    context.globalState.update( 'migratedVersion', 161 );
-                } );
-            }
-
             if( context.globalState.get( 'migratedVersion', 0 ) < 168 )
             {
                 vscode.workspace.getConfiguration( 'todo-tree.tree' ).update(

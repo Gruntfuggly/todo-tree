@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Remove migration code for version 0.0.161
+
 ## v0.0.174 - 2020-04-29
 
 - Fix "Nothing found" indicator
