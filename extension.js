@@ -191,24 +191,28 @@ function activate( context )
         {
             var total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );
 
-            status.text = "$(check)" + total;
+            status.text = "$(check) " + total;
             status.tooltip = "Todo-Tree total";
             status.show();
         }
         else if( statusBar === STATUS_BAR_TAGS || statusBar === STATUS_BAR_CURRENT_FILE || statusBar === STATUS_BAR_TOP_THREE )
         {
-            var text = "$(check)";
             var sortedTags = Object.keys( counts );
             sortedTags.sort( function( a, b ) { return counts[ a ] < counts[ b ] ? 1 : counts[ b ] < counts[ a ] ? -1 : a > b ? 1 : -1; } );
             if( statusBar === STATUS_BAR_TOP_THREE )
             {
                 sortedTags = sortedTags.splice( 0, 3 );
             }
+            var text = "";
             sortedTags.map( function( tag )
             {
-                text += tag + ":" + counts[ tag ] + " ";
+                if( text.length > 0 )
+                {
+                    text += ", ";
+                }
+                text += tag + ": " + counts[ tag ];
             } );
-            status.text = text.trim();
+            status.text = "$(check) " + text.trim();
             if( statusBar === STATUS_BAR_CURRENT_FILE )
             {
                 status.tooltip = "Todo-Tree tags counts in current file";

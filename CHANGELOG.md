@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Remove migration code for version 0.0.161
+- Add spaces and commas to status bar item
 
 ## v0.0.174 - 2020-04-29
 
