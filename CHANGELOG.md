@@ -2,6 +2,7 @@
 
 - Remove migration code for version 0.0.161
 - Add spaces and commas to status bar item
+- Update to latest version of micromatch
 
 ## v0.0.174 - 2020-04-29
 

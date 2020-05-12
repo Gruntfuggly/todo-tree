@@ -678,7 +678,7 @@
     "dependencies": {
         "comment-patterns": "^0.10.1",
         "find": "^0.3.0",
-        "micromatch": "^3.1.10",
+        "micromatch": "^4.0.2",
         "octicons": "^8.3.0",
         "treeify": "^1.1.0"
     }
