@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.175 - 2020-05-13
+
 - Remove migration code for version 0.0.161
 - Add spaces and commas to status bar item
 - Update to latest version of micromatch
