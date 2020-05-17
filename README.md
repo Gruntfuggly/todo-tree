@@ -183,7 +183,7 @@ This treats any of `FIXME`, `FIXIT` or `FIX` as `FIXME`. When the tree is groupe
 Change the cursor behaviour when selecting a todo from the explorer. Yo.u can choose from: `start of todo` (moves the cursor to the beginning of the todo), `end of todo` (moves the cursor to the end of the todo) `highlight todo` (selects the todo text), `start of line` (moves the cursor to the start of the line) and `highlight line` (selected the whole line)
 
 **todo-tree.general.statusBar** (`none`)<br/>
-What to show in the status bar - nothing (`none`), total count (`total`), counts per tag (`tags`) or the counts for the top three tags (`top three`).
+What to show in the status bar - nothing (`none`), total count (`total`), counts per tag (`tags`), counts for the top three tags (`top three`) or counts for the current file only (`current file`).
 
 **todo-tree.general.statusBarClickBehaviour** (`cycle`)<br/>
 Set the behaviour of clicking the status bar to either cycle display formats, or reveal the tree.

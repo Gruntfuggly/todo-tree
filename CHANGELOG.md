@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Update README.md with 'current file' status bar details
+
 ## v0.0.175 - 2020-05-13
 
 - Remove migration code for version 0.0.161
