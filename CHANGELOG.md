@@ -1,5 +1,6 @@
 # Todo Tree Change Log
 
+- Remove leading comments from multiline TODOs
 - Update README.md with 'current file' status bar details
 
 ## v0.0.175 - 2020-05-13

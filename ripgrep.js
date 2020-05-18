@@ -43,6 +43,11 @@ function formatResults( stdout, multiline )
             if( extracted.tag )
             {
                 match.extraLines = extraLines.reverse();
+                match.extraLines = match.extraLines.map( function( element )
+                {
+                    element.match = utils.removeLineComments( element.match, match.file ).trim();
+                    return element;
+                } );
                 extraLines = [];
                 results.push( match );
             }

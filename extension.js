@@ -636,15 +636,19 @@ function activate( context )
 
     function refreshFile( document )
     {
-        function addResult( offset )
+        function addResult( offset, removeLeadingComments )
         {
             var position = document.positionAt( offset );
-            var line = document.lineAt( position.line );
+            var line = document.lineAt( position.line ).text;
+            if( removeLeadingComments === true )
+            {
+                line = utils.removeLineComments( line, document.fileName );
+            }
             return {
                 file: document.fileName,
                 line: position.line + 1,
                 column: position.character + 1,
-                match: line.text
+                match: line
             };
         }
 
@@ -658,7 +662,7 @@ function activate( context )
             {
                 var extractExtraLines = function( section )
                 {
-                    result.extraLines.push( addResult( offset ) );
+                    result.extraLines.push( addResult( offset, true ) );
                     offset += section.length + 1;
                 };
                 var isMatch = function( s )
@@ -684,7 +688,7 @@ function activate( context )
                     var offset = match.index;
                     var sections = match[ 0 ].split( "\n" );
 
-                    var result = addResult( offset );
+                    var result = addResult( offset, false );
 
                     if( sections.length > 1 )
                     {
