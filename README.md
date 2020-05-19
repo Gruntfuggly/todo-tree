@@ -209,6 +209,9 @@ Set this to use VSCode's built in files or search excludes. Can be one of `none`
 **todo-tree.filtering.ignoreGitSubmodules** (`false`)<br/>
 If true, any subfolders containing a `.git` file will be ignored when searching.
 
+**todo-tree.filtering.includeHiddenFiles** (`false`)<br/>
+If true, files starting with a period (.) will be included.
+
 **todo-tree.highlights.enabled** (`true`)<br/>
 Set this to false to turn off highlighting.
 

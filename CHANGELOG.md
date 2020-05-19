@@ -1,5 +1,6 @@
 # Todo Tree Change Log
 
+- Add option to include hidden files
 - Order configuration settings alphabetically in package.json
 - Remove leading comments from multiline TODOs
 - Update README.md with 'current file' status bar details

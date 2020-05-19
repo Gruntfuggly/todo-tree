@@ -409,7 +409,10 @@ function activate( context )
         options.additional = c.get( 'ripgrep.ripgrepArgs' );
         options.maxBuffer = c.get( 'ripgrep.ripgrepMaxBuffer' );
         options.multiline = utils.getRegexSource().indexOf( "\\n" ) > -1;
-
+        if( c.get( 'filtering.includeHiddenFiles' ) )
+        {
+            options.additional += ' --hidden ';
+        }
         if( c.get( 'regex.regexCaseSensitive' ) === false )
         {
             options.additional += ' -i ';
@@ -617,6 +620,7 @@ function activate( context )
     {
         var includeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includeGlobs' );
         var excludeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludeGlobs' );
+        var includeHiddenFiles = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includeHiddenFiles' );
 
         var tempIncludeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
         var tempExcludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
@@ -631,7 +635,10 @@ function activate( context )
             excludeGlobs = addGlobs( vscode.workspace.getConfiguration( 'search.exclude' ), excludeGlobs );
         }
 
-        return utils.isIncluded( filename, includeGlobs.concat( tempIncludeGlobs ), excludeGlobs.concat( tempExcludeGlobs ) ) === true;
+        var isHidden = path.extname( filename ) === "";
+        var included = utils.isIncluded( filename, includeGlobs.concat( tempIncludeGlobs ), excludeGlobs.concat( tempExcludeGlobs ) );
+
+        return included && ( !isHidden || includeHiddenFiles );
     }
 
     function refreshFile( document )
