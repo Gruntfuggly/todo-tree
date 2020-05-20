@@ -431,7 +431,7 @@ function activate( context )
             {
                 vscode.workspace.workspaceFolders.map( function( folder )
                 {
-                    if( utils.isIncluded( folder.name, includes, excludes ) )
+                    if( folder.uri && folder.uri.scheme === 'file' && utils.isIncluded( folder.uri.fsPath, includes, excludes ) )
                     {
                         searchList.push( folder.uri.fsPath );
                     }

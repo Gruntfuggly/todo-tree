@@ -1,5 +1,6 @@
 # Todo Tree Change Log
 
+- Only scan workspaces with "file" scheme
 - Add option to include hidden files
 - Order configuration settings alphabetically in package.json
 - Remove leading comments from multiline TODOs
