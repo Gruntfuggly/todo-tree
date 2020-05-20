@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.176 - 2020-05-20
+
 - Only scan workspaces with "file" scheme
 - Add option to include hidden files
 - Order configuration settings alphabetically in package.json
