@@ -335,6 +335,9 @@ Show a refresh button in the tree view title bar.
 **todo-tree.tree.buttons.expand** (`true`)<br/>
 Show a button in the tree view title bar to expand or collapse the whole tree.
 
+**todo-tree.tree.buttons.export** (`false`)<br/>
+Show a button in the tree view title bar to create a text file showing the tree content.
+
 <sup>*</sup>*Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.*
 
 ### Multiline TODOs

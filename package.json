@@ -54,74 +54,79 @@
         "menus": {
             "view/title": [
                 {
+                    "command": "todo-tree.exportTree",
+                    "when": "view =~ /todo-tree/ && todo-tree-show-export-button == true",
+                    "group": "navigation@1"
+                },
+                {
                     "command": "todo-tree.reveal",
                     "when": "view =~ /todo-tree/ && todo-tree-show-reveal-button == true",
-                    "group": "navigation@1"
+                    "group": "navigation@2"
                 },
                 {
                     "command": "todo-tree.scanOpenFilesOnly",
                     "when": "view =~ /todo-tree/ && todo-tree-scan-mode == workspace && todo-tree-show-scan-mode-button == true",
-                    "group": "navigation@2"
+                    "group": "navigation@3"
                 },
                 {
                     "command": "todo-tree.scanCurrentFileOnly",
                     "when": "view =~ /todo-tree/ && todo-tree-scan-mode == 'open files' && todo-tree-show-scan-mode-button == true",
-                    "group": "navigation@2"
+                    "group": "navigation@3"
                 },
                 {
                     "command": "todo-tree.scanWorkspace",
                     "when": "view =~ /todo-tree/ && todo-tree-scan-mode == 'current file' && todo-tree-show-scan-mode-button == true",
-                    "group": "navigation@2"
+                    "group": "navigation@3"
                 },
                 {
                     "command": "todo-tree.showFlatView",
                     "when": "view =~ /todo-tree/ && todo-tree-flat == false && todo-tree-tags-only == false && todo-tree-show-view-style-button == true",
-                    "group": "navigation@3"
+                    "group": "navigation@4"
                 },
                 {
                     "command": "todo-tree.showTagsOnlyView",
                     "when": "view =~ /todo-tree/ && todo-tree-flat == true && todo-tree-tags-only == false && todo-tree-show-view-style-button == true",
-                    "group": "navigation@3"
+                    "group": "navigation@4"
                 },
                 {
                     "command": "todo-tree.showTreeView",
                     "when": "view =~ /todo-tree/ && todo-tree-flat == false && todo-tree-tags-only == true && todo-tree-show-view-style-button == true",
-                    "group": "navigation@3"
+                    "group": "navigation@4"
                 },
                 {
                     "command": "todo-tree.groupByTag",
                     "when": "view =~ /todo-tree/ && todo-tree-grouped == false && todo-tree-show-group-by-tag-button == true",
-                    "group": "navigation@4"
+                    "group": "navigation@5"
                 },
                 {
                     "command": "todo-tree.ungroupByTag",
                     "when": "view =~ /todo-tree/ && todo-tree-grouped == true && todo-tree-show-group-by-tag-button == true",
-                    "group": "navigation@4"
+                    "group": "navigation@5"
                 },
                 {
                     "command": "todo-tree.filter",
                     "when": "view =~ /todo-tree/ && todo-tree-filtered == false && todo-tree-show-filter-button == true",
-                    "group": "navigation@5"
+                    "group": "navigation@6"
                 },
                 {
                     "command": "todo-tree.filterClear",
                     "when": "view =~ /todo-tree/ && todo-tree-filtered == true && todo-tree-show-filter-button == true",
-                    "group": "navigation@5"
+                    "group": "navigation@6"
                 },
                 {
                     "command": "todo-tree.refresh",
                     "when": "view =~ /todo-tree/ && todo-tree-show-refresh-button == true",
-                    "group": "navigation@6"
+                    "group": "navigation@7"
                 },
                 {
                     "command": "todo-tree.expand",
                     "when": "view =~ /todo-tree/ && todo-tree-expanded == false && todo-tree-collapsible && todo-tree-show-expand-button == true",
-                    "group": "navigation@7"
+                    "group": "navigation@8"
                 },
                 {
                     "command": "todo-tree.collapse",
                     "when": "view =~ /todo-tree/ && todo-tree-expanded == true && todo-tree-collapsible && todo-tree-show-expand-button == true",
-                    "group": "navigation@7"
+                    "group": "navigation@8"
                 }
             ],
             "view/item/context": [
@@ -278,7 +283,8 @@
             {
                 "command": "todo-tree.exportTree",
                 "title": "Export Tree",
-                "category": "Todo Tree"
+                "category": "Todo Tree",
+                "icon": "$(save)"
             },
             {
                 "command": "todo-tree.exportTreeAsJSON",
@@ -680,6 +686,11 @@
                 "todo-tree.tree.buttons.expand": {
                     "default": true,
                     "markdownDescription": "Show a button in the tree view title bar to expand or collapse the whole tree",
+                    "type": "boolean"
+                },
+                "todo-tree.tree.buttons.export": {
+                    "default": false,
+                    "markdownDescription": "Show a button in the tree view title bar to create a text file showing the tree content",
                     "type": "boolean"
                 },
                 "todo-tree.tree.showTagsFromOpenFilesOnly": {

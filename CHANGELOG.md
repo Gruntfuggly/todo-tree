@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Allow buttons in tree view title to be configured
+- Add export button to tree view title
 
 ## v0.0.176 - 2020-05-20
 
