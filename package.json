@@ -75,52 +75,52 @@
                 },
                 {
                     "command": "todo-tree.showFlatView",
-                    "when": "view =~ /todo-tree/ && todo-tree-flat == false && todo-tree-tags-only == false",
+                    "when": "view =~ /todo-tree/ && todo-tree-flat == false && todo-tree-tags-only == false && todo-tree-show-view-style-button == true",
                     "group": "navigation@3"
                 },
                 {
                     "command": "todo-tree.showTagsOnlyView",
-                    "when": "view =~ /todo-tree/ && todo-tree-flat == true && todo-tree-tags-only == false",
+                    "when": "view =~ /todo-tree/ && todo-tree-flat == true && todo-tree-tags-only == false && todo-tree-show-view-style-button == true",
                     "group": "navigation@3"
                 },
                 {
                     "command": "todo-tree.showTreeView",
-                    "when": "view =~ /todo-tree/ && todo-tree-flat == false && todo-tree-tags-only == true",
+                    "when": "view =~ /todo-tree/ && todo-tree-flat == false && todo-tree-tags-only == true && todo-tree-show-view-style-button == true",
                     "group": "navigation@3"
                 },
                 {
                     "command": "todo-tree.groupByTag",
-                    "when": "view =~ /todo-tree/ && todo-tree-grouped == false",
+                    "when": "view =~ /todo-tree/ && todo-tree-grouped == false && todo-tree-show-group-by-tag-button == true",
                     "group": "navigation@4"
                 },
                 {
                     "command": "todo-tree.ungroupByTag",
-                    "when": "view =~ /todo-tree/ && todo-tree-grouped == true",
+                    "when": "view =~ /todo-tree/ && todo-tree-grouped == true && todo-tree-show-group-by-tag-button == true",
                     "group": "navigation@4"
                 },
                 {
                     "command": "todo-tree.filter",
-                    "when": "view =~ /todo-tree/ && todo-tree-filtered == false",
+                    "when": "view =~ /todo-tree/ && todo-tree-filtered == false && todo-tree-show-filter-button == true",
                     "group": "navigation@5"
                 },
                 {
                     "command": "todo-tree.filterClear",
-                    "when": "view =~ /todo-tree/ && todo-tree-filtered == true",
+                    "when": "view =~ /todo-tree/ && todo-tree-filtered == true && todo-tree-show-filter-button == true",
                     "group": "navigation@5"
                 },
                 {
                     "command": "todo-tree.refresh",
-                    "when": "view =~ /todo-tree/",
+                    "when": "view =~ /todo-tree/ && todo-tree-show-refresh-button == true",
                     "group": "navigation@6"
                 },
                 {
                     "command": "todo-tree.expand",
-                    "when": "view =~ /todo-tree/ && todo-tree-expanded == false && todo-tree-collapsible",
+                    "when": "view =~ /todo-tree/ && todo-tree-expanded == false && todo-tree-collapsible && todo-tree-show-expand-button == true",
                     "group": "navigation@7"
                 },
                 {
                     "command": "todo-tree.collapse",
-                    "when": "view =~ /todo-tree/ && todo-tree-expanded == true && todo-tree-collapsible",
+                    "when": "view =~ /todo-tree/ && todo-tree-expanded == true && todo-tree-collapsible && todo-tree-show-expand-button == true",
                     "group": "navigation@7"
                 }
             ],
@@ -645,6 +645,41 @@
                 "todo-tree.tree.showScanOpenFilesOrWorkspaceButton": {
                     "default": false,
                     "deprecationMessage": "This setting is no longer used, please use \"todo-tree.tree.scanMode\" instead.",
+                    "type": "boolean"
+                },
+                "todo-tree.tree.buttons.reveal": {
+                    "default": true,
+                    "markdownDescription": "Show a button in the tree view title bar to reveal the current item (only when track file is not enabled)",
+                    "type": "boolean"
+                },
+                "todo-tree.tree.buttons.scanMode": {
+                    "default": false,
+                    "markdownDescription": "Show a button in the tree view title bar to change the Scan Mode setting",
+                    "type": "boolean"
+                },
+                "todo-tree.tree.buttons.viewStyle": {
+                    "default": true,
+                    "markdownDescription": "Show a button in the tree view title bar to change the view style (tree, flat or tags only)",
+                    "type": "boolean"
+                },
+                "todo-tree.tree.buttons.groupByTag": {
+                    "default": true,
+                    "markdownDescription": "Show a button in the tree view title bar to enable grouping items by tag",
+                    "type": "boolean"
+                },
+                "todo-tree.tree.buttons.filter": {
+                    "default": true,
+                    "markdownDescription": "Show a button in the tree view title bar allowing the tree to be filtered by entering some text",
+                    "type": "boolean"
+                },
+                "todo-tree.tree.buttons.refresh": {
+                    "default": true,
+                    "markdownDescription": "Show a refresh button in the tree view title bar",
+                    "type": "boolean"
+                },
+                "todo-tree.tree.buttons.expand": {
+                    "default": true,
+                    "markdownDescription": "Show a button in the tree view title bar to expand or collapse the whole tree",
                     "type": "boolean"
                 },
                 "todo-tree.tree.showTagsFromOpenFilesOnly": {

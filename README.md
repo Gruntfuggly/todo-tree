@@ -314,6 +314,27 @@ The tree will normally respect the VSCode's `explorer.compactFolders` setting. S
 **todo-tree.tree.tooltipFormat** (`${filepath}, ${line}`)</br>
 Format of the tree item tooltips. Uses the same placeholders as `todo-tree.tree.labelFormat` (see above).
 
+**todo-tree.tree.buttons.reveal** (`true`)<br/>
+Show a button in the tree view title bar to reveal the current item (only when track file is not enabled).
+
+**todo-tree.tree.buttons.scanMode** (`false`)<br/>
+Show a button in the tree view title bar to change the Scan Mode setting.
+
+**todo-tree.tree.buttons.viewStyle** (`true`)<br/>
+Show a button in the tree view title bar to change the view style (tree, flat or tags only).
+
+**todo-tree.tree.buttons.groupByTag** (`true`)<br/>
+Show a button in the tree view title bar to enable grouping items by tag.
+
+**todo-tree.tree.buttons.filter** (`true`)<br/>
+Show a button in the tree view title bar allowing the tree to be filtered by entering some text.
+
+**todo-tree.tree.buttons.refresh** (`true`)<br/>
+Show a refresh button in the tree view title bar.
+
+**todo-tree.tree.buttons.expand** (`true`)<br/>
+Show a button in the tree view title bar to expand or collapse the whole tree.
+
 <sup>*</sup>*Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.*
 
 ### Multiline TODOs

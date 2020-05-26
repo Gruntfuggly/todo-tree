@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Allow buttons in tree view title to be configured
+
 ## v0.0.176 - 2020-05-20
 
 - Only scan workspaces with "file" scheme

@@ -589,6 +589,22 @@ function activate( context )
         var includeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
         var excludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
 
+        var showRevealButton = c.get( 'tree.buttons' ).reveal === true;
+        var showScanModeButton = c.get( 'tree.buttons' ).scanMode === true;
+        var showViewStyleButton = c.get( 'tree.buttons' ).viewStyle === true;
+        var showGroupByTagButton = c.get( 'tree.buttons' ).groupByTag === true;
+        var showFilterButton = c.get( 'tree.buttons' ).filter === true;
+        var showRefreshButton = c.get( 'tree.buttons' ).refresh === true;
+        var showExpandButton = c.get( 'tree.buttons' ).expand === true;
+
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-reveal-button', showRevealButton && !c.get( 'tree.trackFile', false ) );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-scan-mode-button', showScanModeButton );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-view-style-button', showViewStyleButton );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-group-by-tag-button', showGroupByTagButton );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-filter-button', showFilterButton );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-refresh-button', showRefreshButton );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-expand-button', showExpandButton );
+
         vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', c.get( 'tree.expanded', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', c.get( 'tree.flat', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-tags-only', isTagsOnly );
@@ -598,10 +614,7 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-folder-filter-active', includeGlobs.length + excludeGlobs.length > 0 );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-global-filter-active', currentFilter );
 
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-scan-mode-button', c.get( 'tree.showScanModeButton', false ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-mode', vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode );
-
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-reveal-button', !c.get( 'tree.trackFile', false ) );
 
         var children = provider.getChildren();
         var empty = children.length === 1 && children[ 0 ].empty === true;
