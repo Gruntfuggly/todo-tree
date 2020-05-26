@@ -2,6 +2,7 @@
 
 - Allow buttons in tree view title to be configured
 - Add export button to tree view title
+- Use Code's codicons for title bar instead of custom icons
 
 ## v0.0.176 - 2020-05-20
 

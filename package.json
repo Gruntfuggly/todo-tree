@@ -157,118 +157,79 @@
                 "command": "todo-tree.showFlatView",
                 "title": "Show Flat View",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/flat.svg",
-                    "light": "resources/icons/light/flat.svg"
-                }
+                "icon": "$(list-unordered)"
             },
             {
                 "command": "todo-tree.showTagsOnlyView",
                 "title": "Show Tags Only View",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/tags.svg",
-                    "light": "resources/icons/light/tags.svg"
-                }
+                "icon": "$(list-flat)"
             },
             {
                 "command": "todo-tree.showTreeView",
                 "title": "Show Tree View",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/tree.svg",
-                    "light": "resources/icons/light/tree.svg"
-                }
+                "icon": "$(list-tree)"
             },
             {
                 "command": "todo-tree.refresh",
                 "title": "Refresh",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/refresh.svg",
-                    "light": "resources/icons/light/refresh.svg"
-                }
+                "icon": "$(refresh)"
             },
             {
                 "command": "todo-tree.expand",
                 "title": "Expand Tree",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/expand.svg",
-                    "light": "resources/icons/light/expand.svg"
-                }
+                "icon": "$(expand-all)"
             },
             {
                 "command": "todo-tree.collapse",
                 "title": "Collapse Tree",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/collapse.svg",
-                    "light": "resources/icons/light/collapse.svg"
-                }
+                "icon": "$(collapse-all)"
             },
             {
                 "command": "todo-tree.filter",
                 "title": "Filter Tree",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/filter.svg",
-                    "light": "resources/icons/light/filter.svg"
-                }
+                "icon": "$(filter)"
             },
             {
                 "command": "todo-tree.filterClear",
                 "title": "Clear Filter",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/clear-filter.svg",
-                    "light": "resources/icons/light/clear-filter.svg"
-                }
+                "icon": "$(clear-all)"
             },
             {
                 "command": "todo-tree.groupByTag",
                 "title": "Group by Tag",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/tag.svg",
-                    "light": "resources/icons/light/tag.svg"
-                }
+                "icon": "$(tag)"
             },
             {
                 "command": "todo-tree.ungroupByTag",
                 "title": "Ungroup by Tag",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/notag.svg",
-                    "light": "resources/icons/light/notag.svg"
-                }
+                "icon": "$(unfold)"
             },
             {
                 "command": "todo-tree.scanOpenFilesOnly",
                 "title": "Scan Open Files Only",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/scan-open-files.svg",
-                    "light": "resources/icons/light/scan-open-files.svg"
-                }
+                "icon": "$(files)"
             },
             {
                 "command": "todo-tree.scanCurrentFileOnly",
                 "title": "Scan Current File Only",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/scan-current-file.svg",
-                    "light": "resources/icons/light/scan-current-file.svg"
-                }
+                "icon": "$(symbol-file)"
             },
             {
                 "command": "todo-tree.scanWorkspace",
                 "title": "Scan Workspace",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/scan-workspace.svg",
-                    "light": "resources/icons/light/scan-workspace.svg"
-                }
+                "icon": "$(folder)"
             },
             {
                 "command": "todo-tree.addTag",
@@ -295,46 +256,31 @@
                 "command": "todo-tree.showOnlyThisFolder",
                 "title": "Only Show This Folder",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/filter.svg",
-                    "light": "resources/icons/light/filter.svg"
-                }
+                "icon": "$(filter)"
             },
             {
                 "command": "todo-tree.showOnlyThisFolderAndSubfolders",
                 "title": "Only Show This Folder And Subfolders",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/filter.svg",
-                    "light": "resources/icons/light/filter.svg"
-                }
+                "icon": "$(filter)"
             },
             {
                 "command": "todo-tree.excludeThisFolder",
                 "title": "Hide This Folder",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/filter.svg",
-                    "light": "resources/icons/light/filter.svg"
-                }
+                "icon": "$(filter)"
             },
             {
                 "command": "todo-tree.resetFolderFilter",
                 "title": "Reset Folder Filter",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/clear-filter.svg",
-                    "light": "resources/icons/light/clear-filter.svg"
-                }
+                "icon": "$(clear-all)"
             },
             {
                 "command": "todo-tree.reveal",
                 "title": "Reveal Current File In Tree",
                 "category": "Todo Tree",
-                "icon": {
-                    "dark": "resources/icons/dark/reveal.svg",
-                    "light": "resources/icons/light/reveal.svg"
-                }
+                "icon": "$(location)"
             },
             {
                 "command": "todo-tree.resetCache",
