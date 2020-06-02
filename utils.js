@@ -282,6 +282,11 @@ function getSubmoduleExcludeGlobs( rootPath )
     return submodules;
 }
 
+function isHidden( filename )
+{
+    return filename.indexOf( '.' ) !== -1 && path.extname( filename ) === "";
+}
+
 module.exports.init = init;
 module.exports.isHexColour = isHexColour;
 module.exports.hexToRgba = hexToRgba;
@@ -295,3 +300,4 @@ module.exports.isIncluded = isIncluded;
 module.exports.format = format;
 module.exports.createFolderGlob = createFolderGlob;
 module.exports.getSubmoduleExcludeGlobs = getSubmoduleExcludeGlobs;
+module.exports.isHidden = isHidden;

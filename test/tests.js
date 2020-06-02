@@ -316,3 +316,10 @@ QUnit.test( "utils.removeBlockCommentSupportsJsonc", function( assert )
 {
     assert.equal( utils.removeBlockComments( "/* a */", "x.jsonc" ), " a " );
 } );
+
+QUnit.test( "utils.isHidden", function( assert )
+{
+    assert.equal( utils.isHidden( "test.txt" ), false );
+    assert.equal( utils.isHidden( "test" ), false );
+    assert.equal( utils.isHidden( ".test" ), true );
+} );

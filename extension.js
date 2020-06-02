@@ -650,7 +650,7 @@ function activate( context )
             excludeGlobs = addGlobs( vscode.workspace.getConfiguration( 'search.exclude' ), excludeGlobs );
         }
 
-        var isHidden = path.extname( filename ) === "";
+        var isHidden = utils.isHidden( filename );
         var included = utils.isIncluded( filename, includeGlobs.concat( tempIncludeGlobs ), excludeGlobs.concat( tempExcludeGlobs ) );
 
         return included && ( !isHidden || includeHiddenFiles );
