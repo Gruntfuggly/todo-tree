@@ -7,9 +7,10 @@ var utils = require( './utils.js' );
 var icons = require( './icons.js' );
 var config = require( './config.js' );
 
-var initialised = false;
+var initialized = false;
 var workspaceFolders;
 var nodes = [];
+var currentFilter;
 
 const PATH = "path";
 const TODO = "todo";
@@ -348,19 +349,39 @@ class TreeNodeProvider
             var includeGlobs = this._context.workspaceState.get( 'includeGlobs' ) || [];
             var excludeGlobs = this._context.workspaceState.get( 'excludeGlobs' ) || [];
             var totalFilters = includeGlobs.length + excludeGlobs.length;
+            var tooltip = "";
+
+            if( currentFilter )
+            {
+                tooltip += "Global: \"" + currentFilter + "\"\n";
+                totalFilters++;
+            }
+
+            if( includeGlobs.length + excludeGlobs.length > 0 )
+            {
+                includeGlobs.map( function( glob )
+                {
+                    tooltip += "Include: " + glob + "\n";
+                } );
+                excludeGlobs.map( function( glob )
+                {
+                    tooltip += "Exclude: " + glob + "\n";
+                } );
+            }
+
             if( totalFilters > 0 )
             {
                 statusNode.label = totalFilters + " filter" + ( totalFilters === 1 ? '' : 's' ) + " active";
-                statusNode.tooltip = "Right click for filter options";
+                statusNode.tooltip = tooltip + "\nRight click for filter options";
             }
 
-            if( result.length === 0 && initialised === true )
+            if( result.length === 0 )
             {
-                if( statusNode.label !== "" )
+                if( statusNode.label === "" )
                 {
-                    statusNode.label += ", ";
+                    statusNode.label += "Nothing found";
                 }
-                statusNode.label += "Nothing found";
+
                 statusNode.empty = availableNodes.length === 0;
             }
 
@@ -433,8 +454,15 @@ class TreeNodeProvider
                 treeItem.resourceUri = vscode.Uri.file( node.fsPath );
             }
 
-            treeItem.tooltip = config.tooltipFormat();
-            treeItem.tooltip = utils.format( config.tooltipFormat(), node );
+            if( treeItem.type === TODO )
+            {
+                treeItem.tooltip = config.tooltipFormat();
+                treeItem.tooltip = utils.format( config.tooltipFormat(), node );
+            }
+            else
+            {
+                treeItem.tooltip = treeItem.fsPath;
+            }
 
             if( node.type === PATH )
             {
@@ -543,7 +571,7 @@ class TreeNodeProvider
 
     rebuild()
     {
-        initialised = true;
+        initialized = true;
         buildCounter = ( buildCounter + 1 ) % 100;
     }
 
@@ -570,6 +598,7 @@ class TreeNodeProvider
 
         if( children === undefined )
         {
+            currentFilter = text;
             children = nodes;
         }
         children.forEach( child =>
@@ -604,6 +633,8 @@ class TreeNodeProvider
 
     clearFilter( children )
     {
+        currentFilter = undefined;
+
         if( children === undefined )
         {
             children = nodes;

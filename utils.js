@@ -52,6 +52,11 @@ function hexToRgba( hex, opacity )
 
 function removeBlockComments( text, fileName )
 {
+    if( path.extname( fileName ) === ".jsonc" )
+    {
+        fileName = path.join( path.dirname( fileName ), path.basename( fileName, path.extname( fileName ) ) ) + ".js";
+    }
+
     var commentPattern;
     try
     {
@@ -82,6 +87,38 @@ function removeBlockComments( text, fileName )
     }
 
     return text;
+}
+
+function removeLineComments( text, fileName )
+{
+    var result = text.trim();
+
+    if( path.extname( fileName ) === ".jsonc" )
+    {
+        fileName = path.join( path.dirname( fileName ), path.basename( fileName, path.extname( fileName ) ) ) + ".js";
+    }
+
+    var commentPattern;
+    try
+    {
+        commentPattern = commentPatterns( fileName );
+    }
+    catch( e )
+    {
+    }
+
+    if( commentPattern && commentPattern.singleLineComment )
+    {
+        commentPattern.singleLineComment.map( function( comment )
+        {
+            if( result.indexOf( comment.start ) === 0 )
+            {
+                result = result.substr( comment.start.length );
+            }
+        } );
+    }
+
+    return result;
 }
 
 function getTagRegex()
@@ -249,6 +286,7 @@ module.exports.init = init;
 module.exports.isHexColour = isHexColour;
 module.exports.hexToRgba = hexToRgba;
 module.exports.removeBlockComments = removeBlockComments;
+module.exports.removeLineComments = removeLineComments;
 module.exports.extractTag = extractTag;
 module.exports.getRegexSource = getRegexSource;
 module.exports.getRegexForRipGrep = getRegexForRipGrep;

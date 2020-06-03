@@ -191,28 +191,28 @@ function activate( context )
         {
             var total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );
 
-            status.text = "$(check):" + total;
+            status.text = "$(check) " + total;
             status.tooltip = "Todo-Tree total";
-            if( total === 0 )
-            {
-                status.text += "None found";
-            }
             status.show();
         }
         else if( statusBar === STATUS_BAR_TAGS || statusBar === STATUS_BAR_CURRENT_FILE || statusBar === STATUS_BAR_TOP_THREE )
         {
-            var text = "$(check) ";
             var sortedTags = Object.keys( counts );
             sortedTags.sort( function( a, b ) { return counts[ a ] < counts[ b ] ? 1 : counts[ b ] < counts[ a ] ? -1 : a > b ? 1 : -1; } );
             if( statusBar === STATUS_BAR_TOP_THREE )
             {
                 sortedTags = sortedTags.splice( 0, 3 );
             }
+            var text = "";
             sortedTags.map( function( tag )
             {
-                text += tag + ":" + counts[ tag ] + " ";
+                if( text.length > 0 )
+                {
+                    text += ", ";
+                }
+                text += tag + ": " + counts[ tag ];
             } );
-            status.text = text;
+            status.text = "$(check) " + text.trim();
             if( statusBar === STATUS_BAR_CURRENT_FILE )
             {
                 status.tooltip = "Todo-Tree tags counts in current file";
@@ -227,7 +227,7 @@ function activate( context )
             }
             if( Object.keys( counts ).length === 0 )
             {
-                status.text += "None found";
+                status.text += "0";
             }
             status.show();
         }
@@ -409,7 +409,10 @@ function activate( context )
         options.additional = c.get( 'ripgrep.ripgrepArgs' );
         options.maxBuffer = c.get( 'ripgrep.ripgrepMaxBuffer' );
         options.multiline = utils.getRegexSource().indexOf( "\\n" ) > -1;
-
+        if( c.get( 'filtering.includeHiddenFiles' ) )
+        {
+            options.additional += ' --hidden ';
+        }
         if( c.get( 'regex.regexCaseSensitive' ) === false )
         {
             options.additional += ' -i ';
@@ -428,7 +431,7 @@ function activate( context )
             {
                 vscode.workspace.workspaceFolders.map( function( folder )
                 {
-                    if( utils.isIncluded( folder.name, includes, excludes ) )
+                    if( folder.uri && folder.uri.scheme === 'file' && utils.isIncluded( folder.uri.fsPath, includes, excludes ) )
                     {
                         searchList.push( folder.uri.fsPath );
                     }
@@ -583,6 +586,8 @@ function activate( context )
         var isTagsOnly = context.workspaceState.get( 'tagsOnly', c.get( 'tree.tagsOnly', false ) );
         var isGrouped = context.workspaceState.get( 'grouped', c.get( 'tree.grouped', false ) );
         var isCollapsible = !isTagsOnly || isGrouped;
+        var includeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
+        var excludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', c.get( 'tree.expanded', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', c.get( 'tree.flat', false ) ) );
@@ -590,6 +595,8 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-grouped', isGrouped );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-filtered', context.workspaceState.get( 'filtered', false ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-collapsible', isCollapsible );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-folder-filter-active', includeGlobs.length + excludeGlobs.length > 0 );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-global-filter-active', currentFilter );
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-scan-mode-button', c.get( 'tree.showScanModeButton', false ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-mode', vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode );
@@ -613,6 +620,7 @@ function activate( context )
     {
         var includeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includeGlobs' );
         var excludeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludeGlobs' );
+        var includeHiddenFiles = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includeHiddenFiles' );
 
         var tempIncludeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
         var tempExcludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
@@ -627,20 +635,27 @@ function activate( context )
             excludeGlobs = addGlobs( vscode.workspace.getConfiguration( 'search.exclude' ), excludeGlobs );
         }
 
-        return utils.isIncluded( filename, includeGlobs.concat( tempIncludeGlobs ), excludeGlobs.concat( tempExcludeGlobs ) ) === true;
+        var isHidden = path.extname( filename ) === "";
+        var included = utils.isIncluded( filename, includeGlobs.concat( tempIncludeGlobs ), excludeGlobs.concat( tempExcludeGlobs ) );
+
+        return included && ( !isHidden || includeHiddenFiles );
     }
 
     function refreshFile( document )
     {
-        function addResult( offset )
+        function addResult( offset, removeLeadingComments )
         {
             var position = document.positionAt( offset );
-            var line = document.lineAt( position.line );
+            var line = document.lineAt( position.line ).text;
+            if( removeLeadingComments === true )
+            {
+                line = utils.removeLineComments( line, document.fileName );
+            }
             return {
                 file: document.fileName,
                 line: position.line + 1,
                 column: position.character + 1,
-                match: line.text
+                match: line
             };
         }
 
@@ -654,7 +669,7 @@ function activate( context )
             {
                 var extractExtraLines = function( section )
                 {
-                    result.extraLines.push( addResult( offset ) );
+                    result.extraLines.push( addResult( offset, true ) );
                     offset += section.length + 1;
                 };
                 var isMatch = function( s )
@@ -680,7 +695,7 @@ function activate( context )
                     var offset = match.index;
                     var sections = match[ 0 ].split( "\n" );
 
-                    var result = addResult( offset );
+                    var result = addResult( offset, false );
 
                     if( sections.length > 1 )
                     {
@@ -938,22 +953,6 @@ function activate( context )
                         }
                     } );
                 }
-            }
-
-            if( context.globalState.get( 'migratedVersion', 0 ) < 161 && isUnset( 'highlights.defaultHighlight' ) && isUnset( 'highlights.customHighlight' ) )
-            {
-                vscode.window.showInformationMessage( "Todo Tree highlights are now turned on by default.", "Turn Highlights Off", "Don't Show This Again" ).then( function( button )
-                {
-                    if( button === "Don't Show This Again" )
-                    {
-                        vscode.workspace.getConfiguration( 'todo-tree.highlights' ).update( 'enabled', true, vscode.ConfigurationTarget.Global );
-                    }
-                    else if( button === "Turn Highlights Off" )
-                    {
-                        vscode.workspace.getConfiguration( 'todo-tree.highlights' ).update( 'enabled', false, vscode.ConfigurationTarget.Global );
-                    }
-                    context.globalState.update( 'migratedVersion', 161 );
-                } );
             }
 
             if( context.globalState.get( 'migratedVersion', 0 ) < 168 )

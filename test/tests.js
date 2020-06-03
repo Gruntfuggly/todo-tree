@@ -311,3 +311,8 @@ QUnit.test( "utils.createFolderGlob creates expected globs", function( assert )
         assert.equal( utils.createFolderGlob( "/Users/name/workspace/project/folder/subfolder", "/Users/name/workspace/project", "/**//*" ), "/Users/name/workspace/project/folder/subfolder/**/*" );
     }
 } );
+
+QUnit.test( "utils.removeBlockCommentSupportsJsonc", function( assert )
+{
+    assert.equal( utils.removeBlockComments( "/* a */", "x.jsonc" ), " a " );
+} );

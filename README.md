@@ -33,7 +33,7 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `borderRadius` - used to set the border radius of the background of the highlight.
 
-`icon` - used to set a different icon in the tree view. Must be a valid octicon (see <https://octicons.github.com/)> or codicon (see <https://microsoft.github.io/vscode-codicons/dist/codicon.html).> If using codicons, specify them in the format "$(*icon*)". The icon defaults to a tick if it's not valid. You can also use "todo-tree", or "todo-tree-filled" if you want to use the icon from the activity view.
+`icon` - used to set a different icon in the tree view. Must be a valid octicon (see <https://octicons.github.com/)> or codicon (see <https://microsoft.github.io/vscode-codicons/dist/codicon.html>). If using codicons, specify them in the format "$(*icon*)". The icon defaults to a tick if it's not valid. You can also use "todo-tree", or "todo-tree-filled" if you want to use the icon from the activity view.
 
 `iconColour` - used to set the colour of the icon in the tree. If not specified, it will try to use the foreground colour, the background colour and then the older settings, in that order.
 
@@ -183,7 +183,7 @@ This treats any of `FIXME`, `FIXIT` or `FIX` as `FIXME`. When the tree is groupe
 Change the cursor behaviour when selecting a todo from the explorer. Yo.u can choose from: `start of todo` (moves the cursor to the beginning of the todo), `end of todo` (moves the cursor to the end of the todo) `highlight todo` (selects the todo text), `start of line` (moves the cursor to the start of the line) and `highlight line` (selected the whole line)
 
 **todo-tree.general.statusBar** (`none`)<br/>
-What to show in the status bar - nothing (`none`), total count (`total`), counts per tag (`tags`) or the counts for the top three tags (`top three`).
+What to show in the status bar - nothing (`none`), total count (`total`), counts per tag (`tags`), counts for the top three tags (`top three`) or counts for the current file only (`current file`).
 
 **todo-tree.general.statusBarClickBehaviour** (`cycle`)<br/>
 Set the behaviour of clicking the status bar to either cycle display formats, or reveal the tree.
@@ -208,6 +208,9 @@ Set this to use VSCode's built in files or search excludes. Can be one of `none`
 
 **todo-tree.filtering.ignoreGitSubmodules** (`false`)<br/>
 If true, any subfolders containing a `.git` file will be ignored when searching.
+
+**todo-tree.filtering.includeHiddenFiles** (`false`)<br/>
+If true, files starting with a period (.) will be included.
 
 **todo-tree.highlights.enabled** (`true`)<br/>
 Set this to false to turn off highlighting.

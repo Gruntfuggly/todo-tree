@@ -1,5 +1,31 @@
 # Todo Tree Change Log
 
+## v0.0.176 - 2020-05-20
+
+- Only scan workspaces with "file" scheme
+- Add option to include hidden files
+- Order configuration settings alphabetically in package.json
+- Remove leading comments from multiline TODOs
+- Update README.md with 'current file' status bar details
+
+## v0.0.175 - 2020-05-13
+
+- Remove migration code for version 0.0.161
+- Add spaces and commas to status bar item
+- Update to latest version of micromatch
+
+## v0.0.174 - 2020-04-29
+
+- Fix "Nothing found" indicator
+- Remove colon from status bar when single counts are shown
+
+## v0.0.173 - 2020-04-24
+
+- Improve handling of tree view status item (showing active filters)
+- Fix link to codicons in README.md
+- Don't show 'None Found', just use '0' to keep the status bar item short
+- Support removal of block comments in .jsonc files
+
 ## v0.0.172 - 2020-04-13
 
 - Add "current file" option to status bar
