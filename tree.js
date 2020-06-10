@@ -891,7 +891,7 @@ class TreeNodeProvider
             } else
             {
                 var format = config.labelFormat();
-                parent[ "line " + child.line ] = ( format !== "" ) ?
+                parent[ "line " + ( child.line + 1 ) ] = ( format !== "" ) ?
                     utils.format( format, child ) + ( child.pathLabel ? ( " " + child.pathLabel ) : "" ) :
                     child.label;
             }
