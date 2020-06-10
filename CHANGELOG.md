@@ -6,6 +6,7 @@
 - Don't include files without extensions as hidden files
 - Fix line numbers in export
 - Add file path in tags only view export
+- Don't include filtered nodes in tree counters
 
 ## v0.0.176 - 2020-05-20
 

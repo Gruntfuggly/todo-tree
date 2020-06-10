@@ -272,7 +272,7 @@ function countTags( child, tagCounts, fileFilter )
         if( node.type === TODO )
         {
             var tag = node.tag ? node.tag : "TODO";
-            if( !config.shouldHideFromStatusBar( tag ) && ( !fileFilter || fileFilter === node.fsPath ) )
+            if( !config.shouldHideFromStatusBar( tag ) && isVisible( node ) && ( !fileFilter || fileFilter === node.fsPath ) )
             {
                 tagCounts[ tag ] = tagCounts[ tag ] === undefined ? 1 : tagCounts[ tag ] + 1;
             }
