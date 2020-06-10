@@ -891,7 +891,12 @@ class TreeNodeProvider
             } else
             {
                 var format = config.labelFormat();
-                parent[ "line " + ( child.line + 1 ) ] = ( format !== "" ) ?
+                var itemLabel = "line " + ( child.line + 1 );
+                if( config.shouldShowTagsOnly() === true )
+                {
+                    itemLabel = child.fsPath + " " + itemLabel;
+                }
+                parent[ itemLabel ] = ( format !== "" ) ?
                     utils.format( format, child ) + ( child.pathLabel ? ( " " + child.pathLabel ) : "" ) :
                     child.label;
             }
