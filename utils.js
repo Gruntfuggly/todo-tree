@@ -1,10 +1,14 @@
 var micromatch = require( 'micromatch' );
+var os = require( 'os' );
 var path = require( 'path' );
 var find = require( 'find' );
+var strftime = require( 'fast-strftime' );
 
 var config;
 
 var commentPatterns = require( 'comment-patterns' );
+
+var envRegex = new RegExp( "\\$\\{(.*?)\\}", "g" );
 
 function init( configuration )
 {
@@ -231,7 +235,7 @@ function isIncluded( name, includes, excludes )
     return included;
 }
 
-function format( template, node )
+function formatLabel( template, node )
 {
     var result = template;
 
@@ -287,6 +291,36 @@ function isHidden( filename )
     return filename.indexOf( '.' ) !== -1 && path.extname( filename ) === "";
 }
 
+function expandTilde( filePath )
+{
+    if( filePath && filePath[ 0 ] === '~' )
+    {
+        filePath = path.join( os.homedir(), filePath.slice( 1 ) );
+    }
+
+    return filePath;
+}
+
+function replaceEnvironmentVariables( text )
+{
+    text = text.replace( envRegex, function( match, name )
+    {
+        return process.env[ name ] ? process.env[ name ] : "";
+    } );
+
+    return text;
+}
+
+function formatExportPath( template, dateTime )
+{
+    var result = expandTilde( template );
+    if( result )
+    {
+        result = strftime.strftime( result, dateTime );
+    }
+    return result;
+}
+
 module.exports.init = init;
 module.exports.isHexColour = isHexColour;
 module.exports.hexToRgba = hexToRgba;
@@ -297,7 +331,10 @@ module.exports.getRegexSource = getRegexSource;
 module.exports.getRegexForRipGrep = getRegexForRipGrep;
 module.exports.getRegexForEditorSearch = getRegexForEditorSearch;
 module.exports.isIncluded = isIncluded;
-module.exports.format = format;
+module.exports.formatLabel = formatLabel;
 module.exports.createFolderGlob = createFolderGlob;
 module.exports.getSubmoduleExcludeGlobs = getSubmoduleExcludeGlobs;
 module.exports.isHidden = isHidden;
+module.exports.expandTilde = expandTilde;
+module.exports.replaceEnvironmentVariables = replaceEnvironmentVariables;
+module.exports.formatExportPath = formatExportPath;

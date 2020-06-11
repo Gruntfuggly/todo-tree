@@ -1,3 +1,5 @@
+var os = require( 'os' );
+var strftime = require( 'fast-strftime' );
 var utils = require( '../utils.js' );
 var stubs = require( './stubs.js' );
 
@@ -98,7 +100,7 @@ QUnit.test( "utils.extractTag removes colon from ${after}", function( assert )
 
     result = utils.extractTag( "before TODO :after" );
     assert.equal( result.withoutTag, "after" );
-    result = utils.format( "${tag}: ${after}", { actualTag: result.tag, after: result.withoutTag } );
+    result = utils.formatLabel( "${tag}: ${after}", { actualTag: result.tag, after: result.withoutTag } );
     assert.equal( result, "TODO: after" );
 } );
 
@@ -242,44 +244,44 @@ QUnit.test( "utils.isIncluded returns false when name matches includes but also 
     assert.ok( utils.isIncluded( "filename.js", [ "*.txt", "*.js" ], [ "*.txt" ] ) === true );
 } );
 
-QUnit.test( "utils.format replaces line number placeholder", function( assert )
+QUnit.test( "utils.formatLabel replaces line number placeholder", function( assert )
 {
-    assert.equal( utils.format( "Label ${line} content", { line: 23 } ), "Label 24 content" ); // line is zero based
+    assert.equal( utils.formatLabel( "Label ${line} content", { line: 23 } ), "Label 24 content" ); // line is zero based
 } );
 
-QUnit.test( "utils.format replaces column number placeholder", function( assert )
+QUnit.test( "utils.formatLabel replaces column number placeholder", function( assert )
 {
-    assert.equal( utils.format( "Label ${column} content", { column: 78 } ), "Label 78 content" );
+    assert.equal( utils.formatLabel( "Label ${column} content", { column: 78 } ), "Label 78 content" );
 } );
 
-QUnit.test( "utils.format replaces before text placeholder", function( assert )
+QUnit.test( "utils.formatLabel replaces before text placeholder", function( assert )
 {
-    assert.equal( utils.format( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
+    assert.equal( utils.formatLabel( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
 } );
 
-QUnit.test( "utils.format replaces tag placeholder", function( assert )
+QUnit.test( "utils.formatLabel replaces tag placeholder", function( assert )
 {
-    assert.equal( utils.format( "Label ${tag} content", { actualTag: "TODO" } ), "Label TODO content" );
+    assert.equal( utils.formatLabel( "Label ${tag} content", { actualTag: "TODO" } ), "Label TODO content" );
 } );
 
-QUnit.test( "utils.format replaces after text placeholder", function( assert )
+QUnit.test( "utils.formatLabel replaces after text placeholder", function( assert )
 {
-    assert.equal( utils.format( "Label ${after} content", { after: "text after tag" } ), "Label text after tag content" );
+    assert.equal( utils.formatLabel( "Label ${after} content", { after: "text after tag" } ), "Label text after tag content" );
 } );
 
-QUnit.test( "utils.format replaces before text placeholder", function( assert )
+QUnit.test( "utils.formatLabel replaces before text placeholder", function( assert )
 {
-    assert.equal( utils.format( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
+    assert.equal( utils.formatLabel( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
 } );
 
-QUnit.test( "utils.format replaces filename placeholder", function( assert )
+QUnit.test( "utils.formatLabel replaces filename placeholder", function( assert )
 {
-    assert.equal( utils.format( "Label ${filename} content", { fsPath: "/path/to/filename.txt" } ), "Label filename.txt content" );
+    assert.equal( utils.formatLabel( "Label ${filename} content", { fsPath: "/path/to/filename.txt" } ), "Label filename.txt content" );
 } );
 
-QUnit.test( "utils.format replaces filepath placeholder", function( assert )
+QUnit.test( "utils.formatLabel replaces filepath placeholder", function( assert )
 {
-    assert.equal( utils.format( "Label ${filepath} content", { fsPath: "/path/to/filename.txt" } ), "Label /path/to/filename.txt content" );
+    assert.equal( utils.formatLabel( "Label ${filepath} content", { fsPath: "/path/to/filename.txt" } ), "Label /path/to/filename.txt content" );
 } );
 
 QUnit.test( "utils.hexToRgba converts correctly", function( assert )
@@ -312,7 +314,7 @@ QUnit.test( "utils.createFolderGlob creates expected globs", function( assert )
     }
 } );
 
-QUnit.test( "utils.removeBlockCommentSupportsJsonc", function( assert )
+QUnit.test( "utils.removeBlockComments supports jsonc", function( assert )
 {
     assert.equal( utils.removeBlockComments( "/* a */", "x.jsonc" ), " a " );
 } );
@@ -322,4 +324,32 @@ QUnit.test( "utils.isHidden", function( assert )
     assert.equal( utils.isHidden( "test.txt" ), false );
     assert.equal( utils.isHidden( "test" ), false );
     assert.equal( utils.isHidden( ".test" ), true );
+} );
+
+QUnit.test( "utils.formatExportPath inserts date and time fields", function( assert )
+{
+    var expectedDateTime = strftime( "%F-%T", new Date( 1307472705067 ) );
+    assert.equal( utils.formatExportPath( "todo-tree-%F-%T", new Date( 1307472705067 ) ), "todo-tree-" + expectedDateTime );
+    expectedDateTime = strftime( "%Y%m%d-%H%M", new Date( 1307472705067 ) );
+    assert.equal( utils.formatExportPath( "todo-tree-%Y%m%d-%H%M-export", new Date( 1307472705067 ) ), "todo-tree-" + expectedDateTime + "-export" );
+} );
+
+QUnit.test( "utils.expandTilde replaces tilde with home folder", function( assert )
+{
+    var homeFolder = os.homedir();
+    assert.equal( utils.expandTilde( "~/" ), homeFolder + "/" );
+} );
+
+QUnit.test( "utils.formatExportPath expands tilde", function( assert )
+{
+    var homeFolder = os.homedir();
+    var expectedDateTime = strftime( "%A", new Date( 1307472705067 ) );
+    assert.equal( utils.formatExportPath( "~/todo-tree-%A" ), homeFolder + "/todo-tree-" + expectedDateTime );
+} );
+
+QUnit.test( "utils.replaceEnvironmentVariables", function( assert )
+{
+    assert.equal( utils.replaceEnvironmentVariables( "cod, ${FISH}, halibut, ${FISH}" ), "cod, , halibut, " );
+    process.env[ 'FISH' ] = 'turbot';
+    assert.equal( utils.replaceEnvironmentVariables( "cod, ${FISH}, halibut, ${FISH}" ), "cod, turbot, halibut, turbot" );
 } );

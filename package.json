@@ -390,6 +390,11 @@
                     ],
                     "type": "string"
                 },
+                "todo-tree.general.exportPath": {
+                    "default": "~/todo-tree-%Y%m%d-%H%M",
+                    "markdownDescription": "Path to use when exporting the tree. The extension is automatically appended depending on the export type. Environment variables will be expanded, e.g `${HOME}` and the path is passed through strftime (see <https://github.com/samsonjs/strftime>).",
+                    "type": "string"
+                },
                 "todo-tree.general.rootFolder": {
                     "default": "",
                     "markdownDescription": "Folder in which to run the search (defaults to the workspace folder)",
@@ -674,6 +679,7 @@
     },
     "dependencies": {
         "comment-patterns": "^0.10.1",
+        "fast-strftime": "^1.1.1",
         "find": "^0.3.0",
         "micromatch": "^4.0.2",
         "octicons": "^8.3.0",

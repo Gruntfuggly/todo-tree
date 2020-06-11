@@ -497,7 +497,6 @@ function activate( context )
         var rootFolders = [];
         var valid = true;
         var rootFolder = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'rootFolder' );
-        var envRegex = new RegExp( "\\$\\{(.*?)\\}", "g" );
         if( rootFolder.indexOf( "${workspaceFolder}" ) > -1 )
         {
             if( vscode.workspace.workspaceFolders )
@@ -521,10 +520,7 @@ function activate( context )
 
         rootFolders.forEach( function( rootFolder )
         {
-            rootFolder = rootFolder.replace( envRegex, function( match, name )
-            {
-                return process.env[ name ];
-            } );
+            rootFolder = utils.replaceEnvironmentVariables( rootFolder );
         } );
 
         var includes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includedWorkspaces', [] );
@@ -846,27 +842,38 @@ function activate( context )
 
     function exportTree( exported, extension )
     {
-        var newFile = vscode.Uri.parse( 'untitled:' + path.join( os.homedir(), 'todo-tree' + extension ) );
-        vscode.workspace.openTextDocument( newFile ).then( function( document )
+        var path = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'exportPath' );
+        path = utils.replaceEnvironmentVariables( path );
+        path = utils.formatExportPath( path );
+        if( path )
         {
-            var edit = new vscode.WorkspaceEdit();
-            edit.delete( newFile, new vscode.Range(
-                document.positionAt( 0 ),
-                document.positionAt( document.getText().length - 1 )
-            ) );
-            return vscode.workspace.applyEdit( edit ).then( function( success )
+            var newFile = vscode.Uri.parse( 'untitled:' + path + extension );
+            vscode.workspace.openTextDocument( newFile ).then( function( document )
             {
                 var edit = new vscode.WorkspaceEdit();
-                edit.insert( newFile, new vscode.Position( 0, 0 ), exported );
+                edit.delete( newFile, new vscode.Range(
+                    document.positionAt( 0 ),
+                    document.positionAt( document.getText().length - 1 )
+                ) );
                 return vscode.workspace.applyEdit( edit ).then( function( success )
                 {
-                    if( success )
+                    var edit = new vscode.WorkspaceEdit();
+                    edit.insert( newFile, new vscode.Position( 0, 0 ), exported );
+                    return vscode.workspace.applyEdit( edit ).then( function( success )
                     {
-                        vscode.window.showTextDocument( document );
-                    }
+                        if( success )
+                        {
+                            vscode.window.showTextDocument( document );
+                        }
+                    } );
                 } );
             } );
-        } );
+        }
+        else
+        {
+            var content = "Todo Tree export\n\n" + treeify.asTree( provider.exportTree(), true );
+            vscode.workspace.openTextDocument( { content: content } );
+        }
     }
 
     function dumpFolderFilter()

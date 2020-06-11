@@ -7,6 +7,7 @@
 - Fix line numbers in export
 - Add file path in tags only view export
 - Don't include filtered nodes in tree counters
+- Support configurable export path
 
 ## v0.0.176 - 2020-05-20
 

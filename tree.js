@@ -457,7 +457,7 @@ class TreeNodeProvider
             if( treeItem.type === TODO )
             {
                 treeItem.tooltip = config.tooltipFormat();
-                treeItem.tooltip = utils.format( config.tooltipFormat(), node );
+                treeItem.tooltip = utils.formatLabel( config.tooltipFormat(), node );
             }
             else
             {
@@ -522,7 +522,7 @@ class TreeNodeProvider
                 var format = config.labelFormat();
                 if( format !== "" )
                 {
-                    treeItem.label = utils.format( format, node ) + ( node.pathLabel ? ( " " + node.pathLabel ) : "" );
+                    treeItem.label = utils.formatLabel( format, node ) + ( node.pathLabel ? ( " " + node.pathLabel ) : "" );
                 }
 
                 treeItem.command = {
@@ -897,7 +897,7 @@ class TreeNodeProvider
                     itemLabel = child.fsPath + " " + itemLabel;
                 }
                 parent[ itemLabel ] = ( format !== "" ) ?
-                    utils.format( format, child ) + ( child.pathLabel ? ( " " + child.pathLabel ) : "" ) :
+                    utils.formatLabel( format, child ) + ( child.pathLabel ? ( " " + child.pathLabel ) : "" ) :
                     child.label;
             }
         }, this );

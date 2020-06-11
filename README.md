@@ -154,6 +154,9 @@ Show a debug channel in the output view.
 **todo-tree.general.enableFileWatcher** (`false`)<br/>
 Set this to true to turn on automatic updates when files in the workspace are created, changed or deleted.
 
+**todo-tree.general.exportPath** (`~/todo-tree-%Y%m%d-%H%M`)<br/>
+Path to use when exporting the tree. The extension is automatically appended depending on the export type. Environment variables will be expanded, e.g `${HOME}` and the path is passed through strftime (see <https://github.com/samsonjs/strftime>).
+
 **todo-tree.general.rootFolder** (`""`)<br/>
 By default, any open workspaces will have a tree in the view. Use this to force another folder to be the root of the tree. You can include environment variables and also use ${workspaceFolder}. e.g.<br/>
 `"todo-tree.general.rootFolder": "${workspaceFolder}/test"`<br/>
