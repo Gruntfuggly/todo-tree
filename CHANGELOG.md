@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.177 - 2020-06-16
+
 - Allow buttons in tree view title to be configured
 - Add export button to tree view title
 - Use Code's codicons for title bar instead of custom icons
