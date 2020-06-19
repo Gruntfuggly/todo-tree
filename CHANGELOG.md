@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Fix octicons link in README.md (thanks to [VictorHAS](https://github.com/VictorHAS))
+
 ## v0.0.177 - 2020-06-16
 
 - Allow buttons in tree view title to be configured
