@@ -344,7 +344,7 @@ QUnit.test( "utils.formatExportPath expands tilde", function( assert )
 {
     var homeFolder = os.homedir();
     var expectedDateTime = strftime( "%A", new Date( 1307472705067 ) );
-    assert.equal( utils.formatExportPath( "~/todo-tree-%A" ), homeFolder + "/todo-tree-" + expectedDateTime );
+    assert.equal( utils.formatExportPath( "~/todo-tree-%A", new Date( 1307472705067 ) ), homeFolder + "/todo-tree-" + expectedDateTime );
 } );
 
 QUnit.test( "utils.replaceEnvironmentVariables", function( assert )
