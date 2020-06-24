@@ -39,7 +39,7 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `gutterIcon` - set to true to show the icon in the editor gutter.
 
-`rulerColour` - used to set the colour of the marker in the overview ruler. If not specified, it will to use the foreground colour.
+`rulerColour` - used to set the colour of the marker in the overview ruler. If not specified, it will default to use the foreground colour.
 
 `rulerLane` - used to set the lane for the marker in the overview ruler. If not specified, it will default to the right hand lane. Use one of "left", "center", "right", or "full". You can also use "none" to disable the ruler markers.
 
