@@ -454,7 +454,7 @@ class TreeNodeProvider
                 treeItem.resourceUri = vscode.Uri.file( node.fsPath );
             }
 
-            if( treeItem.type === TODO )
+            if( treeItem.node.type === TODO )
             {
                 treeItem.tooltip = config.tooltipFormat();
                 treeItem.tooltip = utils.formatLabel( config.tooltipFormat(), node );
