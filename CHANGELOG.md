@@ -1,6 +1,8 @@
 # Todo Tree Change Log
 
 - Fix octicons link in README.md (thanks to [VictorHAS](https://github.com/VictorHAS))
+- Fix tooltipFormat always displaying default (thanks to [jasonericdavis](https://github.com/jasonericdavis))
+- Add missing 'default' in README.md (thanks to [rhynodesigns](https://github.com/rhynodesigns))
 
 ## v0.0.177 - 2020-06-16
 
