@@ -66,6 +66,17 @@ function activate( context )
     context.subscriptions.push( todoTreeViewExplorer );
     context.subscriptions.push( todoTreeView );
 
+    context.subscriptions.push( vscode.workspace.registerTextDocumentContentProvider( 'todotree-export', {
+        provideTextDocumentContent( uri )
+        {
+            if( path.extname( uri.path ) === '.json' )
+            {
+                return JSON.stringify( provider.exportTree(), null, 2 );
+            }
+            return treeify.asTree( provider.exportTree(), true );
+        }
+    } ) );
+
     function resetOutputChannel()
     {
         if( outputChannel )
@@ -840,42 +851,6 @@ function activate( context )
         vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'scanMode', SCAN_MODE_CURRENT_FILE, vscode.ConfigurationTarget.Workspace );
     }
 
-    function exportTree( exported, extension )
-    {
-        var path = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'exportPath' );
-        path = utils.replaceEnvironmentVariables( path );
-        path = utils.formatExportPath( path );
-        if( path )
-        {
-            var newFile = vscode.Uri.parse( 'untitled:' + path + extension );
-            vscode.workspace.openTextDocument( newFile ).then( function( document )
-            {
-                var edit = new vscode.WorkspaceEdit();
-                edit.delete( newFile, new vscode.Range(
-                    document.positionAt( 0 ),
-                    document.positionAt( document.getText().length - 1 )
-                ) );
-                return vscode.workspace.applyEdit( edit ).then( function( success )
-                {
-                    var edit = new vscode.WorkspaceEdit();
-                    edit.insert( newFile, new vscode.Position( 0, 0 ), exported );
-                    return vscode.workspace.applyEdit( edit ).then( function( success )
-                    {
-                        if( success )
-                        {
-                            vscode.window.showTextDocument( document );
-                        }
-                    } );
-                } );
-            } );
-        }
-        else
-        {
-            var content = "Todo Tree export\n\n" + treeify.asTree( provider.exportTree(), true );
-            vscode.workspace.openTextDocument( { content: content } );
-        }
-    }
-
     function dumpFolderFilter()
     {
         debug( "Folder filter include:" + JSON.stringify( context.workspaceState.get( 'includeGlobs' ) ) );
@@ -1115,12 +1090,15 @@ function activate( context )
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.exportTree', function()
         {
-            exportTree( treeify.asTree( provider.exportTree(), true ), ".txt" );
-        } ) );
+            var exportPath = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'exportPath' );
+            exportPath = utils.replaceEnvironmentVariables( exportPath );
+            exportPath = utils.formatExportPath( exportPath );
 
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.exportTreeAsJSON', function()
-        {
-            exportTree( JSON.stringify( provider.exportTree(), null, 2 ), ".json" );
+            var uri = vscode.Uri.parse( 'todotree-export:' + exportPath );
+            vscode.workspace.openTextDocument( uri ).then( function( document )
+            {
+                vscode.window.showTextDocument( document, { preview: true } );
+            } );
         } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showOnlyThisFolder', function( node )

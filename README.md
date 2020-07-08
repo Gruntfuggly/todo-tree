@@ -142,7 +142,7 @@ To make it easier to configure the tags, there are two commands available:
 
 ### Export
 
-The contents of the tree can be exported as a linux style tree using **Todo Tree: Export Tree**, or as JSON using **Todo Tree: Export Tree As JSON**. In both cases an unsaved file will be opened in a new tab, with the tree content as it is currently configured. The file can be closed or saved if required.
+The contents of the tree can be exported using **Todo Tree: Export Tree**. A read-only file will be created using the path specified with `todo-tree.general.exportPath`. The file can be saved using **File: Save As...**. Note: Currently **File: Save** does not work which seems to be a VSCode bug (see <https://github.com/microsoft/vscode/issues/101952>).
 
 ## Configuration
 
@@ -154,8 +154,8 @@ Show a debug channel in the output view.
 **todo-tree.general.enableFileWatcher** (`false`)<br/>
 Set this to true to turn on automatic updates when files in the workspace are created, changed or deleted.
 
-**todo-tree.general.exportPath** (`~/todo-tree-%Y%m%d-%H%M`)<br/>
-Path to use when exporting the tree. The extension is automatically appended depending on the export type. Environment variables will be expanded, e.g `${HOME}` and the path is passed through strftime (see <https://github.com/samsonjs/strftime>).
+**todo-tree.general.exportPath** (`~/todo-tree-%Y%m%d-%H%M.txt`)<br/>
+Path to use when exporting the tree. Environment variables will be expanded, e.g `${HOME}` and the path is passed through strftime (see <https://github.com/samsonjs/strftime>). Set the extension to `.json` to export as a JSON record.
 
 **todo-tree.general.rootFolder** (`""`)<br/>
 By default, any open workspaces will have a tree in the view. Use this to force another folder to be the root of the tree. You can include environment variables and also use ${workspaceFolder}. e.g.<br/>

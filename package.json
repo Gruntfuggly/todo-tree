@@ -248,11 +248,6 @@
                 "icon": "$(save)"
             },
             {
-                "command": "todo-tree.exportTreeAsJSON",
-                "title": "Export Tree As JSON",
-                "category": "Todo Tree"
-            },
-            {
                 "command": "todo-tree.showOnlyThisFolder",
                 "title": "Only Show This Folder",
                 "category": "Todo Tree",
@@ -391,8 +386,8 @@
                     "type": "string"
                 },
                 "todo-tree.general.exportPath": {
-                    "default": "~/todo-tree-%Y%m%d-%H%M",
-                    "markdownDescription": "Path to use when exporting the tree. The extension is automatically appended depending on the export type. Environment variables will be expanded, e.g `${HOME}` and the path is passed through strftime (see <https://github.com/samsonjs/strftime>).",
+                    "default": "~/todo-tree-%Y%m%d-%H%M.txt",
+                    "markdownDescription": "Path to use when exporting the tree. Environment variables will be expanded, e.g `${HOME}` and the path is passed through strftime (see <https://github.com/samsonjs/strftime>). Set the extension to `.json` to export as a JSON record.",
                     "type": "string"
                 },
                 "todo-tree.general.rootFolder": {
@@ -641,7 +636,7 @@
                 },
                 "todo-tree.tree.buttons.export": {
                     "default": false,
-                    "markdownDescription": "Show a button in the tree view title bar to create a text file showing the tree content",
+                    "markdownDescription": "Show a button in the tree view title bar to create a file showing the tree content",
                     "type": "boolean"
                 },
                 "todo-tree.tree.showTagsFromOpenFilesOnly": {
