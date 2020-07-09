@@ -526,7 +526,8 @@ function activate( context )
         }
         else if( rootFolder !== "" )
         {
-            rootFolders.push( rootFolder );
+            //Using the VS Code URI api to get the fspath, which will follow case sensitivity of platform
+            rootFolders.push( vscode.Uri.file(rootFolder).fsPath );
         }
 
         rootFolders.forEach( function( rootFolder )
