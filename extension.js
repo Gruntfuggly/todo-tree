@@ -1010,6 +1010,15 @@ function activate( context )
             }
         }
 
+        function validateColours()
+        {
+            var invalidColourMessage = colours.validate( vscode.workspace );
+            if( invalidColourMessage )
+            {
+                vscode.window.showWarningMessage( "Todo Tree: " + invalidColourMessage );
+            }
+        }
+
         // We can't do anything if we can't find ripgrep
         if( !config.ripgrepPath() )
         {
@@ -1319,6 +1328,7 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.highlights.defaultHighlight" ) ||
                     e.affectsConfiguration( "todo-tree.highlights.customHighlight" ) )
                 {
+                    validateColours();
                     colours.refreshComplementaryColours();
                     if( vscode.window.activeTextEditor )
                     {
@@ -1383,6 +1393,7 @@ function activate( context )
         colours.refreshComplementaryColours();
 
         migrateSettings();
+        validateColours();
         setButtonsAndContext();
 
         if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanAtStartup === true )

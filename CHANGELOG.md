@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Fix case sensitivity issue with root folder in Windows (thanks to [cobey](https://github.com/cobey))
+- Add validation of colours in settings
 
 ## v0.0.178 - 2020-07-08
 

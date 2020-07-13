@@ -107,8 +107,50 @@ function refreshComplementaryColours()
     } );
 }
 
+function isInvalidColour( colour )
+{
+    if( colour && !utils.isHexColour( colour ) )
+    {
+        return defaultColours.indexOf( colour ) === -1;
+    }
+
+    return false;
+}
+
+function validate( workspace )
+{
+    function check( setting )
+    {
+        var definedColour = workspace.getConfiguration( 'todo-tree.highlights' ).get( setting );
+        if( isInvalidColour( definedColour ) )
+        {
+            invalidColours.push( setting + ' (' + definedColour + ')' );
+        }
+    }
+
+    var invalidColours = [];
+    var result = "";
+
+    var attributeList = [ 'foreground', 'background', 'iconColour', 'rulerColour' ];
+    attributeList.forEach( function( attribute ) { check( 'defaultHighlight.' + attribute ); } );
+
+    var config = vscode.workspace.getConfiguration( 'todo-tree.highlights' );
+    Object.keys( config.customHighlight ).forEach( function( tag )
+    {
+        attributeList.forEach( function( attribute ) { check( 'customHighlight.' + tag + '.' + attribute ); } );
+    } );
+
+    if( invalidColours.length > 0 )
+    {
+        result = "Invalid colour settings: " + invalidColours.join( ', ' );
+    }
+
+    return result;
+}
+
 module.exports.getColourList = getColourList;
 module.exports.refreshComplementaryColours = refreshComplementaryColours;
 module.exports.complementaryColours = complementaryColours;
 module.exports.defaultLightColours = defaultLightColours;
 module.exports.defaultDarkColours = defaultDarkColours;
+module.exports.validate = validate;
