@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Fix case sensitivity issue with root folder in Windows (thanks to [cobey](https://github.com/cobey))
+
 ## v0.0.178 - 2020-07-08
 
 - Fix octicons link in README.md (thanks to [VictorHAS](https://github.com/VictorHAS))
