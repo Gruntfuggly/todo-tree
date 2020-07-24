@@ -345,7 +345,7 @@ class TreeNodeProvider
                 result = rootNodes;
             }
 
-            var statusNode = { label: "" };
+            var statusNode = { label: "", notExported: true };
             var includeGlobs = this._context.workspaceState.get( 'includeGlobs' ) || [];
             var excludeGlobs = this._context.workspaceState.get( 'excludeGlobs' ) || [];
             var totalFilters = includeGlobs.length + excludeGlobs.length;
@@ -888,7 +888,8 @@ class TreeNodeProvider
             {
                 parent[ child.label ] = {};
                 this.exportChildren( parent[ child.label ], this.getChildren( child ) );
-            } else
+            }
+            else if( !child.notExported )
             {
                 var format = config.labelFormat();
                 var itemLabel = "line " + ( child.line + 1 );
