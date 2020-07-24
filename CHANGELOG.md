@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Bundle the extension
+- Grey out expand/collapse buttons instead of hiding them
 
 ## v0.0.179 - 2020-07-22
 

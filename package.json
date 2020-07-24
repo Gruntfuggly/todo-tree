@@ -123,12 +123,12 @@
                 },
                 {
                     "command": "todo-tree.expand",
-                    "when": "view =~ /todo-tree/ && todo-tree-expanded == false && todo-tree-collapsible && todo-tree-show-expand-button == true",
+                    "when": "view =~ /todo-tree/ && todo-tree-expanded == false && todo-tree-show-expand-button == true",
                     "group": "navigation@8"
                 },
                 {
                     "command": "todo-tree.collapse",
-                    "when": "view =~ /todo-tree/ && todo-tree-expanded == true && todo-tree-collapsible && todo-tree-show-expand-button == true",
+                    "when": "view =~ /todo-tree/ && todo-tree-expanded == true && todo-tree-show-expand-button == true",
                     "group": "navigation@8"
                 }
             ],
@@ -184,13 +184,15 @@
                 "command": "todo-tree.expand",
                 "title": "Expand Tree",
                 "category": "Todo Tree",
-                "icon": "$(expand-all)"
+                "icon": "$(expand-all)",
+                "enablement": "todo-tree-collapsible"
             },
             {
                 "command": "todo-tree.collapse",
                 "title": "Collapse Tree",
                 "category": "Todo Tree",
-                "icon": "$(collapse-all)"
+                "icon": "$(collapse-all)",
+                "enablement": "todo-tree-collapsible"
             },
             {
                 "command": "todo-tree.filter",
