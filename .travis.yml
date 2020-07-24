@@ -9,4 +9,4 @@ before_install:
   - npm install -g node-qunit
 
 script:
-  - qunit -c utils.js -t test/tests.js
+  - qunit -c src/utils.js -t test/tests.js

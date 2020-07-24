@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Fix hidden file test
+- Bundle the extension
 
 ## v0.0.181 - 2020-10-01
 
@@ -11,6 +12,7 @@
 - Grey out expand/collapse buttons instead of hiding them
 - Don't export status node in tree
 - Fix tags extraction
+- Fix hidden file test
 
 ## v0.0.179 - 2020-07-22
 

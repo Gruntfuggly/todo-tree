@@ -1,2 +1,7 @@
-.vscode/**
+.vscode
 .gitignore
+node_modules/
+src/
+test/
+test-files
+webpack.config.js
