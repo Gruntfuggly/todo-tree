@@ -1,6 +1,6 @@
 var os = require( 'os' );
 var strftime = require( 'fast-strftime' );
-var utils = require( '../utils.js' );
+var utils = require( '../src/utils.js' );
 var stubs = require( './stubs.js' );
 
 QUnit.test( "utils.isHexColour", function( assert )

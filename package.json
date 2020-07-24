@@ -17,7 +17,10 @@
     },
     "repository": "https://github.com/Gruntfuggly/todo-tree",
     "scripts": {
-        "test": "./node_modules/node-qunit/bin/cli.js -c utils.js -t test/tests.js"
+        "test": "./node_modules/node-qunit/bin/cli.js -c src/utils.js -t test/tests.js",
+        "vscode:prepublish": "webpack --mode production",
+        "webpack": "webpack --mode development",
+        "webpack-dev": "webpack --mode development --watch"
     },
     "categories": [
         "Other"
@@ -679,5 +682,10 @@
         "micromatch": "^4.0.2",
         "octicons": "^8.3.0",
         "treeify": "^1.1.0"
+    },
+    "devDependencies": {
+        "parse-code-context": "^1.0.0",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.12"
     }
 }
