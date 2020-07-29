@@ -1,6 +1,7 @@
-.vscode/**
+.vscode
 .gitignore
 node_modules/
 src/
 test/
 testfiles/
+webpack.config.js
