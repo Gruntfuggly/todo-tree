@@ -127,8 +127,7 @@ function removeLineComments( text, fileName )
 
 function getTagRegex()
 {
-    var c = config.regex();
-    var tags = c.tags.sort().reverse();
+    var tags = config.tags().sort().reverse();
     tags = tags.map( function( tag )
     {
         tag = tag.replace( /\\/g, '\\\\\\' );
