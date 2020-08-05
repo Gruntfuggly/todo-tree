@@ -324,6 +324,7 @@ QUnit.test( "utils.isHidden", function( assert )
     assert.equal( utils.isHidden( "test.txt" ), false );
     assert.equal( utils.isHidden( "test" ), false );
     assert.equal( utils.isHidden( ".test" ), true );
+    assert.equal( utils.isHidden( "/folder.with.dots/test" ), false );
 } );
 
 QUnit.test( "utils.formatExportPath inserts date and time fields", function( assert )

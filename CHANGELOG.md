@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Fix hidden file test
+
 ## v0.0.181 - 2020-10-01
 
 - Revert change to remove node modules

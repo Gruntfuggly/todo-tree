@@ -287,7 +287,7 @@ function getSubmoduleExcludeGlobs( rootPath )
 
 function isHidden( filename )
 {
-    return filename.indexOf( '.' ) !== -1 && path.extname( filename ) === "";
+    return path.basename( filename ).indexOf( '.' ) !== -1 && path.extname( filename ) === "";
 }
 
 function expandTilde( filePath )
