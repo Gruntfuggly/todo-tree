@@ -87,7 +87,7 @@
     "todo-tree.configuration.tree.showBadges.markdownDescription": "Show badges and SCM state in the tree view.",
     "todo-tree.configuration.tree.showCountsInTree.markdownDescription": "Show counts of TODOs in the tree.",
     "todo-tree.configuration.tree.showInExplorer.markdownDescription": "Show the tree in the explorer view.",
-    "todo-tree.configuration.tree.showScanModeButton.markdownDescription": "Show a button on the tree view header to change between scanning the current file, open files, or the whole workspace.",
+    "todo-tree.configuration.tree.showScanModeButton.markdownDescription": "This setting is no longer used, please use \"todo-tree.tree.buttons.scanMode\" instead.",
     "todo-tree.configuration.tree.showScanOpenFilesOrWorkspaceButton.markdownDescription": "This setting is no longer used, please use \"todo-tree.tree.scanMode\" instead.",
     "todo-tree.configuration.tree.buttons.reveal.markdownDescription": "Show a button in the tree view title bar to reveal the current item (only when track file is not enabled).",
     "todo-tree.configuration.tree.buttons.scanMode.markdownDescription": "Show a button in the tree view title bar to change the Scan Mode setting.",

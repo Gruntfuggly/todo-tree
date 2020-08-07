@@ -87,7 +87,7 @@
     "todo-tree.configuration.tree.showBadges.markdownDescription": "在树状图中显示 badges 和 SCM 的状态。",
     "todo-tree.configuration.tree.showCountsInTree.markdownDescription": "在树状图中显示待办事项的数目。",
     "todo-tree.configuration.tree.showInExplorer.markdownDescription": "在资源管理器中显示待办事项树。",
-    "todo-tree.configuration.tree.showScanModeButton.markdownDescription": "Show a button on the tree view header to change between scanning the current file, open files, or the whole workspace.",
+    "todo-tree.configuration.tree.showScanModeButton.markdownDescription": "该设置不再使用，请使用 \"todo-tree.tree.buttons.scanMode\" 替代。",
     "todo-tree.configuration.tree.showScanOpenFilesOrWorkspaceButton.markdownDescription": "该设置不再使用，请使用 \"todo-tree.tree.scanMode\" 替代。",
     "todo-tree.configuration.tree.buttons.reveal.markdownDescription": "在侧边栏顶部显示一个扫描当前文件的按钮（仅当自动扫描开启文件功能 **Track File** 未启用时）。",
     "todo-tree.configuration.tree.buttons.scanMode.markdownDescription": "在侧边栏顶部显示一个切换待办事项扫描模式的按钮（扫描整个工作区、仅扫描开启的文件和仅扫描当前文件）。",

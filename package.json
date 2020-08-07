@@ -591,7 +591,7 @@
                 },
                 "todo-tree.tree.showScanModeButton": {
                     "default": false,
-                    "markdownDescription": "%todo-tree.configuration.tree.showScanModeButton.markdownDescription%",
+                    "deprecationMessage": "%todo-tree.configuration.tree.showScanModeButton.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.showScanOpenFilesOrWorkspaceButton": {

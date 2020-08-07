@@ -305,9 +305,6 @@ Format of the TODO item labels. Available placeholders are `${line}`, `${column}
 **todo-tree.tree.scanMode** (`workspace`)<br/>
 By default the extension scans the whole workspace (`workspace`). Use this to limit the search to only open files (`open files`) or only the current file (`current file`).
 
-**todo-tree.tree.showScanModeButton** (`false`)<br/>
-Show a button on the tree view header to switch the scanMode (see above).
-
 **todo-tree.tree.hideIconsWhenGroupedByTag** (`false`)<br/>
 Hide item icons when grouping by tag.
 
