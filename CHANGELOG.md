@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.180 - 2020-10-01
+
 - Grey out expand/collapse buttons instead of hiding them
 - Don't export status node in tree
 - Fix tags extraction
