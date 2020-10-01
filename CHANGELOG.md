@@ -1,5 +1,9 @@
 # Todo Tree Change Log
 
+## v0.0.181 - 2020-10-01
+
+- Revert change to remove node modules
+
 ## v0.0.180 - 2020-10-01
 
 - Grey out expand/collapse buttons instead of hiding them
