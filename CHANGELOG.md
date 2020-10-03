@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.182 - 2020-10-03
+
 - Fix hidden file test
 - Bundle the extension
 - Fix colour validation
