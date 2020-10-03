@@ -2,6 +2,7 @@
 
 - Fix hidden file test
 - Bundle the extension
+- Fix colour validation
 
 ## v0.0.181 - 2020-10-01
 

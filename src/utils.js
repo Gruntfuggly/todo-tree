@@ -23,7 +23,7 @@ function isHexColour( colour )
     }
     var withoutHash = colour.indexOf( '#' ) === 0 ? colour.substring( 1 ) : colour;
     var hex = withoutHash.split( / / )[ 0 ].replace( /[^\da-fA-F]/g, '' );
-    return ( typeof colour === "string" ) && hex.length === withoutHash.length && ( hex.length === 3 || hex.length === 6 ) && !isNaN( parseInt( hex, 16 ) );
+    return ( typeof colour === "string" ) && hex.length === withoutHash.length && ( hex.length === 3 || hex.length === 4 || hex.length === 6 || hex.length === 8 ) && !isNaN( parseInt( hex, 16 ) );
 }
 
 function hexToRgba( hex, opacity )

@@ -12,6 +12,12 @@ QUnit.test( "utils.isHexColour", function( assert )
     assert.ok( utils.isHexColour( "red" ) === false );
     assert.ok( utils.isHexColour( "ff0000" ) === true );
     assert.ok( utils.isHexColour( "fff" ) === true );
+    assert.ok( utils.isHexColour( "f" ) === false );
+    assert.ok( utils.isHexColour( "ff" ) === false );
+    assert.ok( utils.isHexColour( "fff8" ) === true );
+    assert.ok( utils.isHexColour( "fff88" ) === false );
+    assert.ok( utils.isHexColour( "fff8884" ) === false );
+    assert.ok( utils.isHexColour( "fff88844" ) === true );
 } );
 
 QUnit.test( "utils.isHexColour strips non RGB values", function( assert )
@@ -22,7 +28,7 @@ QUnit.test( "utils.isHexColour strips non RGB values", function( assert )
     assert.ok( utils.isHexColour( "inbed" ) === false );
     assert.ok( utils.isHexColour( "magneta" ) === false );
     assert.ok( utils.isHexColour( "#bed" ) === true );
-    assert.ok( utils.isHexColour( "face" ) === false );
+    assert.ok( utils.isHexColour( "faced" ) === false );
     assert.ok( utils.isHexColour( "ace" ) === true );
 } );
 
