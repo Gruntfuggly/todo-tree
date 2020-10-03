@@ -5,3 +5,4 @@ src/
 test/
 test-files
 webpack.config.js
+dist/extension.js.map

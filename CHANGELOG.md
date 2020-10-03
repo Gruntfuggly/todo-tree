@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - fix ripgrep link in README.md (thanks to [pke](https://github.com/pke))
+- Remove extension.js.map from bundle
 
 ## v0.0.182 - 2020-10-03
 
