@@ -135,23 +135,38 @@
             "view/item/context": [
                 {
                     "command": "todo-tree.showOnlyThisFolder",
-                    "when": "view =~ /todo-tree/ && viewItem == folder"
+                    "when": "view =~ /todo-tree/ && viewItem == folder",
+                    "group": "filter"
                 },
                 {
                     "command": "todo-tree.showOnlyThisFolderAndSubfolders",
-                    "when": "view =~ /todo-tree/ && viewItem == folder"
+                    "when": "view =~ /todo-tree/ && viewItem == folder",
+                    "group": "filter"
                 },
                 {
                     "command": "todo-tree.excludeThisFolder",
-                    "when": "view =~ /todo-tree/ && viewItem == folder"
+                    "when": "view =~ /todo-tree/ && viewItem == folder",
+                    "group": "filter"
                 },
                 {
                     "command": "todo-tree.filterClear",
-                    "when": "view =~ /todo-tree/ && todo-tree-global-filter-active"
+                    "when": "view =~ /todo-tree/ && todo-tree-global-filter-active",
+                    "group": "filter"
                 },
                 {
                     "command": "todo-tree.resetFolderFilter",
-                    "when": "view =~ /todo-tree/ && todo-tree-folder-filter-active"
+                    "when": "view =~ /todo-tree/ && todo-tree-folder-filter-active",
+                    "group": "filter"
+                },
+                {
+                    "command": "todo-tree.toggleItemCounts",
+                    "when": "view =~ /todo-tree/",
+                    "group": "misc"
+                },
+                {
+                    "command": "todo-tree.toggleBadges",
+                    "when": "view =~ /todo-tree/",
+                    "group": "misc"
                 }
             ]
         },
@@ -285,6 +300,16 @@
             {
                 "command": "todo-tree.resetCache",
                 "title": "Reset Cache",
+                "category": "Todo Tree"
+            },
+            {
+                "command": "todo-tree.toggleItemCounts",
+                "title": "Toggle Item Counts",
+                "category": "Todo Tree"
+            },
+            {
+                "command": "todo-tree.toggleBadges",
+                "title": "Toggle Badges",
                 "category": "Todo Tree"
             }
         ],

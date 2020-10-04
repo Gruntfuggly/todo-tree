@@ -527,7 +527,7 @@ function activate( context )
         else if( rootFolder !== "" )
         {
             //Using the VS Code URI api to get the fspath, which will follow case sensitivity of platform
-            rootFolders.push( vscode.Uri.file(rootFolder).fsPath );
+            rootFolders.push( vscode.Uri.file( rootFolder ).fsPath );
         }
 
         rootFolders.forEach( function( rootFolder )
@@ -1188,6 +1188,18 @@ function activate( context )
             }
         } ) );
 
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.toggleItemCounts', function()
+        {
+            var current = vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'showCountsInTree' );
+            vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'showCountsInTree', !current, vscode.ConfigurationTarget.Workspace );
+        } ) );
+
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.toggleBadges', function()
+        {
+            var current = vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'showBadges' );
+            vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'showBadges', !current, vscode.ConfigurationTarget.Workspace );
+        } ) );
+
         context.subscriptions.push( todoTreeViewExplorer.onDidExpandElement( function( e ) { provider.setExpanded( e.element.fsPath, true ); } ) );
         context.subscriptions.push( todoTreeView.onDidExpandElement( function( e ) { provider.setExpanded( e.element.fsPath, true ); } ) );
         context.subscriptions.push( todoTreeViewExplorer.onDidCollapseElement( function( e ) { provider.setExpanded( e.element.fsPath, false ); } ) );
@@ -1350,6 +1362,11 @@ function activate( context )
                     config.refreshTagGroupLookup();
                     rebuild();
                     documentChanged();
+                }
+                else if( e.affectsConfiguration( "todo-tree.tree.showCountsInTree" ) ||
+                    e.affectsConfiguration( "todo-tree.tree.showBadges" ) )
+                {
+                    refresh();
                 }
                 else if( e.affectsConfiguration( "todo-tree.filtering" ) ||
                     e.affectsConfiguration( "todo-tree.regex" ) ||
