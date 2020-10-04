@@ -197,7 +197,7 @@ function activate( context )
             }
         }
 
-        var counts = provider.getTagCounts( fileFilter );
+        var counts = provider.getTagCountsForStatusBar( fileFilter );
         if( statusBar === STATUS_BAR_TOTAL )
         {
             var total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );

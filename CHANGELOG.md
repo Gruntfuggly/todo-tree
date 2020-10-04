@@ -3,6 +3,7 @@
 - fix ripgrep link in README.md (thanks to [pke](https://github.com/pke))
 - Remove extension.js.map from bundle
 - Add context menu options to toggle badges and item counts
+- Fix counts in tree when hideFromStatusBar is enabled
 
 ## v0.0.182 - 2020-10-03
 

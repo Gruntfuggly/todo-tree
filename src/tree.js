@@ -265,16 +265,19 @@ function locateTreeChildNode( rootNode, pathElements, tag )
     return childNode;
 }
 
-function countTags( child, tagCounts, fileFilter )
+function countTags( child, tagCounts, forStatusBar, fileFilter )
 {
     function countTag( node )
     {
         if( node.type === TODO )
         {
             var tag = node.tag ? node.tag : "TODO";
-            if( !config.shouldHideFromStatusBar( tag ) && isVisible( node ) && ( !fileFilter || fileFilter === node.fsPath ) )
+            if( isVisible( node ) && ( !fileFilter || fileFilter === node.fsPath ) )
             {
-                tagCounts[ tag ] = tagCounts[ tag ] === undefined ? 1 : tagCounts[ tag ] + 1;
+                if( !forStatusBar || !config.shouldHideFromStatusBar( tag ) )
+                {
+                    tagCounts[ tag ] = tagCounts[ tag ] === undefined ? 1 : tagCounts[ tag ] + 1;
+                }
             }
         }
     }
@@ -283,7 +286,7 @@ function countTags( child, tagCounts, fileFilter )
 
     if( child.nodes !== undefined )
     {
-        countChildTags( child.nodes, tagCounts, fileFilter );
+        countChildTags( child.nodes, tagCounts, forStatusBar, fileFilter );
     }
     if( child.todos )
     {
@@ -291,9 +294,9 @@ function countTags( child, tagCounts, fileFilter )
     }
 }
 
-function countChildTags( children, tagCounts, fileFilter )
+function countChildTags( children, tagCounts, forStatusBar, fileFilter )
 {
-    children.map( function( child ) { return countTags( child, tagCounts, fileFilter ); } );
+    children.map( function( child ) { return countTags( child, tagCounts, forStatusBar, fileFilter ); } );
     return tagCounts;
 }
 
@@ -547,7 +550,7 @@ class TreeNodeProvider
         if( config.shouldShowCounts() && node.type === PATH )
         {
             var tagCounts = {};
-            countTags( node, tagCounts );
+            countTags( node, tagCounts, false );
             var total = Object.values( tagCounts ).reduce( function( a, b ) { return a + b; }, 0 );
             treeItem.description = total.toString();
         }
@@ -874,10 +877,10 @@ class TreeNodeProvider
         this._context.workspaceState.update( 'expandedNodes', expandedNodes );
     }
 
-    getTagCounts( fileFilter )
+    getTagCountsForStatusBar( fileFilter )
     {
         var tagCounts = {};
-        return countChildTags( nodes, tagCounts, fileFilter );
+        return countChildTags( nodes, tagCounts, true, fileFilter );
     }
 
     exportChildren( parent, children )
