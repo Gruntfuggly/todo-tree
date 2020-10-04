@@ -1446,6 +1446,7 @@ function activate( context )
 
 function deactivate()
 {
+    ripgrep.kill();
     provider.clear( [] );
 }
 

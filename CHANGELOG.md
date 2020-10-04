@@ -4,6 +4,7 @@
 - Remove extension.js.map from bundle
 - Add context menu options to toggle badges and item counts
 - Fix counts in tree when hideFromStatusBar is enabled
+- kill ripgrep on deactivate
 
 ## v0.0.182 - 2020-10-03
 
