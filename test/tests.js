@@ -32,6 +32,19 @@ QUnit.test( "utils.isHexColour strips non RGB values", function( assert )
     assert.ok( utils.isHexColour( "ace" ) === true );
 } );
 
+QUnit.test( "utils.isRgbColour", function( assert )
+{
+    assert.ok( utils.isRgbColour( "" ) == false );
+    assert.ok( utils.isRgbColour( "rgb(0,0,0)" ) == true );
+    assert.ok( utils.isRgbColour( "rgba(0,0,0)" ) == true );
+    assert.ok( utils.isRgbColour( "rgb(255,255,255)" ) == true );
+    assert.ok( utils.isRgbColour( "rgb(x,0,0)" ) == false );
+    assert.ok( utils.isRgbColour( "rgba(0,0,0,0.5)" ) == true );
+    assert.ok( utils.isRgbColour( "rgba(0, 0, 0, 0.5)" ) == true );
+    assert.ok( utils.isRgbColour( "rgba(0,0.5,0,0.5)" ) == false );
+    assert.ok( utils.isRgbColour( "rgxba(0,0,0,0.5)" ) == false );
+} );
+
 QUnit.test( "utils.removeBlockComments strips block comments based on filename", function( assert )
 {
     assert.equal( utils.removeBlockComments( "/* a */", "x.cpp" ), " a " );

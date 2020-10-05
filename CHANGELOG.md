@@ -5,6 +5,7 @@
 - Add context menu options to toggle badges and item counts
 - Fix counts in tree when hideFromStatusBar is enabled
 - kill ripgrep on deactivate
+- Allow rgb and rgba colour definitions
 
 ## v0.0.182 - 2020-10-03
 

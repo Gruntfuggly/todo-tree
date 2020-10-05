@@ -9,6 +9,7 @@ var config;
 var commentPatterns = require( 'comment-patterns' );
 
 var envRegex = new RegExp( "\\$\\{(.*?)\\}", "g" );
+var rgbRegex = new RegExp( "^rgba?\\((\\d+),\\s*(\\d+),\\s*(\\d+)(?:,\\s*(\\d+(?:\\.\\d+)?))?\\)$", "gi" );
 
 function init( configuration )
 {
@@ -24,6 +25,11 @@ function isHexColour( colour )
     var withoutHash = colour.indexOf( '#' ) === 0 ? colour.substring( 1 ) : colour;
     var hex = withoutHash.split( / / )[ 0 ].replace( /[^\da-fA-F]/g, '' );
     return ( typeof colour === "string" ) && hex.length === withoutHash.length && ( hex.length === 3 || hex.length === 4 || hex.length === 6 || hex.length === 8 ) && !isNaN( parseInt( hex, 16 ) );
+}
+
+function isRgbColour( colour )
+{
+    return colour.match( rgbRegex ) !== null;
 }
 
 function hexToRgba( hex, opacity )
@@ -322,6 +328,7 @@ function formatExportPath( template, dateTime )
 
 module.exports.init = init;
 module.exports.isHexColour = isHexColour;
+module.exports.isRgbColour = isRgbColour;
 module.exports.hexToRgba = hexToRgba;
 module.exports.removeBlockComments = removeBlockComments;
 module.exports.removeLineComments = removeLineComments;
