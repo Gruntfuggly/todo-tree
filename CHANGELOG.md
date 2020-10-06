@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.183 - 2020-10-06
+
 - fix ripgrep link in README.md (thanks to [pke](https://github.com/pke))
 - Remove extension.js.map from bundle
 - Add context menu options to toggle badges and item counts
