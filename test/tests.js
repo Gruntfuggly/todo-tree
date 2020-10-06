@@ -373,3 +373,35 @@ QUnit.test( "utils.replaceEnvironmentVariables", function( assert )
     process.env[ 'FISH' ] = 'turbot';
     assert.equal( utils.replaceEnvironmentVariables( "cod, ${FISH}, halibut, ${FISH}" ), "cod, turbot, halibut, turbot" );
 } );
+
+QUnit.test( "utils.complementaryColour", function( assert )
+{
+    assert.equal( utils.complementaryColour( "#ffffff" ), "#000000" );
+    assert.equal( utils.complementaryColour( "#ffff00" ), "#000000" );
+    assert.equal( utils.complementaryColour( "#ff0000" ), "#000000" );
+    assert.equal( utils.complementaryColour( "#000000" ), "#ffffff" );
+    assert.equal( utils.complementaryColour( "#00ffff" ), "#000000" );
+    assert.equal( utils.complementaryColour( "#0000ff" ), "#ffffff" );
+} );
+
+QUnit.test( "utils.isValidColour", function( assert )
+{
+    assert.ok( utils.isValidColour( "red" ) );
+    assert.ok( utils.isValidColour( "chartreuse" ) );
+    assert.ok( utils.isValidColour( "#ffffff" ) );
+    assert.ok( utils.isValidColour( "ffffff" ) );
+    assert.ok( utils.isValidColour( "rgb(0,0,0)" ) );
+    assert.ok( utils.isValidColour( "editor.foreground" ) );
+    assert.notOk( utils.isValidColour( "skybluepink" ) );
+    assert.notOk( utils.isValidColour( "gggggg" ) );
+    assert.notOk( utils.isValidColour( "some.theme.colour" ) );
+    assert.notOk( utils.isValidColour( "rgb(0,0,0" ) );
+    assert.notOk( utils.isValidColour( "" ) );
+} );
+
+QUnit.test( "utils.setRgbAlpha", function( assert )
+{
+    assert.equal( utils.setRgbAlpha( "fail", 0.5 ), "fail" );
+    assert.equal( utils.setRgbAlpha( "rgb(0,0,0)", 0.5 ), "rgba(0,0,0,0.5)" );
+    assert.equal( utils.setRgbAlpha( "rgba(0,0,0,1.0)", 0.5 ), "rgba(0,0,0,0.5)" );
+} );

@@ -5,6 +5,7 @@ var config = require( './config.js' );
 var utils = require( './utils.js' );
 var attributes = require( './attributes.js' );
 var icons = require( './icons.js' );
+
 var lanes =
 {
     "none": undefined,
@@ -17,7 +18,7 @@ var lanes =
 var decorations = {};
 var highlightTimer = {};
 var context_;
-;
+
 function init( context )
 {
     context.subscriptions.push( decorations );
@@ -38,63 +39,56 @@ function getDecoration( tag )
 
     if( foregroundColour )
     {
-        if( !utils.isHexColour( foregroundColour ) )
+        if( foregroundColour.match( /(foreground|background)/i ) )
         {
-            if( colours.getColourList().indexOf( foregroundColour ) > -1 )
-            {
-                lightForegroundColour = colours.defaultLightColours[ foregroundColour ];
-                darkForegroundColour = colours.defaultDarkColours[ foregroundColour ];
-            }
-            else if( foregroundColour.match( /(foreground|background)/i ) )
-            {
-                lightForegroundColour = new vscode.ThemeColor( foregroundColour );
-                darkForegroundColour = new vscode.ThemeColor( foregroundColour );
-            } else
-            {
-                lightForegroundColour = new vscode.ThemeColor( 'editor.foreground' );
-                darkForegroundColour = new vscode.ThemeColor( 'editor.foreground' );
-            }
+            lightForegroundColour = new vscode.ThemeColor( foregroundColour );
+            darkForegroundColour = new vscode.ThemeColor( foregroundColour );
+        }
+        else if( !utils.isValidColour( foregroundColour ) )
+        {
+            lightForegroundColour = new vscode.ThemeColor( 'editor.foreground' );
+            darkForegroundColour = new vscode.ThemeColor( 'editor.foreground' );
         }
     }
 
     if( backgroundColour )
     {
-        if( !utils.isHexColour( backgroundColour ) )
+        if( backgroundColour.match( /(foreground|background)/i ) )
         {
-            if( colours.getColourList().indexOf( backgroundColour ) > -1 )
-            {
-                lightBackgroundColour = colours.defaultLightColours[ backgroundColour ];
-                darkBackgroundColour = colours.defaultDarkColours[ backgroundColour ];
-            }
-            else if( backgroundColour.match( /(foreground|background)/i ) )
-            {
-                lightBackgroundColour = new vscode.ThemeColor( backgroundColour );
-                darkBackgroundColour = new vscode.ThemeColor( backgroundColour );
-            }
-            else
-            {
-                lightBackgroundColour = new vscode.ThemeColor( 'editor.background' );
-                darkBackgroundColour = new vscode.ThemeColor( 'editor.background' );
-            }
+            lightBackgroundColour = new vscode.ThemeColor( backgroundColour );
+            darkBackgroundColour = new vscode.ThemeColor( backgroundColour );
+        }
+        else if( !utils.isValidColour( backgroundColour ) )
+        {
+            lightBackgroundColour = new vscode.ThemeColor( 'editor.background' );
+            darkBackgroundColour = new vscode.ThemeColor( 'editor.background' );
         }
 
         if( utils.isHexColour( lightBackgroundColour ) )
         {
             lightBackgroundColour = utils.hexToRgba( lightBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
         }
+        else if( utils.isRgbColour( lightBackgroundColour ) )
+        {
+            lightBackgroundColour = utils.setRgbAlpha( lightBackgroundColour, opacity > 1 ? opacity / 100 : opacity );
+        }
         if( utils.isHexColour( darkBackgroundColour ) )
         {
             darkBackgroundColour = utils.hexToRgba( darkBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
         }
+        else if( utils.isRgbColour( darkBackgroundColour ) )
+        {
+            darkBackgroundColour = utils.setRgbAlpha( darkBackgroundColour, opacity > 1 ? opacity / 100 : opacity );
+        }
     }
 
-    if( lightForegroundColour === undefined )
+    if( lightForegroundColour === undefined && utils.isHexColour( lightBackgroundColour ) )
     {
-        lightForegroundColour = colours.complementaryColours[ lightBackgroundColour ];
+        lightForegroundColour = utils.complementaryColour( lightBackgroundColour );
     }
-    if( darkForegroundColour === undefined )
+    if( darkForegroundColour === undefined && utils.isHexColour( darkBackgroundColour ) )
     {
-        darkForegroundColour = colours.complementaryColours[ darkBackgroundColour ];
+        darkForegroundColour = utils.complementaryColour( darkBackgroundColour );
     }
 
     if( lightBackgroundColour === undefined && lightForegroundColour === undefined )

@@ -1341,7 +1341,6 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.highlights.customHighlight" ) )
                 {
                     validateColours();
-                    colours.refreshComplementaryColours();
                     if( vscode.window.activeTextEditor )
                     {
                         documentChanged( vscode.window.activeTextEditor.document );
@@ -1407,7 +1406,6 @@ function activate( context )
 
         resetOutputChannel();
 
-        colours.refreshComplementaryColours();
 
         migrateSettings();
         validateColours();

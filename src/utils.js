@@ -4,6 +4,9 @@ var path = require( 'path' );
 var find = require( 'find' );
 var strftime = require( 'fast-strftime' );
 
+var colourNames = require( './colourNames.js' );
+var themeColourNames = require( './themeColourNames.js' );
+
 var config;
 
 var commentPatterns = require( 'comment-patterns' );
@@ -30,6 +33,11 @@ function isHexColour( colour )
 function isRgbColour( colour )
 {
     return colour.match( rgbRegex ) !== null;
+}
+
+function isNamedColour( colour )
+{
+    return colourNames.indexOf( colour ) > -1;
 }
 
 function hexToRgba( hex, opacity )
@@ -326,9 +334,60 @@ function formatExportPath( template, dateTime )
     return result;
 }
 
+function complementaryColour( colour )
+{
+    var hex = colour.split( / / )[ 0 ].replace( /[^\da-fA-F]/g, '' );
+    var digits = hex.length / 3;
+    var red = parseInt( hex.substr( 0, digits ), 16 );
+    var green = parseInt( hex.substr( 1 * digits, digits ), 16 );
+    var blue = parseInt( hex.substr( 2 * digits, digits ), 16 );
+    var c = [ red / 255, green / 255, blue / 255 ];
+    for( var i = 0; i < c.length; ++i )
+    {
+        if( c[ i ] <= 0.03928 )
+        {
+            c[ i ] = c[ i ] / 12.92;
+        } else
+        {
+            c[ i ] = Math.pow( ( c[ i ] + 0.055 ) / 1.055, 2.4 );
+        }
+    }
+    var l = 0.2126 * c[ 0 ] + 0.7152 * c[ 1 ] + 0.0722 * c[ 2 ];
+    return l > 0.179 ? "#000000" : "#ffffff";
+}
+
+function isValidColour( colour )
+{
+    if( colour )
+    {
+        if( colourNames.indexOf( colour ) > -1 ||
+            themeColourNames.indexOf( colour ) > -1 ||
+            isHexColour( colour ) ||
+            isRgbColour( colour ) )
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function setRgbAlpha( rgb, alpha )
+{
+    rgbRegex.lastIndex = 0;
+    var match = rgbRegex.exec( rgb );
+    console.log( JSON.stringify( match ) );
+    if( match !== null )
+    {
+        return "rgba(" + match[ 1 ] + "," + match[ 2 ] + "," + match[ 3 ] + "," + alpha + ")";
+    }
+    return rgb;
+}
+
 module.exports.init = init;
 module.exports.isHexColour = isHexColour;
 module.exports.isRgbColour = isRgbColour;
+module.exports.isNamedColour = isNamedColour;
 module.exports.hexToRgba = hexToRgba;
 module.exports.removeBlockComments = removeBlockComments;
 module.exports.removeLineComments = removeLineComments;
@@ -344,3 +403,6 @@ module.exports.isHidden = isHidden;
 module.exports.expandTilde = expandTilde;
 module.exports.replaceEnvironmentVariables = replaceEnvironmentVariables;
 module.exports.formatExportPath = formatExportPath;
+module.exports.complementaryColour = complementaryColour;
+module.exports.isValidColour = isValidColour;
+module.exports.setRgbAlpha = setRgbAlpha;

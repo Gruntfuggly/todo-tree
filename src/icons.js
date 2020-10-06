@@ -14,7 +14,8 @@ function getIcon( context, tag )
     var darkIconPath = context.asAbsolutePath( path.join( "resources/icons", "dark", "todo-green.svg" ) );
     var lightIconPath = context.asAbsolutePath( path.join( "resources/icons", "light", "todo-green.svg" ) );
 
-    var colourName = utils.isHexColour( colour.substr( 1 ) ) ? colour.substr( 1 ) : colour;
+    var colourName = colour;
+    colourName = colourName.replace( /[^0-9a-zA-Z]/g, '' );
 
     var iconName = attributes.getIcon( tag );
 
@@ -70,7 +71,7 @@ function getIcon( context, tag )
             lightIconPath = octiconIconPath;
         }
     }
-    else if( utils.isHexColour( colour.substr( 1 ) ) )
+    else if( utils.isHexColour( colour ) || utils.isRgbColour( colour ) || utils.isNamedColour( colour ) )
     {
         var colouredIconPath = path.join( context.globalStoragePath, "todo-" + colourName + ".svg" );
         if( !fs.existsSync( colouredIconPath ) )
@@ -85,11 +86,6 @@ function getIcon( context, tag )
 
         darkIconPath = colouredIconPath;
         lightIconPath = colouredIconPath;
-    }
-    else if( colours.getColourList().indexOf( colourName ) > -1 )
-    {
-        darkIconPath = context.asAbsolutePath( path.join( "resources/icons", "dark", "todo-" + colour + ".svg" ) );
-        lightIconPath = context.asAbsolutePath( path.join( "resources/icons", "light", "todo-" + colour + ".svg" ) );
     }
 
     var icon = {
