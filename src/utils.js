@@ -376,7 +376,6 @@ function setRgbAlpha( rgb, alpha )
 {
     rgbRegex.lastIndex = 0;
     var match = rgbRegex.exec( rgb );
-    console.log( JSON.stringify( match ) );
     if( match !== null )
     {
         return "rgba(" + match[ 1 ] + "," + match[ 2 ] + "," + match[ 3 ] + "," + alpha + ")";
