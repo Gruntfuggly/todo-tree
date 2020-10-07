@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Update theme colour names
+
 ## v0.0.183 - 2020-10-06
 
 - fix ripgrep link in README.md (thanks to [pke](https://github.com/pke))
