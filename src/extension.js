@@ -397,6 +397,7 @@ function activate( context )
 
         var options = {
             regex: "\"" + utils.getRegexSource() + "\"",
+            unquotedRegex: utils.getRegexSource(),
             rgPath: config.ripgrepPath()
         };
 
@@ -416,10 +417,21 @@ function activate( context )
             options.filename = filename;
         }
 
+        if( !fs.existsSync( context.storagePath ) )
+        {
+            fs.mkdirSync( context.storagePath, { recursive: true } );
+        }
+
         options.outputChannel = outputChannel;
         options.additional = c.get( 'ripgrep.ripgrepArgs' );
         options.maxBuffer = c.get( 'ripgrep.ripgrepMaxBuffer' );
         options.multiline = utils.getRegexSource().indexOf( "\\n" ) > -1;
+
+        if( fs.existsSync( context.storagePath ) )
+        {
+            options.patternFilePath = path.join( context.storagePath, "pattern.txt" );
+        }
+
         if( c.get( 'filtering.includeHiddenFiles' ) )
         {
             options.additional += ' --hidden ';

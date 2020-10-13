@@ -2,7 +2,7 @@
 /* eslint-env node */
 
 /**
- * This is a slightly modified version of the ripgrep-js module from npm
+ * This is a modified version of the ripgrep-js module from npm
  * written by alexlafroscia (github.com/alexlafroscia/ripgrep-js)
  * Instead of assuming that ripgrep is in the users path, it uses the
  * ripgrep binary downloaded via vscode-ripgrep.
@@ -65,24 +65,8 @@ function formatResults( stdout, multiline )
         .map( ( line ) => new Match( line ) );
 }
 
-/**
- * @method ripGrep
- * @param {string} cwd
- * @param {object|string} options if a string is provided, it will be used as the `searchTerm`
- * @param {string} options.regex a regex pattern to search for. See `-e` option
- * @param {string} options.string a fixed string to search for. See `-F` option
- * @param {Array<string>} option.globs a set of globs to include/exclude. See `-g` option
- * @param {string} [searchTerm]
- */
-module.exports.search = function ripGrep( cwd, options, searchTerm )
+module.exports.search = function ripGrep( cwd, options )
 {
-    // If you're invoking the function with two arguments, just the `cwd` and `searchTerm`
-    if( arguments.length === 2 && typeof options === 'string' )
-    {
-        searchTerm = options;
-        options = {};
-    }
-
     if( !cwd )
     {
         return Promise.reject( { error: 'No `cwd` provided' } );
@@ -95,7 +79,6 @@ module.exports.search = function ripGrep( cwd, options, searchTerm )
 
     options.regex = options.regex || '';
     options.globs = options.globs || [];
-    options.string = searchTerm || options.string || '';
 
     var rgPath = options.rgPath;
     var isWin = /^win/.test( process.platform );
@@ -123,13 +106,22 @@ module.exports.search = function ripGrep( cwd, options, searchTerm )
     {
         execString += " -U ";
     }
-    if( options.regex )
+
+    if( options.patternFilePath )
     {
+        options.outputChannel.appendLine( "Writing pattern file:" + options.patternFilePath );
+        fs.writeFileSync( options.patternFilePath, options.unquotedRegex + '\n' );
+    }
+
+    if( !fs.existsSync( options.patternFilePath ) )
+    {
+        options.outputChannel.appendLine( "No pattern file found - passing regex in command" );
         execString = `${execString} -e ${options.regex}`;
     }
-    else if( options.string )
+    else
     {
-        execString = `${execString} -F ${options.string}`;
+        execString = `${execString} -f \"${options.patternFilePath}\"`;
+        options.outputChannel.appendLine( "Pattern:" + options.unquotedRegex );
     }
 
     execString = options.globs.reduce( ( command, glob ) =>
@@ -180,11 +172,13 @@ module.exports.search = function ripGrep( cwd, options, searchTerm )
             {
                 options.outputChannel.appendLine( data );
             }
+            fs.unlink( options.patternFilePath );
             reject( new RipgrepError( data, "" ) );
         } );
 
         currentProcess.on( 'close', function( code )
         {
+            fs.unlinkSync( options.patternFilePath );
             resolve( formatResults( results, options.multiline ) );
         } );
 

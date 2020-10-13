@@ -2,6 +2,7 @@
 
 - Update theme colour names
 - Fix case sensitivity on tag matching
+- Use pattern file to avoid extra escaping of the regex
 
 ## v0.0.183 - 2020-10-06
 
