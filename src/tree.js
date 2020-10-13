@@ -211,7 +211,10 @@ function locateFlatChildNode( rootNode, result, tag )
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tag ] );
             parentNode.tag = tag;
             parentNodes.push( parentNode );
-            parentNodes.sort( sortByFilenameAndLine );
+            if( config.shouldSortTree() )
+            {
+                parentNodes.sort( sortByFilenameAndLine );
+            }
         }
         parentNodes = parentNode.nodes;
     }
@@ -221,7 +224,10 @@ function locateFlatChildNode( rootNode, result, tag )
     {
         childNode = createFlatNode( result.file, rootNode );
         parentNodes.push( childNode );
-        parentNodes.sort( sortByFilenameAndLine );
+        if( config.shouldSortTree() )
+        {
+            parentNodes.sort( sortByFilenameAndLine );
+        }
     }
 
     return childNode;
@@ -241,7 +247,10 @@ function locateTreeChildNode( rootNode, pathElements, tag )
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tag ] );
             parentNode.tag = tag;
             parentNodes.push( parentNode );
-            parentNodes.sort( sortByLabelAndLine );
+            if( config.shouldSortTree() )
+            {
+                parentNodes.sort( sortByLabelAndLine );
+            }
         }
         parentNodes = parentNode.nodes;
     }
@@ -253,7 +262,10 @@ function locateTreeChildNode( rootNode, pathElements, tag )
         {
             childNode = createPathNode( rootNode.fsPath, pathElements.slice( 0, level + 1 ), level < pathElements.length - 1 );
             parentNodes.push( childNode );
-            parentNodes.sort( sortByLabelAndLine );
+            if( config.shouldSortTree() )
+            {
+                parentNodes.sort( sortByLabelAndLine );
+            }
             parentNodes = childNode.nodes;
         }
         else
@@ -582,14 +594,17 @@ class TreeNodeProvider
     {
         if( config.shouldShowTagsOnly() )
         {
-            nodes.sort( config.shouldGroup() ? sortByTagAndLine : ( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine ) );
-            nodes.forEach( function( node )
+            if( config.shouldSortTree() )
             {
-                if( node.todos )
+                nodes.sort( config.shouldGroup() ? sortByTagAndLine : ( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine ) );
+                nodes.forEach( function( node )
                 {
-                    node.todos.sort( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine );
-                }
-            } );
+                    if( node.todos )
+                    {
+                        node.todos.sort( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine );
+                    }
+                } );
+            }
         }
 
         this._onDidChangeTreeData.fire();

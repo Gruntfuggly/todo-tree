@@ -163,10 +163,13 @@ function activate( context )
 
         trimMatchesOnSameLine( searchResults );
 
-        searchResults.sort( function compare( a, b )
+        if( config.shouldSortTree() )
         {
-            return a.file > b.file ? 1 : b.file > a.file ? -1 : a.line > b.line ? 1 : -1;
-        } );
+            searchResults.sort( function compare( a, b )
+            {
+                return a.file > b.file ? 1 : b.file > a.file ? -1 : a.line > b.line ? 1 : -1;
+            } );
+        }
         searchResults.map( function( match )
         {
             if( match.added !== true )

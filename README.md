@@ -311,6 +311,9 @@ Show a button on the tree view header to switch the scanMode (see above).
 **todo-tree.tree.hideIconsWhenGroupedByTag** (`false`)<br/>
 Hide item icons when grouping by tag.
 
+**todo-tree.tree.sort** (`true`)<br/>
+ripgrep searches using multiple threads to improve performance. The tree is sorted when it is populated so that it stays stable. If you want to use ripgrep's own sort arguments, set this to false. *Note: Depending on what scan mode you select, you may also want to disable auto-refresh when disabling the sort, otherwise the tree may still be unstable.*
+
 **todo-tree.tree.disableCompactFolders** (`false`)<br/>
 The tree will normally respect the VSCode's `explorer.compactFolders` setting. Set this to true if you want to disable compact folders in the todo tree.
 

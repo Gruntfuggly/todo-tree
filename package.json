@@ -679,6 +679,11 @@
                     "markdownDescription": "Sort items in the tags only view alphabetically instead of by file and line number",
                     "type": "boolean"
                 },
+                "todo-tree.tree.sort": {
+                    "default": true,
+                    "markdownDescription": "ripgrep searches using multiple threads to improve performance. The tree is sorted when it is populated so that it stays stable. If you want to use ripgrep's own sort arguments, set this to false.",
+                    "type": "boolean"
+                },
                 "todo-tree.tree.tagsOnly": {
                     "default": false,
                     "markdownDescription": "When opening new workspaces, show only tag elements in tree",
