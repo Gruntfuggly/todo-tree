@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Update theme colour names
+- Fix case sensitivity on tag matching
 
 ## v0.0.183 - 2020-10-06
 

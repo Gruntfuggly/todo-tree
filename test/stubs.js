@@ -25,6 +25,10 @@ testConfig.tags = function()
 {
     return this.tagList;
 };
+testConfig.isRegexCaseSensitive = function()
+{
+    return this.shouldBeCaseSensitive;
+};
 
 function getTestConfig()
 {

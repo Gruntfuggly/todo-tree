@@ -185,7 +185,14 @@ function extractTag( text, matchOffset )
             }
             c.tags.map( function( tag )
             {
-                if( tag.toLowerCase() == tagMatch[ 0 ].toLowerCase() )
+                if( config.isRegexCaseSensitive() )
+                {
+                    if( tag === tagMatch[ 0 ] )
+                    {
+                        originalTag = tag;
+                    }
+                }
+                else if( tag.toLowerCase() === tagMatch[ 0 ].toLowerCase() )
                 {
                     originalTag = tag;
                 }
