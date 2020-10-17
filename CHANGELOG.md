@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.184 - 2020-10-25
+
 - Update theme colour names
 - Fix case sensitivity on tag matching
 - Use pattern file to avoid extra escaping of the regex
