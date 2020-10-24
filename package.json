@@ -68,7 +68,7 @@
                 },
                 {
                     "command": "todo-tree.scanOpenFilesOnly",
-                    "when": "view =~ /todo-tree/ && todo-tree-scan-mode == workspace && todo-tree-show-scan-mode-button == true",
+                    "when": "view =~ /todo-tree/ && todo-tree-scan-mode == 'workspace only' && todo-tree-show-scan-mode-button == true",
                     "group": "navigation@3"
                 },
                 {
@@ -77,8 +77,13 @@
                     "group": "navigation@3"
                 },
                 {
-                    "command": "todo-tree.scanWorkspace",
+                    "command": "todo-tree.scanWorkspaceAndOpenFiles",
                     "when": "view =~ /todo-tree/ && todo-tree-scan-mode == 'current file' && todo-tree-show-scan-mode-button == true",
+                    "group": "navigation@3"
+                },
+                {
+                    "command": "todo-tree.scanWorkspaceOnly",
+                    "when": "view =~ /todo-tree/ && todo-tree-scan-mode == 'workspace' && todo-tree-show-scan-mode-button == true",
                     "group": "navigation@3"
                 },
                 {
@@ -246,8 +251,14 @@
                 "icon": "$(symbol-file)"
             },
             {
-                "command": "todo-tree.scanWorkspace",
-                "title": "Scan Workspace",
+                "command": "todo-tree.scanWorkspaceAndOpenFiles",
+                "title": "Scan Workspace And Open Files",
+                "category": "Todo Tree",
+                "icon": "$(folder-active)"
+            },
+            {
+                "command": "todo-tree.scanWorkspaceOnly",
+                "title": "Scan Workspace Only",
                 "category": "Todo Tree",
                 "icon": "$(folder)"
             },
@@ -594,13 +605,15 @@
                     "enum": [
                         "workspace",
                         "open files",
-                        "current file"
+                        "current file",
+                        "workspace only"
                     ],
                     "markdownDescription": "Set this to change which files are scanned",
                     "markdownEnumDescriptions": [
-                        "Scan the whole workspace (or workspaces)",
+                        "Scan the whole workspace (or workspaces) and open files",
                         "Scan open files only",
-                        "Scan the current file only"
+                        "Scan the current file only",
+                        "Scan the workspace but don't refresh files open in the editor"
                     ],
                     "type": "string"
                 },

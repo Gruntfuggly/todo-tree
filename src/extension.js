@@ -24,8 +24,10 @@ var fileWatcherTimeout;
 var openDocuments = {};
 var provider;
 
+var SCAN_MODE_WORKSPACE_AND_OPEN_FILES = 'workspace';
 var SCAN_MODE_OPEN_FILES = 'open files';
 var SCAN_MODE_CURRENT_FILE = 'current file';
+var SCAN_MODE_WORKSPACE_ONLY = 'workspace only';
 
 var STATUS_BAR_TOTAL = 'total';
 var STATUS_BAR_TAGS = 'tags';
@@ -112,7 +114,7 @@ function activate( context )
             fileSystemWatcher = undefined;
         }
 
-        if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode === 'workspace' )
+        if( config.scanMode() === SCAN_MODE_WORKSPACE_AND_OPEN_FILES )
         {
             if( vscode.workspace.getConfiguration( 'todo-tree.general' ).enableFileWatcher === true )
             {
@@ -450,7 +452,8 @@ function activate( context )
 
     function searchWorkspaces( searchList )
     {
-        if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode === 'workspace' )
+        var scanMode = config.scanMode();
+        if( scanMode === SCAN_MODE_WORKSPACE_AND_OPEN_FILES || scanMode === SCAN_MODE_WORKSPACE_ONLY )
         {
             var includes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includedWorkspaces', [] );
             var excludes = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludedWorkspaces', [] );
@@ -469,10 +472,13 @@ function activate( context )
 
     function refreshOpenFiles()
     {
-        Object.keys( openDocuments ).map( function( document )
+        if( config.scanMode() !== SCAN_MODE_WORKSPACE_ONLY )
         {
-            refreshFile( openDocuments[ document ] );
-        } );
+            Object.keys( openDocuments ).map( function( document )
+            {
+                refreshFile( openDocuments[ document ] );
+            } );
+        }
     }
 
     function applyGlobs()
@@ -853,9 +859,9 @@ function activate( context )
         } );
     }
 
-    function scanWorkspace()
+    function scanWorkspaceAndOpenFiles()
     {
-        vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'scanMode', 'workspace', vscode.ConfigurationTarget.Workspace );
+        vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'scanMode', SCAN_MODE_WORKSPACE_AND_OPEN_FILES, vscode.ConfigurationTarget.Workspace );
     }
 
     function scanOpenFilesOnly()
@@ -866,6 +872,11 @@ function activate( context )
     function scanCurrentFileOnly()
     {
         vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'scanMode', SCAN_MODE_CURRENT_FILE, vscode.ConfigurationTarget.Workspace );
+    }
+
+    function scanWorkspaceOnly()
+    {
+        vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'scanMode', SCAN_MODE_WORKSPACE_ONLY, vscode.ConfigurationTarget.Workspace );
     }
 
     function dumpFolderFilter()
@@ -1017,7 +1028,7 @@ function activate( context )
 
                 if( document.uri.scheme === "file" && path.basename( document.fileName ) !== "settings.json" )
                 {
-                    if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
+                    if( shouldRefreshFile() )
                     {
                         clearTimeout( fileRefreshTimeout );
                         fileRefreshTimeout = setTimeout( refreshFile, 500, document );
@@ -1033,6 +1044,11 @@ function activate( context )
             {
                 vscode.window.showWarningMessage( "Todo Tree: " + invalidColourMessage );
             }
+        }
+
+        function shouldRefreshFile()
+        {
+            return vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true && config.scanMode() !== SCAN_MODE_WORKSPACE_ONLY;
         }
 
         // We can't do anything if we can't find ripgrep
@@ -1233,9 +1249,10 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.addTag', addTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeTag', removeTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.onStatusBarClicked', onStatusBarClicked ) );
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanWorkspace', scanWorkspace ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanWorkspaceAndOpenFiles', scanWorkspaceAndOpenFiles ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanOpenFilesOnly', scanOpenFilesOnly ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanCurrentFileOnly', scanCurrentFileOnly ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanWorkspaceOnly', scanWorkspaceOnly ) );
 
         context.subscriptions.push( vscode.window.onDidChangeActiveTextEditor( function( e )
         {
@@ -1274,7 +1291,7 @@ function activate( context )
         {
             if( document.uri.scheme === "file" && path.basename( document.fileName ) !== "settings.json" )
             {
-                if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
+                if( shouldRefreshFile() )
                 {
                     refreshFile( document );
                 }
@@ -1283,7 +1300,7 @@ function activate( context )
 
         context.subscriptions.push( vscode.workspace.onDidOpenTextDocument( document =>
         {
-            if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
+            if( shouldRefreshFile() )
             {
                 if( document.uri.scheme === "file" )
                 {
@@ -1311,7 +1328,7 @@ function activate( context )
             {
                 if( document.uri.scheme === "file" )
                 {
-                    if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode !== 'workspace' )
+                    if( config.scanMode() !== SCAN_MODE_WORKSPACE_AND_OPEN_FILES )
                     {
                         removeFromTree( document.fileName );
                     }

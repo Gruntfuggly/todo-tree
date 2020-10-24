@@ -7,6 +7,7 @@
 - Add note to README.md about lack of codicon support for gutter icons
 - Fix debug logging in ripgrep.js
 - Add option to show scan mode in tree view
+- Add option to scan workspace only
 
 ## v0.0.183 - 2020-10-06
 
