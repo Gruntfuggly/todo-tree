@@ -180,6 +180,16 @@ function shouldSortTree()
     return vscode.workspace.getConfiguration( 'todo-tree.tree' ).sort;
 }
 
+function scanMode()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode;
+}
+
+function shouldShowScanModeInTree()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.tree' ).showCurrentScanMode;
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -207,3 +217,5 @@ module.exports.shouldUseBuiltInSearchExcludes = shouldUseBuiltInSearchExcludes;
 module.exports.shouldHideFromTree = shouldHideFromTree;
 module.exports.shouldHideFromStatusBar = shouldHideFromStatusBar;
 module.exports.shouldSortTree = shouldSortTree;
+module.exports.scanMode = scanMode;
+module.exports.shouldShowScanModeInTree = shouldShowScanModeInTree;

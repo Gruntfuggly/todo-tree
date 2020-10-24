@@ -624,6 +624,11 @@
                     "markdownDescription": "Show a button on the tree view header to change between scanning the current file, open files, or the whole workspace.",
                     "type": "boolean"
                 },
+                "todo-tree.tree.showCurrentScanMode": {
+                    "default": true,
+                    "markdownDescription": "Show the current scan mode at the top of the tree view",
+                    "type": "boolean"
+                },
                 "todo-tree.tree.showScanOpenFilesOrWorkspaceButton": {
                     "default": false,
                     "deprecationMessage": "This setting is no longer used, please use \"todo-tree.tree.scanMode\" instead.",

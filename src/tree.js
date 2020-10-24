@@ -360,7 +360,7 @@ class TreeNodeProvider
                 result = rootNodes;
             }
 
-            var statusNode = { label: "", notExported: true };
+            var filterStatusNode = { label: "", notExported: true };
             var includeGlobs = this._context.workspaceState.get( 'includeGlobs' ) || [];
             var excludeGlobs = this._context.workspaceState.get( 'excludeGlobs' ) || [];
             var totalFilters = includeGlobs.length + excludeGlobs.length;
@@ -386,23 +386,35 @@ class TreeNodeProvider
 
             if( totalFilters > 0 )
             {
-                statusNode.label = totalFilters + " filter" + ( totalFilters === 1 ? '' : 's' ) + " active";
-                statusNode.tooltip = tooltip + "\nRight click for filter options";
+                filterStatusNode.label = totalFilters + " filter" + ( totalFilters === 1 ? '' : 's' ) + " active";
+                filterStatusNode.tooltip = tooltip + "\nRight click for filter options";
             }
 
             if( result.length === 0 )
             {
-                if( statusNode.label === "" )
+                if( filterStatusNode.label !== "" )
                 {
-                    statusNode.label += "Nothing found";
+                    filterStatusNode.label += ", ";
                 }
+                filterStatusNode.label += "Nothing found";
 
-                statusNode.empty = availableNodes.length === 0;
+                filterStatusNode.empty = availableNodes.length === 0;
             }
 
-            if( statusNode.label !== "" )
+            if( filterStatusNode.label !== "" )
             {
-                result.unshift( statusNode );
+                result.unshift( filterStatusNode );
+            }
+
+            if( config.shouldShowScanModeInTree() )
+            {
+                var scanMode = config.scanMode();
+                if( scanMode === 'workspace' )
+                {
+                    scanMode += " and open files";
+                }
+                var scanModeNode = { label: "Scan mode: " + scanMode, notExported: true };
+                result.unshift( scanModeNode );
             }
 
             return result;

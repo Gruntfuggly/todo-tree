@@ -250,11 +250,12 @@ function activate( context )
             status.hide();
         }
 
-        if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode === SCAN_MODE_OPEN_FILES )
+        var scanMode = config.scanMode();
+        if( scanMode === SCAN_MODE_OPEN_FILES )
         {
             status.text += " (in open files)";
         }
-        else if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode === SCAN_MODE_CURRENT_FILE )
+        else if( scanMode === SCAN_MODE_CURRENT_FILE )
         {
             status.text += " (in current file)";
         }
@@ -639,7 +640,7 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-folder-filter-active', includeGlobs.length + excludeGlobs.length > 0 );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-global-filter-active', currentFilter );
 
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-mode', vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-mode', config.scanMode() );
 
         var children = provider.getChildren();
         var empty = children.length === 1 && children[ 0 ].empty === true;
@@ -703,7 +704,7 @@ function activate( context )
 
         if( document.uri.scheme === 'file' && isIncluded( document.fileName ) === true )
         {
-            if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode !== SCAN_MODE_CURRENT_FILE || ( vscode.window.activeTextEditor && document.fileName === vscode.window.activeTextEditor.document.fileName ) )
+            if( config.scanMode() !== SCAN_MODE_CURRENT_FILE || ( vscode.window.activeTextEditor && document.fileName === vscode.window.activeTextEditor.document.fileName ) )
             {
                 var extractExtraLines = function( section )
                 {
@@ -1242,7 +1243,7 @@ function activate( context )
             {
                 openDocuments[ e.document.fileName ] = e.document;
 
-                if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanMode === SCAN_MODE_CURRENT_FILE )
+                if( config.scanMode() === SCAN_MODE_CURRENT_FILE )
                 {
                     provider.clear( vscode.workspace.workspaceFolders );
                     refreshFile( e.document );
