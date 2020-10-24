@@ -37,7 +37,7 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `iconColour` - used to set the colour of the icon in the tree. If not specified, it will try to use the foreground colour or the background colour. Colour can be specified as per foreground and background colours, except that theme colours are not available.
 
-`gutterIcon` - set to true to show the icon in the editor gutter.
+`gutterIcon` - set to true to show the icon in the editor gutter. *Note: Unfortunately, only octicons and the todo-tree icon can be displayed in the gutter.*
 
 `rulerColour` - used to set the colour of the marker in the overview ruler. If not specified, it will default to use the foreground colour. Colour can be specified as per foreground and background colours.
 
