@@ -67,6 +67,14 @@ function formatResults( stdout, multiline )
 
 module.exports.search = function ripGrep( cwd, options )
 {
+    function debug( text )
+    {
+        if( options.outputChannel )
+        {
+            options.outputChannel.appendLine( text );
+        }
+    }
+
     if( !cwd )
     {
         return Promise.reject( { error: 'No `cwd` provided' } );
@@ -109,19 +117,19 @@ module.exports.search = function ripGrep( cwd, options )
 
     if( options.patternFilePath )
     {
-        options.outputChannel.appendLine( "Writing pattern file:" + options.patternFilePath );
+        debug( "Writing pattern file:" + options.patternFilePath );
         fs.writeFileSync( options.patternFilePath, options.unquotedRegex + '\n' );
     }
 
     if( !fs.existsSync( options.patternFilePath ) )
     {
-        options.outputChannel.appendLine( "No pattern file found - passing regex in command" );
+        debug( "No pattern file found - passing regex in command" );
         execString = `${execString} -e ${options.regex}`;
     }
     else
     {
         execString = `${execString} -f \"${options.patternFilePath}\"`;
-        options.outputChannel.appendLine( "Pattern:" + options.unquotedRegex );
+        debug( "Pattern:" + options.unquotedRegex );
     }
 
     execString = options.globs.reduce( ( command, glob ) =>
@@ -143,10 +151,7 @@ module.exports.search = function ripGrep( cwd, options )
         execString += " .";
     }
 
-    if( options.outputChannel )
-    {
-        options.outputChannel.appendLine( "Command: " + execString );
-    }
+    debug( "Command: " + execString );
 
     return new Promise( function( resolve, reject )
     {
@@ -159,19 +164,13 @@ module.exports.search = function ripGrep( cwd, options )
 
         currentProcess.stdout.on( 'data', function( data )
         {
-            if( options.outputChannel )
-            {
-                options.outputChannel.appendLine( data );
-            }
+            debug( data );
             results += data;
         } );
 
         currentProcess.stderr.on( 'data', function( data )
         {
-            if( options.outputChannel )
-            {
-                options.outputChannel.appendLine( data );
-            }
+            debug( data );
             fs.unlink( options.patternFilePath );
             reject( new RipgrepError( data, "" ) );
         } );

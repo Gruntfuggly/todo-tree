@@ -5,6 +5,7 @@
 - Use pattern file to avoid extra escaping of the regex
 - Add option to disable sorting the tree to allow ripgrep sorting arguments to be used instead
 - Add note to README.md about lack of codicon support for gutter icons
+- Fix debug logging in ripgrep.js
 
 ## v0.0.183 - 2020-10-06
 
