@@ -1171,8 +1171,8 @@ function activate( context )
                 excludeGlobs.push( glob );
                 context.workspaceState.update( 'excludeGlobs', excludeGlobs );
                 rebuild();
+                dumpFolderFilter();
             }
-            dumpFolderFilter();
         } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.excludeThisFile', function( node )
@@ -1183,8 +1183,26 @@ function activate( context )
                 excludeGlobs.push( node.fsPath );
                 context.workspaceState.update( 'excludeGlobs', excludeGlobs );
                 rebuild();
+                dumpFolderFilter();
             }
-            dumpFolderFilter();
+        } ) );
+
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeFilter', function( node )
+        {
+            var excludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
+            vscode.window.showQuickPick( excludeGlobs, { matchOnDetail: true, matchOnDescription: true, canPickMany: true, placeHolder: "Select filters to remove" } ).then( function( filtersToRemove )
+            {
+                if( filtersToRemove )
+                {
+                    filtersToRemove.map( filter =>
+                    {
+                        excludeGlobs = excludeGlobs.filter( f => filter != f );
+                    } );
+                    context.workspaceState.update( 'excludeGlobs', excludeGlobs );
+                    rebuild();
+                    dumpFolderFilter();
+                }
+            } );
         } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.resetCache', function()

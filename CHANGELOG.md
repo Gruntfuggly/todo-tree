@@ -1,5 +1,8 @@
 # Todo Tree Change Log
 
+- Add support for hiding individual files
+- Add dialog for removing folder filters
+
 ## v0.0.184 - 2020-10-25
 
 - Update theme colour names

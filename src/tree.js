@@ -360,7 +360,7 @@ class TreeNodeProvider
                 result = rootNodes;
             }
 
-            var filterStatusNode = { label: "", notExported: true };
+            var filterStatusNode = { label: "", notExported: true, isStatusNode: true };
             var includeGlobs = this._context.workspaceState.get( 'includeGlobs' ) || [];
             var excludeGlobs = this._context.workspaceState.get( 'excludeGlobs' ) || [];
             var totalFilters = includeGlobs.length + excludeGlobs.length;
@@ -413,7 +413,7 @@ class TreeNodeProvider
                 {
                     scanMode += " and open files";
                 }
-                var scanModeNode = { label: "Scan mode: " + scanMode, notExported: true };
+                var scanModeNode = { label: "Scan mode: " + scanMode, notExported: true, isStatusNode: true };
                 result.unshift( scanModeNode );
             }
 
@@ -579,9 +579,13 @@ class TreeNodeProvider
             treeItem.description = total.toString();
         }
 
-        if( node.isFolder )
+        if( node.isFolder === true )
         {
             treeItem.contextValue = "folder";
+        }
+        else if( !node.isRootTagNode && !node.isWorkspaceNode && !node.isStatusNode && node.type !== TODO )
+        {
+            treeItem.contextValue = "file";
         }
 
         return treeItem;

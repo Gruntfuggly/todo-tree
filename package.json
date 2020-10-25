@@ -155,7 +155,7 @@
                 },
                 {
                     "command": "todo-tree.excludeThisFile",
-                    "when": "view =~ /todo-tree/ && viewItem != folder",
+                    "when": "view =~ /todo-tree/ && viewItem == file",
                     "group": "filter"
                 },
                 {
@@ -165,6 +165,11 @@
                 },
                 {
                     "command": "todo-tree.resetFolderFilter",
+                    "when": "view =~ /todo-tree/ && todo-tree-folder-filter-active",
+                    "group": "filter"
+                },
+                {
+                    "command": "todo-tree.removeFilter",
                     "when": "view =~ /todo-tree/ && todo-tree-folder-filter-active",
                     "group": "filter"
                 },
@@ -304,6 +309,12 @@
             {
                 "command": "todo-tree.excludeThisFile",
                 "title": "Hide This File",
+                "category": "Todo Tree",
+                "icon": "$(filter)"
+            },
+            {
+                "command": "todo-tree.removeFilter",
+                "title": "Remove Folder Filter",
                 "category": "Todo Tree",
                 "icon": "$(filter)"
             },
