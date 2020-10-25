@@ -84,6 +84,12 @@ function removeBlockComments( text, fileName )
     {
     }
 
+    if( commentPattern && commentPattern.name === 'Markdown' )
+    {
+        commentPattern = commentPatterns( ".html" );
+        fileName = ".html";
+    }
+
     if( commentPattern && commentPattern.multiLineComment && commentPattern.multiLineComment.length > 0 )
     {
         commentPattern = commentPatterns.regex( fileName );

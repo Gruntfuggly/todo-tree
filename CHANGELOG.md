@@ -8,6 +8,7 @@
 - Fix debug logging in ripgrep.js
 - Add option to show scan mode in tree view
 - Add option to scan workspace only
+- Override Markdown comment detection with HTML comments
 
 ## v0.0.183 - 2020-10-06
 
