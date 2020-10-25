@@ -154,6 +154,11 @@
                     "group": "filter"
                 },
                 {
+                    "command": "todo-tree.excludeThisFile",
+                    "when": "view =~ /todo-tree/ && viewItem != folder",
+                    "group": "filter"
+                },
+                {
                     "command": "todo-tree.filterClear",
                     "when": "view =~ /todo-tree/ && todo-tree-global-filter-active",
                     "group": "filter"
@@ -293,6 +298,12 @@
             {
                 "command": "todo-tree.excludeThisFolder",
                 "title": "Hide This Folder",
+                "category": "Todo Tree",
+                "icon": "$(filter)"
+            },
+            {
+                "command": "todo-tree.excludeThisFile",
+                "title": "Hide This File",
                 "category": "Todo Tree",
                 "icon": "$(filter)"
             },

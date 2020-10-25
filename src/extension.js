@@ -1175,6 +1175,18 @@ function activate( context )
             dumpFolderFilter();
         } ) );
 
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.excludeThisFile', function( node )
+        {
+            var excludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
+            if( excludeGlobs.indexOf( node.fsPath ) === -1 )
+            {
+                excludeGlobs.push( node.fsPath );
+                context.workspaceState.update( 'excludeGlobs', excludeGlobs );
+                rebuild();
+            }
+            dumpFolderFilter();
+        } ) );
+
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.resetCache', function()
         {
             function purgeFolder( folder )
