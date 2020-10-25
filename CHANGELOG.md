@@ -1,5 +1,9 @@
 # Todo Tree Change Log
 
+## v0.0.186 - 2020-10-25
+
+- Fix badly published version
+
 ## v0.0.185 - 2020-10-25
 
 - Add support for hiding individual files
