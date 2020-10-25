@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.185 - 2020-10-25
+
 - Add support for hiding individual files
 - Add dialog for removing folder filters
 - Add timestamps to debug logging
