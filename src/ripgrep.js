@@ -71,7 +71,8 @@ module.exports.search = function ripGrep( cwd, options )
     {
         if( options.outputChannel )
         {
-            options.outputChannel.appendLine( text );
+            var now = new Date();
+            options.outputChannel.appendLine( now.toLocaleTimeString( 'en', { hour12: false } ) + "." + String( now.getMilliseconds() ).padStart( 3, '0' ) + " " + text );
         }
     }
 
@@ -164,13 +165,13 @@ module.exports.search = function ripGrep( cwd, options )
 
         currentProcess.stdout.on( 'data', function( data )
         {
-            debug( data );
+            debug( "Search results:\n" + data );
             results += data;
         } );
 
         currentProcess.stderr.on( 'data', function( data )
         {
-            debug( data );
+            debug( "Search failed:\n" + data );
             fs.unlink( options.patternFilePath );
             reject( new RipgrepError( data, "" ) );
         } );

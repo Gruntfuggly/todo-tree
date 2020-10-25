@@ -42,7 +42,8 @@ function activate( context )
     {
         if( outputChannel )
         {
-            outputChannel.appendLine( text );
+            var now = new Date();
+            outputChannel.appendLine( now.toLocaleTimeString( 'en', { hour12: false }) + "." + String( now.getMilliseconds() ).padStart( 3, '0' ) + " " + text );
         }
     }
 

@@ -2,6 +2,7 @@
 
 - Add support for hiding individual files
 - Add dialog for removing folder filters
+- Add timestamps to debug logging
 
 ## v0.0.184 - 2020-10-25
 
