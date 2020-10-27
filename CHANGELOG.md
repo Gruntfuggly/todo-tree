@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Fix hide tree when empty setting
+
 ## v0.0.186 - 2020-10-25
 
 - Fix badly published version

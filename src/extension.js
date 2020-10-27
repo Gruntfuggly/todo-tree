@@ -650,11 +650,13 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-mode', config.scanMode() );
 
         var children = provider.getChildren();
-        var empty = children.length === 1 && children[ 0 ].empty === true;
+        children = children.filter( function( child ){
+            return child.isStatusNode !== true;
+        });
 
         if( c.get( "tree.hideTreeWhenEmpty" ) === true )
         {
-            vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', empty === false );
+            vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', children.length > 0 );
         }
         else
         {
