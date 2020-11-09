@@ -43,7 +43,7 @@ function activate( context )
         if( outputChannel )
         {
             var now = new Date();
-            outputChannel.appendLine( now.toLocaleTimeString( 'en', { hour12: false }) + "." + String( now.getMilliseconds() ).padStart( 3, '0' ) + " " + text );
+            outputChannel.appendLine( now.toLocaleTimeString( 'en', { hour12: false } ) + "." + String( now.getMilliseconds() ).padStart( 3, '0' ) + " " + text );
         }
     }
 
@@ -650,9 +650,10 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-mode', config.scanMode() );
 
         var children = provider.getChildren();
-        children = children.filter( function( child ){
+        children = children.filter( function( child )
+        {
             return child.isStatusNode !== true;
-        });
+        } );
 
         if( c.get( "tree.hideTreeWhenEmpty" ) === true )
         {
