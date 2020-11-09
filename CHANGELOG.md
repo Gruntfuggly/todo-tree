@@ -4,6 +4,7 @@
 - Improve filter removal dialog
 - Update to latest octicons
 - Allow theme colours to be used for codicons (octicons are not supported)
+- Add word boundary after tags in default regex
 
 ## v0.0.186 - 2020-10-25
 
