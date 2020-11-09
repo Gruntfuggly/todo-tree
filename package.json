@@ -28,7 +28,7 @@
     "activationEvents": [
         "*"
     ],
-    "main": "./dist/extension",
+    "main": "./src/extension.js",
     "contributes": {
         "viewsContainers": {
             "activitybar": [
