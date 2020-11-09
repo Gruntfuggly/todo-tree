@@ -6,6 +6,7 @@ var octicons = require( '@primer/octicons' );
 var colours = require( './colours.js' );
 var utils = require( './utils.js' );
 var attributes = require( './attributes.js' );
+const themeColourNames = require( './themeColourNames.js' );
 
 function getIcon( context, tag )
 {
@@ -47,7 +48,12 @@ function getIcon( context, tag )
     }
     else if( iconName && iconName.trim().substr( 0, 2 ) === "$(" )
     {
-        return new vscode.ThemeIcon( iconName.trim().substr( 2, iconName.trim().length - 3 ) );
+        var themeColour;
+        if( themeColourNames.indexOf( colour ) > -1 )
+        {
+            themeColour = new vscode.ThemeColor( colour );
+        }
+        return new vscode.ThemeIcon( iconName.trim().substr( 2, iconName.trim().length - 3 ), themeColour );
     }
     else if( iconName )
     {

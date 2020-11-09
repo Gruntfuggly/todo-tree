@@ -35,7 +35,7 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `icon` - used to set a different icon in the tree view. Must be a valid octicon (see <https://octicons.github.com>) or codicon (see <https://microsoft.github.io/vscode-codicons/dist/codicon.html>). If using codicons, specify them in the format "$(*icon*)". The icon defaults to a tick if it's not valid. You can also use "todo-tree", or "todo-tree-filled" if you want to use the icon from the activity view.
 
-`iconColour` - used to set the colour of the icon in the tree. If not specified, it will try to use the foreground colour or the background colour. Colour can be specified as per foreground and background colours, except that theme colours are not available.
+`iconColour` - used to set the colour of the icon in the tree. If not specified, it will try to use the foreground colour or the background colour. Colour can be specified as per foreground and background colours, except that theme colours are only available when using codicons. Theme colours are *not* supported for octicons.
 
 `gutterIcon` - set to true to show the icon in the editor gutter. *Note: Unfortunately, only octicons and the todo-tree icon can be displayed in the gutter.*
 

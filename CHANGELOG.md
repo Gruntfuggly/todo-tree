@@ -3,6 +3,7 @@
 - Fix hide tree when empty setting
 - Improve filter removal dialog
 - Update to latest octicons
+- Allow theme colours to be used for codicons (octicons are not supported)
 
 ## v0.0.186 - 2020-10-25
 
