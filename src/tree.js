@@ -368,7 +368,7 @@ class TreeNodeProvider
 
             if( currentFilter )
             {
-                tooltip += "Global: \"" + currentFilter + "\"\n";
+                tooltip += "Tree Filter: \"" + currentFilter + "\"\n";
                 totalFilters++;
             }
 
@@ -665,7 +665,7 @@ class TreeNodeProvider
         } );
     }
 
-    clearFilter( children )
+    clearTreeFilter( children )
     {
         currentFilter = undefined;
 
@@ -678,15 +678,15 @@ class TreeNodeProvider
             child.visible = true;
             if( child.nodes !== undefined )
             {
-                this.clearFilter( child.nodes );
+                this.clearTreeFilter( child.nodes );
             }
             if( child.todos !== undefined )
             {
-                this.clearFilter( child.todos );
+                this.clearTreeFilter( child.todos );
             }
             if( child.extraLines !== undefined )
             {
-                this.clearFilter( child.extraLines );
+                this.clearTreeFilter( child.extraLines );
             }
         }, this );
     }

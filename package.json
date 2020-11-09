@@ -164,7 +164,7 @@
                     "group": "filter"
                 },
                 {
-                    "command": "todo-tree.resetFolderFilter",
+                    "command": "todo-tree.resetAllFilters",
                     "when": "view =~ /todo-tree/ && todo-tree-folder-filter-active",
                     "group": "filter"
                 },
@@ -232,7 +232,7 @@
             },
             {
                 "command": "todo-tree.filterClear",
-                "title": "Clear Filter",
+                "title": "Clear Tree Filter",
                 "category": "Todo Tree",
                 "icon": "$(clear-all)"
             },
@@ -314,13 +314,13 @@
             },
             {
                 "command": "todo-tree.removeFilter",
-                "title": "Remove Folder Filter",
+                "title": "Remove Filter",
                 "category": "Todo Tree",
                 "icon": "$(filter)"
             },
             {
-                "command": "todo-tree.resetFolderFilter",
-                "title": "Reset Folder Filter",
+                "command": "todo-tree.resetAllFilters",
+                "title": "Reset All Filters",
                 "category": "Todo Tree",
                 "icon": "$(clear-all)"
             },

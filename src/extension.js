@@ -821,12 +821,12 @@ function activate( context )
     function groupByTag() { context.workspaceState.update( 'grouped', true ).then( refresh ); }
     function ungroupByTag() { context.workspaceState.update( 'grouped', false ).then( refresh ); }
 
-    function clearFilter()
+    function clearTreeFilter()
     {
         currentFilter = undefined;
         context.workspaceState.update( 'filtered', false );
         context.workspaceState.update( 'currentFilter', undefined );
-        provider.clearFilter();
+        provider.clearTreeFilter();
         refreshTree();
     }
 
@@ -1192,16 +1192,72 @@ function activate( context )
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeFilter', function( node )
         {
+            var CLEAR_TREE_FILTER = "Clear Tree Filter";
             var excludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
-            vscode.window.showQuickPick( excludeGlobs, { matchOnDetail: true, matchOnDescription: true, canPickMany: true, placeHolder: "Select filters to remove" } ).then( function( filtersToRemove )
+            var includeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
+            var choices = [];
+
+            if( currentFilter )
             {
-                if( filtersToRemove )
+                choices[ CLEAR_TREE_FILTER ] = {};
+            }
+
+            excludeGlobs.forEach( function( excludeGlob )
+            {
+                if( excludeGlob.endsWith( "/**/*" ) )
                 {
-                    filtersToRemove.map( filter =>
+                    choices[ "Exclude Folder: " + excludeGlob.slice( 0, -5 ) ] = { exclude: excludeGlob };
+                }
+                else if( excludeGlob.indexOf( '*' ) === -1 )
+                {
+                    choices[ "Exclude File: " + excludeGlob ] = { exclude: excludeGlob };
+                }
+                else
+                {
+                    choices[ "Exclude: " + excludeGlob ] = { exclude: excludeGlob };
+                }
+            } );
+            includeGlobs.forEach( function( includeGlob )
+            {
+                if( includeGlob.endsWith( "/**/*" ) )
+                {
+                    choices[ "Include Folder and Subfolders: " + includeGlob.slice( 0, -5 ) ] = { include: includeGlob };
+                }
+                else if( includeGlob.endsWith( "/*" ) )
+                {
+                    choices[ "Include Folder: " + includeGlob.slice( 0, -2 ) ] = { include: includeGlob };
+                }
+                else
+                {
+                    choices[ "Include: " + includeGlob ] = { include: includeGlob };
+                }
+            } );
+
+            vscode.window.showQuickPick( Object.keys( choices ), { matchOnDetail: true, matchOnDescription: true, canPickMany: true, placeHolder: "Select filters to remove" } ).then( function( selection )
+            {
+                if( selection )
+                {
+                    if( selection.indexOf( CLEAR_TREE_FILTER ) === 0 )
                     {
-                        excludeGlobs = excludeGlobs.filter( f => filter != f );
+                        clearTreeFilter();
+                        selection.shift();
+                    }
+
+                    selection.map( function( choice )
+                    {
+                        if( choices[ choice ].include )
+                        {
+                            includeGlobs = includeGlobs.filter( f => choices[ choice ].include != f );
+                        }
+                        else if( choices[ choice ].exclude )
+                        {
+                            excludeGlobs = excludeGlobs.filter( f => choices[ choice ].exclude != f );
+                        }
                     } );
+
+                    context.workspaceState.update( 'includeGlobs', includeGlobs );
                     context.workspaceState.update( 'excludeGlobs', excludeGlobs );
+
                     rebuild();
                     dumpFolderFilter();
                 }
@@ -1237,12 +1293,13 @@ function activate( context )
             purgeFolder( context.globalStoragePath );
         } ) );
 
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.resetFolderFilter', function()
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.resetAllFilters', function()
         {
             context.workspaceState.update( 'includeGlobs', [] );
             context.workspaceState.update( 'excludeGlobs', [] );
             rebuild();
             dumpFolderFilter();
+            clearTreeFilter();
         } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.reveal', function()
@@ -1270,7 +1327,7 @@ function activate( context )
         context.subscriptions.push( todoTreeViewExplorer.onDidCollapseElement( function( e ) { provider.setExpanded( e.element.fsPath, false ); } ) );
         context.subscriptions.push( todoTreeView.onDidCollapseElement( function( e ) { provider.setExpanded( e.element.fsPath, false ); } ) );
 
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filterClear', clearFilter ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filterClear', clearTreeFilter ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.refresh', rebuild ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showFlatView', showFlatView ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.showTagsOnlyView', showTagsOnlyView ) );

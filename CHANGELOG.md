@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Fix hide tree when empty setting
+- Improve filter removal dialog
 
 ## v0.0.186 - 2020-10-25
 
