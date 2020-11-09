@@ -1,7 +1,7 @@
 var vscode = require( 'vscode' );
 var path = require( "path" );
 var fs = require( 'fs' );
-var octicons = require( 'octicons' );
+var octicons = require( '@primer/octicons' );
 
 var colours = require( './colours.js' );
 var utils = require( './utils.js' );
