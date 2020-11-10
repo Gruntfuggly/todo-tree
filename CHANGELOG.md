@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.188 - 2020-11-10
+
 - revert "Add word boundary after tags in default regex"
 
 ## v0.0.187 - 2020-11-09
