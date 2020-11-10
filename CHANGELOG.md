@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- revert "Add word boundary after tags in default regex"
+
 ## v0.0.187 - 2020-11-09
 
 - Fix hide tree when empty setting
