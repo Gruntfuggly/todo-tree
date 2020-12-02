@@ -34,23 +34,17 @@
             "activitybar": [
                 {
                     "id": "todo-tree-container",
-                    "title": "TODOs",
+                    "title": "TODO Tree",
                     "icon": "resources/todo-tree-container.svg"
                 }
             ]
         },
         "views": {
-            "explorer": [
-                {
-                    "id": "todo-tree-view-explorer",
-                    "name": "TODOs",
-                    "when": "todo-tree-has-content && todo-tree-in-explorer"
-                }
-            ],
             "todo-tree-container": [
                 {
                     "id": "todo-tree-view",
-                    "name": "TODOs"
+                    "name": "TODOs",
+                    "when": "todo-tree-has-content"
                 }
             ]
         },
@@ -647,11 +641,6 @@
                 "todo-tree.tree.showCountsInTree": {
                     "default": false,
                     "markdownDescription": "Show counts of TODOs in the tree",
-                    "type": "boolean"
-                },
-                "todo-tree.tree.showInExplorer": {
-                    "default": true,
-                    "markdownDescription": "Show the tree in the explorer view",
                     "type": "boolean"
                 },
                 "todo-tree.tree.showScanModeButton": {

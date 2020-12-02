@@ -266,9 +266,6 @@ Use this to pass additional arguments to ripgrep. e.g. `"-i"` to make the search
 **todo-tree.ripgrep.ripgrepMaxBuffer** (`200`)<br/>
 By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly.
 
-**todo-tree.tree.showInExplorer** (`true`)<br/>
-The tree is shown in the explorer view and also has it's own view in the activity bar. If you no longer want to see it in the explorer view, set this to false.
-
 **todo-tree.tree.hideTreeWhenEmpty** (`true`)<br/>
 Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present.
 
