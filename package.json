@@ -10,7 +10,7 @@
     ],
     "version": "0.0.188",
     "license": "MIT",
-    "icon": "https://github.com/Gruntfuggly/todo-tree/blob/master/resources/todo-tree.png",
+    "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
         "vscode": "^1.5.0"
