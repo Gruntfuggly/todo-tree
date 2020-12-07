@@ -59,14 +59,12 @@ function activate( context )
     provider = new tree.TreeNodeProvider( context, debug );
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
 
-    var todoTreeViewExplorer = vscode.window.createTreeView( "todo-tree-view-explorer", { treeDataProvider: provider } );
     var todoTreeView = vscode.window.createTreeView( "todo-tree-view", { treeDataProvider: provider } );
 
     var fileSystemWatcher;
 
     context.subscriptions.push( provider );
     context.subscriptions.push( status );
-    context.subscriptions.push( todoTreeViewExplorer );
     context.subscriptions.push( todoTreeView );
 
     context.subscriptions.push( vscode.workspace.registerTextDocumentContentProvider( 'todotree-export', {
@@ -270,12 +268,7 @@ function activate( context )
     {
         if( config.clickingStatusBarShouldRevealTree() )
         {
-            var showInExplorer = vscode.workspace.getConfiguration( 'todo-tree.tree' ).showInExplorer;
-            if( showInExplorer === true )
-            {
-                todoTreeViewExplorer.reveal( provider.getFirstNode(), { focus: false, select: false } );
-            }
-            if( todoTreeView.visible === false && showInExplorer === false )
+            if( todoTreeView.visible === false )
             {
                 vscode.commands.executeCommand( 'workbench.view.extension.todo-tree-container' );
             }
@@ -574,7 +567,6 @@ function activate( context )
 
     function rebuild()
     {
-        todoTreeViewExplorer.message = "";
         todoTreeView.message = "";
 
         searchResults = [];
@@ -921,14 +913,6 @@ function activate( context )
                 }
             }
 
-            function isUnset( settingName )
-            {
-                var setting = vscode.workspace.getConfiguration( 'todo-tree' ).inspect( settingName );
-                return setting.globalValue === undefined &&
-                    setting.workspaceValue === undefined &&
-                    setting.workspaceFolderValue === undefined;
-            }
-
             var c = vscode.workspace.getConfiguration( 'todo-tree' );
             var migrated = false;
 
@@ -958,7 +942,6 @@ function activate( context )
             migrateIfRequired( 'rootFolder', 'string', 'general' );
             migrateIfRequired( 'showBadges', 'boolean', 'tree' );
             migrateIfRequired( 'showCountsInTree', 'boolean', 'tree' );
-            migrateIfRequired( 'showInExplorer', 'boolean', 'tree' );
             migrateIfRequired( 'sortTagsOnlyViewAlphabetically', 'boolean', 'tree' );
             migrateIfRequired( 'statusBar', 'string', 'general' );
             migrateIfRequired( 'statusBarClickBehaviour', 'string', 'general' );
@@ -1004,10 +987,6 @@ function activate( context )
         {
             provider.getElement( uri.fsPath, function( element )
             {
-                if( todoTreeViewExplorer.visible === true )
-                {
-                    todoTreeViewExplorer.reveal( element, { focus: false, select: true } );
-                }
                 if( todoTreeView.visible === true )
                 {
                     todoTreeView.reveal( element, { focus: false, select: true } );
@@ -1323,9 +1302,7 @@ function activate( context )
             vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'showBadges', !current, vscode.ConfigurationTarget.Workspace );
         } ) );
 
-        context.subscriptions.push( todoTreeViewExplorer.onDidExpandElement( function( e ) { provider.setExpanded( e.element.fsPath, true ); } ) );
         context.subscriptions.push( todoTreeView.onDidExpandElement( function( e ) { provider.setExpanded( e.element.fsPath, true ); } ) );
-        context.subscriptions.push( todoTreeViewExplorer.onDidCollapseElement( function( e ) { provider.setExpanded( e.element.fsPath, false ); } ) );
         context.subscriptions.push( todoTreeView.onDidCollapseElement( function( e ) { provider.setExpanded( e.element.fsPath, false ); } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filterClear', clearTreeFilter ) );
@@ -1507,7 +1484,6 @@ function activate( context )
                     refresh();
                 }
 
-                vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree.tree' ).showInExplorer );
                 setButtonsAndContext();
             }
         } ) );
@@ -1525,8 +1501,6 @@ function activate( context )
         } ) );
 
         context.subscriptions.push( outputChannel );
-
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-in-explorer', vscode.workspace.getConfiguration( 'todo-tree.tree' ).showInExplorer );
 
         resetOutputChannel();
 
@@ -1558,7 +1532,6 @@ function activate( context )
         }
         else
         {
-            todoTreeViewExplorer.message = "Click the refresh button to scan...";
             todoTreeView.message = "Click the refresh button to scan...";
         }
     }
