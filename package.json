@@ -566,6 +566,11 @@
                     "markdownDescription": "Size of the buffer to use for retrieving output from ripgrep (kilobytes)",
                     "type": "integer"
                 },
+                "todo-tree.ripgrep.usePatternFile": {
+                    "default": true,
+                    "markdownDescription": "A pattern file is used with ripgrep by default. If you experience issues with deleting the pattern file, set this to false to use the legacy method of providing the regex to ripgrep.",
+                    "type": "boolean"
+                },
                 "todo-tree.tree.autoRefresh": {
                     "default": true,
                     "markdownDescription": "Refresh the tree when files are opened or saved",

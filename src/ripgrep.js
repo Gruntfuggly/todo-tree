@@ -172,13 +172,19 @@ module.exports.search = function ripGrep( cwd, options )
         currentProcess.stderr.on( 'data', function( data )
         {
             debug( "Search failed:\n" + data );
-            fs.unlink( options.patternFilePath );
+            if( fs.existsSync( options.patternFilePath ) === true )
+            {
+                fs.unlinkSync( options.patternFilePath );
+            }
             reject( new RipgrepError( data, "" ) );
         } );
 
         currentProcess.on( 'close', function( code )
         {
-            fs.unlinkSync( options.patternFilePath );
+            if( fs.existsSync( options.patternFilePath ) === true )
+            {
+                fs.unlinkSync( options.patternFilePath );
+            }
             resolve( formatResults( results, options.multiline ) );
         } );
 

@@ -427,7 +427,7 @@ function activate( context )
         options.maxBuffer = c.get( 'ripgrep.ripgrepMaxBuffer' );
         options.multiline = utils.getRegexSource().indexOf( "\\n" ) > -1;
 
-        if( fs.existsSync( context.storagePath ) )
+        if( fs.existsSync( context.storagePath ) === true && c.get( 'ripgrep.usePatternFile' ) === true)
         {
             options.patternFilePath = path.join( context.storagePath, "pattern.txt" );
         }

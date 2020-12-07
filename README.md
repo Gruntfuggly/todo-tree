@@ -266,6 +266,9 @@ Use this to pass additional arguments to ripgrep. e.g. `"-i"` to make the search
 **todo-tree.ripgrep.ripgrepMaxBuffer** (`200`)<br/>
 By default, the ripgrep process will have a buffer of 200KB. However, this is sometimes not enough for all the tags you might want to see. This setting can be used to increase the buffer size accordingly.
 
+**todo-tree.ripgrep.usePatternFile** (`true`)<br/>
+A pattern file is used with ripgrep by default. If you experience issues with deleting the pattern file, set this to false to use the legacy method of providing the regex to ripgrep.
+
 **todo-tree.tree.hideTreeWhenEmpty** (`true`)<br/>
 Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present.
 
