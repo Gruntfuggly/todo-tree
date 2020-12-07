@@ -981,6 +981,29 @@ function activate( context )
 
                 context.globalState.update( 'migratedVersion', 168 );
             }
+
+            if( context.globalState.get( 'migratedVersion', 0 ) < 189 )
+            {
+                if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'showInExplorer' ) === true )
+                {
+                    vscode.commands.executeCommand( 'vscode.moveViews', {
+                        viewIds: [ 'todo-tree-view' ],
+                        destinationId: 'workbench.view.explorer'
+                    } );
+
+                    vscode.window.showInformationMessage( "Todo-Tree: 'showInExplorer' has been deprecated. If needed, the view can now be dragged to where you want it.", "Open Settings", "Don't Show This Again" ).then( function( button )
+                    {
+                        if( button === "Open Settings" )
+                        {
+                            vscode.commands.executeCommand( 'workbench.action.openSettingsJson', 'todo-tree.tree.showInExplorer' );
+                        }
+                        else if( button === "Don't Show This Again" )
+                        {
+                            context.globalState.update( 'migratedVersion', 189 );
+                        }
+                    } );
+                }
+            }
         }
 
         function showInTree( uri )

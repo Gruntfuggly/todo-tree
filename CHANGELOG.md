@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Remove showInExplorer setting and associated view (thanks to [tristan957](https://github.com/tristan957))
+
 ## v0.0.188 - 2020-11-10
 
 - revert "Add word boundary after tags in default regex"
