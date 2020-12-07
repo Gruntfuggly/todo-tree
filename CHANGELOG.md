@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Remove showInExplorer setting and associated view (thanks to [tristan957](https://github.com/tristan957))
+- Change activation event to onStartupFinished
 
 ## v0.0.188 - 2020-11-10
 
