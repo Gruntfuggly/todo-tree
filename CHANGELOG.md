@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Fix showing tree view when clicking status bar
+
 ## v0.0.190 - 2020-12-08
 
 - Fix showInExplorer setting migration
