@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.190 - 2020-12-08
+
 - Fix showInExplorer setting migration
 
 ## v0.0.189 - 2020-12-07
