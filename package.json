@@ -649,7 +649,7 @@
                     "type": "boolean"
                 },
                 "todo-tree.tree.showInExplorer": {
-                    "default": true,
+                    "default": false,
                     "type": "boolean",
                     "deprecationMessage": "This setting is no longer used. Please drag the view to move it."
                 },

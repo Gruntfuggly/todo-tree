@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Fix showInExplorer setting migration
+
 ## v0.0.189 - 2020-12-07
 
 - Remove showInExplorer setting and associated view (thanks to [tristan957](https://github.com/tristan957))
