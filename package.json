@@ -607,8 +607,8 @@
                     "type": "boolean"
                 },
                 "todo-tree.tree.hideTreeWhenEmpty": {
-                    "default": true,
-                    "markdownDescription": "Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present.",
+                    "default": false,
+                    "markdownDescription": "Normally, the tree is hidden if nothing is found. Set this to false to keep the view present.",
                     "type": "boolean"
                 },
                 "todo-tree.tree.labelFormat": {
