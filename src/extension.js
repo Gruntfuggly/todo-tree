@@ -6,6 +6,7 @@ var path = require( 'path' );
 var treeify = require( 'treeify' );
 var os = require( 'os' );
 var fs = require( 'fs' );
+var crypto = require( 'crypto' );
 
 var tree = require( "./tree.js" );
 var colours = require( './colours.js' );
@@ -429,7 +430,8 @@ function activate( context )
 
         if( fs.existsSync( context.storagePath ) === true && c.get( 'ripgrep.usePatternFile' ) === true )
         {
-            options.patternFilePath = path.join( context.storagePath, "pattern.txt" );
+            var patternFileName = crypto.randomBytes( 6 ).readUIntLE( 0, 6 ).toString( 36 ) + '.txt';
+            options.patternFilePath = path.join( context.storagePath, patternFileName );
         }
 
         if( c.get( 'filtering.includeHiddenFiles' ) )

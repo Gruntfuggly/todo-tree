@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Use unique filenames for pattern files
+
 ## v0.0.191 - 2020-12-09
 
 - Fix showing tree view when clicking status bar
