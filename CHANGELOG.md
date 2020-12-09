@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.191 - 2020-12-09
+
 - Fix showing tree view when clicking status bar
 - Change default setting of hideTreeWhenEmpty to false
 
