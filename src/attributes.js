@@ -1,6 +1,11 @@
-var vscode = require( 'vscode' );
+var config;
 
-function getAttribute( tag, attribute, defaultValue )
+function init( configuration )
+{
+    config = configuration;
+}
+
+function getAttribute( tag, attribute, defaultValue, ignoreDefaultHighlight )
 {
     function getCustomHighlightSettings( customHighlight, tag )
     {
@@ -8,7 +13,7 @@ function getAttribute( tag, attribute, defaultValue )
         Object.keys( customHighlight ).map( function( t )
         {
             var flags = '';
-            if( vscode.workspace.getConfiguration( 'todo-tree.regex' ).get( 'regexCaseSensitive' ) === false )
+            if( config.isRegexCaseSensitive() === false )
             {
                 flags += 'i';
             }
@@ -25,15 +30,14 @@ function getAttribute( tag, attribute, defaultValue )
         return result;
     }
 
-    var config = vscode.workspace.getConfiguration( 'todo-tree.highlights' );
-    var tagSettings = getCustomHighlightSettings( config.customHighlight, tag );
+    var tagSettings = getCustomHighlightSettings( config.customHighlight(), tag );
     if( tagSettings && tagSettings[ attribute ] !== undefined )
     {
         return tagSettings[ attribute ];
     }
-    else
+    else if( ignoreDefaultHighlight !== true )
     {
-        var defaultHighlight = config.get( 'defaultHighlight' );
+        var defaultHighlight = config.defaultHighlight();
         if( defaultHighlight[ attribute ] !== undefined )
         {
             return defaultHighlight[ attribute ];
@@ -49,12 +53,59 @@ function getIcon( tag )
 
 function getIconColour( tag )
 {
-    var foreground = getAttribute( tag, 'foreground', undefined );
-    var background = getAttribute( tag, 'background', undefined );
+    var useColourScheme = config.shouldUseColourScheme();
 
-    return getAttribute( tag, 'iconColour', foreground ? foreground : ( background ? background : "green" ) );
+    var colour = getAttribute( tag, 'iconColour', undefined, useColourScheme );
+    if( colour === undefined && useColourScheme )
+    {
+        colour = getSchemeColour( tag, config.backgroundColourScheme() );
+    }
+
+    if( colour === undefined )
+    {
+        var foreground = getAttribute( tag, 'foreground', undefined, useColourScheme );
+        var background = getAttribute( tag, 'background', undefined, useColourScheme );
+
+        colour = foreground ? foreground : ( background ? background : "green" );
+    }
+
+    return colour;
 }
 
+function getSchemeColour( tag, colours )
+{
+    var index = config.tags().indexOf( tag );
+    if( colours && colours.length > 0 )
+    {
+        return colours[ index % colours.length ];
+    }
+}
+
+function getForeground( tag )
+{
+    var useColourScheme = config.shouldUseColourScheme();
+    var colour = getAttribute( tag, 'foreground', undefined, useColourScheme );
+    if( colour === undefined && useColourScheme )
+    {
+        colour = getSchemeColour( tag, config.foregroundColourScheme() );
+    }
+    return colour;
+}
+
+function getBackground( tag )
+{
+    var useColourScheme = config.shouldUseColourScheme();
+    var colour = getAttribute( tag, 'background', undefined, useColourScheme );
+    if( colour === undefined && useColourScheme )
+    {
+        colour = getSchemeColour( tag, config.backgroundColourScheme() );
+    }
+    return colour;
+}
+
+module.exports.init = init;
 module.exports.getAttribute = getAttribute;
 module.exports.getIcon = getIcon;
 module.exports.getIconColour = getIconColour;
+module.exports.getForeground = getForeground;
+module.exports.getBackground = getBackground;

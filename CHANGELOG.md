@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Add support for a simple colour scheme to apply to the highlights
+
 ## v0.0.192 - 2020-12-10
 
 - Use unique filenames for pattern files

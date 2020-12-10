@@ -13,6 +13,7 @@ var colours = require( './colours.js' );
 var highlights = require( './highlights.js' );
 var config = require( './config.js' );
 var utils = require( './utils.js' );
+var attributes = require( './attributes.js' );
 
 var searchResults = [];
 var searchList = [];
@@ -56,6 +57,7 @@ function activate( context )
     config.init( context );
     highlights.init( context );
     utils.init( config );
+    attributes.init( config );
 
     provider = new tree.TreeNodeProvider( context, debug );
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
@@ -1043,6 +1045,19 @@ function activate( context )
                     }
                 }
             }
+            else
+            {
+                vscode.window.visibleTextEditors.map( editor =>
+                {
+                    if( config.shouldShowHighlights( editor.document.uri.scheme ) )
+                    {
+                        if( isIncluded( editor.document.fileName ) )
+                        {
+                            highlights.triggerHighlight( editor );
+                        }
+                    }
+                } );
+            }
         }
 
         function validateColours()
@@ -1463,14 +1478,14 @@ function activate( context )
                 }
 
                 if( e.affectsConfiguration( "todo-tree.highlights.enabled" ) ||
+                    e.affectsConfiguration( "todo-tree.highlights.useColourScheme" ) ||
+                    e.affectsConfiguration( "todo-tree.highlights.foregroundColourScheme" ) ||
+                    e.affectsConfiguration( "todo-tree.highlights.backgroundColourScheme" ) ||
                     e.affectsConfiguration( "todo-tree.highlights.defaultHighlight" ) ||
                     e.affectsConfiguration( "todo-tree.highlights.customHighlight" ) )
                 {
                     validateColours();
-                    if( vscode.window.activeTextEditor )
-                    {
-                        documentChanged( vscode.window.activeTextEditor.document );
-                    }
+                    documentChanged();
                 }
                 else if( e.affectsConfiguration( "todo-tree.general.debug" ) )
                 {

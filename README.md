@@ -17,6 +17,8 @@ Found TODOs can also be highlighted in open files.
 
 ## Highlighting
 
+>*New!:* If you just want to set different colours for tags, you can now enable `todo-tree.highlights.useColourScheme`. This will apply a set of colours (which can be changed) to the tags in the order that they are defined.
+
 Highlighting tags is configurable. Use `defaultHighlight` to set up highlights for all tags. If you need to configure individual tags differently, use `customHighlight`. If settings are not specified in `customHighlight`, the value from `defaultHighlight` is used. If a setting is not specified in `defaultHighlight` then the older, deprecated `icon`, `iconColour` and `iconColours` settings are used.
 
 Both `defaultHighlight` and `customHighlight` allow for the following settings:
@@ -250,6 +252,15 @@ Set highlights per tag (or tag group). Example:
 
 **todo-tree.highlights.schemes** (`['file','untitled']`)<br/>
 Editor schemes to show highlights in. To show highlights in settings files, for instance, add `vscode-userdata` or for output windows, add `output`.
+
+**todo-tree.highlights.useColourScheme** (`false`)<br/>
+Use a simple scheme for colouring highlights. This will simply apply a list of colours in the same order as the tags are defined. Use this as a much simpler alternative to setting up custom highlights for each tag. *Note: The colour scheme overrides the colours defined in* `todo-tree.highlights.defaultHighlight` *but not* `todo-tree.highlights.customHighlight`*.*
+
+**todo-tree.highlights.backgroundColourScheme** (`["red","orange","yellow","green","blue","indigo","violet"]`)<br/>
+Defines colours for use in conjunction with `todo-tree.highlights.useColourScheme` to colour highlights. Colours can be defined in the same way as other colours (e.g. hex code, theme names, etc.). If there are more tags than colours, the sequence is repeated.
+
+**todo-tree.highlights.foreroundColourScheme** (`["white","black","black","white","white","white","black"]`)<br/>
+Defines colours for use in conjunction with `todo-tree.highlights.backgroundColourScheme` to colour highlights. These colours should be complementary to the background colours.
 
 **todo-tree.regex.regex** (<tt>&#x22;&#x28;&#x28;&#x2f;&#x2f;&#x7c;&#x23;&#x7c;&#x3c;&#x21;&#x2d;&#x2d;&#x7c;&#x3b;&#x7c;&#x2f;&#x5c;&#x5c;&#x2a;&#x29;&#x5c;&#x5c;&#x73;&#x2a;&#x28;&#x24;&#x54;&#x41;&#x47;&#x53;&#x29;&#x7c;&#x5e;&#x5c;&#x5c;&#x73;&#x2a;&#x2d;&#x20;&#x5c;&#x5c;&#x5b;&#x20;&#x5c;&#x5c;&#x5d;&#x29;&#x22;</tt>)<br/>
 This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with <tt>&#47;&#47;</tt>, <tt>#</tt>, <tt>;</tt>, <tt>&lt;!--</tt> or <tt>&#47;*</tt>. This should cover most languages. However if you want to refine it, make sure that the <tt>($TAGS)</tt> is kept. The second part of the expression allows matching of Github markdown task lists. *Note: This is a [Rust regular expression](https://docs.rs/regex/1.0.0/regex)</a>, not javascript.*

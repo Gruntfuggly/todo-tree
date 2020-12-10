@@ -1,6 +1,7 @@
 var os = require( 'os' );
 var strftime = require( 'fast-strftime' );
 var utils = require( '../src/utils.js' );
+var attributes = require( '../src/attributes.js' );
 var stubs = require( './stubs.js' );
 
 QUnit.test( "utils.isHexColour", function( assert )
@@ -404,4 +405,38 @@ QUnit.test( "utils.setRgbAlpha", function( assert )
     assert.equal( utils.setRgbAlpha( "fail", 0.5 ), "fail" );
     assert.equal( utils.setRgbAlpha( "rgb(0,0,0)", 0.5 ), "rgba(0,0,0,0.5)" );
     assert.equal( utils.setRgbAlpha( "rgba(0,0,0,1.0)", 0.5 ), "rgba(0,0,0,0.5)" );
+} );
+
+QUnit.test( "attributes.getForeground uses colour scheme", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.useColourScheme = true;
+    testConfig.tagList = [
+        "FIXME",
+        "TODO",
+        "BUG"
+    ];
+    testConfig.foregroundColours = [ "red", "green" ];
+    attributes.init( testConfig );
+
+    assert.equal( attributes.getForeground( "FIXME" ), "red" );
+    assert.equal( attributes.getForeground( "TODO" ), "green" );
+    assert.equal( attributes.getForeground( "BUG" ), "red" );
+} );
+
+QUnit.test( "attributes.getBackground uses colour scheme", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.useColourScheme = true;
+    testConfig.tagList = [
+        "FIXME",
+        "TODO",
+        "BUG"
+    ];
+    testConfig.backgroundColours = [ "white", "#000" ];
+    attributes.init( testConfig );
+
+    assert.equal( attributes.getBackground( "FIXME" ), "white" );
+    assert.equal( attributes.getBackground( "TODO" ), "#000" );
+    assert.equal( attributes.getBackground( "BUG" ), "white" );
 } );
