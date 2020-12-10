@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Use unique filenames for pattern files
+- Fix disappearing icon
 
 ## v0.0.191 - 2020-12-09
 

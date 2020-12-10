@@ -651,11 +651,11 @@ function activate( context )
 
         if( c.get( "tree.hideTreeWhenEmpty" ) === true )
         {
-            vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', children.length > 0 );
+            vscode.commands.executeCommand( 'setContext', 'todo-tree-is-empty', children.length == 0 );
         }
         else
         {
-            vscode.commands.executeCommand( 'setContext', 'todo-tree-has-content', true );
+            vscode.commands.executeCommand( 'setContext', 'todo-tree-is-empty', false );
         }
     }
 

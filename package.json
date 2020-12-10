@@ -26,7 +26,7 @@
         "Other"
     ],
     "activationEvents": [
-        "onStartupFinished"
+        "*"
     ],
     "main": "./dist/extension",
     "contributes": {
@@ -44,7 +44,7 @@
                 {
                     "id": "todo-tree-view",
                     "name": "TODOs",
-                    "when": "todo-tree-has-content"
+                    "when": "!todo-tree-is-empty"
                 }
             ]
         },
