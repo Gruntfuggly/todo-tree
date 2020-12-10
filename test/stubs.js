@@ -3,8 +3,12 @@ var testConfig = {
     shouldBeCaseSensitive: false,
     regexSource: "($TAGS)",
     tagList: [ "TODO" ],
-    globsList: []
+    globsList: [],
+    useColourScheme: false,
+    foregroundColours: [],
+    backgroundColours: [],
 };
+
 testConfig.regex = function()
 {
     return {
@@ -28,6 +32,26 @@ testConfig.tags = function()
 testConfig.isRegexCaseSensitive = function()
 {
     return this.shouldBeCaseSensitive;
+};
+testConfig.shouldUseColourScheme = function()
+{
+    return this.useColourScheme;
+};
+testConfig.defaultHighlight = function()
+{
+    return {};
+};
+testConfig.customHighlight = function()
+{
+    return [];
+};
+testConfig.foregroundColourScheme = function()
+{
+    return this.foregroundColours;
+};
+testConfig.backgroundColourScheme = function()
+{
+    return this.backgroundColours;
 };
 
 function getTestConfig()

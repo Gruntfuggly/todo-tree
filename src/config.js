@@ -97,7 +97,7 @@ function ripgrepPath()
 
 function tags()
 {
-    return vscode.workspace.getConfiguration( 'todo-tree.general' ).tags.sort().reverse();
+    return vscode.workspace.getConfiguration( 'todo-tree.general' ).tags.slice();
 }
 
 function shouldSortTagsOnlyViewAlphabetically()
@@ -190,6 +190,31 @@ function shouldShowScanModeInTree()
     return vscode.workspace.getConfiguration( 'todo-tree.tree' ).showCurrentScanMode;
 }
 
+function shouldUseColourScheme()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.highlights' ).useColourScheme;
+}
+
+function foregroundColourScheme()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.highlights' ).foregroundColourScheme;
+}
+
+function backgroundColourScheme()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.highlights' ).backgroundColourScheme;
+}
+
+function defaultHighlight()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.highlights' ).defaultHighlight;
+}
+
+function customHighlight()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.highlights' ).customHighlight;
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -219,3 +244,8 @@ module.exports.shouldHideFromStatusBar = shouldHideFromStatusBar;
 module.exports.shouldSortTree = shouldSortTree;
 module.exports.scanMode = scanMode;
 module.exports.shouldShowScanModeInTree = shouldShowScanModeInTree;
+module.exports.shouldUseColourScheme = shouldUseColourScheme;
+module.exports.foregroundColourScheme = foregroundColourScheme;
+module.exports.backgroundColourScheme = backgroundColourScheme;
+module.exports.defaultHighlight = defaultHighlight;
+module.exports.customHighlight = customHighlight;

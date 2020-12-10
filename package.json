@@ -541,6 +541,43 @@
                     "markdownDescription": "Editor schemes to show highlights in. To show highlights in settings files, for instance, add 'vscode-userdata' or for output windows, use 'output'.",
                     "type": "array"
                 },
+                "todo-tree.highlights.useColourScheme": {
+                    "default": false,
+                    "markdownDescription": "Use a colour scheme to colour the tags. This scheme is applied to the tags in the order of tags. The colours can be modified using `todo-tree.highlights.foregroundColourScheme` and `todo-tree.highlights.backgroundColourScheme`. The colour scheme overrides colours in the default highlight, but not the custom highlight.",
+                    "type": "boolean"
+                },
+                "todo-tree.highlights.foregroundColourScheme": {
+                    "default": [
+                        "white",
+                        "black",
+                        "black",
+                        "white",
+                        "white",
+                        "white",
+                        "black"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "markdownDescription": "A list of colours which is applied to tag highlights in the same order as the tags. Repeats if necessary and is overridden by `todo-tre.highlights.customHighlights`.",
+                    "type": "array"
+                },
+                "todo-tree.highlights.backgroundColourScheme": {
+                    "default": [
+                        "red",
+                        "orange",
+                        "yellow",
+                        "green",
+                        "blue",
+                        "indigo",
+                        "violet"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "markdownDescription": "A list of colours which is applied to tag highlights in the same order as the tags. Repeats if necessary and is overridden by `todo-tre.highlights.customHighlights`.",
+                    "type": "array"
+                },
                 "todo-tree.regex.regex": {
                     "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
                     "markdownDescription": "Regular expression for matching TODOs. *Note: $TAGS will be replaced by the tag list.*",

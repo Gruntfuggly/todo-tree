@@ -1,6 +1,5 @@
 var vscode = require( 'vscode' );
 
-var colours = require( './colours.js' );
 var config = require( './config.js' );
 var utils = require( './utils.js' );
 var attributes = require( './attributes.js' );
@@ -27,8 +26,8 @@ function init( context )
 
 function getDecoration( tag )
 {
-    var foregroundColour = getForeground( tag );
-    var backgroundColour = getBackground( tag );
+    var foregroundColour = attributes.getForeground( tag );
+    var backgroundColour = attributes.getBackground( tag );
 
     var opacity = getOpacity( tag );
 
@@ -127,16 +126,6 @@ function getDecoration( tag )
     decorationOptions.dark = { backgroundColor: darkBackgroundColour, color: darkForegroundColour };
 
     return vscode.window.createTextEditorDecorationType( decorationOptions );
-}
-
-function getForeground( tag )
-{
-    return attributes.getAttribute( tag, 'foreground', undefined );
-}
-
-function getBackground( tag )
-{
-    return attributes.getAttribute( tag, 'background', undefined );
 }
 
 function getRulerColour( tag, defaultColour )
