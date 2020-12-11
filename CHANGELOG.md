@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Add support for a simple colour scheme to apply to the highlights
+- Default to 'TODO' if all tags are removed
 
 ## v0.0.192 - 2020-12-10
 
