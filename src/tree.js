@@ -397,6 +397,7 @@ class TreeNodeProvider
                     filterStatusNode.label += ", ";
                 }
                 filterStatusNode.label += "Nothing found";
+                filterStatusNode.icon = "issues";
 
                 filterStatusNode.empty = availableNodes.length === 0;
             }
@@ -413,7 +414,9 @@ class TreeNodeProvider
                 {
                     scanMode += " and open files";
                 }
-                var scanModeNode = { label: "Scan mode: " + scanMode, notExported: true, isStatusNode: true };
+                var scanModeNode = {
+                    label: "Scan mode: " + scanMode, notExported: true, isStatusNode: true, icon: "search"
+                };
                 result.unshift( scanModeNode );
             }
 
@@ -569,6 +572,7 @@ class TreeNodeProvider
             treeItem.description = node.label;
             treeItem.label = "";
             treeItem.tooltip = node.tooltip;
+            treeItem.iconPath = new vscode.ThemeIcon( node.icon );
         }
 
         if( config.shouldShowCounts() && node.type === PATH )
