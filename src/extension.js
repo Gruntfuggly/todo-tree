@@ -938,6 +938,7 @@ function activate( context )
             migrateIfRequired( 'labelFormat', 'string', 'tree' );
             migrateIfRequired( 'passGlobsToRipgrep', 'boolean', 'filtering' );
             migrateIfRequired( 'regex', 'string', 'regex' );
+            migrateIfRequired( 'rightOfTagReplacementRegex' , 'string', 'regex' );
             migrateIfRequired( 'regexCaseSensitive', 'boolean', 'regex' );
             migrateIfRequired( 'revealBehaviour', 'string', 'general' );
             migrateIfRequired( 'ripgrep', 'string', 'ripgrep' );

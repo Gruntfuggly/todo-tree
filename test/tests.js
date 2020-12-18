@@ -124,6 +124,24 @@ QUnit.test( "utils.extractTag removes colon from ${after}", function( assert )
     assert.equal( result, "TODO: after" );
 } );
 
+QUnit.test( "utils.extractTag removes custom regex from ${after}", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.rightOfTagReplacementRegexString = "(^--\\s*)";
+    utils.init( testConfig );
+
+    result = utils.extractTag( "before TODO-- after" );
+    assert.equal( result.withoutTag, "after" );
+
+    result = utils.extractTag( "before TODO -- after" );
+    assert.equal( result.withoutTag, "after" );
+
+    result = utils.extractTag( "before TODO --after" );
+    assert.equal( result.withoutTag, "after" );
+    result = utils.formatLabel( "${tag}-- ${after}", { actualTag: result.tag, after: result.withoutTag } );
+    assert.equal( result, "TODO-- after" );
+} );
+
 QUnit.test( "utils.extractTag returns text from the start of the line if the tag is on then end", function( assert )
 {
     var testConfig = stubs.getTestConfig();

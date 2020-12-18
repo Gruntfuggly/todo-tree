@@ -171,12 +171,13 @@ function extractTag( text, matchOffset )
     if( c.regex.indexOf( "$TAGS" ) > -1 )
     {
         var tagRegex = new RegExp( getTagRegex(), flags );
+        var rightOfTagRegex = new RegExp( config.rightOfTagReplacementRegex(), flags );
 
         tagMatch = tagRegex.exec( text );
         if( tagMatch )
         {
             tagOffset = tagMatch.index;
-            rightOfTag = text.substr( tagMatch.index + tagMatch[ 0 ].length ).trim().replace( /^:\s*/, "" );
+            rightOfTag = text.substr( tagMatch.index + tagMatch[ 0 ].length ).trim().replace( rightOfTagRegex, "" );
             if( rightOfTag.length === 0 )
             {
                 text = text.substr( 0, matchOffset ? matchOffset - 1 : tagMatch.index ).trim();

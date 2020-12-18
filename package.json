@@ -8,7 +8,7 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.192",
+    "version": "0.0.193",
     "license": "MIT",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
@@ -587,6 +587,11 @@
                     "default": true,
                     "markdownDescription": "Use a case sensitive regular expression",
                     "type": "boolean"
+                },
+                "todo-tree.regex.rightOfTagReplacementRegex": {
+                    "default": "(^:\\s*)",
+                    "markdownDescription": "Regular expression for removing unwanted string from the right hand side of a tag.",
+                    "type": "string"
                 },
                 "todo-tree.ripgrep.ripgrep": {
                     "default": "",

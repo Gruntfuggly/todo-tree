@@ -68,6 +68,11 @@ function regex()
     };
 }
 
+function rightOfTagReplacementRegex()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.regex' ).get( 'rightOfTagReplacementRegex' );
+}
+
 function ripgrepPath()
 {
     function exeName()
@@ -227,6 +232,7 @@ module.exports.showFilterCaseSensitive = showFilterCaseSensitive;
 module.exports.isRegexCaseSensitive = isRegexCaseSensitive;
 module.exports.showBadges = showBadges;
 module.exports.regex = regex;
+module.exports.rightOfTagReplacementRegex = rightOfTagReplacementRegex;
 module.exports.ripgrepPath = ripgrepPath;
 module.exports.tags = tags;
 module.exports.shouldSortTagsOnlyViewAlphabetically = shouldSortTagsOnlyViewAlphabetically;
