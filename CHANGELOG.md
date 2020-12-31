@@ -4,6 +4,7 @@
 - Default to 'TODO' if all tags are removed
 - Add some icons to the scan mode and nothing found messages
 - Extend information about `($TAGS)`
+- Fix icons in README.md
 
 ## v0.0.192 - 2020-12-10
 

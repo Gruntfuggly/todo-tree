@@ -113,8 +113,11 @@ The tree view header can contain the following buttons:
 ![clear-filter](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/clear-filter.png) - Remove any active filter<br>
 ![refresh](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/refresh.png) - Rebuild the tree<br>
 ![scan-open-files](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/scan-open-files.png) - Show tags from open files only<br>
-![scan-workspace](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/scan-workspace.png) - Show tags from workspace<br>
-![scan-current-file](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/reveal.png) - Show the current file in the tree<br>
+![scan-current-file](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/scan-current-file.png) - Show tags from the current file<br>
+![scan-workspace](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/scan-workspace-only.png) - Show tags from workspace only<br>
+![scan-workspace](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/scan-workspace.png) - Show tags from workspace and open files<br>
+![reveal](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/reveal.png) - Show the current file in the tree<br>
+![export](https://raw.githubusercontent.com/Gruntfuggly/todo-tree/master/resources/button-icons/export.png) - Export the tree content to a file<br>
 
 ## Folder Filter Context Menu
 
