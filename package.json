@@ -580,7 +580,7 @@
                 },
                 "todo-tree.regex.regex": {
                     "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
-                    "markdownDescription": "Regular expression for matching TODOs. *Note: $TAGS will be replaced by the tag list.*",
+                    "markdownDescription": "Regular expression for matching TODOs. Note: **($TAGS)** will be replaced by the expanded tag list. For some of the extension features to work, **($TAGS)** should be present in the regex, however, the basic functionality should still work if you need to explicitly expand the tag list.",
                     "type": "string"
                 },
                 "todo-tree.regex.regexCaseSensitive": {
