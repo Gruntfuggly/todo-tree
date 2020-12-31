@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.193 - 2020-12-31
+
 - Add support for a simple colour scheme to apply to the highlights
 - Default to 'TODO' if all tags are removed
 - Add some icons to the scan mode and nothing found messages
