@@ -1063,10 +1063,15 @@ function activate( context )
 
         function validateColours()
         {
-            var invalidColourMessage = colours.validate( vscode.workspace );
+            var invalidColourMessage = colours.validateColours( vscode.workspace );
             if( invalidColourMessage )
             {
                 vscode.window.showWarningMessage( "Todo Tree: " + invalidColourMessage );
+            }
+            var invalidIconColourMessage = colours.validateIconColours( vscode.workspace );
+            if( invalidIconColourMessage )
+            {
+                vscode.window.showWarningMessage( "Todo Tree: " + invalidIconColourMessage );
             }
         }
 
