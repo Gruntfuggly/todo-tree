@@ -16,12 +16,14 @@ var lanes =
 
 var decorations = {};
 var highlightTimer = {};
-var context_;
+var context;
+var debug;
 
-function init( context )
+function init( context_, debug_ )
 {
+    context = context_;
+    debug = debug_;
     context.subscriptions.push( decorations );
-    context_ = context;
 }
 
 function getDecoration( tag )
@@ -113,7 +115,7 @@ function getDecoration( tag )
         fontWeight: getFontWeight( tag ),
         fontStyle: getFontStyle( tag ),
         textDecoration: getTextDecoration( tag ),
-        gutterIconPath: showInGutter( tag ) ? icons.getIcon( context_, tag ).dark : undefined
+        gutterIconPath: showInGutter( tag ) ? icons.getIcon( context_, tag, debug ).dark : undefined
     };
 
     if( lane !== undefined )

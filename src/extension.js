@@ -55,7 +55,7 @@ function activate( context )
     currentFilter = context.workspaceState.get( 'currentFilter' );
 
     config.init( context );
-    highlights.init( context );
+    highlights.init( context, debug );
     utils.init( config );
     attributes.init( config );
 
@@ -420,8 +420,9 @@ function activate( context )
             options.filename = filename;
         }
 
-        if( !fs.existsSync( context.storagePath ) )
+        if( context.storagePath && !fs.existsSync( context.storagePath ) )
         {
+            debug( "Attempting to create local storage folder " + context.storagePath );
             fs.mkdirSync( context.storagePath, { recursive: true } );
         }
 

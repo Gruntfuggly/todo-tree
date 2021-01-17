@@ -8,7 +8,7 @@ var utils = require( './utils.js' );
 var attributes = require( './attributes.js' );
 const themeColourNames = require( './themeColourNames.js' );
 
-function getIcon( context, tag )
+function getIcon( context, tag, debug )
 {
     var colour = attributes.getIconColour( tag );
 
@@ -20,8 +20,12 @@ function getIcon( context, tag )
 
     var iconName = attributes.getIcon( tag );
 
-    if( !fs.existsSync( context.globalStoragePath ) )
+    if( context.globalStoragePath && !fs.existsSync( context.globalStoragePath ) )
     {
+        if( debug )
+        {
+            debug( "Attempting to create global storage folder " + context.globalStoragePath );
+        }
         fs.mkdirSync( context.globalStoragePath );
     }
 
