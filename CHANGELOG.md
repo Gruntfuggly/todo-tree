@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.194 - 2021-01-18
+
 - Make storage folder creation (if required) more robust
 - Improve icon colouring under error conditions
 - Add localization support for zh-cn (thanks to [loniceras](https://github.com/loniceras))
