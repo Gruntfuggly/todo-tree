@@ -2,6 +2,7 @@
 
 - Make storage folder creation (if required) more robust
 - Improve icon colouring under error conditions
+- Add localization support for zh-cn (thanks to [loniceras](https://github.com/loniceras))
 
 ## v0.0.193 - 2020-12-31
 
