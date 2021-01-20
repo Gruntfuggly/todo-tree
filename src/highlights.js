@@ -115,7 +115,7 @@ function getDecoration( tag )
         fontWeight: getFontWeight( tag ),
         fontStyle: getFontStyle( tag ),
         textDecoration: getTextDecoration( tag ),
-        gutterIconPath: showInGutter( tag ) ? icons.getIcon( context_, tag, debug ).dark : undefined
+        gutterIconPath: showInGutter( tag ) ? icons.getIcon( context, tag, debug ).dark : undefined
     };
 
     if( lane !== undefined )
