@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Fix icon colour check
+
 ## v0.0.194 - 2021-01-18
 
 - Make storage folder creation (if required) more robust

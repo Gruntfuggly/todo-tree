@@ -38,7 +38,7 @@ function validateIconColours( workspace )
     {
         var icon = workspace.getConfiguration( 'todo-tree.highlights' ).get( setting + ".icon" );
         var iconColour = workspace.getConfiguration( 'todo-tree.highlights' ).get( setting + ".iconColour" );
-        if( icon.indexOf( "$(" ) != 0 && utils.isThemeColour( iconColour ) )
+        if( icon !== undefined && icon.indexOf( "$(" ) != 0 && utils.isThemeColour( iconColour ) )
         {
             invalidIconColours.push( setting + '.iconColour (' + iconColour + ')' );
         }
