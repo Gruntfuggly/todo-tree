@@ -424,7 +424,7 @@ class TreeNodeProvider
         }
         else if( node.type === PATH )
         {
-            if( config.shouldCompactFolders() )
+            if( config.shouldCompactFolders() && node.tag === undefined )
             {
                 while( node.nodes && node.nodes.length === 1 && node.nodes[ 0 ].nodes.length > 0 )
                 {
@@ -496,7 +496,7 @@ class TreeNodeProvider
 
             if( node.type === PATH )
             {
-                if( config.shouldCompactFolders() )
+                if( config.shouldCompactFolders() && node.tag === undefined )
                 {
                     var onlyChild = node.nodes.length === 1 ? node.nodes[ 0 ] : undefined;
                     var onlyChildParent = node;
