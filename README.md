@@ -434,3 +434,7 @@ Tags Icon made by [Vectors Market](https://www.flaticon.com/authors/vectors-mark
 Reveal Icon made by [Gregor Cresnar](https://www.flaticon.com/authors/gregor-cresnar) from [www.flaticon.com](https://www.flaticon.com/)
 
 Lots of the icons have now been updated by [johnletey](https://github.com/johnletey) to match the new VS Code 1.37.0 GUI. Much appreciated!
+
+#### Translations
+
+Simplified Chinese translation by [loniceras](https://github.com/loniceras).
