@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Fix compact folders when grouping by tag
+- Fix description of 'hide tree when empty' option
 
 ## v0.0.195 - 2021-01-20
 

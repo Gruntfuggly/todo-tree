@@ -86,7 +86,7 @@
     "todo-tree.configuration.tree.flat.markdownDescription": "When opening new workspaces, show the tree initially as flat list of files.",
     "todo-tree.configuration.tree.grouped.markdownDescription": "When opening new workspaces, show the tree initially grouped by tag.",
     "todo-tree.configuration.tree.hideIconsWhenGroupedByTag.markdownDescription": "Save some space by hiding the item icons when grouped by tag.",
-    "todo-tree.configuration.tree.hideTreeWhenEmpty.markdownDescription": "Normally, the tree is hidden if nothing is found. Set this to false to keep the view present.",
+    "todo-tree.configuration.tree.hideTreeWhenEmpty.markdownDescription": "Hide the view if it is empty.",
     "todo-tree.configuration.tree.labelFormat.markdownDescription": "Format for tree items.",
     "todo-tree.configuration.tree.scanAtStartup.markdownDescription": "Normally the tree is built as soon as the window is opened. If you have a large code base and want to manually start the scan, set this to false.",
     "todo-tree.configuration.tree.scanMode.markdownDescription": "Set this to change which files are scanned.",
