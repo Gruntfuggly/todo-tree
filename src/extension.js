@@ -185,14 +185,14 @@ function activate( context )
 
         if( interrupted === false )
         {
-            updateStatusBar();
+            updateStatusBarAndTitleBar();
         }
 
         provider.filter( currentFilter );
         refreshTree();
     }
 
-    function updateStatusBar()
+    function updateStatusBarAndTitleBar()
     {
         var statusBar = vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar;
         var fileFilter;
@@ -205,10 +205,22 @@ function activate( context )
         }
 
         var counts = provider.getTagCountsForStatusBar( fileFilter );
+        var total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );
+
+        var countRegex = new RegExp( "([^(]*)(\\(\\d+\\))*" );
+        var match = countRegex.exec( todoTreeView.title );
+        if( match !== null )
+        {
+            var title = match[ 1 ];
+            if( total > 0 )
+            {
+                title += " (" + total + ")";
+            }
+            todoTreeView.title = title;
+        }
+
         if( statusBar === STATUS_BAR_TOTAL )
         {
-            var total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );
-
             status.text = "$(check) " + total;
             status.tooltip = "Todo-Tree total";
             status.show();
@@ -1400,7 +1412,7 @@ function activate( context )
 
                 if( e.document.fileName === undefined || isIncluded( e.document.fileName ) )
                 {
-                    updateStatusBar();
+                    updateStatusBarAndTitleBar();
                 }
 
                 documentChanged( e.document );
@@ -1438,7 +1450,7 @@ function activate( context )
                 provider.remove( function()
                 {
                     refreshTree();
-                    updateStatusBar();
+                    updateStatusBarAndTitleBar();
                 }, filename );
             }
 
