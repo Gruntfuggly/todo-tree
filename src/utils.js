@@ -32,12 +32,17 @@ function isHexColour( colour )
 
 function isRgbColour( colour )
 {
-    return colour.match( rgbRegex ) !== null;
+    return colour.match && colour.match( rgbRegex ) !== null;
 }
 
 function isNamedColour( colour )
 {
     return colourNames.indexOf( colour ) > -1;
+}
+
+function isThemeColour( colour )
+{
+    return themeColourNames.indexOf( colour ) > -1;
 }
 
 function hexToRgba( hex, opacity )
@@ -373,10 +378,7 @@ function isValidColour( colour )
 {
     if( colour )
     {
-        if( colourNames.indexOf( colour ) > -1 ||
-            themeColourNames.indexOf( colour ) > -1 ||
-            isHexColour( colour ) ||
-            isRgbColour( colour ) )
+        if( isNamedColour( colour ) || isThemeColour( colour ) || isHexColour( colour ) || isRgbColour( colour ) )
         {
             return true;
         }
@@ -400,6 +402,7 @@ module.exports.init = init;
 module.exports.isHexColour = isHexColour;
 module.exports.isRgbColour = isRgbColour;
 module.exports.isNamedColour = isNamedColour;
+module.exports.isThemeColour = isThemeColour;
 module.exports.hexToRgba = hexToRgba;
 module.exports.removeBlockComments = removeBlockComments;
 module.exports.removeLineComments = removeLineComments;

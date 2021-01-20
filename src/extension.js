@@ -55,7 +55,7 @@ function activate( context )
     currentFilter = context.workspaceState.get( 'currentFilter' );
 
     config.init( context );
-    highlights.init( context );
+    highlights.init( context, debug );
     utils.init( config );
     attributes.init( config );
 
@@ -420,8 +420,9 @@ function activate( context )
             options.filename = filename;
         }
 
-        if( !fs.existsSync( context.storagePath ) )
+        if( context.storagePath && !fs.existsSync( context.storagePath ) )
         {
+            debug( "Attempting to create local storage folder " + context.storagePath );
             fs.mkdirSync( context.storagePath, { recursive: true } );
         }
 
@@ -1062,10 +1063,15 @@ function activate( context )
 
         function validateColours()
         {
-            var invalidColourMessage = colours.validate( vscode.workspace );
+            var invalidColourMessage = colours.validateColours( vscode.workspace );
             if( invalidColourMessage )
             {
                 vscode.window.showWarningMessage( "Todo Tree: " + invalidColourMessage );
+            }
+            var invalidIconColourMessage = colours.validateIconColours( vscode.workspace );
+            if( invalidIconColourMessage )
+            {
+                vscode.window.showWarningMessage( "Todo Tree: " + invalidIconColourMessage );
             }
         }
 

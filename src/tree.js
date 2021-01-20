@@ -519,7 +519,7 @@ class TreeNodeProvider
 
                 if( node.isWorkspaceNode || node.tag )
                 {
-                    treeItem.iconPath = icons.getIcon( this._context, node.tag ? node.tag : node.label );
+                    treeItem.iconPath = icons.getIcon( this._context, node.tag ? node.tag : node.label, this._debug );
                 }
                 else if( node.nodes && node.nodes.length > 0 )
                 {
@@ -541,7 +541,7 @@ class TreeNodeProvider
                 {
                     if( node.isExtraLine !== true )
                     {
-                        treeItem.iconPath = icons.getIcon( this._context, node.tag ? node.tag : node.label );
+                        treeItem.iconPath = icons.getIcon( this._context, node.tag ? node.tag : node.label, this._debug );
                     }
                     else
                     {

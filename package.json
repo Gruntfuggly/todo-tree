@@ -34,7 +34,7 @@
             "activitybar": [
                 {
                     "id": "todo-tree-container",
-                    "title": "TODO Tree",
+                    "title": "%todo-tree.activitybar.title%",
                     "icon": "resources/todo_sidepanel.svg"
                 }
             ]
@@ -43,7 +43,7 @@
             "todo-tree-container": [
                 {
                     "id": "todo-tree-view",
-                    "name": "TODOs",
+                    "name": "%todo-tree.container.name%",
                     "when": "!todo-tree-is-empty"
                 }
             ]
@@ -182,174 +182,174 @@
         "commands": [
             {
                 "command": "todo-tree.showFlatView",
-                "title": "Show Flat View",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.showFlatView.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(list-unordered)"
             },
             {
                 "command": "todo-tree.showTagsOnlyView",
-                "title": "Show Tags Only View",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.showTagsOnlyView.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(list-flat)"
             },
             {
                 "command": "todo-tree.showTreeView",
-                "title": "Show Tree View",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.showTreeView.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(list-tree)"
             },
             {
                 "command": "todo-tree.refresh",
-                "title": "Refresh",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.refresh.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(refresh)"
             },
             {
                 "command": "todo-tree.expand",
-                "title": "Expand Tree",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.expand.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(expand-all)",
                 "enablement": "todo-tree-collapsible"
             },
             {
                 "command": "todo-tree.collapse",
-                "title": "Collapse Tree",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.collapse.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(collapse-all)",
                 "enablement": "todo-tree-collapsible"
             },
             {
                 "command": "todo-tree.filter",
-                "title": "Filter Tree",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.filter.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(filter)"
             },
             {
                 "command": "todo-tree.filterClear",
-                "title": "Clear Tree Filter",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.filterClear.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(clear-all)"
             },
             {
                 "command": "todo-tree.groupByTag",
-                "title": "Group by Tag",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.groupByTag.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(tag)"
             },
             {
                 "command": "todo-tree.ungroupByTag",
-                "title": "Ungroup by Tag",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.ungroupByTag.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(unfold)"
             },
             {
                 "command": "todo-tree.scanOpenFilesOnly",
-                "title": "Scan Open Files Only",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.scanOpenFilesOnly.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(files)"
             },
             {
                 "command": "todo-tree.scanCurrentFileOnly",
-                "title": "Scan Current File Only",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.scanCurrentFileOnly.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(symbol-file)"
             },
             {
-                "command": "todo-tree.scanWorkspaceAndOpenFiles",
-                "title": "Scan Workspace And Open Files",
-                "category": "Todo Tree",
+                "command": "todo-tree.scanWorkspaceAndOpenFile",
+                "title": "%todo-tree.command.scanWorkspaceAndOpenFiles.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(folder-active)"
             },
             {
                 "command": "todo-tree.scanWorkspaceOnly",
-                "title": "Scan Workspace Only",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.scanWorkspaceOnly.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(folder)"
             },
             {
                 "command": "todo-tree.addTag",
-                "title": "Add Tag",
-                "category": "Todo Tree"
+                "title": "%todo-tree.command.addTag.title%",
+                "category": "%todo-tree.command.category%"
             },
             {
                 "command": "todo-tree.removeTag",
-                "title": "Remove Tag",
-                "category": "Todo Tree"
+                "title": "%todo-tree.command.removeTag.title%",
+                "category": "%todo-tree.command.category%"
             },
             {
                 "command": "todo-tree.exportTree",
-                "title": "Export Tree",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.exportTree.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(save)"
             },
             {
                 "command": "todo-tree.showOnlyThisFolder",
-                "title": "Only Show This Folder",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.showOnlyThisFolder.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(filter)"
             },
             {
                 "command": "todo-tree.showOnlyThisFolderAndSubfolders",
-                "title": "Only Show This Folder And Subfolders",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.showOnlyThisFolderAndSubfolders.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(filter)"
             },
             {
                 "command": "todo-tree.excludeThisFolder",
-                "title": "Hide This Folder",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.excludeThisFolder.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(filter)"
             },
             {
                 "command": "todo-tree.excludeThisFile",
-                "title": "Hide This File",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.excludeThisFile.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(filter)"
             },
             {
                 "command": "todo-tree.removeFilter",
-                "title": "Remove Filter",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.removeFilter.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(filter)"
             },
             {
                 "command": "todo-tree.resetAllFilters",
-                "title": "Reset All Filters",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.resetAllFilters.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(clear-all)"
             },
             {
                 "command": "todo-tree.reveal",
-                "title": "Reveal Current File In Tree",
-                "category": "Todo Tree",
+                "title": "%todo-tree.command.reveal.title%",
+                "category": "%todo-tree.command.category%",
                 "icon": "$(location)"
             },
             {
                 "command": "todo-tree.resetCache",
-                "title": "Reset Cache",
-                "category": "Todo Tree"
+                "title": "%todo-tree.command.resetCache.title%",
+                "category": "%todo-tree.command.category%"
             },
             {
                 "command": "todo-tree.toggleItemCounts",
-                "title": "Toggle Item Counts",
-                "category": "Todo Tree"
+                "title": "%todo-tree.command.toggleItemCounts.title%",
+                "category": "%todo-tree.command.category%"
             },
             {
                 "command": "todo-tree.toggleBadges",
-                "title": "Toggle Badges",
-                "category": "Todo Tree"
+                "title": "%todo-tree.command.toggleBadges.title%",
+                "category": "%todo-tree.command.category%"
             }
         ],
         "configuration": {
             "type": "object",
-            "title": "Todo Tree",
+            "title": "%todo-tree.configuration.title%",
             "properties": {
                 "todo-tree.filtering.excludedWorkspaces": {
                     "default": [],
                     "items": {
                         "type": "string"
                     },
-                    "markdownDescription": "An array of workspace names to exclude as roots in the tree (wildcards can be used).",
+                    "markdownDescription": "%todo-tree.configuration.filtering.excludedWorkspaces.markdownDescription%",
                     "type": "array"
                 },
                 "todo-tree.filtering.excludeGlobs": {
@@ -357,12 +357,12 @@
                     "items": {
                         "type": "string"
                     },
-                    "markdownDescription": "Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. `[\"**/*.txt\"]` to ignore all .txt files",
+                    "markdownDescription": "%todo-tree.configuration.filtering.excludeGlobs.markdownDescription%",
                     "type": "array"
                 },
                 "todo-tree.filtering.ignoreGitSubmodules": {
                     "default": false,
-                    "markdownDescription": "If true, any subfolders containing a .git file will be ignored when searching.",
+                    "markdownDescription": "%todo-tree.configuration.filtering.ignoreGitSubmodules.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.filtering.includedWorkspaces": {
@@ -370,7 +370,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "markdownDescription": "An array of workspace names to include as roots in the tree (wildcards can be used). An empty array includes all workspace folders.",
+                    "markdownDescription": "%todo-tree.configuration.filtering.includedWorkspaces.markdownDescription%",
                     "type": "array"
                 },
                 "todo-tree.filtering.includeGlobs": {
@@ -378,17 +378,17 @@
                     "items": {
                         "type": "string"
                     },
-                    "markdownDescription": "Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders",
+                    "markdownDescription": "%todo-tree.configuration.filtering.includeGlobs.markdownDescription%",
                     "type": "array"
                 },
                 "todo-tree.filtering.includeHiddenFiles": {
                     "default": false,
-                    "markdownDescription": "Include hidden files (starting with a .)",
+                    "markdownDescription": "%todo-tree.configuration.filtering.includeHiddenFiles.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.filtering.passGlobsToRipgrep": {
                     "default": true,
-                    "markdownDescription": "By default the globs are passed into ripgrep to narrow the search. Set this to false to apply the globs *after* the search (pre 0.0.132 behaviour).",
+                    "markdownDescription": "%todo-tree.configuration.filtering.passGlobsToRipgrep.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.filtering.useBuiltInExcludes": {
@@ -399,28 +399,28 @@
                         "search excludes",
                         "file and search excludes"
                     ],
-                    "markdownDescription": "Add VSCode's `files.exclude` and/or `search.exclude` list to the ignored paths.",
+                    "markdownDescription": "%todo-tree.configuration.filtering.useBuiltInExcludes.markdownDescription%",
                     "markdownEnumDescriptions": [
-                        "Don't used any built in excludes",
-                        "Use the Files:Exclude setting",
-                        "Use the Search:Exclude setting",
-                        "Use the Files:Exclude and the Search:Exclude setting"
+                        "%todo-tree.configuration.filtering.useBuiltInExcludes.markdownEnumDescriptions.1%",
+                        "%todo-tree.configuration.filtering.useBuiltInExcludes.markdownEnumDescriptions.2%",
+                        "%todo-tree.configuration.filtering.useBuiltInExcludes.markdownEnumDescriptions.3%",
+                        "%todo-tree.configuration.filtering.useBuiltInExcludes.markdownEnumDescriptions.4%"
                     ],
                     "type": "string"
                 },
                 "todo-tree.general.debug": {
                     "default": false,
-                    "markdownDescription": "Create a debug channel in the Output view",
+                    "markdownDescription": "%todo-tree.configuration.general.debug.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.general.enableFileWatcher": {
                     "default": false,
-                    "markdownDescription": "Set to true to enable automatic updates when files in the workspace are created, changed or deleted",
+                    "markdownDescription": "%todo-tree.configuration.general.enableFileWatcher.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.general.fileWatcherGlob": {
                     "default": "**/*",
-                    "markdownDescription": "Glob for use with the file watcher. Change this if the default setting causes performance issues.",
+                    "markdownDescription": "%todo-tree.configuration.general.fileWatcherGlob.markdownDescription%",
                     "type": "string"
                 },
                 "todo-tree.general.revealBehaviour": {
@@ -432,24 +432,24 @@
                         "start of line",
                         "highlight line"
                     ],
-                    "markdownDescription": "Sets where the cursor is positioned when revealing a todo",
+                    "markdownDescription": "%todo-tree.configuration.general.revealBehaviour.markdownDescription%",
                     "markdownEnumDescriptions": [
-                        "Moves the cursor to the beginning of the todo",
-                        "Moves the cursor to the end of the todo",
-                        "Selects the todo text",
-                        "Moves the cursor to the start of the line",
-                        "Selects the whole line"
+                        "%todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.1%",
+                        "%todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.2%",
+                        "%todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.3%",
+                        "%todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.4%",
+                        "%todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.5%"
                     ],
                     "type": "string"
                 },
                 "todo-tree.general.exportPath": {
                     "default": "~/todo-tree-%Y%m%d-%H%M.txt",
-                    "markdownDescription": "Path to use when exporting the tree. Environment variables will be expanded, e.g `${HOME}` and the path is passed through strftime (see <https://github.com/samsonjs/strftime>). Set the extension to `.json` to export as a JSON record.",
+                    "markdownDescription": "%todo-tree.configuration.general.exportPath.markdownDescription%",
                     "type": "string"
                 },
                 "todo-tree.general.rootFolder": {
                     "default": "",
-                    "markdownDescription": "Folder in which to run the search (defaults to the workspace folder)",
+                    "markdownDescription": "%todo-tree.configuration.general.rootFolder.markdownDescription%",
                     "type": "string"
                 },
                 "todo-tree.general.statusBar": {
@@ -461,13 +461,13 @@
                         "top three",
                         "current file"
                     ],
-                    "markdownDescription": "What to show in the status bar - nothing, total count, counts per tag, top three counts per tag or count of tags in the current file",
+                    "markdownDescription": "%todo-tree.configuration.general.statusBar.markdownDescription%",
                     "markdownEnumDescriptions": [
-                        "Only show the scanning status in the status bar",
-                        "Show the total count of tags in the status bar",
-                        "Show a breakdown of the count of each tag in the status bar",
-                        "Show the count of the top three tags in the status bar",
-                        "Show the count of tags in the current file in the status bar"
+                        "%todo-tree.configuration.general.statusBar.markdownEnumDescriptions.1%",
+                        "%todo-tree.configuration.general.statusBar.markdownEnumDescriptions.2%",
+                        "%todo-tree.configuration.general.statusBar.markdownEnumDescriptions.3%",
+                        "%todo-tree.configuration.general.statusBar.markdownEnumDescriptions.4%",
+                        "%todo-tree.configuration.general.statusBar.markdownEnumDescriptions.5%"
                     ],
                     "type": "string"
                 },
@@ -477,16 +477,16 @@
                         "cycle",
                         "reveal"
                     ],
-                    "markdownDescription": "What to do when the status bar is clicked",
+                    "markdownDescription": "%todo-tree.configuration.general.statusBarClickBehaviour.markdownDescription%",
                     "markdownEnumDescriptions": [
-                        "Toggle between showing total count and the top three tag counts",
-                        "Reveal the tree view"
+                        "%todo-tree.configuration.general.statusBarClickBehaviour.markdownEnumDescriptions.1%",
+                        "%todo-tree.configuration.general.statusBarClickBehaviour.markdownEnumDescriptions.2%"
                     ],
                     "type": "string"
                 },
                 "todo-tree.general.tagGroups": {
                     "default": {},
-                    "markdownDescription": "Allows similar tags to be grouped under the same type, e.g. `{ \"FIX\": [\"FIXME\",\"FIXIT\"] }`. *Note: All tags must also be in the `todo-tree.general.tags` tag list. If a tag group is defined, custom highlights apply to the group, not the tags within the group.*",
+                    "markdownDescription": "%todo-tree.configuration.general.tagGroups.markdownDescription%",
                     "type": "object"
                 },
                 "todo-tree.general.tags": {
@@ -500,7 +500,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "markdownDescription": "List of tags. *Note, if one tag starts with another tag, the longer tag should be specified first to prevent the shorter tag being matched.*",
+                    "markdownDescription": "%todo-tree.configuration.general.tags.markdownDescription%",
                     "type": "array"
                 },
                 "todo-tree.highlights.customHighlight": {
@@ -512,22 +512,22 @@
                             "icon": "flame"
                         }
                     },
-                    "markdownDescription": "Custom configuration for highlighting, [Read more...](https://github.com/Gruntfuggly/todo-tree#highlighting)",
+                    "markdownDescription": "%todo-tree.configuration.highlights.customHighlight.markdownDescription%",
                     "type": "object"
                 },
                 "todo-tree.highlights.defaultHighlight": {
                     "default": {},
-                    "markdownDescription": "Default configuration for highlighting. [Read more...](https://github.com/Gruntfuggly/todo-tree#highlighting)",
+                    "markdownDescription": "%todo-tree.configuration.highlights.defaultHighlight.markdownDescription%",
                     "type": "object"
                 },
                 "todo-tree.highlights.enabled": {
                     "default": true,
-                    "markdownDescription": "Set to false to disable highlighting",
+                    "markdownDescription": "%todo-tree.configuration.highlights.enabled.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.highlights.highlightDelay": {
                     "default": 500,
-                    "markdownDescription": "Delay before highlighting tags within files (milliseconds)",
+                    "markdownDescription": "%todo-tree.configuration.highlights.highlightDelay.markdownDescription%",
                     "type": "integer"
                 },
                 "todo-tree.highlights.schemes": {
@@ -538,12 +538,12 @@
                     "items": {
                         "type": "string"
                     },
-                    "markdownDescription": "Editor schemes to show highlights in. To show highlights in settings files, for instance, add 'vscode-userdata' or for output windows, use 'output'.",
+                    "markdownDescription": "%todo-tree.configuration.highlights.schemes.markdownDescription%",
                     "type": "array"
                 },
                 "todo-tree.highlights.useColourScheme": {
                     "default": false,
-                    "markdownDescription": "Use a colour scheme to colour the tags. This scheme is applied to the tags in the order of tags. The colours can be modified using `todo-tree.highlights.foregroundColourScheme` and `todo-tree.highlights.backgroundColourScheme`. The colour scheme overrides colours in the default highlight, but not the custom highlight.",
+                    "markdownDescription": "%todo-tree.configuration.highlights.useColourScheme.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.highlights.foregroundColourScheme": {
@@ -559,7 +559,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "markdownDescription": "A list of colours which is applied to tag highlights in the same order as the tags. Repeats if necessary and is overridden by `todo-tre.highlights.customHighlights`.",
+                    "markdownDescription": "%todo-tree.configuration.highlights.foregroundColourScheme.markdownDescription%",
                     "type": "array"
                 },
                 "todo-tree.highlights.backgroundColourScheme": {
@@ -575,87 +575,87 @@
                     "items": {
                         "type": "string"
                     },
-                    "markdownDescription": "A list of colours which is applied to tag highlights in the same order as the tags. Repeats if necessary and is overridden by `todo-tre.highlights.customHighlights`.",
+                    "markdownDescription": "%todo-tree.configuration.highlights.backgroundColourScheme.markdownDescription%",
                     "type": "array"
                 },
                 "todo-tree.regex.regex": {
                     "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
-                    "markdownDescription": "Regular expression for matching TODOs. Note: **($TAGS)** will be replaced by the expanded tag list. For some of the extension features to work, **($TAGS)** should be present in the regex, however, the basic functionality should still work if you need to explicitly expand the tag list.",
+                    "markdownDescription": "%todo-tree.configuration.regex.regex.markdownDescription%",
                     "type": "string"
                 },
                 "todo-tree.regex.regexCaseSensitive": {
                     "default": true,
-                    "markdownDescription": "Use a case sensitive regular expression",
+                    "markdownDescription": "%todo-tree.configuration.regex.regexCaseSensitive.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.ripgrep.ripgrep": {
                     "default": "",
-                    "markdownDescription": "Location of your version of ripgrep",
+                    "markdownDescription": "%todo-tree.configuration.ripgrep.ripgrep.markdownDescription%",
                     "type": "string"
                 },
                 "todo-tree.ripgrep.ripgrepArgs": {
                     "default": "--max-columns=1000 --no-config ",
-                    "markdownDescription": "Additional arguments to pass to ripgrep (Use with caution!)",
+                    "markdownDescription": "%todo-tree.configuration.ripgrep.ripgrepArgs.markdownDescription%",
                     "type": "string"
                 },
                 "todo-tree.ripgrep.ripgrepMaxBuffer": {
                     "default": 200,
-                    "markdownDescription": "Size of the buffer to use for retrieving output from ripgrep (kilobytes)",
+                    "markdownDescription": "%todo-tree.configuration.ripgrep.ripgrepMaxBuffer.markdownDescription%",
                     "type": "integer"
                 },
                 "todo-tree.ripgrep.usePatternFile": {
                     "default": true,
-                    "markdownDescription": "A pattern file is used with ripgrep by default. If you experience issues with deleting the pattern file, set this to false to use the legacy method of providing the regex to ripgrep.",
+                    "markdownDescription": "%todo-tree.ripgrep.usePatternFile.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.autoRefresh": {
                     "default": true,
-                    "markdownDescription": "Refresh the tree when files are opened or saved",
+                    "markdownDescription": "%todo-tree.configuration.tree.autoRefresh.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.disableCompactFolders": {
                     "default": false,
-                    "markdownDescription": "Prevent the tree from showing compact folders",
+                    "markdownDescription": "%todo-tree.configuration.tree.disableCompactFolders.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.expanded": {
                     "default": false,
-                    "markdownDescription": "When opening new workspaces, show the tree initially fully expanded",
+                    "markdownDescription": "%todo-tree.configuration.tree.expanded.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.filterCaseSensitive": {
                     "default": false,
-                    "markdownDescription": "Set to true if you want the view filtering to be case sensitive",
+                    "markdownDescription": "%todo-tree.configuration.tree.filterCaseSensitive.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.flat": {
                     "default": false,
-                    "markdownDescription": "When opening new workspaces, show the tree initially as flat list of files",
+                    "markdownDescription": "%todo-tree.configuration.tree.flat.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.grouped": {
                     "default": false,
-                    "markdownDescription": "When opening new workspaces, show the tree initially grouped by tag",
+                    "markdownDescription": "%todo-tree.configuration.tree.grouped.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.hideIconsWhenGroupedByTag": {
                     "default": false,
-                    "markdownDescription": "Save some space by hiding the item icons when grouped by tag",
+                    "markdownDescription": "%todo-tree.configuration.tree.hideIconsWhenGroupedByTag.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.hideTreeWhenEmpty": {
                     "default": false,
-                    "markdownDescription": "Normally, the tree is hidden if nothing is found. Set this to false to keep the view present.",
+                    "markdownDescription": "%todo-tree.configuration.tree.hideTreeWhenEmpty.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.labelFormat": {
                     "default": "${tag} ${after}",
-                    "markdownDescription": "Format for tree items",
+                    "markdownDescription": "%todo-tree.configuration.tree.labelFormat.markdownDescription%",
                     "type": "string"
                 },
                 "todo-tree.tree.scanAtStartup": {
                     "default": true,
-                    "markdownDescription": "Normally the tree is built as soon as the window is opened. If you have a large code base and want to manually start the scan, set this to false.",
+                    "markdownDescription": "%todo-tree.configuration.tree.scanAtStartup.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.scanMode": {
@@ -666,113 +666,113 @@
                         "current file",
                         "workspace only"
                     ],
-                    "markdownDescription": "Set this to change which files are scanned",
+                    "markdownDescription": "%todo-tree.configuration.tree.scanMode.markdownDescription%",
                     "markdownEnumDescriptions": [
-                        "Scan the whole workspace (or workspaces) and open files",
-                        "Scan open files only",
-                        "Scan the current file only",
-                        "Scan the workspace but don't refresh files open in the editor"
+                        "%todo-tree.configuration.tree.scanMode.markdownEnumDescriptions.1%",
+                        "%todo-tree.configuration.tree.scanMode.markdownEnumDescriptions.2%",
+                        "%todo-tree.configuration.tree.scanMode.markdownEnumDescriptions.3%",
+                        "%todo-tree.configuration.tree.scanMode.markdownEnumDescriptions.4%"
                     ],
                     "type": "string"
                 },
                 "todo-tree.tree.showBadges": {
                     "default": true,
-                    "markdownDescription": "Show badges and SCM state in the tree view",
+                    "markdownDescription": "%todo-tree.configuration.tree.showBadges.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.showCountsInTree": {
                     "default": false,
-                    "markdownDescription": "Show counts of TODOs in the tree",
+                    "markdownDescription": "%todo-tree.configuration.tree.showCountsInTree.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.showInExplorer": {
                     "default": false,
-                    "type": "boolean",
-                    "deprecationMessage": "This setting is no longer used. Please drag the view to move it."
+                    "deprecationMessage": "%todo-tree.configuration.tree.showInExplorer.deprecationMessage%",
+                    "type": "boolean"
                 },
                 "todo-tree.tree.showScanModeButton": {
                     "default": false,
-                    "markdownDescription": "Show a button on the tree view header to change between scanning the current file, open files, or the whole workspace.",
+                    "markdownDescription": "%todo-tree.configuration.tree.showScanModeButton.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.showCurrentScanMode": {
                     "default": true,
-                    "markdownDescription": "Show the current scan mode at the top of the tree view",
+                    "markdownDescription": "%todo-tree.configuration.tree.showCurrentScanMode.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.showScanOpenFilesOrWorkspaceButton": {
                     "default": false,
-                    "deprecationMessage": "This setting is no longer used, please use \"todo-tree.tree.scanMode\" instead.",
+                    "deprecationMessage": "%todo-tree.configuration.tree.showScanOpenFilesOrWorkspaceButton.deprecationMessage%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.buttons.reveal": {
                     "default": true,
-                    "markdownDescription": "Show a button in the tree view title bar to reveal the current item (only when track file is not enabled)",
+                    "markdownDescription": "%todo-tree.configuration.tree.buttons.reveal.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.buttons.scanMode": {
                     "default": false,
-                    "markdownDescription": "Show a button in the tree view title bar to change the Scan Mode setting",
+                    "markdownDescription": "%todo-tree.configuration.tree.buttons.scanMode.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.buttons.viewStyle": {
                     "default": true,
-                    "markdownDescription": "Show a button in the tree view title bar to change the view style (tree, flat or tags only)",
+                    "markdownDescription": "%todo-tree.configuration.tree.buttons.viewStyle.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.buttons.groupByTag": {
                     "default": true,
-                    "markdownDescription": "Show a button in the tree view title bar to enable grouping items by tag",
+                    "markdownDescription": "%todo-tree.configuration.tree.buttons.groupByTag.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.buttons.filter": {
                     "default": true,
-                    "markdownDescription": "Show a button in the tree view title bar allowing the tree to be filtered by entering some text",
+                    "markdownDescription": "%todo-tree.configuration.tree.buttons.filter.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.buttons.refresh": {
                     "default": true,
-                    "markdownDescription": "Show a refresh button in the tree view title bar",
+                    "markdownDescription": "%todo-tree.configuration.tree.buttons.refresh.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.buttons.expand": {
                     "default": true,
-                    "markdownDescription": "Show a button in the tree view title bar to expand or collapse the whole tree",
+                    "markdownDescription": "%todo-tree.configuration.tree.buttons.expand.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.buttons.export": {
                     "default": false,
-                    "markdownDescription": "Show a button in the tree view title bar to create a file showing the tree content",
+                    "markdownDescription": "%todo-tree.configuration.tree.buttons.export.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.showTagsFromOpenFilesOnly": {
                     "default": false,
-                    "deprecationMessage": "This setting is no longer used, please use \"todo-tree.tree.scanMode\" instead.",
+                    "deprecationMessage": "%todo-tree.configuration.tree.showTagsFromOpenFilesOnly.deprecationMessage%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.sortTagsOnlyViewAlphabetically": {
                     "default": false,
-                    "markdownDescription": "Sort items in the tags only view alphabetically instead of by file and line number",
+                    "markdownDescription": "%todo-tree.configuration.tree.sortTagsOnlyViewAlphabetically.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.sort": {
                     "default": true,
-                    "markdownDescription": "ripgrep searches using multiple threads to improve performance. The tree is sorted when it is populated so that it stays stable. If you want to use ripgrep's own sort arguments, set this to false.",
+                    "markdownDescription": "%todo-tree.configuration.tree.sort.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.tagsOnly": {
                     "default": false,
-                    "markdownDescription": "When opening new workspaces, show only tag elements in tree",
+                    "markdownDescription": "%todo-tree.configuration.tree.tagsOnly.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.tooltipFormat": {
                     "default": "${filepath}, line ${line}",
-                    "markdownDescription": "Tree item tooltip format",
+                    "markdownDescription": "%todo-tree.configuration.tree.tooltipFormat.markdownDescription%",
                     "type": "string"
                 },
                 "todo-tree.tree.trackFile": {
                     "default": true,
-                    "markdownDescription": "Track the current file in the tree view",
+                    "markdownDescription": "%todo-tree.configuration.tree.trackFile.markdownDescription%",
                     "type": "boolean"
                 }
             }
