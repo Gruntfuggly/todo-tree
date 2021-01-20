@@ -29,6 +29,7 @@
     "todo-tree.command.resetCache.title": "重置缓存",
     "todo-tree.command.toggleItemCounts.title": "显示/隐藏待办事项的数目",
     "todo-tree.command.toggleBadges.title": "显示/隐藏 badges",
+    "todo-tree.command.toggleCompactFolders.title": "紧凑/宽松形式呈现文件夹",
     "todo-tree.configuration.title": "待办事项树",
     "todo-tree.configuration.filtering.excludedWorkspaces.markdownDescription": "配置一个工作区名称的列表，列表中的工作区不允许作为树状图的根（允许使用通配符）。",
     "todo-tree.configuration.filtering.excludeGlobs.markdownDescription": "通过排除符合条件项来限制扫描结果的 globs（在 **Include Globs** 后应用），例如 `[\"**/*.txt\"]` 用于忽略所有 .txt 文件。",

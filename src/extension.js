@@ -633,7 +633,6 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-filter-button', showFilterButton );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-refresh-button', showRefreshButton );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-expand-button', showExpandButton );
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-export-button', showExportButton );
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', c.get( 'tree.expanded', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', c.get( 'tree.flat', false ) ) );
@@ -643,6 +642,7 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-collapsible', isCollapsible );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-folder-filter-active', includeGlobs.length + excludeGlobs.length > 0 );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-global-filter-active', currentFilter );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-can-toggle-compact-folders', vscode.workspace.getConfiguration( 'explorer' ).compactFolders === true );
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-mode', config.scanMode() );
 
@@ -1346,6 +1346,12 @@ function activate( context )
         {
             var current = vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'showBadges' );
             vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'showBadges', !current, vscode.ConfigurationTarget.Workspace );
+        } ) );
+
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.toggleCompactFolders', function()
+        {
+            var current = vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'disableCompactFolders' );
+            vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'disableCompactFolders', !current, vscode.ConfigurationTarget.Workspace );
         } ) );
 
         context.subscriptions.push( todoTreeView.onDidExpandElement( function( e ) { provider.setExpanded( e.element.fsPath, true ); } ) );

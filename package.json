@@ -176,6 +176,11 @@
                     "command": "todo-tree.toggleBadges",
                     "when": "view =~ /todo-tree/",
                     "group": "misc"
+                },
+                {
+                    "command": "todo-tree.toggleCompactFolders",
+                    "when": "view =~/todo-tree/ && todo-tree-can-toggle-compact-folders == true",
+                    "group": "misc"
                 }
             ]
         },
@@ -337,6 +342,11 @@
             {
                 "command": "todo-tree.toggleBadges",
                 "title": "%todo-tree.command.toggleBadges.title%",
+                "category": "%todo-tree.command.category%"
+            },
+            {
+                "command": "todo-tree.toggleCompactFolders",
+                "title": "%todo-tree.command.toggleCompactFolders.title%",
                 "category": "%todo-tree.command.category%"
             }
         ],
