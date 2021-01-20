@@ -80,11 +80,11 @@ function getIcon( context, tag, debug )
 
         if( context.globalStoragePath )
         {
-            var octiconIconPath = path.join( context.globalStoragePath, "todo-" + iconName + ".svg" );
+            var octiconIconPath = path.join( context.globalStoragePath, "todo-" + iconName + "-" + compactColourName + ".svg" );
             if( !fs.existsSync( octiconIconPath ) )
             {
                 var octiconIconDefinition = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n" +
-                    octicons[ iconName ].toSVG( { "xmlns": "http://www.w3.org/2000/svg", "fill": "green" } );
+                    octicons[ iconName ].toSVG( { "xmlns": "http://www.w3.org/2000/svg", "fill": colour } );
 
                 fs.writeFileSync( octiconIconPath, octiconIconDefinition );
             }

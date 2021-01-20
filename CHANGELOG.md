@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Fix icon colour check
+- Fix coloured octicons
 
 ## v0.0.194 - 2021-01-18
 
