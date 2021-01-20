@@ -35,7 +35,7 @@
                 {
                     "id": "todo-tree-container",
                     "title": "TODO Tree",
-                    "icon": "resources/todo-tree-container.svg"
+                    "icon": "resources/todo_sidepanel.svg"
                 }
             ]
         },
