@@ -3,6 +3,7 @@
 - Fix compact folders when grouping by tag
 - Fix description of 'hide tree when empty' option
 - Add support for total todo count in view title
+- Temporarily disable hideTreeWhenEmpty (Will be re-enabled after January release of VSCode)
 
 ## v0.0.195 - 2021-01-20
 

@@ -664,11 +664,11 @@ function activate( context )
             return child.isStatusNode !== true;
         } );
 
-        if( c.get( "tree.hideTreeWhenEmpty" ) === true )
-        {
-            vscode.commands.executeCommand( 'setContext', 'todo-tree-is-empty', children.length == 0 );
-        }
-        else
+        // if( c.get( "tree.hideTreeWhenEmpty" ) === true )
+        // {
+        //     vscode.commands.executeCommand( 'setContext', 'todo-tree-is-empty', children.length == 0 );
+        // }
+        // else
         {
             vscode.commands.executeCommand( 'setContext', 'todo-tree-is-empty', false );
         }
