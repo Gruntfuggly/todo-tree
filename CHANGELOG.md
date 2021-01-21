@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.196 - 2021-01-21
+
 - Fix compact folders when grouping by tag
 - Fix description of 'hide tree when empty' option
 - Add support for total todo count in view title
