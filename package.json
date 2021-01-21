@@ -260,7 +260,7 @@
                 "icon": "$(symbol-file)"
             },
             {
-                "command": "todo-tree.scanWorkspaceAndOpenFile",
+                "command": "todo-tree.scanWorkspaceAndOpenFiles",
                 "title": "%todo-tree.command.scanWorkspaceAndOpenFiles.title%",
                 "category": "%todo-tree.command.category%",
                 "icon": "$(folder-active)"
