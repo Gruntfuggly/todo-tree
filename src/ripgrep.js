@@ -224,12 +224,20 @@ class Match
                 this.file = matchText.substr( 0, 2 );
                 matchText = matchText.substr( 2 );
             }
+            var parts = matchText.split( ':' );
+            var hasColumn = ( parts.length === 4 );
+            this.file += parts.shift();
+            this.line = parseInt( parts.shift() );
+            if( hasColumn === true )
+            {
+                this.column = parseInt( parts.shift() );
+            }
+            else
+            {
+                this.column = 1;
+            }
+            this.match = parts.join( ':' );
 
-            matchText = matchText.split( ':' );
-            this.file += matchText.shift();
-            this.line = parseInt( matchText.shift() );
-            this.column = parseInt( matchText.shift() );
-            this.match = matchText.join( ':' );
         }
     }
 }
