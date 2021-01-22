@@ -4,6 +4,7 @@
 - Fix theme colours for ruler colour
 - Remove trailing block comments when adding multiline todo to tree
 - Support multi-line haskell comments
+- Don't include trailing text to the end of multiline TODOs
 
 ## v0.0.206 - 2021-03-17
 
