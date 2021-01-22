@@ -69,7 +69,8 @@ function regex()
     return {
         tags: tags(),
         regex: vscode.workspace.getConfiguration( 'todo-tree.regex' ).get( 'regex' ),
-        caseSensitive: vscode.workspace.getConfiguration( 'todo-tree.regex' ).get( 'regexCaseSensitive' )
+        caseSensitive: vscode.workspace.getConfiguration( 'todo-tree.regex' ).get( 'regexCaseSensitive' ),
+        multiLine: vscode.workspace.getConfiguration( 'todo-tree.regex' ).get( 'enableMultiLine' )
     };
 }
 

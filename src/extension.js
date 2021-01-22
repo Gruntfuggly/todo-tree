@@ -464,7 +464,7 @@ function activate( context )
         options.outputChannel = outputChannel;
         options.additional = c.get( 'ripgrep.ripgrepArgs' );
         options.maxBuffer = c.get( 'ripgrep.ripgrepMaxBuffer' );
-        options.multiline = utils.getRegexSource().indexOf( "\\n" ) > -1;
+        options.multiline = utils.getRegexSource().indexOf( "\\n" ) > -1 || c.get( 'regex.enableMultiLine' ) === true;
 
         if( fs.existsSync( context.storageUri.fsPath ) === true && c.get( 'ripgrep.usePatternFile' ) === true )
         {

@@ -301,6 +301,9 @@ Defines colours for use in conjunction with `todo-tree.highlights.useColourSchem
 **todo-tree.highlights.foreroundColourScheme** (`["white","black","black","white","white","white","black"]`)</br>
 Defines colours for use in conjunction with `todo-tree.highlights.backgroundColourScheme` to colour highlights. These colours should be complementary to the background colours.
 
+**todo-tree.regex.enableMultiLine** (`false`)</br>
+Normally, multiline support is enabled by detecting the use of `\n` in the regex. Set this to `true`, to enable multiline support by default. This allows the use of `[\s\S]` as an alternative to matching any character including newlines.
+
 **todo-tree.regex.regex** (<tt>&#x22;&#x28;&#x28;&#x2f;&#x2f;&#x7c;&#x23;&#x7c;&#x3c;&#x21;&#x2d;&#x2d;&#x7c;&#x3b;&#x7c;&#x2f;&#x5c;&#x5c;&#x2a;&#x29;&#x5c;&#x5c;&#x73;&#x2a;&#x28;&#x24;&#x54;&#x41;&#x47;&#x53;&#x29;&#x7c;&#x5e;&#x5c;&#x5c;&#x73;&#x2a;&#x2d;&#x20;&#x5c;&#x5c;&#x5b;&#x20;&#x5c;&#x5c;&#x5d;&#x29;&#x22;</tt>)</br>
 This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with <tt>&#47;&#47;</tt>, <tt>#</tt>, <tt>;</tt>, <tt>&lt;!--</tt> or <tt>&#47;*</tt>. This should cover most languages. However if you want to refine it, make sure that the <tt>($TAGS)</tt> is kept as <tt>($TAGS)</tt> will be replaced by the expanded tag list. For some of the extension features to work, <tt>($TAGS)</tt> should be present in the regex, however, the basic functionality should still work if you need to explicitly expand the tag list. The second part of the expression allows matching of Github markdown task lists.
 

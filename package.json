@@ -737,6 +737,11 @@
                     "markdownDescription": "%todo-tree.configuration.regex.subTagRegex.markdownDescription%",
                     "type": "string"
                 },
+                "todo-tree.regex.enableMultiLine": {
+                    "default": false,
+                    "markdownDescription": "%todo-tree.configuration.regex.enableMultiLine%",
+                    "type": "boolean"
+                },
                 "todo-tree.ripgrep.ripgrep": {
                     "default": "",
                     "markdownDescription": "%todo-tree.configuration.ripgrep.ripgrep.markdownDescription%",

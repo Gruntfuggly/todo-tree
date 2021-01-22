@@ -325,6 +325,10 @@ function getRegexForEditorSearch()
     {
         flags += 'i';
     }
+    if( config.regex().multiLine === true )
+    {
+        flags += 's';
+    }
 
     var source = getRegexSource();
     return RegExp( source, flags );
