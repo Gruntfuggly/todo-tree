@@ -616,6 +616,11 @@
                     "markdownDescription": "%todo-tree.configuration.regex.regexCaseSensitive.markdownDescription%",
                     "type": "boolean"
                 },
+                "todo-tree.regex.subTagRegex": {
+                    "default": "",
+                    "markdownDescription": "%todo-tree.configuration.regex.subTagRegex.markdownDescription%",
+                    "type": "string"
+                },
                 "todo-tree.ripgrep.ripgrep": {
                     "default": "",
                     "markdownDescription": "%todo-tree.configuration.ripgrep.ripgrep.markdownDescription%",

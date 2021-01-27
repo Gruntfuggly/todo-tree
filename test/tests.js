@@ -27,7 +27,7 @@ QUnit.test( "utils.isHexColour strips non RGB values", function( assert )
     assert.ok( utils.isHexColour( "#0ff" ) === true );
     assert.ok( utils.isHexColour( "bedding" ) === false );
     assert.ok( utils.isHexColour( "inbed" ) === false );
-    assert.ok( utils.isHexColour( "magneta" ) === false );
+    assert.ok( utils.isHexColour( "magenta" ) === false );
     assert.ok( utils.isHexColour( "#bed" ) === true );
     assert.ok( utils.isHexColour( "faced" ) === false );
     assert.ok( utils.isHexColour( "ace" ) === true );
@@ -124,6 +124,24 @@ QUnit.test( "utils.extractTag removes colon from ${after}", function( assert )
     assert.equal( result, "TODO: after" );
 } );
 
+QUnit.test( "utils.extractTag removes custom regex from ${after}", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.subTagRegexString = "(^--\\s*)";
+    utils.init( testConfig );
+
+    result = utils.extractTag( "before TODO-- after" );
+    assert.equal( result.withoutTag, "after" );
+
+    result = utils.extractTag( "before TODO -- after" );
+    assert.equal( result.withoutTag, "after" );
+
+    result = utils.extractTag( "before TODO --after" );
+    assert.equal( result.withoutTag, "after" );
+    result = utils.formatLabel( "${tag}-- ${after}", { actualTag: result.tag, after: result.withoutTag } );
+    assert.equal( result, "TODO-- after" );
+} );
+
 QUnit.test( "utils.extractTag returns text from the start of the line if the tag is on then end", function( assert )
 {
     var testConfig = stubs.getTestConfig();
@@ -168,6 +186,16 @@ QUnit.test( "utils.extractTag returns entire text if $TAGS is not found in regex
     assert.equal( result.withoutTag, "                before = text; // TODO stuff  " );
     assert.equal( result.before, "                before = text; // TODO stuff  " );
     assert.equal( result.after, "                before = text; // TODO stuff  " );
+} );
+
+QUnit.test( "utils.extractTag can extract subtag", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.subTagRegexString = ".*\\((.*)\\).*";
+    utils.init( testConfig );
+
+    result = utils.extractTag( "before TODO (email@place.com) after" );
+    assert.equal( result.subTag, "email@place.com" );
 } );
 
 QUnit.test( "utils.getRegexSource returns the regex source without expanded tags if they aren't present", function( assert )
@@ -266,42 +294,73 @@ QUnit.test( "utils.isIncluded returns false when name matches includes but also 
 
 QUnit.test( "utils.formatLabel replaces line number placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${line} content", { line: 23 } ), "Label 24 content" ); // line is zero based
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "Label ${line} content", { line: 23 }, unexpectedPlaceholders ), "Label 24 content" ); // line is zero based
+    assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
 QUnit.test( "utils.formatLabel replaces column number placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${column} content", { column: 78 } ), "Label 78 content" );
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "Label ${column} content", { column: 78 }, unexpectedPlaceholders ), "Label 78 content" );
+    assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
 QUnit.test( "utils.formatLabel replaces before text placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "Label ${before} content", { before: "text before tag" }, unexpectedPlaceholders ), "Label text before tag content" );
+    assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
 QUnit.test( "utils.formatLabel replaces tag placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${tag} content", { actualTag: "TODO" } ), "Label TODO content" );
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "Label ${tag} content", { actualTag: "TODO" }, unexpectedPlaceholders ), "Label TODO content" );
+    assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
 QUnit.test( "utils.formatLabel replaces after text placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${after} content", { after: "text after tag" } ), "Label text after tag content" );
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "Label ${after} content", { after: "text after tag" }, unexpectedPlaceholders ), "Label text after tag content" );
+    assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
 QUnit.test( "utils.formatLabel replaces before text placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${before} content", { before: "text before tag" } ), "Label text before tag content" );
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "Label ${before} content", { before: "text before tag" }, unexpectedPlaceholders ), "Label text before tag content" );
+    assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
 QUnit.test( "utils.formatLabel replaces filename placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${filename} content", { fsPath: "/path/to/filename.txt" } ), "Label filename.txt content" );
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "Label ${filename} content", { fsPath: "/path/to/filename.txt" }, unexpectedPlaceholders ), "Label filename.txt content" );
+    assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
 QUnit.test( "utils.formatLabel replaces filepath placeholder", function( assert )
 {
-    assert.equal( utils.formatLabel( "Label ${filepath} content", { fsPath: "/path/to/filename.txt" } ), "Label /path/to/filename.txt content" );
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "Label ${filepath} content", { fsPath: "/path/to/filename.txt" }, unexpectedPlaceholders ), "Label /path/to/filename.txt content" );
+    assert.equal( unexpectedPlaceholders.length, 0 );
+} );
+
+QUnit.test( "utils.formatLabel replaces subtag placeholder", function( assert )
+{
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "Label ${subTag} content", { subTag: "name@mail.com" }, unexpectedPlaceholders ), "Label name@mail.com content" );
+    assert.equal( unexpectedPlaceholders.length, 0 );
+} );
+
+QUnit.test( "utils.formatLabel reports unexpectedPlaceholders for unexpected placeholders", function( assert )
+{
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "Label ${unknown} content", {}, unexpectedPlaceholders ), "Label ${unknown} content" );
+    assert.equal( unexpectedPlaceholders.length, 1 );
+    assert.equal( unexpectedPlaceholders[ 0 ], "${unknown}" );
 } );
 
 QUnit.test( "utils.hexToRgba converts correctly", function( assert )
@@ -371,7 +430,7 @@ QUnit.test( "utils.formatExportPath expands tilde", function( assert )
 QUnit.test( "utils.replaceEnvironmentVariables", function( assert )
 {
     assert.equal( utils.replaceEnvironmentVariables( "cod, ${FISH}, halibut, ${FISH}" ), "cod, , halibut, " );
-    process.env[ 'FISH' ] = 'turbot';
+    process.env.FISH = 'turbot';
     assert.equal( utils.replaceEnvironmentVariables( "cod, ${FISH}, halibut, ${FISH}" ), "cod, turbot, halibut, turbot" );
 } );
 

@@ -7,7 +7,6 @@ var utils = require( './utils.js' );
 var icons = require( './icons.js' );
 var config = require( './config.js' );
 
-var initialized = false;
 var workspaceFolders;
 var nodes = [];
 var currentFilter;
@@ -42,6 +41,15 @@ var findTagNode = function( node )
         return isPathNode( node ) && node.tag === this.toString();
     }
     return isPathNode( node ) && node.tag && node.tag.toLowerCase() === this.toString().toLowerCase();
+};
+
+var findSubTagNode = function( node )
+{
+    if( config.isRegexCaseSensitive() )
+    {
+        return node.type === PATH && node.subTag === this.toString();
+    }
+    return node.type === PATH && node.subTag && node.subTag.toLowerCase() === this.toString().toLowerCase();
 };
 
 var findExactPath = function( node )
@@ -169,6 +177,7 @@ function createTodoNode( result )
         fsPath: result.file,
         label: label,
         tag: tagGroup ? tagGroup : extracted.tag,
+        subTag: extracted.subTag,
         actualTag: extracted.tag,
         line: result.line - 1,
         column: result.column,
@@ -206,16 +215,17 @@ function locateWorkspaceNode( filename )
     return result;
 }
 
-function locateFlatChildNode( rootNode, result, tag )
+function locateFlatChildNode( rootNode, result, tag, subTag )
 {
     var parentNodes = ( rootNode === undefined ? nodes : rootNode.nodes );
     if( config.shouldGroup() && tag )
     {
-        var parentNode = parentNodes.find( findTagNode, tag );
+        var tagPath = subTag ? tag + " (" + subTag + ")" : tag;
+        var parentNode = parentNodes.find( findTagNode, tagPath );
         if( parentNode === undefined )
         {
-            parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tag ] );
-            parentNode.tag = tag;
+            parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tagPath ] );
+            parentNode.tag = tagPath;
             parentNodes.push( parentNode );
             if( config.shouldSortTree() )
             {
@@ -225,10 +235,11 @@ function locateFlatChildNode( rootNode, result, tag )
         parentNodes = parentNode.nodes;
     }
 
-    var childNode = parentNodes.find( findExactPath, result.file );
+    var nodePath = subTag ? path.join( result.file, subTag ) : result.file;
+    var childNode = parentNodes.find( findExactPath, nodePath );
     if( childNode === undefined )
     {
-        childNode = createFlatNode( result.file, rootNode );
+        childNode = createFlatNode( nodePath, rootNode );
         parentNodes.push( childNode );
         if( config.shouldSortTree() )
         {
@@ -239,8 +250,9 @@ function locateFlatChildNode( rootNode, result, tag )
     return childNode;
 }
 
-function locateTreeChildNode( rootNode, pathElements, tag )
+function locateTreeChildNode( rootNode, pathElements, tag, subTag )
 {
+    // console.log( "LOCATE:" + JSON.stringify( pathElements ) );
     var childNode;
 
     var parentNodes = rootNode.nodes;
@@ -250,7 +262,13 @@ function locateTreeChildNode( rootNode, pathElements, tag )
         var parentNode = parentNodes.find( findTagNode, tag );
         if( parentNode === undefined )
         {
-            parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tag ] );
+            var pathList = [];
+            if( subTag )
+            {
+                pathList.push( subTag );
+            }
+            pathList.push( tag );
+            parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), pathList );
             parentNode.tag = tag;
             parentNodes.push( parentNode );
             if( config.shouldSortTree() )
@@ -498,9 +516,9 @@ class TreeNodeProvider
             {
                 if( config.shouldCompactFolders() && node.tag === undefined )
                 {
-                    var onlyChild = node.nodes.length === 1 ? node.nodes[ 0 ] : undefined;
+                    var onlyChild = node.nodes.filter( isPathNode ).length === 1 ? node.nodes[ 0 ] : undefined;
                     var onlyChildParent = node;
-                    while( onlyChild && onlyChild.nodes.length > 0 && onlyChildParent.nodes.length === 1 )
+                    while( onlyChild && onlyChild.nodes.filter( isPathNode ).length > 0 && onlyChildParent.nodes.filter( isPathNode ).length === 1 )
                     {
                         treeItem.label += "/" + onlyChild.label;
                         onlyChildParent = onlyChild;
@@ -587,7 +605,7 @@ class TreeNodeProvider
         {
             treeItem.contextValue = "folder";
         }
-        else if( !node.isRootTagNode && !node.isWorkspaceNode && !node.isStatusNode && node.type !== TODO )
+        else if( !node.isRootTagNode && !node.isWorkspaceNode && !node.isStatusNode && node.type !== TODO && node.subTag === undefined )
         {
             treeItem.contextValue = "file";
         }
@@ -606,7 +624,6 @@ class TreeNodeProvider
 
     rebuild()
     {
-        initialized = true;
         buildCounter = ( buildCounter + 1 ) % 100;
     }
 
@@ -700,18 +717,20 @@ class TreeNodeProvider
         {
             todoNode.hidden = true;
         }
-
         var childNode;
+
+        var tagPath = todoNode.subTag ? todoNode.tag + " (" + todoNode.subTag + ")" : todoNode.tag;
+
         if( config.shouldShowTagsOnly() )
         {
             if( config.shouldGroup() )
             {
                 if( todoNode.tag )
                 {
-                    childNode = nodes.find( findTagNode, todoNode.tag );
+                    childNode = nodes.find( findTagNode, tagPath );
                     if( childNode === undefined )
                     {
-                        childNode = createTagNode( result.file, todoNode.tag );
+                        childNode = createTagNode( result.file, tagPath );
                         nodes.push( childNode );
                     }
                 }
@@ -730,7 +749,7 @@ class TreeNodeProvider
         }
         else if( config.shouldFlatten() || rootNode === undefined )
         {
-            childNode = locateFlatChildNode( rootNode, result, todoNode.tag );
+            childNode = locateFlatChildNode( rootNode, result, todoNode.tag, todoNode.subTag );
         }
         else if( rootNode )
         {
@@ -740,7 +759,11 @@ class TreeNodeProvider
             {
                 pathElements = relativePath.split( path.sep );
             }
-            childNode = locateTreeChildNode( rootNode, pathElements, todoNode.tag );
+            if( todoNode.subTag )
+            {
+                pathElements.push( todoNode.subTag );
+            }
+            childNode = locateTreeChildNode( rootNode, pathElements, todoNode.tag, todoNode.subTag );
         }
 
         if( childNode )

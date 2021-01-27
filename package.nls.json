@@ -75,6 +75,7 @@
     "todo-tree.configuration.highlights.backgroundColourScheme.markdownDescription": "A list of colours which is applied to tag highlights in the same order as the tags. Repeats if necessary and is overridden by `todo-tree.highlights.customHighlight`.",
     "todo-tree.configuration.regex.regex.markdownDescription": "Regular expression for matching TODOs. Note: **($TAGS)** will be replaced by the expanded tag list. For some of the extension features to work, **($TAGS)** should be present in the regex, however, the basic functionality should still work if you need to explicitly expand the tag list.",
     "todo-tree.configuration.regex.regexCaseSensitive.markdownDescription": "Use a case sensitive regular expression.",
+    "todo-tree.configuration.regex.subTagRegex.markdownDescription": "Regular expression for processing the text to the right of the tag, e.g. for extracting a sub tag, or removing unwanted characters.",
     "todo-tree.configuration.ripgrep.ripgrep.markdownDescription": "Location of your version of ripgrep.",
     "todo-tree.configuration.ripgrep.ripgrepArgs.markdownDescription": "Additional arguments to pass to ripgrep (Use with caution!).",
     "todo-tree.configuration.ripgrep.ripgrepMaxBuffer.markdownDescription": "Size of the buffer to use for retrieving output from ripgrep (kilobytes).",

@@ -1088,6 +1088,16 @@ function activate( context )
             }
         }
 
+        function validatePlaceholders()
+        {
+            var unexpectedPlaceholders = [];
+            utils.formatLabel( config.labelFormat(), {}, unexpectedPlaceholders );
+            if( unexpectedPlaceholders.length > 0 )
+            {
+                vscode.window.showErrorMessage( "Todo Tree: Unexpected placeholders (" + unexpectedPlaceholders.join( "," ) + ")" );
+            }
+        }
+
         function shouldRefreshFile()
         {
             return vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true && config.scanMode() !== SCAN_MODE_WORKSPACE_ONLY;
@@ -1512,6 +1522,10 @@ function activate( context )
                     validateColours();
                     documentChanged();
                 }
+                else if( e.affectsConfiguration( "todo-tree.tree.labelFormat" ) )
+                {
+                    validatePlaceholders();
+                }
                 else if( e.affectsConfiguration( "todo-tree.general.debug" ) )
                 {
                     resetOutputChannel();
@@ -1572,6 +1586,7 @@ function activate( context )
 
         migrateSettings();
         validateColours();
+        validatePlaceholders();
         setButtonsAndContext();
 
         if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanAtStartup === true )

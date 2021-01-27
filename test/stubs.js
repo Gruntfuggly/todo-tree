@@ -3,6 +3,7 @@ var testConfig = {
     shouldBeCaseSensitive: false,
     regexSource: "($TAGS)",
     tagList: [ "TODO" ],
+    subTagRegexString: "(^:\\s*)",
     globsList: [],
     useColourScheme: false,
     foregroundColours: [],
@@ -33,6 +34,12 @@ testConfig.isRegexCaseSensitive = function()
 {
     return this.shouldBeCaseSensitive;
 };
+
+testConfig.subTagRegex = function()
+{
+    return this.subTagRegexString;
+};
+
 testConfig.shouldUseColourScheme = function()
 {
     return this.useColourScheme;

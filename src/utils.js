@@ -3,16 +3,16 @@ var os = require( 'os' );
 var path = require( 'path' );
 var find = require( 'find' );
 var strftime = require( 'fast-strftime' );
+var commentPatterns = require( 'comment-patterns' );
 
 var colourNames = require( './colourNames.js' );
 var themeColourNames = require( './themeColourNames.js' );
 
 var config;
 
-var commentPatterns = require( 'comment-patterns' );
-
 var envRegex = new RegExp( "\\$\\{(.*?)\\}", "g" );
 var rgbRegex = new RegExp( "^rgba?\\((\\d+),\\s*(\\d+),\\s*(\\d+)(?:,\\s*(\\d+(?:\\.\\d+)?))?\\)$", "gi" );
+var placeholderRegex = new RegExp( "(\\$\\{.*\\})" );
 
 function init( configuration )
 {
@@ -172,16 +172,24 @@ function extractTag( text, matchOffset )
     var originalTag;
     var before = text;
     var after = text;
+    var subTag;
 
     if( c.regex.indexOf( "$TAGS" ) > -1 )
     {
         var tagRegex = new RegExp( getTagRegex(), flags );
+        var subTagRegex = new RegExp( config.subTagRegex(), flags );
 
         tagMatch = tagRegex.exec( text );
         if( tagMatch )
         {
             tagOffset = tagMatch.index;
-            rightOfTag = text.substr( tagMatch.index + tagMatch[ 0 ].length ).trim().replace( /^:\s*/, "" );
+            var rightOfTagText = text.substr( tagMatch.index + tagMatch[ 0 ].length ).trim();
+            var subTagMatch = subTagRegex.exec( rightOfTagText );
+            if( subTagMatch && subTagMatch.length > 1 )
+            {
+                subTag = subTagMatch[ 1 ];
+            }
+            rightOfTag = rightOfTagText.replace( subTagRegex, "" );
             if( rightOfTag.length === 0 )
             {
                 text = text.substr( 0, matchOffset ? matchOffset - 1 : tagMatch.index ).trim();
@@ -210,7 +218,14 @@ function extractTag( text, matchOffset )
             } );
         }
     }
-    return { tag: tagMatch ? originalTag : "", withoutTag: text, before: before, after: after, tagOffset: tagOffset };
+    return {
+        tag: tagMatch ? originalTag : "",
+        withoutTag: text,
+        before: before,
+        after: after,
+        tagOffset: tagOffset,
+        subTag: subTag
+    };
 }
 
 function getRegexSource()
@@ -266,13 +281,17 @@ function isIncluded( name, includes, excludes )
     return included;
 }
 
-function formatLabel( template, node )
+function formatLabel( template, node, unexpectedPlaceholders )
 {
     var result = template;
+
+    var subTag = node.subTag ? node.subTag : "";
 
     result = result.replace( /\$\{line\}/g, ( node.line + 1 ) );
     result = result.replace( /\$\{column\}/g, node.column );
     result = result.replace( /\$\{tag\}/g, node.actualTag );
+    result = result.replace( /\$\{subTag\}/g, subTag );
+    result = result.replace( /\$\{subtag\}/g, subTag );
     result = result.replace( /\$\{after\}/g, node.after );
     result = result.replace( /\$\{before\}/g, node.before );
     result = result.replace( /\$\{afterOrBefore\}/g, ( ( node.after === "" ) ? node.before : node.after ) );
@@ -280,6 +299,15 @@ function formatLabel( template, node )
     {
         result = result.replace( /\$\{filename\}/g, path.basename( node.fsPath ) );
         result = result.replace( /\$\{filepath\}/g, node.fsPath );
+    }
+
+    if( unexpectedPlaceholders )
+    {
+        var placeholderMatch = placeholderRegex.exec( result );
+        if( placeholderMatch )
+        {
+            unexpectedPlaceholders.push( placeholderMatch[ 0 ] );
+        }
     }
 
     return result;
