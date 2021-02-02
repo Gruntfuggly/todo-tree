@@ -25,28 +25,38 @@ var isVisible = function( e )
     return e.visible === true && e.hidden !== true;
 };
 
+var isTodoNode = function( e )
+{
+    return e.type === TODO;
+};
+
+var isPathNode = function( e )
+{
+    return e.type === PATH;
+};
+
 var findTagNode = function( node )
 {
     if( config.isRegexCaseSensitive() )
     {
-        return node.type === PATH && node.tag === this.toString();
+        return isPathNode( node ) && node.tag === this.toString();
     }
-    return node.type === PATH && node.tag && node.tag.toLowerCase() === this.toString().toLowerCase();
+    return isPathNode( node ) && node.tag && node.tag.toLowerCase() === this.toString().toLowerCase();
 };
 
 var findExactPath = function( node )
 {
-    return node.type === PATH && node.fsPath === this.toString();
+    return isPathNode( node ) && node.fsPath === this.toString();
 };
 
 var findPathNode = function( node )
 {
-    return node.type === PATH && node.pathElement === this.toString();
+    return isPathNode( node ) && node.pathElement === this.toString();
 };
 
 var findTodoNode = function( node )
 {
-    return node.label === this.label.toString() && node.fsPath === this.fsPath && node.line === this.line;
+    return isTodoNode( node ) && node.label === this.label.toString() && node.fsPath === this.fsPath && node.line === this.line;
 };
 
 var sortFoldersFirst = function( a, b, same )
@@ -84,7 +94,6 @@ function createWorkspaceRootNode( folder )
         type: PATH,
         label: folder.name,
         nodes: [],
-        todos: [],
         fsPath: folder.uri.fsPath,
         id: id,
         visible: true,
@@ -103,7 +112,6 @@ function createPathNode( folder, pathElements, isFolder )
         pathElement: pathElements[ pathElements.length - 1 ],
         label: pathElements[ pathElements.length - 1 ],
         nodes: [],
-        todos: [],
         id: id,
         visible: true,
         isFolder: isFolder
@@ -121,7 +129,6 @@ function createFlatNode( fsPath, rootNode )
         label: path.basename( fsPath ),
         pathLabel: pathLabel === '.' ? '' : '(' + pathLabel + ')',
         nodes: [],
-        todos: [],
         id: id,
         visible: true
     };
@@ -137,7 +144,6 @@ function createTagNode( fsPath, tag )
         label: tag,
         fsPath: tag,
         nodes: [],
-        todos: [],
         id: id,
         tag: tag,
         visible: true
@@ -281,7 +287,7 @@ function countTags( child, tagCounts, forStatusBar, fileFilter )
 {
     function countTag( node )
     {
-        if( node.type === TODO )
+        if( isTodoNode( node ) )
         {
             var tag = node.tag ? node.tag : "TODO";
             if( isVisible( node ) && ( !fileFilter || fileFilter === node.fsPath ) )
@@ -298,11 +304,8 @@ function countTags( child, tagCounts, forStatusBar, fileFilter )
 
     if( child.nodes !== undefined )
     {
-        countChildTags( child.nodes, tagCounts, forStatusBar, fileFilter );
-    }
-    if( child.todos )
-    {
-        child.todos.map( function( node ) { countTag( node ); } );
+        countChildTags( child.nodes.filter( isPathNode ), tagCounts, forStatusBar, fileFilter );
+        child.nodes.filter( isTodoNode ).map( function( node ) { countTag( node ); } );
     }
 }
 
@@ -345,7 +348,7 @@ class TreeNodeProvider
 
             var availableNodes = nodes.filter( function( node )
             {
-                return node.nodes === undefined || ( node.nodes.length + ( node.todos ? node.todos.length : 0 ) > 0 );
+                return node.nodes === undefined || ( node.nodes.length > 0 );
             } );
             var rootNodes = availableNodes.filter( isVisible );
             if( rootNodes.length > 0 )
@@ -422,7 +425,7 @@ class TreeNodeProvider
 
             return result;
         }
-        else if( node.type === PATH )
+        else if( isPathNode( node ) )
         {
             if( config.shouldCompactFolders() && node.tag === undefined )
             {
@@ -436,12 +439,8 @@ class TreeNodeProvider
             {
                 return node.nodes.filter( isVisible );
             }
-            else
-            {
-                return node.todos.filter( isVisible );
-            }
         }
-        else if( node.type === TODO )
+        else if( isTodoNode( node ) )
         {
             if( node.extraLines && node.extraLines.length > 0 )
             {
@@ -484,7 +483,7 @@ class TreeNodeProvider
                 treeItem.resourceUri = vscode.Uri.file( node.fsPath );
             }
 
-            if( treeItem.node.type === TODO )
+            if( isTodoNode( treeItem.node ) )
             {
                 treeItem.tooltip = config.tooltipFormat();
                 treeItem.tooltip = utils.formatLabel( config.tooltipFormat(), node );
@@ -494,7 +493,7 @@ class TreeNodeProvider
                 treeItem.tooltip = treeItem.fsPath;
             }
 
-            if( node.type === PATH )
+            if( isPathNode( node ) )
             {
                 if( config.shouldCompactFolders() && node.tag === undefined )
                 {
@@ -530,7 +529,7 @@ class TreeNodeProvider
                     treeItem.iconPath = vscode.ThemeIcon.File;
                 }
             }
-            else if( node.type === TODO )
+            else if( isTodoNode( node ) )
             {
                 if( node.extraLines && node.extraLines.length > 0 )
                 {
@@ -575,7 +574,7 @@ class TreeNodeProvider
             treeItem.iconPath = new vscode.ThemeIcon( node.icon );
         }
 
-        if( config.shouldShowCounts() && node.type === PATH )
+        if( config.shouldShowCounts() && isPathNode( node ) )
         {
             var tagCounts = {};
             countTags( node, tagCounts, false );
@@ -619,9 +618,9 @@ class TreeNodeProvider
                 nodes.sort( config.shouldGroup() ? sortByTagAndLine : ( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine ) );
                 nodes.forEach( function( node )
                 {
-                    if( node.todos )
+                    if( node.nodes )
                     {
-                        node.todos.sort( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine );
+                        node.nodes.sort( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine );
                     }
                 } );
             }
@@ -651,20 +650,15 @@ class TreeNodeProvider
             {
                 this.filter( text, child.nodes );
             }
-            if( child.todos !== undefined )
-            {
-                this.filter( text, child.todos );
-            }
             if( child.extraLines !== undefined )
             {
                 this.filter( text, child.extraLines );
             }
-            if( ( child.nodes && child.nodes.length > 0 ) || ( child.todos && child.todos.length > 0 ) || ( child.extraLines && child.extraLines.length > 0 ) )
+            if( ( child.nodes && child.nodes.length > 0 ) || ( child.extraLines && child.extraLines.length > 0 ) )
             {
                 var visibleNodes = child.nodes ? child.nodes.filter( isVisible ).length : 0;
-                var visibleTodos = child.todos ? child.todos.filter( isVisible ).length : 0;
                 var visibleExtraLines = child.extraLines ? child.extraLines.filter( isVisible ).length : 0;
-                child.visible = visibleNodes + visibleTodos + visibleExtraLines > 0;
+                child.visible = visibleNodes + visibleExtraLines > 0;
             }
         } );
     }
@@ -683,10 +677,6 @@ class TreeNodeProvider
             if( child.nodes !== undefined )
             {
                 this.clearTreeFilter( child.nodes );
-            }
-            if( child.todos !== undefined )
-            {
-                this.clearTreeFilter( child.todos );
             }
             if( child.extraLines !== undefined )
             {
@@ -754,17 +744,18 @@ class TreeNodeProvider
 
         if( childNode )
         {
-            if( childNode.todos === undefined )
+            // needed?
+            if( childNode.nodes === undefined )
             {
-                childNode.todos = [];
+                childNode.nodes = [];
             }
 
             childNode.expanded = result.expanded;
 
-            if( childNode.todos.find( findTodoNode, todoNode ) === undefined )
+            if( childNode.nodes.find( findTodoNode, todoNode ) === undefined )
             {
                 todoNode.parent = childNode;
-                childNode.todos.push( todoNode );
+                childNode.nodes.push( todoNode );
                 childNode.showCount = true;
             }
         }
@@ -796,17 +787,18 @@ class TreeNodeProvider
             {
                 if( config.shouldShowTagsOnly() )
                 {
-                    if( child.todos )
+                    if( child.nodes )
                     {
-                        child.todos = child.todos.filter( function( todo )
+                        child.nodes = child.nodes.filter( function( node )
                         {
-                            return todo.fsPath !== filename;
+                            return isTodoNode( node ) && node.fsPath !== filename;
                         } );
                     }
                 }
                 else
                 {
-                    child.todos = [];
+                    // needed?
+                    child.nodes = [];
                 }
             }
             return keep;
@@ -850,7 +842,7 @@ class TreeNodeProvider
                 {
                     child.nodes = me.remove( callback, filename, child.nodes );
                 }
-                var shouldRemove = ( child.nodes && child.todos && child.nodes.length + child.todos.length === 0 && child.isWorkspaceNode !== true );
+                var shouldRemove = ( child.nodes && child.nodes.length === 0 && child.isWorkspaceNode !== true );
                 if( shouldRemove )
                 {
                     delete expandedNodes[ child.fsPath ];
@@ -955,7 +947,7 @@ class TreeNodeProvider
     {
         var availableNodes = nodes.filter( function( node )
         {
-            return node.nodes === undefined || ( node.nodes.length + ( node.todos ? node.todos.length : 0 ) > 0 );
+            return node.nodes === undefined || ( node.nodes.length > 0 );
         } );
         var rootNodes = availableNodes.filter( isVisible );
         if( rootNodes.length > 0 )
