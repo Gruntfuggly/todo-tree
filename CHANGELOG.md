@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Add filter icon to filters active info node
+
 ## v0.0.196 - 2021-01-21
 
 - Fix compact folders when grouping by tag

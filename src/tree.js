@@ -391,6 +391,7 @@ class TreeNodeProvider
             {
                 filterStatusNode.label = totalFilters + " filter" + ( totalFilters === 1 ? '' : 's' ) + " active";
                 filterStatusNode.tooltip = tooltip + "\nRight click for filter options";
+                filterStatusNode.icon = "filter";
             }
 
             if( result.length === 0 )
