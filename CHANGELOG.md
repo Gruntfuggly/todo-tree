@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Add filter icon to filters active info node
+- Fix missing context flag for show export button
 
 ## v0.0.196 - 2021-01-21
 

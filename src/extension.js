@@ -645,6 +645,7 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-filter-button', showFilterButton );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-refresh-button', showRefreshButton );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-expand-button', showExpandButton );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-export-button', showExportButton );
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', c.get( 'tree.expanded', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', c.get( 'tree.flat', false ) ) );
