@@ -738,6 +738,11 @@
                     "deprecationMessage": "%todo-tree.configuration.tree.showScanOpenFilesOrWorkspaceButton.deprecationMessage%",
                     "type": "boolean"
                 },
+                "todo-tree.tree.subTagClickUrl": {
+                    "default": "",
+                    "markdownDescription": "%todo-tree.configuration.tree.subTagClickUrl.markdownDescription%",
+                    "type": "string"
+                },
                 "todo-tree.tree.buttons.reveal": {
                     "default": true,
                     "markdownDescription": "%todo-tree.configuration.tree.buttons.reveal.markdownDescription%",

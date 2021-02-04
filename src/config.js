@@ -221,6 +221,11 @@ function customHighlight()
     return vscode.workspace.getConfiguration( 'todo-tree.highlights' ).customHighlight;
 }
 
+function subTagClickUrl()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.tree' ).subTagClickUrl;
+}
+
 module.exports.init = init;
 module.exports.shouldGroup = shouldGroup;
 module.exports.shouldExpand = shouldExpand;
@@ -256,3 +261,4 @@ module.exports.foregroundColourScheme = foregroundColourScheme;
 module.exports.backgroundColourScheme = backgroundColourScheme;
 module.exports.defaultHighlight = defaultHighlight;
 module.exports.customHighlight = customHighlight;
+module.exports.subTagClickUrl = subTagClickUrl;

@@ -1157,6 +1157,12 @@ function activate( context )
             } );
         } ) );
 
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.openUrl', ( url ) =>
+        {
+            debug( "Opening " + url );
+            vscode.env.openExternal( vscode.Uri.parse( url ) );
+        } ) );
+
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.filter', function()
         {
             vscode.window.showInputBox( { prompt: "Filter tree" } ).then(
@@ -1239,7 +1245,7 @@ function activate( context )
             }
         } ) );
 
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeFilter', function( node )
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeFilter', function()
         {
             var CLEAR_TREE_FILTER = "Clear Tree Filter";
             var excludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];

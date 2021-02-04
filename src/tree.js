@@ -109,7 +109,7 @@ function createWorkspaceRootNode( folder )
     };
 }
 
-function createPathNode( folder, pathElements, isFolder )
+function createPathNode( folder, pathElements, isFolder, subTag )
 {
     var id = ( buildCounter * 1000000 ) + nodeCounter++;
     var fsPath = pathElements.length > 0 ? path.join( folder, pathElements.join( path.sep ) ) : folder;
@@ -122,7 +122,8 @@ function createPathNode( folder, pathElements, isFolder )
         nodes: [],
         id: id,
         visible: true,
-        isFolder: isFolder
+        isFolder: isFolder,
+        subTag: subTag
     };
 }
 
@@ -224,7 +225,7 @@ function locateFlatChildNode( rootNode, result, tag, subTag )
         var parentNode = parentNodes.find( findTagNode, tagPath );
         if( parentNode === undefined )
         {
-            parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tagPath ] );
+            parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tagPath ], subTag );
             parentNode.tag = tagPath;
             parentNodes.push( parentNode );
             if( config.shouldSortTree() )
@@ -252,7 +253,6 @@ function locateFlatChildNode( rootNode, result, tag, subTag )
 
 function locateTreeChildNode( rootNode, pathElements, tag, subTag )
 {
-    // console.log( "LOCATE:" + JSON.stringify( pathElements ) );
     var childNode;
 
     var parentNodes = rootNode.nodes;
@@ -268,7 +268,7 @@ function locateTreeChildNode( rootNode, pathElements, tag, subTag )
                 pathList.push( subTag );
             }
             pathList.push( tag );
-            parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), pathList );
+            parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), pathList, subTag );
             parentNode.tag = tag;
             parentNodes.push( parentNode );
             if( config.shouldSortTree() )
@@ -284,7 +284,7 @@ function locateTreeChildNode( rootNode, pathElements, tag, subTag )
         childNode = parentNodes.find( findPathNode, element );
         if( childNode === undefined )
         {
-            childNode = createPathNode( rootNode.fsPath, pathElements.slice( 0, level + 1 ), level < pathElements.length - 1 );
+            childNode = createPathNode( rootNode.fsPath, pathElements.slice( 0, level + 1 ), level < pathElements.length - 1, subTag );
             parentNodes.push( childNode );
             if( config.shouldSortTree() )
             {
@@ -497,7 +497,7 @@ class TreeNodeProvider
         if( node.fsPath )
         {
             treeItem.node = node;
-            if( config.showBadges() && !node.tag )
+            if( config.showBadges() && !node.tag && !node.subTag )
             {
                 treeItem.resourceUri = vscode.Uri.file( node.fsPath );
             }
@@ -547,6 +547,23 @@ class TreeNodeProvider
                 {
                     treeItem.iconPath = vscode.ThemeIcon.File;
                 }
+
+                if( node.subTag !== undefined )
+                {
+                    var url = config.subTagClickUrl();
+
+                    if( url.trim() !== "" )
+                    {
+                        url = utils.formatLabel( url, node );
+                        treeItem.command = {
+                            command: "todo-tree.openUrl",
+                            arguments: [
+                                url
+                            ]
+                        };
+                        treeItem.tooltip = "Click to open " + url;
+                    }
+                }
             }
             else if( isTodoNode( node ) )
             {
@@ -575,7 +592,6 @@ class TreeNodeProvider
 
                 treeItem.command = {
                     command: "todo-tree.revealTodo",
-                    title: "",
                     arguments: [
                         node.fsPath,
                         node.line,

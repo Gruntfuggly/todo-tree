@@ -343,6 +343,9 @@ The tree will normally respect the VSCode's `explorer.compactFolders` setting. S
 **todo-tree.tree.tooltipFormat** (`${filepath}, ${line}`)</br>
 Format of the tree item tooltips. Uses the same placeholders as `todo-tree.tree.labelFormat` (see above).
 
+**todo-tree.tree.subTagClickUrl**<br/>
+A URL (which can contain placeholders), which will be opened when clicking on a sub tag in the tree, e.g. `https://github.com/${subTag}` could be used if the sub tag extracts a user name.
+
 **todo-tree.tree.buttons.reveal** (`true`)<br/>
 Show a button in the tree view title bar to reveal the current item (only when track file is not enabled).
 
