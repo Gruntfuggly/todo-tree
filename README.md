@@ -293,7 +293,6 @@ A pattern file is used with ripgrep by default. If you experience issues with de
 
 **todo-tree.tree.hideTreeWhenEmpty** (`true`)<br/>
 Normally, the tree is removed from the explorer view if nothing is found. Set this to false to keep the view present.
-*NOTE: This setting is currently disabled due to a bug in VSCode. It will be re-enabled after the January release.*
 
 **todo-tree.tree.filterCaseSensitive** (`false`)<br/>
 Use this if you need the filtering to be case sensitive. *Note: this does not the apply to the search*.

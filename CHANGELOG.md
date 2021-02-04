@@ -5,6 +5,7 @@
 - Implement a sub tag regex (based on work by[calw20](https://github.com/calw20))
 - Support opening a URL by clicking on the sub tag in the tree
 - Wait for startup to finish before starting extension
+- Re-enable hideTreeWhenEmpty option
 
 ## v0.0.196 - 2021-01-21
 
