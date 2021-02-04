@@ -182,6 +182,24 @@
                     "when": "view =~/todo-tree/ && todo-tree-can-toggle-compact-folders == true",
                     "group": "misc"
                 }
+            ],
+            "commandPalette": [
+                {
+                    "command": "todo-tree.showOnlyThisFolder",
+                    "when": "false"
+                },
+                {
+                    "command": "todo-tree.showOnlyThisFolderAndSubfolders",
+                    "when": "false"
+                },
+                {
+                    "command": "todo-tree.excludeThisFolder",
+                    "when": "false"
+                },
+                {
+                    "command": "todo-tree.excludeThisFile",
+                    "when": "false"
+                }
             ]
         },
         "commands": [
