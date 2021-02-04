@@ -8,6 +8,7 @@
 - Re-enable hideTreeWhenEmpty option
 - Add delay before hiding tree when empty to prevent view disappearing on refresh
 - Allow use of alternative "iconColor" in highlights configuration
+- Support grouping by sub tag
 
 ## v0.0.196 - 2021-01-21
 

@@ -60,7 +60,7 @@ QUnit.test( "utils.removeBlockComments strips block comments based on filename",
 QUnit.test( "utils.extractTag removes everything including tag", function( assert )
 {
     var testConfig = stubs.getTestConfig();
-    testConfig.shouldGroupFlag = true;
+    testConfig.shouldGroupByTagFlag = true;
     utils.init( testConfig );
 
     var result = utils.extractTag( "before TODO after" );
@@ -71,7 +71,7 @@ QUnit.test( "utils.extractTag removes everything including tag", function( asser
 QUnit.test( "utils.extractTag can be case sensitive", function( assert )
 {
     var testConfig = stubs.getTestConfig();
-    testConfig.shouldGroupFlag = true;
+    testConfig.shouldGroupByTagFlag = true;
     testConfig.shouldBeCaseSensitive = false;
     utils.init( testConfig );
 
@@ -88,7 +88,7 @@ QUnit.test( "utils.extractTag can be case sensitive", function( assert )
 QUnit.test( "utils.extractTag returns tag from tags list, not the match", function( assert )
 {
     var testConfig = stubs.getTestConfig();
-    testConfig.shouldGroupFlag = true;
+    testConfig.shouldGroupByTagFlag = true;
     utils.init( testConfig );
 
     var result = utils.extractTag( "before todo after" );
@@ -99,7 +99,7 @@ QUnit.test( "utils.extractTag returns tag from tags list, not the match", functi
 QUnit.test( "utils.extractTag returns the tag offset", function( assert )
 {
     var testConfig = stubs.getTestConfig();
-    testConfig.shouldGroupFlag = true;
+    testConfig.shouldGroupByTagFlag = true;
     utils.init( testConfig );
 
     var result = utils.extractTag( "before todo after" );
@@ -188,7 +188,7 @@ QUnit.test( "utils.extractTag returns entire text if $TAGS is not found in regex
     assert.equal( result.after, "                before = text; // TODO stuff  " );
 } );
 
-QUnit.test( "utils.extractTag can extract subtag", function( assert )
+QUnit.test( "utils.extractTag can extract sub tag", function( assert )
 {
     var testConfig = stubs.getTestConfig();
     testConfig.subTagRegexString = ".*\\((.*)\\).*";
@@ -348,7 +348,7 @@ QUnit.test( "utils.formatLabel replaces filepath placeholder", function( assert 
     assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
-QUnit.test( "utils.formatLabel replaces subtag placeholder", function( assert )
+QUnit.test( "utils.formatLabel replaces sub tag placeholder", function( assert )
 {
     var unexpectedPlaceholders = [];
     assert.equal( utils.formatLabel( "Label ${subTag} content", { subTag: "name@mail.com" }, unexpectedPlaceholders ), "Label name@mail.com content" );

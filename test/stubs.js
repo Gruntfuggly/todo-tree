@@ -1,5 +1,5 @@
 var testConfig = {
-    shouldGroupFlag: false,
+    shouldGroupByTagFlag: false,
     shouldBeCaseSensitive: false,
     regexSource: "($TAGS)",
     tagList: [ "TODO" ],
@@ -18,9 +18,9 @@ testConfig.regex = function()
         caseSensitive: this.shouldBeCaseSensitive
     };
 };
-testConfig.shouldGroup = function()
+testConfig.shouldGroupByTag = function()
 {
-    return this.shouldGroupFlag;
+    return this.shouldGroupByTagFlag;
 };
 testConfig.globs = function()
 {

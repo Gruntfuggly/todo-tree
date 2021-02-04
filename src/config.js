@@ -14,9 +14,14 @@ function init( c )
     refreshTagGroupLookup();
 }
 
-function shouldGroup()
+function shouldGroupByTag()
 {
-    return context.workspaceState.get( 'grouped', vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'grouped', false ) );
+    return context.workspaceState.get( 'groupedByTag', vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'groupedByTag', false ) );
+}
+
+function shouldGroupBySubTag()
+{
+    return context.workspaceState.get( 'groupedBySubTag', vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'groupedBySubTag', false ) );
 }
 
 function shouldExpand()
@@ -227,7 +232,8 @@ function subTagClickUrl()
 }
 
 module.exports.init = init;
-module.exports.shouldGroup = shouldGroup;
+module.exports.shouldGroupByTag = shouldGroupByTag;
+module.exports.shouldGroupBySubTag = shouldGroupBySubTag;
 module.exports.shouldExpand = shouldExpand;
 module.exports.shouldFlatten = shouldFlatten;
 module.exports.shouldShowTagsOnly = shouldShowTagsOnly;

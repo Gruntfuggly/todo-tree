@@ -166,7 +166,7 @@ function createTodoNode( result )
     var extracted = utils.extractTag( text, result.column );
     var label = ( extracted.withoutTag && extracted.withoutTag.length > 0 ) ? extracted.withoutTag : "line " + result.line;
 
-    if( config.shouldGroup() !== true )
+    if( config.shouldGroupByTag() !== true )
     {
         label = extracted.tag + " " + label;
     }
@@ -219,14 +219,32 @@ function locateWorkspaceNode( filename )
 function locateFlatChildNode( rootNode, result, tag, subTag )
 {
     var parentNodes = ( rootNode === undefined ? nodes : rootNode.nodes );
-    if( config.shouldGroup() && tag )
+    var parentNode;
+
+    if( config.shouldGroupByTag() && tag )
     {
-        var tagPath = subTag ? tag + " (" + subTag + ")" : tag;
-        var parentNode = parentNodes.find( findTagNode, tagPath );
+        var tagPath = tag;
+        parentNode = parentNodes.find( findTagNode, tagPath );
         if( parentNode === undefined )
         {
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tagPath ], subTag );
             parentNode.tag = tagPath;
+            parentNodes.push( parentNode );
+            if( config.shouldSortTree() )
+            {
+                parentNodes.sort( sortByFilenameAndLine );
+            }
+        }
+        parentNodes = parentNode.nodes;
+    }
+    else if( config.shouldGroupBySubTag() && subTag )
+    {
+        var subTagPath = subTag;
+        parentNode = parentNodes.find( findSubTagNode, subTagPath );
+        if( parentNode === undefined )
+        {
+            parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ subTagPath ], subTag );
+            parentNode.subTag = subTagPath;
             parentNodes.push( parentNode );
             if( config.shouldSortTree() )
             {
@@ -241,6 +259,10 @@ function locateFlatChildNode( rootNode, result, tag, subTag )
     if( childNode === undefined )
     {
         childNode = createFlatNode( nodePath, rootNode );
+        if( subTag )
+        {
+            treeHasSubTags = true;
+        }
         parentNodes.push( childNode );
         if( config.shouldSortTree() )
         {
@@ -256,20 +278,38 @@ function locateTreeChildNode( rootNode, pathElements, tag, subTag )
     var childNode;
 
     var parentNodes = rootNode.nodes;
+    var parentNode;
 
-    if( config.shouldGroup() && tag )
+    if( config.shouldGroupByTag() && tag )
     {
-        var parentNode = parentNodes.find( findTagNode, tag );
+        parentNode = parentNodes.find( findTagNode, tag );
         if( parentNode === undefined )
         {
-            var pathList = [];
+            var tagPathList = [];
             if( subTag )
             {
-                pathList.push( subTag );
+                tagPathList.push( subTag );
             }
-            pathList.push( tag );
-            parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), pathList, subTag );
+            tagPathList.push( tag );
+            parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), tagPathList, subTag );
             parentNode.tag = tag;
+            parentNodes.push( parentNode );
+            if( config.shouldSortTree() )
+            {
+                parentNodes.sort( sortByLabelAndLine );
+            }
+        }
+        parentNodes = parentNode.nodes;
+    }
+    else if( config.shouldGroupBySubTag() && subTag )
+    {
+        parentNode = parentNodes.find( findSubTagNode, subTag );
+        if( parentNode === undefined )
+        {
+            var subTagPathList = [];
+            subTagPathList.push( subTag );
+            parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), subTagPathList, subTag );
+            parentNode.subTag = subTag;
             parentNodes.push( parentNode );
             if( config.shouldSortTree() )
             {
@@ -371,7 +411,7 @@ class TreeNodeProvider
             var rootNodes = availableNodes.filter( isVisible );
             if( rootNodes.length > 0 )
             {
-                if( config.shouldGroup() )
+                if( config.shouldGroupByTag() || config.shouldGroupBySubTag() )
                 {
                     rootNodes.sort( function( a, b )
                     {
@@ -572,7 +612,7 @@ class TreeNodeProvider
                     treeItem.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
                 }
 
-                if( config.shouldHideIconsWhenGroupedByTag() !== true || config.shouldGroup() !== true )
+                if( config.shouldHideIconsWhenGroupedByTag() !== true || ( config.shouldGroupByTag() !== true && config.shouldGroupBySubTag() !== true ) )
                 {
                     if( node.isExtraLine !== true )
                     {
@@ -649,7 +689,7 @@ class TreeNodeProvider
         {
             if( config.shouldSortTree() )
             {
-                nodes.sort( config.shouldGroup() ? sortByTagAndLine : ( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine ) );
+                nodes.sort( ( config.shouldGroupByTag() || config.shouldGroupBySubTag() ) ? sortByTagAndLine : ( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine ) );
                 nodes.forEach( function( node )
                 {
                     if( node.nodes )
@@ -739,7 +779,7 @@ class TreeNodeProvider
 
         if( config.shouldShowTagsOnly() )
         {
-            if( config.shouldGroup() )
+            if( config.shouldGroupByTag() )
             {
                 if( todoNode.tag )
                 {
@@ -777,7 +817,10 @@ class TreeNodeProvider
             }
             if( todoNode.subTag )
             {
-                pathElements.push( todoNode.subTag );
+                if( config.shouldGroupBySubTag() !== true )
+                {
+                    pathElements.push( todoNode.subTag );
+                }
             }
             childNode = locateTreeChildNode( rootNode, pathElements, todoNode.tag, todoNode.subTag );
         }

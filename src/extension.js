@@ -625,8 +625,9 @@ function activate( context )
     {
         var c = vscode.workspace.getConfiguration( 'todo-tree' );
         var isTagsOnly = context.workspaceState.get( 'tagsOnly', c.get( 'tree.tagsOnly', false ) );
-        var isGrouped = context.workspaceState.get( 'grouped', c.get( 'tree.grouped', false ) );
-        var isCollapsible = !isTagsOnly || isGrouped;
+        var isGroupedByTag = context.workspaceState.get( 'groupedByTag', c.get( 'tree.groupedByTag', false ) );
+        var isGroupedBySubTag = context.workspaceState.get( 'groupedBySubTag', c.get( 'tree.groupedBySubTag', false ) );
+        var isCollapsible = !isTagsOnly || isGroupedByTag || isGroupedBySubTag;
         var includeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
         var excludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
 
@@ -634,6 +635,7 @@ function activate( context )
         var showScanModeButton = c.get( 'tree.buttons' ).scanMode === true;
         var showViewStyleButton = c.get( 'tree.buttons' ).viewStyle === true;
         var showGroupByTagButton = c.get( 'tree.buttons' ).groupByTag === true;
+        var showGroupBySubTagButton = c.get( 'tree.buttons' ).groupBySubTag === true;
         var showFilterButton = c.get( 'tree.buttons' ).filter === true;
         var showRefreshButton = c.get( 'tree.buttons' ).refresh === true;
         var showExpandButton = c.get( 'tree.buttons' ).expand === true;
@@ -643,6 +645,7 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-scan-mode-button', showScanModeButton );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-view-style-button', showViewStyleButton );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-group-by-tag-button', showGroupByTagButton );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-show-group-by-sub-tag-button', showGroupBySubTagButton );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-filter-button', showFilterButton );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-refresh-button', showRefreshButton );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-show-expand-button', showExpandButton );
@@ -651,7 +654,8 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-expanded', context.workspaceState.get( 'expanded', c.get( 'tree.expanded', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-flat', context.workspaceState.get( 'flat', c.get( 'tree.flat', false ) ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-tags-only', isTagsOnly );
-        vscode.commands.executeCommand( 'setContext', 'todo-tree-grouped', isGrouped );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-grouped-by-tag', isGroupedByTag );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-grouped-by-sub-tag', isGroupedBySubTag );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-filtered', context.workspaceState.get( 'filtered', false ) );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-collapsible', isCollapsible );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-folder-filter-active', includeGlobs.length + excludeGlobs.length > 0 );
@@ -836,8 +840,10 @@ function activate( context )
 
     function collapse() { context.workspaceState.update( 'expanded', false ).then( clearExpansionStateAndRefresh ); }
     function expand() { context.workspaceState.update( 'expanded', true ).then( clearExpansionStateAndRefresh ); }
-    function groupByTag() { context.workspaceState.update( 'grouped', true ).then( refresh ); }
-    function ungroupByTag() { context.workspaceState.update( 'grouped', false ).then( refresh ); }
+    function groupByTag() { context.workspaceState.update( 'groupedByTag', true ).then( refresh ); }
+    function ungroupByTag() { context.workspaceState.update( 'groupedByTag', false ).then( refresh ); }
+    function groupBySubTag() { context.workspaceState.update( 'groupedBySubTag', true ).then( refresh ); }
+    function ungroupBySubTag() { context.workspaceState.update( 'groupedBySubTag', false ).then( refresh ); }
 
     function clearTreeFilter()
     {
@@ -1402,6 +1408,8 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.collapse', collapse ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.groupByTag', groupByTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.ungroupByTag', ungroupByTag ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.groupBySubTag', groupBySubTag ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.ungroupBySubTag', ungroupBySubTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.addTag', addTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeTag', removeTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.onStatusBarClicked', onStatusBarClicked ) );

@@ -97,38 +97,48 @@
                 },
                 {
                     "command": "todo-tree.groupByTag",
-                    "when": "view =~ /todo-tree/ && todo-tree-grouped == false && todo-tree-show-group-by-tag-button == true",
+                    "when": "view =~ /todo-tree/ && todo-tree-grouped-by-tag == false && todo-tree-show-group-by-tag-button == true",
                     "group": "navigation@5"
                 },
                 {
                     "command": "todo-tree.ungroupByTag",
-                    "when": "view =~ /todo-tree/ && todo-tree-grouped == true && todo-tree-show-group-by-tag-button == true",
+                    "when": "view =~ /todo-tree/ && todo-tree-grouped-by-tag == true && todo-tree-show-group-by-tag-button == true",
                     "group": "navigation@5"
+                },
+                {
+                    "command": "todo-tree.groupBySubTag",
+                    "when": "view =~ /todo-tree/ && todo-tree-grouped-by-sub-tag == false && todo-tree-show-group-by-sub-tag-button == true",
+                    "group": "navigation@6"
+                },
+                {
+                    "command": "todo-tree.ungroupBySubTag",
+                    "when": "view =~ /todo-tree/ && todo-tree-grouped-by-sub-tag == true && todo-tree-show-group-by-sub-tag-button == true",
+                    "group": "navigation@6"
                 },
                 {
                     "command": "todo-tree.filter",
                     "when": "view =~ /todo-tree/ && todo-tree-filtered == false && todo-tree-show-filter-button == true",
-                    "group": "navigation@6"
+                    "group": "navigation@7"
                 },
                 {
                     "command": "todo-tree.filterClear",
                     "when": "view =~ /todo-tree/ && todo-tree-filtered == true && todo-tree-show-filter-button == true",
-                    "group": "navigation@6"
+                    "group": "navigation@7"
                 },
                 {
                     "command": "todo-tree.refresh",
                     "when": "view =~ /todo-tree/ && todo-tree-show-refresh-button == true",
-                    "group": "navigation@7"
+                    "group": "navigation@8"
                 },
                 {
                     "command": "todo-tree.expand",
                     "when": "view =~ /todo-tree/ && todo-tree-expanded == false && todo-tree-show-expand-button == true",
-                    "group": "navigation@8"
+                    "group": "navigation@9"
                 },
                 {
                     "command": "todo-tree.collapse",
                     "when": "view =~ /todo-tree/ && todo-tree-expanded == true && todo-tree-show-expand-button == true",
-                    "group": "navigation@8"
+                    "group": "navigation@9"
                 }
             ],
             "view/item/context": [
@@ -264,6 +274,18 @@
                 "title": "%todo-tree.command.ungroupByTag.title%",
                 "category": "%todo-tree.command.category%",
                 "icon": "$(unfold)"
+            },
+            {
+                "command": "todo-tree.groupBySubTag",
+                "title": "%todo-tree.command.groupBySubTag.title%",
+                "category": "%todo-tree.command.category%",
+                "icon": "$(chrome-restore)"
+            },
+            {
+                "command": "todo-tree.ungroupBySubTag",
+                "title": "%todo-tree.command.ungroupBySubTag.title%",
+                "category": "%todo-tree.command.category%",
+                "icon": "$(chrome-maximize)"
             },
             {
                 "command": "todo-tree.scanOpenFilesOnly",
@@ -666,9 +688,14 @@
                     "markdownDescription": "%todo-tree.configuration.tree.flat.markdownDescription%",
                     "type": "boolean"
                 },
-                "todo-tree.tree.grouped": {
+                "todo-tree.tree.groupedByTag": {
                     "default": false,
-                    "markdownDescription": "%todo-tree.configuration.tree.grouped.markdownDescription%",
+                    "markdownDescription": "%todo-tree.configuration.tree.groupedByTag.markdownDescription%",
+                    "type": "boolean"
+                },
+                "todo-tree.tree.groupedBySubTag": {
+                    "default": false,
+                    "markdownDescription": "%todo-tree.configuration.tree.groupedBySubTag.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.hideIconsWhenGroupedByTag": {
@@ -761,6 +788,11 @@
                 "todo-tree.tree.buttons.groupByTag": {
                     "default": true,
                     "markdownDescription": "%todo-tree.configuration.tree.buttons.groupByTag.markdownDescription%",
+                    "type": "boolean"
+                },
+                "todo-tree.tree.buttons.groupBySubTag": {
+                    "default": true,
+                    "markdownDescription": "%todo-tree.configuration.tree.buttons.groupBySubTag.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.buttons.filter": {
