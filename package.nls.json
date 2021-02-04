@@ -24,7 +24,7 @@
     "todo-tree.command.excludeThisFolder.title": "Hide This Folder",
     "todo-tree.command.excludeThisFile.title": "Hide This File",
     "todo-tree.command.removeFilter.title": "Remove Filter",
-    "todo-tree.command.resetAllFilters.title": "Reset All Filter",
+    "todo-tree.command.resetAllFilters.title": "Reset All Filters",
     "todo-tree.command.reveal.title": "Reveal Current File In Tree",
     "todo-tree.command.resetCache.title": "Reset Cache",
     "todo-tree.command.toggleItemCounts.title": "Toggle Item Counts",
