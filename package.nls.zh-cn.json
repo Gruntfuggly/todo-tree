@@ -78,7 +78,7 @@
     "todo-tree.configuration.ripgrep.ripgrep.markdownDescription": "通常此拓展在需要时能自行定位 ripgrep。若要使用 ripgrep 的其他版本，在此处设置其安装位置。",
     "todo-tree.configuration.ripgrep.ripgrepArgs.markdownDescription": "配置要传递给 ripgrep 的额外参数（谨慎使用）。",
     "todo-tree.configuration.ripgrep.ripgrepMaxBuffer.markdownDescription": "配置 ripgrep 缓冲区的大小（KB）。当目前缓冲区大小不足以查看所有标签时，可适当增加缓冲区大小。",
-    "todo-tree.ripgrep.usePatternFile.markdownDescription": "默认情况下，模板文件与 ripgrep 一起使用。当删除模板文件时遇到问题，请将此项设置为 false，即可使用向 ripgrep 提供正则表达式的旧方法。",
+    "todo-tree.configuration.ripgrep.usePatternFile.markdownDescription": "默认情况下，模板文件与 ripgrep 一起使用。当删除模板文件时遇到问题，请将此项设置为 false，即可使用向 ripgrep 提供正则表达式的旧方法。",
     "todo-tree.configuration.tree.autoRefresh.markdownDescription": "打开或保存文件时自动刷新树状图。",
     "todo-tree.configuration.tree.disableCompactFolders.markdownDescription": "通常树状图受 VSCode 的 `explorer.compactFolders` 影响并可能以紧凑形式呈现文件夹，而此项设置允许树状图以宽松形式呈现文件夹。",
     "todo-tree.configuration.tree.expanded.markdownDescription": "当打开新的工作区时，默认展开树状图。",

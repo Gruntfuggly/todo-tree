@@ -638,7 +638,7 @@
                 },
                 "todo-tree.ripgrep.usePatternFile": {
                     "default": true,
-                    "markdownDescription": "%todo-tree.ripgrep.usePatternFile.markdownDescription%",
+                    "markdownDescription": "%todo-tree.configuration.ripgrep.usePatternFile.markdownDescription%",
                     "type": "boolean"
                 },
                 "todo-tree.tree.autoRefresh": {
