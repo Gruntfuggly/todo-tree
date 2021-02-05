@@ -6,6 +6,7 @@
 - Support opening a URL by clicking on the sub tag in the tree
 - Wait for startup to finish before starting extension
 - Re-enable hideTreeWhenEmpty option
+- Add delay before hiding tree when empty to prevent view disappearing on refresh
 
 ## v0.0.196 - 2021-01-21
 

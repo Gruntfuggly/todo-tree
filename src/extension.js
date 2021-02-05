@@ -23,6 +23,7 @@ var selectedDocument;
 var refreshTimeout;
 var fileRefreshTimeout;
 var fileWatcherTimeout;
+var hideTimeout;
 var openDocuments = {};
 var provider;
 
@@ -659,13 +660,19 @@ function activate( context )
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-mode', config.scanMode() );
 
+        clearTimeout( hideTimeout );
+        hideTimeout = setTimeout( hideTreeIfEmpty, 1000 );
+    }
+
+    function hideTreeIfEmpty()
+    {
         var children = provider.getChildren();
         children = children.filter( function( child )
         {
             return child.isStatusNode !== true;
         } );
 
-        if( c.get( "tree.hideTreeWhenEmpty" ) === true )
+        if( vscode.workspace.getConfiguration( 'todo-tree' ).get( "tree.hideTreeWhenEmpty" ) === true )
         {
             vscode.commands.executeCommand( 'setContext', 'todo-tree-is-empty', children.length == 0 );
         }
