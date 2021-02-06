@@ -7,6 +7,7 @@
 - Wait for startup to finish before starting extension
 - Re-enable hideTreeWhenEmpty option
 - Add delay before hiding tree when empty to prevent view disappearing on refresh
+- Allow use of alternative "iconColor" in highlights configuration
 
 ## v0.0.196 - 2021-01-21
 

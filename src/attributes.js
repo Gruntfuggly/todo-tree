@@ -55,7 +55,11 @@ function getIconColour( tag )
 {
     var useColourScheme = config.shouldUseColourScheme();
 
-    var colour = getAttribute( tag, 'iconColour', undefined, useColourScheme );
+    var colour = getAttribute( tag, 'iconColor', undefined );
+    if( colour === undefined )
+    {
+        colour = getAttribute( tag, 'iconColour', undefined, useColourScheme );
+    }
     if( colour === undefined && useColourScheme )
     {
         colour = getSchemeColour( tag, config.backgroundColourScheme() );
