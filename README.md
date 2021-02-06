@@ -146,7 +146,7 @@ To make it easier to configure the tags, there are two commands available:
 
 ### Export
 
-The contents of the tree can be exported using **Todo Tree: Export Tree**. A read-only file will be created using the path specified with `todo-tree.general.exportPath`. The file can be saved using **File: Save As...**. Note: Currently **File: Save** does not work which seems to be a VSCode bug (see <https://github.com/microsoft/vscode/issues/101952>).
+The contents of the tree can be exported using **Todo Tree: Export Tree**. A read-only file will be created using the path specified with `todo-tree.general.exportPath`. The file can be saved using **File: Save As...**. *Note: Currently **File: Save** does not work which seems to be a VSCode bug (see <https://github.com/microsoft/vscode/issues/101952>).*
 
 ## Configuration
 
@@ -268,7 +268,7 @@ Defines colours for use in conjunction with `todo-tree.highlights.backgroundColo
 This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with <tt>&#47;&#47;</tt>, <tt>#</tt>, <tt>;</tt>, <tt>&lt;!--</tt> or <tt>&#47;*</tt>. This should cover most languages. However if you want to refine it, make sure that the <tt>($TAGS)</tt> is kept as <tt>($TAGS)</tt> will be replaced by the expanded tag list. For some of the extension features to work, <tt>($TAGS)</tt> should be present in the regex, however, the basic functionality should still work if you need to explicitly expand the tag list. The second part of the expression allows matching of Github markdown task lists. *Note: This is a [Rust regular expression](https://docs.rs/regex/1.0.0/regex)</a>, not javascript.*
 
 **todo-tree.regex.subTagRegex**
-Regular expression for processing the text to the right of the tag, e.g. for extracting a sub tag, or removing unwanted characters. Anything that the regex matches will be removed from the text. If a capture group is included, the contents are extracted into a sub tag, which will be used in the tree to group similar tags. The sub tag can also be used as a placeholder in `todo-tree.tree.subTagClickUrl`.
+This is a regular expression for processing the text to the right of the tag, e.g. for extracting a sub tag, or removing unwanted characters. Anything that the regex matches will be removed from the text. If a capture group is included, the contents are extracted into a sub tag, which will be used in the tree to group similar tags. The sub tag can also be used as a placeholder in `todo-tree.tree.subTagClickUrl` and `todo-tree.tree.labelFormat`.
 
 Examples:
 
@@ -301,7 +301,7 @@ Use this if you need the filtering to be case sensitive. *Note: this does not th
 Set to false if you want to prevent tracking the open file in the tree view.
 
 **todo-tree.tree.showBadges** (`true`)<br/>
-Set to false to disable SCM status and badges in the tree. Note: This also unfortunately turns off themed icons.
+Set to false to disable SCM status and badges in the tree. *Note: This also unfortunately turns off themed icons.*
 
 **todo-tree.tree.expanded<sup>*</sup>** (`false`)<br/>
 Set to true if you want new views to be expanded by default.
@@ -356,6 +356,9 @@ Show a button in the tree view title bar to change the view style (tree, flat or
 
 **todo-tree.tree.buttons.groupByTag** (`true`)<br/>
 Show a button in the tree view title bar to enable grouping items by tag.
+
+**todo-tree.tree.buttons.groupBySubTag** (`false`)<br/>
+Show a button in the tree view title bar to enable grouping items by sub tag. *Note: This button will only be visible when sub tags have been found and are present in the tree.*
 
 **todo-tree.tree.buttons.filter** (`true`)<br/>
 Show a button in the tree view title bar allowing the tree to be filtered by entering some text.

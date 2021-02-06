@@ -19,6 +19,8 @@ var nodeCounter = 1;
 
 var expandedNodes = {};
 
+var treeHasSubTags = false;
+
 var isVisible = function( e )
 {
     return e.visible === true && e.hidden !== true;
@@ -113,6 +115,11 @@ function createPathNode( folder, pathElements, isFolder, subTag )
 {
     var id = ( buildCounter * 1000000 ) + nodeCounter++;
     var fsPath = pathElements.length > 0 ? path.join( folder, pathElements.join( path.sep ) ) : folder;
+
+    if( subTag !== undefined )
+    {
+        treeHasSubTags = true;
+    }
 
     return {
         type: PATH,
@@ -386,13 +393,16 @@ function addWorkspaceFolders()
 
 class TreeNodeProvider
 {
-    constructor( _context, debug )
+    constructor( _context, debug, onTreeRefreshed )
     {
         this._context = _context;
         this._debug = debug;
+        this.onTreeRefreshed = onTreeRefreshed;
 
         this._onDidChangeTreeData = new vscode.EventEmitter();
         this.onDidChangeTreeData = this._onDidChangeTreeData.event;
+
+        this.nodesToGet = 0;
 
         buildCounter = _context.workspaceState.get( 'buildCounter', 1 );
         expandedNodes = _context.workspaceState.get( 'expandedNodes', {} );
@@ -419,6 +429,8 @@ class TreeNodeProvider
                     } );
                 }
                 result = rootNodes;
+
+                this.nodesToGet = result.length;
             }
 
             var filterStatusNode = { label: "", notExported: true, isStatusNode: true };
@@ -575,6 +587,11 @@ class TreeNodeProvider
                     treeItem.collapsibleState = config.shouldExpand() ? vscode.TreeItemCollapsibleState.Expanded : vscode.TreeItemCollapsibleState.Collapsed;
                 }
 
+                if( treeItem.collapsibleState === vscode.TreeItemCollapsibleState.Expanded )
+                {
+                    this.nodesToGet += node.nodes.filter( isVisible ).length;
+                }
+
                 if( node.isWorkspaceNode || node.tag )
                 {
                     treeItem.iconPath = icons.getIcon( this._context, node.tag ? node.tag : node.label, this._debug );
@@ -666,12 +683,24 @@ class TreeNodeProvider
             treeItem.contextValue = "file";
         }
 
+        if( !node.isStatusNode )
+        {
+            this.nodesToGet--;
+        }
+
+        if( this.nodesToGet === 0 && this.onTreeRefreshed )
+        {
+            this.onTreeRefreshed();
+        }
+
         return treeItem;
     }
 
     clear( folders )
     {
         nodes = [];
+
+        treeHasSubTags = false;
 
         workspaceFolders = folders;
 
@@ -1038,6 +1067,11 @@ class TreeNodeProvider
             return rootNodes[ 0 ];
         }
         return undefined;
+    }
+
+    hasSubTags()
+    {
+        return treeHasSubTags;
     }
 }
 

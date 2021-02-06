@@ -60,7 +60,7 @@ function activate( context )
     utils.init( config );
     attributes.init( config );
 
-    provider = new tree.TreeNodeProvider( context, debug );
+    provider = new tree.TreeNodeProvider( context, debug, setButtonsAndContext );
     var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
 
     var todoTreeView = vscode.window.createTreeView( "todo-tree-view", { treeDataProvider: provider } );
@@ -630,6 +630,7 @@ function activate( context )
         var isCollapsible = !isTagsOnly || isGroupedByTag || isGroupedBySubTag;
         var includeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
         var excludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
+        var hasSubTags = provider.hasSubTags();
 
         var showRevealButton = c.get( 'tree.buttons' ).reveal === true;
         var showScanModeButton = c.get( 'tree.buttons' ).scanMode === true;
@@ -661,6 +662,7 @@ function activate( context )
         vscode.commands.executeCommand( 'setContext', 'todo-tree-folder-filter-active', includeGlobs.length + excludeGlobs.length > 0 );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-global-filter-active', currentFilter );
         vscode.commands.executeCommand( 'setContext', 'todo-tree-can-toggle-compact-folders', vscode.workspace.getConfiguration( 'explorer' ).compactFolders === true );
+        vscode.commands.executeCommand( 'setContext', 'todo-tree-has-sub-tags', hasSubTags );
 
         vscode.commands.executeCommand( 'setContext', 'todo-tree-scan-mode', config.scanMode() );
 

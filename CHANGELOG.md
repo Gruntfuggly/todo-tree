@@ -9,6 +9,7 @@
 - Add delay before hiding tree when empty to prevent view disappearing on refresh
 - Allow use of alternative "iconColor" in highlights configuration
 - Support grouping by sub tag
+- Add more commands to tree view context menu
 
 ## v0.0.196 - 2021-01-21
 
