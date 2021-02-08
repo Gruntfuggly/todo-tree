@@ -18,7 +18,9 @@ Found TODOs can also be highlighted in open files.
 
 >*New!:* If you just want to set different colours for tags, you can now enable `todo-tree.highlights.useColourScheme`. This will apply a set of colours (which can be changed) to the tags in the order that they are defined.
 
-Highlighting tags is configurable. Use `defaultHighlight` to set up highlights for all tags. If you need to configure individual tags differently, use `customHighlight`. If settings are not specified in `customHighlight`, the value from `defaultHighlight` is used. If a setting is not specified in `defaultHighlight` then the older, deprecated `icon`, `iconColour` and `iconColours` settings are used.
+Highlighting tags is configurable. Use `defaultHighlight` to set up highlights for all tags. If you need to configure individual tags differently, use `customHighlight`. If settings are not specified in `customHighlight`, the value from `defaultHighlight` is used.
+
+Custom highlights can also be specified for sub tags (if used). *Note: `defaultHighlight` is not applied to sub tags.*
 
 Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
@@ -268,7 +270,7 @@ Defines colours for use in conjunction with `todo-tree.highlights.backgroundColo
 This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with <tt>&#47;&#47;</tt>, <tt>#</tt>, <tt>;</tt>, <tt>&lt;!--</tt> or <tt>&#47;*</tt>. This should cover most languages. However if you want to refine it, make sure that the <tt>($TAGS)</tt> is kept as <tt>($TAGS)</tt> will be replaced by the expanded tag list. For some of the extension features to work, <tt>($TAGS)</tt> should be present in the regex, however, the basic functionality should still work if you need to explicitly expand the tag list. The second part of the expression allows matching of Github markdown task lists. *Note: This is a [Rust regular expression](https://docs.rs/regex/1.0.0/regex)</a>, not javascript.*
 
 **todo-tree.regex.subTagRegex**
-This is a regular expression for processing the text to the right of the tag, e.g. for extracting a sub tag, or removing unwanted characters. Anything that the regex matches will be removed from the text. If a capture group is included, the contents are extracted into a sub tag, which will be used in the tree to group similar tags. The sub tag can also be used as a placeholder in `todo-tree.tree.subTagClickUrl` and `todo-tree.tree.labelFormat`.
+This is a regular expression for processing the text to the right of the tag, e.g. for extracting a sub tag, or removing unwanted characters. Anything that the regex matches will be removed from the text. If a capture group is included, the contents are extracted into a sub tag, which will be used in the tree to group similar tags. The sub tag can also be used as a placeholder in `todo-tree.tree.subTagClickUrl` and `todo-tree.tree.labelFormat`. Sub tags can also be highlighted  by specifying a section in the `todo-tree.highlights.customHighlights` setting.
 
 Examples:
 

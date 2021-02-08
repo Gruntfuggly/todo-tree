@@ -178,6 +178,8 @@ function getType( tag )
 function highlight( editor )
 {
     var documentHighlights = {};
+    var subTagHighlights = {};
+    var customHighlight = config.customHighlight();
 
     if( editor )
     {
@@ -195,6 +197,8 @@ function highlight( editor )
         {
             var text = editor.document.getText();
             var regex = utils.getRegexForEditorSearch();
+            var subTagRegex = new RegExp( config.subTagRegex() );
+
             var match;
             while( ( match = regex.exec( text ) ) !== null )
             {
@@ -230,6 +234,31 @@ function highlight( editor )
                     {
                         endPos = new vscode.Position( fullEndPos.line, editor.document.lineAt( fullEndPos.line ).range.end.character );
                     }
+                    else if( type === 'tag-and-subTag' || type === 'tag-and-subtag' )
+                    {
+                        var endOfLineOffset = editor.document.offsetAt( new vscode.Position( fullEndPos.line, editor.document.lineAt( fullEndPos.line ).range.end.character ) );
+                        var todoText = text.substring( offsetEnd, endOfLineOffset );
+                        var subTagMatch = subTagRegex.exec( todoText );
+                        if( subTagMatch !== null && subTagMatch.length > 1 )
+                        {
+                            var subTag = subTagMatch[ 1 ];
+                            if( customHighlight[ subTag ] !== undefined )
+                            {
+                                var subTagOffset = todoText.indexOf( subTag );
+                                if( subTagOffset !== -1 )
+                                {
+                                    var subTagStartPos = editor.document.positionAt( offsetEnd + subTagOffset );
+                                    var subTagEndPos = editor.document.positionAt( offsetEnd + subTagOffset + subTagMatch[ 1 ].length );
+                                    var subTagDecoration = { range: new vscode.Range( subTagStartPos, subTagEndPos ) };
+                                    if( subTagHighlights[ subTag ] === undefined )
+                                    {
+                                        subTagHighlights[ subTag ] = [];
+                                    }
+                                    subTagHighlights[ subTag ].push( subTagDecoration );
+                                }
+                            }
+                        }
+                    }
                     else if( type === 'tag-and-comment' )
                     {
                         startPos = editor.document.positionAt( match.index );
@@ -254,6 +283,13 @@ function highlight( editor )
                 var decoration = getDecoration( tag );
                 decorations[ editor.id ].push( decoration );
                 editor.setDecorations( decoration, documentHighlights[ tag ] );
+            } );
+
+            Object.keys( subTagHighlights ).forEach( function( subTag )
+            {
+                var decoration = getDecoration( subTag );
+                decorations[ editor.id ].push( decoration );
+                editor.setDecorations( decoration, subTagHighlights[ subTag ] );
             } );
         }
     }
