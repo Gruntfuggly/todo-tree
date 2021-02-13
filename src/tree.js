@@ -81,17 +81,13 @@ var sortFoldersFirst = function( a, b, same )
     }
 };
 
-var sortByLabelAndLine = function( a, b )
-{
-    return sortFoldersFirst( a, b, function( a, b ) { return a.label > b.label ? 1 : b.label > a.label ? -1 : a.line > b.line ? 1 : -1; } );
-};
 
 var sortByFilenameAndLine = function( a, b )
 {
     return sortFoldersFirst( a, b, function( a, b ) { return a.fsPath > b.fsPath ? 1 : b.fsPath > a.fsPath ? -1 : a.line > b.line ? 1 : -1; } );
 };
 
-var sortByTagAndLine = function( a, b )
+var sortByTagOrSubTag = function( a, b )
 {
     return sortFoldersFirst( a, b, function( a, b ) { return a.tag > b.tag ? 1 : b.tag > a.tag ? -1 : a.line > b.line ? 1 : -1; } );
 };
@@ -115,11 +111,6 @@ function createPathNode( folder, pathElements, isFolder, subTag )
 {
     var id = ( buildCounter * 1000000 ) + nodeCounter++;
     var fsPath = pathElements.length > 0 ? path.join( folder, pathElements.join( path.sep ) ) : folder;
-
-    if( subTag !== undefined )
-    {
-        treeHasSubTags = true;
-    }
 
     return {
         type: PATH,
@@ -158,11 +149,28 @@ function createTagNode( fsPath, tag )
         isRootTagNode: true,
         type: PATH,
         label: tag,
-        fsPath: tag,
+        fsPath: fsPath,
         nodes: [],
         id: id,
         tag: tag,
         visible: true
+    };
+}
+
+function createSubTagNode( subTag )
+{
+    var id = ( buildCounter * 1000000 ) + nodeCounter++;
+
+    return {
+        isRootTagNode: true,
+        type: PATH,
+        label: subTag,
+        fsPath: subTag,
+        nodes: [],
+        id: id,
+        subTag: subTag,
+        visible: true,
+        isFolder: true
     };
 }
 
@@ -236,11 +244,6 @@ function locateFlatChildNode( rootNode, result, tag, subTag )
         {
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tagPath ], subTag );
             parentNode.tag = tagPath;
-            parentNodes.push( parentNode );
-            if( config.shouldSortTree() )
-            {
-                parentNodes.sort( sortByFilenameAndLine );
-            }
         }
         parentNodes = parentNode.nodes;
     }
@@ -253,10 +256,6 @@ function locateFlatChildNode( rootNode, result, tag, subTag )
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ subTagPath ], subTag );
             parentNode.subTag = subTagPath;
             parentNodes.push( parentNode );
-            if( config.shouldSortTree() )
-            {
-                parentNodes.sort( sortByFilenameAndLine );
-            }
         }
         parentNodes = parentNode.nodes;
     }
@@ -266,15 +265,7 @@ function locateFlatChildNode( rootNode, result, tag, subTag )
     if( childNode === undefined )
     {
         childNode = createFlatNode( nodePath, rootNode );
-        if( subTag )
-        {
-            treeHasSubTags = true;
-        }
         parentNodes.push( childNode );
-        if( config.shouldSortTree() )
-        {
-            parentNodes.sort( sortByFilenameAndLine );
-        }
     }
 
     return childNode;
@@ -301,10 +292,6 @@ function locateTreeChildNode( rootNode, pathElements, tag, subTag )
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), tagPathList, subTag );
             parentNode.tag = tag;
             parentNodes.push( parentNode );
-            if( config.shouldSortTree() )
-            {
-                parentNodes.sort( sortByLabelAndLine );
-            }
         }
         parentNodes = parentNode.nodes;
     }
@@ -318,10 +305,6 @@ function locateTreeChildNode( rootNode, pathElements, tag, subTag )
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), subTagPathList, subTag );
             parentNode.subTag = subTag;
             parentNodes.push( parentNode );
-            if( config.shouldSortTree() )
-            {
-                parentNodes.sort( sortByLabelAndLine );
-            }
         }
         parentNodes = parentNode.nodes;
     }
@@ -333,10 +316,6 @@ function locateTreeChildNode( rootNode, pathElements, tag, subTag )
         {
             childNode = createPathNode( rootNode.fsPath, pathElements.slice( 0, level + 1 ), level < pathElements.length - 1, subTag );
             parentNodes.push( childNode );
-            if( config.shouldSortTree() )
-            {
-                parentNodes.sort( sortByLabelAndLine );
-            }
             parentNodes = childNode.nodes;
         }
         else
@@ -421,13 +400,6 @@ class TreeNodeProvider
             var rootNodes = availableNodes.filter( isVisible );
             if( rootNodes.length > 0 )
             {
-                if( config.shouldGroupByTag() || config.shouldGroupBySubTag() )
-                {
-                    rootNodes.sort( function( a, b )
-                    {
-                        return a.name > b.name;
-                    } );
-                }
                 result = rootNodes;
 
                 this.nodesToGet = result.length;
@@ -500,7 +472,7 @@ class TreeNodeProvider
         {
             if( config.shouldCompactFolders() && node.tag === undefined )
             {
-                while( node.nodes && node.nodes.length === 1 && node.nodes[ 0 ].nodes.length > 0 )
+                while( node.nodes && node.nodes.length === 1 && node.nodes[ 0 ].nodes && node.nodes[ 0 ].nodes.length > 0 )
                 {
                     node = node.nodes[ 0 ];
                 }
@@ -683,6 +655,11 @@ class TreeNodeProvider
             treeItem.contextValue = "file";
         }
 
+        if( node.subTag !== undefined )
+        {
+            treeHasSubTags = true;
+        }
+
         if( !node.isStatusNode )
         {
             this.nodesToGet--;
@@ -700,8 +677,6 @@ class TreeNodeProvider
     {
         nodes = [];
 
-        treeHasSubTags = false;
-
         workspaceFolders = folders;
 
         addWorkspaceFolders();
@@ -714,20 +689,13 @@ class TreeNodeProvider
 
     refresh()
     {
+        treeHasSubTags = false;
+
         if( config.shouldShowTagsOnly() )
         {
-            if( config.shouldSortTree() )
-            {
-                nodes.sort( ( config.shouldGroupByTag() || config.shouldGroupBySubTag() ) ? sortByTagAndLine : ( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine ) );
-                nodes.forEach( function( node )
-                {
-                    if( node.nodes )
-                    {
-                        node.nodes.sort( config.shouldSortTagsOnlyViewAlphabetically() ? sortByLabelAndLine : sortByFilenameAndLine );
-                    }
-                } );
-            }
         }
+
+        this.sort();
 
         this._onDidChangeTreeData.fire();
     }
@@ -815,8 +783,24 @@ class TreeNodeProvider
                     childNode = nodes.find( findTagNode, tagPath );
                     if( childNode === undefined )
                     {
-                        childNode = createTagNode( result.file, tagPath );
+                        childNode = createTagNode( todoNode.fsPath, tagPath );
                         nodes.push( childNode );
+                    }
+                }
+                else if( nodes.find( findTodoNode, todoNode ) === undefined )
+                {
+                    nodes.push( todoNode );
+                }
+            }
+            else if( config.shouldGroupBySubTag() )
+            {
+                if( todoNode.subTag )
+                {
+                    childNode = nodes.find( findSubTagNode, todoNode.subTag );
+                    if( childNode === undefined )
+                    {
+                        childNode = createSubTagNode( todoNode.subTag );
+                        nodes.unshift( childNode );
                     }
                 }
                 else if( nodes.find( findTodoNode, todoNode ) === undefined )
@@ -1072,6 +1056,34 @@ class TreeNodeProvider
     hasSubTags()
     {
         return treeHasSubTags;
+    }
+
+    sort( children )
+    {
+        console.log( "sort? " + config.shouldSortTree() );
+        if( config.shouldSortTree() )
+        {
+            if( children === undefined )
+            {
+                children = nodes;
+            }
+            children.forEach( function( child )
+            {
+                if( child.nodes !== undefined )
+                {
+                    this.sort( child.nodes );
+                }
+            }, this );
+
+            if( config.shouldShowTagsOnly() && config.shouldSortTagsOnlyViewAlphabetically() )
+            {
+                children.sort( sortByTagOrSubTag );
+            }
+            else
+            {
+                children.sort( sortByFilenameAndLine );
+            }
+        }
     }
 }
 
