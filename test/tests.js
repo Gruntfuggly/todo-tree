@@ -348,6 +348,15 @@ QUnit.test( "utils.formatLabel replaces filepath placeholder", function( assert 
     assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
+QUnit.test( "utils.formatLabel doesn't report errors if fileName or filePath is undefined", function( assert )
+{
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "Label ${filepath} content", {}, unexpectedPlaceholders ), "Label  content" );
+    assert.equal( unexpectedPlaceholders.length, 0 );
+    assert.equal( utils.formatLabel( "Label ${filename} content", {}, unexpectedPlaceholders ), "Label  content" );
+    assert.equal( unexpectedPlaceholders.length, 0 );
+} );
+
 QUnit.test( "utils.formatLabel replaces sub tag placeholder", function( assert )
 {
     var unexpectedPlaceholders = [];

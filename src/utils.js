@@ -300,6 +300,11 @@ function formatLabel( template, node, unexpectedPlaceholders )
         result = result.replace( /\$\{filename\}/g, path.basename( node.fsPath ) );
         result = result.replace( /\$\{filepath\}/g, node.fsPath );
     }
+    else
+    {
+        result = result.replace( /\$\{filename\}/g, "" );
+        result = result.replace( /\$\{filepath\}/g, "" );
+    }
 
     if( unexpectedPlaceholders )
     {
