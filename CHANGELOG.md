@@ -11,6 +11,7 @@
 - Add support for grouping by sub tag
 - Add more commands to tree view context menu
 - Add support for highlighting sub tags
+- Use storageUri instead of deprecated storagePath
 
 ## v0.0.196 - 2021-01-21
 
