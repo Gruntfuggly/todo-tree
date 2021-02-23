@@ -71,7 +71,10 @@ function getDecoration( tag )
         }
         else if( utils.isRgbColour( lightBackgroundColour ) )
         {
-            lightBackgroundColour = utils.setRgbAlpha( lightBackgroundColour, opacity > 1 ? opacity / 100 : opacity );
+            if( opacity !== 100 )
+            {
+                lightBackgroundColour = utils.setRgbAlpha( lightBackgroundColour, opacity > 1 ? opacity / 100 : opacity );
+            }
         }
         if( utils.isHexColour( darkBackgroundColour ) )
         {
@@ -79,7 +82,10 @@ function getDecoration( tag )
         }
         else if( utils.isRgbColour( darkBackgroundColour ) )
         {
-            darkBackgroundColour = utils.setRgbAlpha( darkBackgroundColour, opacity > 1 ? opacity / 100 : opacity );
+            if( opacity !== 100 )
+            {
+                darkBackgroundColour = utils.setRgbAlpha( darkBackgroundColour, opacity > 1 ? opacity / 100 : opacity );
+            }
         }
     }
 

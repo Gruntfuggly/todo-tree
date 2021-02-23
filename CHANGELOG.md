@@ -12,6 +12,7 @@
 - Add more commands to tree view context menu
 - Add support for highlighting sub tags
 - Use storageUri instead of deprecated storagePath
+- Don't override rgba alpha value if opacity is unset
 
 ## v0.0.196 - 2021-01-21
 
