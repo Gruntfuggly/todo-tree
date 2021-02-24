@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.197 - 2021-02-24
+
 - Add filter icon to filters active info node
 - Fix missing context flag for show export button
 - Implement a sub tag regex (based on work by[calw20](https://github.com/calw20))
