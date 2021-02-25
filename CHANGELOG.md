@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- revert commit which replaced deprecated storage path
+
 ## v0.0.197 - 2021-02-24
 
 - Add filter icon to filters active info node

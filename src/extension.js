@@ -433,10 +433,10 @@ function activate( context )
             options.filename = filename;
         }
 
-        if( context.storageUri.path && !fs.existsSync( context.storageUri.path ) )
+        if( context.storagePath && !fs.existsSync( context.storagePath ) )
         {
-            debug( "Attempting to create local storage folder " + context.storageUri.path );
-            fs.mkdirSync( context.storageUri.path, { recursive: true } );
+            debug( "Attempting to create local storage folder " + context.storagePath );
+            fs.mkdirSync( context.storagePath, { recursive: true } );
         }
 
         options.outputChannel = outputChannel;
@@ -444,10 +444,10 @@ function activate( context )
         options.maxBuffer = c.get( 'ripgrep.ripgrepMaxBuffer' );
         options.multiline = utils.getRegexSource().indexOf( "\\n" ) > -1;
 
-        if( fs.existsSync( context.storageUri.path ) === true && c.get( 'ripgrep.usePatternFile' ) === true )
+        if( fs.existsSync( context.storagePath ) === true && c.get( 'ripgrep.usePatternFile' ) === true )
         {
             var patternFileName = crypto.randomBytes( 6 ).readUIntLE( 0, 6 ).toString( 36 ) + '.txt';
-            options.patternFilePath = path.join( context.storageUri.path, patternFileName );
+            options.patternFilePath = path.join( context.storagePath, patternFileName );
         }
 
         if( c.get( 'filtering.includeHiddenFiles' ) )
@@ -1360,8 +1360,8 @@ function activate( context )
             context.workspaceState.update( 'grouped', undefined );
             context.globalState.update( 'migratedVersion', undefined );
 
-            purgeFolder( context.storageUri.path );
-            purgeFolder( context.globalStorageUri.path );
+            purgeFolder( context.storagePath );
+            purgeFolder( context.globalStoragePath );
         } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.resetAllFilters', function()
