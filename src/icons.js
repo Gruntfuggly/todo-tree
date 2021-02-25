@@ -20,13 +20,13 @@ function getIcon( context, tag, debug )
 
     var iconName = attributes.getIcon( tag );
 
-    if( context.globalStoragePath && !fs.existsSync( context.globalStoragePath ) )
+    if( context.globalStorageUri.fsPath && !fs.existsSync( context.globalStorageUri.fsPath ) )
     {
         if( debug )
         {
-            debug( "Attempting to create global storage folder " + context.globalStoragePath );
+            debug( "Attempting to create global storage folder " + context.globalStorageUri.fsPath );
         }
-        fs.mkdirSync( context.globalStoragePath );
+        fs.mkdirSync( context.globalStorageUri.fsPath );
     }
 
     if( iconName === 'todo-tree' || iconName === 'todo-tree-filled' )
@@ -37,7 +37,7 @@ function getIcon( context, tag, debug )
             compactColourName = "green";
         }
 
-        var colouredTodoTreeIconPath = path.join( context.globalStoragePath, iconName + "-" + compactColourName + ".svg" );
+        var colouredTodoTreeIconPath = path.join( context.globalStorageUri.fsPath, iconName + "-" + compactColourName + ".svg" );
         if( !fs.existsSync( colouredTodoTreeIconPath ) )
         {
             var colouredTodoTreeIconDefinition = ( iconName === 'todo-tree' ) ?
@@ -78,9 +78,9 @@ function getIcon( context, tag, debug )
             compactColourName = "green";
         }
 
-        if( context.globalStoragePath )
+        if( context.globalStorageUri.fsPath )
         {
-            var octiconIconPath = path.join( context.globalStoragePath, "todo-" + iconName + "-" + compactColourName + ".svg" );
+            var octiconIconPath = path.join( context.globalStorageUri.fsPath, "todo-" + iconName + "-" + compactColourName + ".svg" );
             if( !fs.existsSync( octiconIconPath ) )
             {
                 var octiconIconDefinition = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n" +
@@ -95,7 +95,7 @@ function getIcon( context, tag, debug )
     }
     else if( utils.isHexColour( colour ) || utils.isRgbColour( colour ) || utils.isNamedColour( colour ) )
     {
-        var colouredIconPath = path.join( context.globalStoragePath, "todo-" + compactColourName + ".svg" );
+        var colouredIconPath = path.join( context.globalStorageUri.fsPath, "todo-" + compactColourName + ".svg" );
         if( !fs.existsSync( colouredIconPath ) )
         {
             var colouredIconDefinition =

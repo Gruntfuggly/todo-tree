@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Use storageUri instead of deprecated storagePath (v2)
+
 ## v0.0.198 - 2021-02-25
 
 - revert commit which replaced deprecated storage path
