@@ -483,7 +483,9 @@
                     "type": "array"
                 },
                 "todo-tree.filtering.excludeGlobs": {
-                    "default": [],
+                    "default": [
+                        "**/node_modules"
+                    ],
                     "items": {
                         "type": "string"
                     },

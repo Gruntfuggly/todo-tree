@@ -200,8 +200,8 @@ Set the behaviour of clicking the status bar to either cycle display formats, or
 **todo-tree.filtering.includeGlobs** (`[]`)<br/>
 Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders. [Globs help](https://code.visualstudio.com/api/references/vscode-api#GlobPattern). *Note: globs paths are absolute - not relative to the current workspace.*
 
-**todo-tree.filtering.excludeGlobs** (`[]`)<br/>
-Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. `[\"**/*.txt\"]` to ignore all .txt files
+**todo-tree.filtering.excludeGlobs** (`["**/node_modules"]`)<br/>
+Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. `[\"**/*.txt\"]` to ignore all .txt files. *Note: `node_modules` are excluded by default.*
 
 **todo-tree.filtering.includedWorkspaces** (`[]`)<br/>
 A list of workspace names to include as roots in the tree (wildcards can be used). An empty array includes all workspace folders.

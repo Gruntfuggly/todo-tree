@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Use storageUri instead of deprecated storagePath (v2)
+- Add `**/node_modules` to default exclude globs
 
 ## v0.0.198 - 2021-02-25
 
