@@ -79,6 +79,10 @@ function removeBlockComments( text, fileName )
     {
         fileName = path.join( path.dirname( fileName ), path.basename( fileName, path.extname( fileName ) ) ) + ".js";
     }
+    else if( path.extname( fileName ) === ".vue" )
+    {
+        fileName = path.join( path.dirname( fileName ), path.basename( fileName, path.extname( fileName ) ) ) + ".html";
+    }
 
     var commentPattern;
     try
