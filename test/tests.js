@@ -313,10 +313,24 @@ QUnit.test( "utils.formatLabel replaces before text placeholder", function( asse
     assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
-QUnit.test( "utils.formatLabel replaces tag placeholder", function( assert )
+QUnit.test( "utils.formatLabel replaces tag placeholders", function( assert )
 {
     var unexpectedPlaceholders = [];
-    assert.equal( utils.formatLabel( "Label ${tag} content", { actualTag: "TODO" }, unexpectedPlaceholders ), "Label TODO content" );
+    assert.equal( utils.formatLabel( "Label ${tag} content", { actualTag: "Todo" }, unexpectedPlaceholders ), "Label Todo content" );
+    assert.equal( utils.formatLabel( "Label ${tag:uppercase} content", { actualTag: "todo" }, unexpectedPlaceholders ), "Label TODO content" );
+    assert.equal( utils.formatLabel( "Label ${tag:lowercase} content", { actualTag: "TODO" }, unexpectedPlaceholders ), "Label todo content" );
+    assert.equal( utils.formatLabel( "Label ${tag:capitalize} content", { actualTag: "todo" }, unexpectedPlaceholders ), "Label Todo content" );
+    assert.equal( unexpectedPlaceholders.length, 0 );
+} );
+
+QUnit.test( "utils.formatLabel replaces sub tag placeholders", function( assert )
+{
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "Label ${subTag} content", { subTag: "name@mail.com" }, unexpectedPlaceholders ), "Label name@mail.com content" );
+    assert.equal( utils.formatLabel( "Label ${subtag} content", { subTag: "Name@mail.com" }, unexpectedPlaceholders ), "Label Name@mail.com content" );
+    assert.equal( utils.formatLabel( "Label ${subtag:uppercase} content", { subTag: "example" }, unexpectedPlaceholders ), "Label EXAMPLE content" );
+    assert.equal( utils.formatLabel( "Label ${subtag:lowercase} content", { subTag: "EXAMPLE" }, unexpectedPlaceholders ), "Label example content" );
+    assert.equal( utils.formatLabel( "Label ${subtag:capitalize} content", { subTag: "example" }, unexpectedPlaceholders ), "Label Example content" );
     assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
@@ -354,13 +368,6 @@ QUnit.test( "utils.formatLabel doesn't report errors if fileName or filePath is 
     assert.equal( utils.formatLabel( "Label ${filepath} content", {}, unexpectedPlaceholders ), "Label  content" );
     assert.equal( unexpectedPlaceholders.length, 0 );
     assert.equal( utils.formatLabel( "Label ${filename} content", {}, unexpectedPlaceholders ), "Label  content" );
-    assert.equal( unexpectedPlaceholders.length, 0 );
-} );
-
-QUnit.test( "utils.formatLabel replaces sub tag placeholder", function( assert )
-{
-    var unexpectedPlaceholders = [];
-    assert.equal( utils.formatLabel( "Label ${subTag} content", { subTag: "name@mail.com" }, unexpectedPlaceholders ), "Label name@mail.com content" );
     assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 

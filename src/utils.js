@@ -285,26 +285,34 @@ function formatLabel( template, node, unexpectedPlaceholders )
 {
     var result = template;
 
-    var subTag = node.subTag ? node.subTag : "";
+    var tag = String(node.actualTag).trim();
+    var subTag = node.subTag ? String(node.subTag).trim() : "";
+    var filename = node.fsPath ? path.basename( node.fsPath ) : "";
+    var filepath = node.fsPath ? node.fsPath : "";
 
-    result = result.replace( /\$\{line\}/g, ( node.line + 1 ) );
-    result = result.replace( /\$\{column\}/g, node.column );
-    result = result.replace( /\$\{tag\}/g, node.actualTag );
-    result = result.replace( /\$\{subTag\}/g, subTag );
-    result = result.replace( /\$\{subtag\}/g, subTag );
-    result = result.replace( /\$\{after\}/g, node.after );
-    result = result.replace( /\$\{before\}/g, node.before );
-    result = result.replace( /\$\{afterOrBefore\}/g, ( ( node.after === "" ) ? node.before : node.after ) );
-    if( node.fsPath )
-    {
-        result = result.replace( /\$\{filename\}/g, path.basename( node.fsPath ) );
-        result = result.replace( /\$\{filepath\}/g, node.fsPath );
+    var formatLabelMap = {
+      "line": node.line + 1,
+      "column": node.column,
+      "tag": tag,
+      "tag:uppercase": tag.toUpperCase(),
+      "tag:lowercase": tag.toLowerCase(),
+      "tag:capitalize": tag.charAt(0).toUpperCase() + tag.slice(1),
+      "subtag": subTag,
+      "subtag:uppercase": subTag.toUpperCase(),
+      "subtag:lowercase": subTag.toLowerCase(),
+      "subtag:capitalize": ( subTag === "" ) ? "" : subTag.charAt(0).toUpperCase() + subTag.slice(1),
+      "before": node.before,
+      "after": node.after,
+      "afterOrBefore": ( node.after === "" ) ? node.before : node.after,
+      "filename": filename,
+      "filepath": filepath
     }
-    else
-    {
-        result = result.replace( /\$\{filename\}/g, "" );
-        result = result.replace( /\$\{filepath\}/g, "" );
-    }
+
+    // prepare regex to substitude "${name}" with it's value from map
+    var re = new RegExp("\\$\\{(" + Object.keys(formatLabelMap).join("|") + ")\\}", "gi");
+    result = result.replace(re, function(matched){
+      return formatLabelMap[matched.slice(2, -1).toLowerCase()];
+    });
 
     if( unexpectedPlaceholders )
     {
