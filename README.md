@@ -28,7 +28,7 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `background` - used to set the background colour of the highlight in the editor.
 
-*Note: Foreground and background colours can be specified using [HTML/CSS colour names](https://en.wikipedia.org/wiki/Web_colors) (e.g. "Salmon"), RGB hex values (e.g. "#80FF00"), RGB CSS style values (e.g. "rgb(255,128,0)" or colours from the current theme, e.g. `peekViewResult.background`. Hex and RGB values can also have an alpha specified, e.g. "#ff800080" or "rgba(255,128,0,0.5)".*
+*Note: Foreground and background colours can be specified using [HTML/CSS colour names](https://en.wikipedia.org/wiki/Web_colors) (e.g. "Salmon"), RGB hex values (e.g. "#80FF00"), RGB CSS style values (e.g. "rgb(255,128,0)" or colours from the current theme, e.g. `peekViewResult.background`. See [Theme Color](https://code.visualstudio.com/api/references/theme-color) for the details. Hex and RGB values can also have an alpha specified, e.g. "#ff800080" or "rgba(255,128,0,0.5)".*
 
 `opacity` - percentage value used with the background colour. 100% will produce an opaque background which will obscure selection and other decorations. *Note: opacity can only be specified when hex or rgb colours are used.*
 
