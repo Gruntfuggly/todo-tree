@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.198 - 2021-02-28
+
 - Use storageUri instead of deprecated storagePath (v2)
 - Add `**/node_modules` to default exclude globs
 - Add support for removing trailing comment marker from .vue files (treated as HTML)
