@@ -51,6 +51,7 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 - `tag` - highlights just the tag
 - `text` - highlights the tag and any text after the tag
 - `tag-and-comment` - highlights the comment characters (or the start of the match) and the tag
+- `tag-and-subTag` - as above, but allows the sub tag to be highlight too (with colours defined in custom highlights)
 - `text-and-comment` - highlights the comment characters (or the start of the match), the tag and the text after the tag
 - `line` - highlights the entire line containing the tag
 - `whole-line` - highlights the entire line containing the tag to the full width of the editor
@@ -270,7 +271,7 @@ Defines colours for use in conjunction with `todo-tree.highlights.backgroundColo
 This defines the regex used to locate TODOs. By default, it searches for tags in comments starting with <tt>&#47;&#47;</tt>, <tt>#</tt>, <tt>;</tt>, <tt>&lt;!--</tt> or <tt>&#47;*</tt>. This should cover most languages. However if you want to refine it, make sure that the <tt>($TAGS)</tt> is kept as <tt>($TAGS)</tt> will be replaced by the expanded tag list. For some of the extension features to work, <tt>($TAGS)</tt> should be present in the regex, however, the basic functionality should still work if you need to explicitly expand the tag list. The second part of the expression allows matching of Github markdown task lists. *Note: This is a [Rust regular expression](https://docs.rs/regex/1.0.0/regex)</a>, not javascript.*
 
 **todo-tree.regex.subTagRegex**
-This is a regular expression for processing the text to the right of the tag, e.g. for extracting a sub tag, or removing unwanted characters. Anything that the regex matches will be removed from the text. If a capture group is included, the contents are extracted into a sub tag, which will be used in the tree to group similar tags. The sub tag can also be used as a placeholder in `todo-tree.tree.subTagClickUrl` and `todo-tree.tree.labelFormat`. Sub tags can also be highlighted  by specifying a section in the `todo-tree.highlights.customHighlights` setting.
+This is a regular expression for processing the text to the right of the tag, e.g. for extracting a sub tag, or removing unwanted characters. Anything that the regex matches will be removed from the text. If a capture group is included, the contents are extracted into a sub tag, which will be used in the tree to group similar tags. The sub tag can also be used as a placeholder in `todo-tree.tree.subTagClickUrl` and `todo-tree.tree.labelFormat`. Sub tags can also be highlighted by specifying a section in the `todo-tree.highlights.customHighlights` setting. To highlight the sub tag itself, set "type" to "tag-and-subTag" in custom highlights for the tag.
 
 Examples:
 
