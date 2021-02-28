@@ -1060,7 +1060,6 @@ class TreeNodeProvider
 
     sort( children )
     {
-        console.log( "sort? " + config.shouldSortTree() );
         if( config.shouldSortTree() )
         {
             if( children === undefined )
