@@ -143,11 +143,6 @@
             ],
             "view/item/context": [
                 {
-                    "command": "todo-tree.reveal",
-                    "when": "view =~/todo-tree/",
-                    "group": "context@6"
-                },
-                {
                     "command": "todo-tree.filter",
                     "when": "view =~ /todo-tree/ && todo-tree-filtered == false",
                     "group": "1-filters@1"
@@ -270,7 +265,12 @@
                 {
                     "command": "todo-tree.exportTree",
                     "when": "view =~/todo-tree/",
-                    "group": "5-misc"
+                    "group": "5-misc1"
+                },
+                {
+                    "command": "todo-tree.reveal",
+                    "when": "view =~/todo-tree/",
+                    "group": "6-misc2"
                 }
             ],
             "commandPalette": [
