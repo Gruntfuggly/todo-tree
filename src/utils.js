@@ -182,7 +182,6 @@ function extractTag( text, matchOffset )
     {
         var tagRegex = new RegExp( getTagRegex(), flags );
         var subTagRegex = new RegExp( config.subTagRegex(), flags );
-
         tagMatch = tagRegex.exec( text );
         if( tagMatch )
         {
@@ -220,6 +219,16 @@ function extractTag( text, matchOffset )
                     originalTag = tag;
                 }
             } );
+        }
+    }
+    else
+    {
+        var regex = new RegExp( config.regex().regex, flags );
+        match = regex.exec( text );
+        if( match !== null )
+        {
+            tagMatch = true;
+            originalTag = match[ 0 ];
         }
     }
     return {
