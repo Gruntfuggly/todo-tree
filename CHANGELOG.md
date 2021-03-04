@@ -1,6 +1,8 @@
 # Todo Tree Change Log
 
-## v0.0.198 - 2021-02-28
+- Add VS Code theme color reference link (thanks to [tksh164](https://github.com/tksh164))
+
+## v0.0.199 - 2021-02-28
 
 - Use storageUri instead of deprecated storagePath (v2)
 - Add `**/node_modules` to default exclude globs
