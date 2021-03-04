@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Fix 'afterOfBefore' substitution
+
 ## v0.0.200 - 2021-03-04
 
 - Add VS Code theme color reference link (thanks to [tksh164](https://github.com/tksh164))

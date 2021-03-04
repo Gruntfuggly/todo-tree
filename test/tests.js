@@ -515,3 +515,11 @@ QUnit.test( "attributes.getBackground uses colour scheme", function( assert )
     assert.equal( attributes.getBackground( "TODO" ), "#000" );
     assert.equal( attributes.getBackground( "BUG" ), "white" );
 } );
+
+QUnit.test( "utils.formatLabel replaces afterOrBefore tag", function( assert )
+{
+    var unexpectedPlaceholders = [];
+    assert.equal( utils.formatLabel( "${afterOrBefore}", { after: "xxx", before: "yyy" }, unexpectedPlaceholders ), "xxx" );
+    assert.equal( utils.formatLabel( "${afterOrBefore}", { after: "", before: "yyy" }, unexpectedPlaceholders ), "yyy" );
+    assert.equal( unexpectedPlaceholders.length, 0 );
+} );
