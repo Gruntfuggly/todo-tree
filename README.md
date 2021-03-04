@@ -335,7 +335,7 @@ Sort items in the tags only view alphabetically instead of by file and line numb
 Set to true to show counts of TODOs in the tree.
 
 **todo-tree.tree.labelFormat** (`${tag} ${after}`)</br>
-Format of the TODO item labels. Available placeholders are `${line}`, `${column}`, `${tag}`, `${before}` (text from before the tag), `${after}` (text from after the tag), `${filename}`, `${filepath}` and `${afterOrBefore}` (use "after" text or "before" text if after is empty).
+Format of the TODO item labels. Available placeholders are `${line}`, `${column}`, `${tag}`, `${before}` (text from before the tag), `${after}` (text from after the tag), `${filename}`, `${filepath}` and `${afterOrBefore}` (use "after" text or "before" text if after is empty). When using `${tag}` or `${subTag}` you can also transform the text wity "uppercase", "lowercase" or "capitalize", e.g. `${tag:lowercase}`.
 
 **todo-tree.tree.scanMode** (`workspace`)</br>
 By default the extension scans the whole workspace (`workspace`). Use this to limit the search to only open files (`open files`) or only the current file (`current file`).
