@@ -87,9 +87,9 @@ var sortByFilenameAndLine = function( a, b )
     return sortFoldersFirst( a, b, function( a, b ) { return a.fsPath > b.fsPath ? 1 : b.fsPath > a.fsPath ? -1 : a.line > b.line ? 1 : -1; } );
 };
 
-var sortByTagOrSubTag = function( a, b )
+var sortTagsOnlyViewByLabel = function( a, b )
 {
-    return sortFoldersFirst( a, b, function( a, b ) { return a.tag > b.tag ? 1 : b.tag > a.tag ? -1 : a.line > b.line ? 1 : -1; } );
+    return sortFoldersFirst( a, b, function( a, b ) { return a.label > b.label ? 1 : b.label > a.label ? -1 : a.line > b.line ? 1 : -1; } );
 };
 
 function createWorkspaceRootNode( folder )
@@ -1076,7 +1076,7 @@ class TreeNodeProvider
 
             if( config.shouldShowTagsOnly() && config.shouldSortTagsOnlyViewAlphabetically() )
             {
-                children.sort( sortByTagOrSubTag );
+                children.sort( sortTagsOnlyViewByLabel );
             }
             else
             {

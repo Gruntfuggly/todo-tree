@@ -2,6 +2,7 @@
 
 - Add VS Code theme color reference link (thanks to [tksh164](https://github.com/tksh164))
 - Add support for label (and tooltip) transformations (thanks to [TomFreudenberg](https://github.com/TomFreudenberg))
+- Sort tags only view be label, not tag
 
 ## v0.0.199 - 2021-02-28
 
