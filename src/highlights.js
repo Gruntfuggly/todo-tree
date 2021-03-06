@@ -210,9 +210,9 @@ function highlight( editor )
             {
                 var tag = match[ 0 ];
                 var offsetStart = match.index;
-                var offsetEnd = offsetStart + match[ 0 ].length;
-
-                var extracted = utils.extractTag( match[ 0 ] );
+                var line = editor.document.lineAt( editor.document.positionAt( match.index ) );
+                var offsetEnd = editor.document.offsetAt( line.range.end );
+                var extracted = utils.extractTag( text.substring( offsetStart, offsetEnd ) );
                 if( extracted.tag && extracted.tag.length > 0 )
                 {
                     var tagGroup = config.tagGroup( extracted.tag );

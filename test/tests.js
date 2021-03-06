@@ -176,7 +176,7 @@ QUnit.test( "utils.extractTag copes with escaped regex characters", function( as
     assert.equal( result.tag, "TO\\DO" );
 } );
 
-QUnit.test( "utils.extractTag returns entire text if $TAGS is not found in regex", function( assert )
+QUnit.test( "utils.extractTag returns entire text if regex is empty", function( assert )
 {
     var testConfig = stubs.getTestConfig();
     testConfig.regexSource = "";
@@ -186,6 +186,18 @@ QUnit.test( "utils.extractTag returns entire text if $TAGS is not found in regex
     assert.equal( result.withoutTag, "                before = text; // TODO stuff  " );
     assert.equal( result.before, "                before = text; // TODO stuff  " );
     assert.equal( result.after, "                before = text; // TODO stuff  " );
+} );
+
+QUnit.test( "utils.extractTag returns expected result if regex does not contain $TAGS", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.regexSource = "// TODO";
+    utils.init( testConfig );
+
+    result = utils.extractTag( "                before = text; // TODO stuff  ", 1 );
+    assert.equal( result.withoutTag, " stuff  " );
+    assert.equal( result.before, "                before = text; " );
+    assert.equal( result.after, " stuff  " );
 } );
 
 QUnit.test( "utils.extractTag can extract sub tag", function( assert )

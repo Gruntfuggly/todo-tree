@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Improve tag extraction when regex doesn't contain $TAGS
+
 ## v0.0.201 - 2021-03-04
 
 - Fix 'afterOfBefore' substitution

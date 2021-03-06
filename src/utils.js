@@ -221,14 +221,18 @@ function extractTag( text, matchOffset )
             } );
         }
     }
-    else
+    else if( c.regex.trim() !== "" )
     {
-        var regex = new RegExp( config.regex().regex, flags );
+        var regex = new RegExp( c.regex, flags );
         match = regex.exec( text );
         if( match !== null )
         {
             tagMatch = true;
             originalTag = match[ 0 ];
+            before = text.substring( 0, text.indexOf( originalTag ) );
+            after = text.substring( before.length + originalTag.length );
+            tagOffset = match.index;
+            text = after;
         }
     }
     return {
