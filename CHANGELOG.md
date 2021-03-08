@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.202 - 2021-03-08
+
 - Improve tag extraction when regex doesn't contain $TAGS
 - Fix sorting (again)
 
