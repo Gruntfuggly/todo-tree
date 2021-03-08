@@ -152,25 +152,6 @@ function activate( context )
 
     function addResultsToTree()
     {
-        function trimMatchesOnSameLine( searchResults )
-        {
-            searchResults.forEach( function( match )
-            {
-                searchResults.map( function( m )
-                {
-                } );
-            } );
-        }
-
-        trimMatchesOnSameLine( searchResults );
-
-        if( config.shouldSortTree() )
-        {
-            searchResults.sort( function compare( a, b )
-            {
-                return a.file > b.file ? 1 : b.file > a.file ? -1 : a.line > b.line ? 1 : -1;
-            } );
-        }
         searchResults.map( function( match )
         {
             if( match.added !== true )

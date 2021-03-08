@@ -211,8 +211,8 @@ class Match
         if( match && match.groups )
         {
             this.file = match.groups.file;
-            this.line = match.groups.line;
-            this.column = match.groups.column;
+            this.line = parseInt( match.groups.line );
+            this.column = parseInt( match.groups.column );
             this.match = match.groups.todo;
         }
         else // Fall back to old method
