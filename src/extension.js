@@ -26,6 +26,7 @@ var fileWatcherTimeout;
 var hideTimeout;
 var openDocuments = {};
 var provider;
+var markdownUpdatePopupOpen = false;
 
 var SCAN_MODE_WORKSPACE_AND_OPEN_FILES = 'workspace';
 var SCAN_MODE_OPEN_FILES = 'open files';
@@ -156,6 +157,11 @@ function activate( context )
         {
             if( match.added !== true )
             {
+                console.log( "EXT:" + path.extname( match.file ) );
+                if( path.extname( match.file ) === ".md" )
+                {
+                    checkForMarkdownUpgrade();
+                }
                 provider.add( match );
                 match.added = true;
             }
@@ -889,6 +895,25 @@ function activate( context )
     {
         debug( "Folder filter include:" + JSON.stringify( context.workspaceState.get( 'includeGlobs' ) ) );
         debug( "Folder filter exclude:" + JSON.stringify( context.workspaceState.get( 'excludeGlobs' ) ) );
+    }
+
+    function checkForMarkdownUpgrade()
+    {
+        if( markdownUpdatePopupOpen === false )
+        {
+        var c = vscode.workspace.getConfiguration( 'todo-tree' );
+        if( c.get( 'regex.regex' ).indexOf( "|^\\s*- \\[ \\])" ) > -1 )
+        {
+            // if( c.get( 'regex.regex' ) == c.inspect( 'regex.regex' ).defaultValue )
+            // {
+            markdownUpdatePopupOpen = true;
+            vscode.window.showInformationMessage( "Todo-Tree: There is now an improved method of locating markdown TODOs. Would you like to update your settings automatically? ", "More Info", "Yes", "Ignore", "Don't Show This Again" ).then( function( button )
+            {
+                markdownUpdatePopupOpen = false;
+            } );
+            // }
+        }
+    }
     }
 
     function register()
