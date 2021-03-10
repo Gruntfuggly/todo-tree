@@ -171,7 +171,7 @@ function extractTag( text, matchOffset )
 {
     var c = config.regex();
     var flags = c.caseSensitive ? '' : 'i';
-    var tagMatch;
+    var tagMatch = null;
     var tagOffset;
     var originalTag;
     var before = text;
@@ -221,7 +221,7 @@ function extractTag( text, matchOffset )
             } );
         }
     }
-    else if( c.regex.trim() !== "" )
+    if( tagMatch === null && c.regex.trim() !== "" )
     {
         var regex = new RegExp( c.regex, flags );
         match = regex.exec( text );
@@ -243,6 +243,42 @@ function extractTag( text, matchOffset )
         tagOffset: tagOffset,
         subTag: subTag
     };
+}
+
+function updateBeforeAndAfter( result, text, matchOffset )
+{
+    var c = config.regex();
+    var flags = c.caseSensitive ? '' : 'i';
+    var tagMatch = null;
+
+    var tagRegex = new RegExp( getTagRegex(), flags );
+    var subTagRegex = new RegExp( config.subTagRegex(), flags );
+    tagMatch = tagRegex.exec( text );
+    if( tagMatch )
+    {
+        result.tagOffset = tagMatch.index;
+        var rightOfTagText = text.substr( tagMatch.index + tagMatch[ 0 ].length ).trim();
+        var subTagMatch = subTagRegex.exec( rightOfTagText );
+        if( subTagMatch && subTagMatch.length > 1 )
+        {
+            result.subTag = subTagMatch[ 1 ];
+        }
+        rightOfTag = rightOfTagText.replace( subTagRegex, "" );
+        if( rightOfTag.length === 0 )
+        {
+            result.text = text.substr( 0, matchOffset ? matchOffset - 1 : tagMatch.index ).trim();
+            result.after = "";
+            result.before = text;
+        }
+        else
+        {
+            result.before = text.substr( 0, matchOffset ? matchOffset - 1 : tagMatch.index ).trim();
+            result.text = rightOfTag;
+            result.after = rightOfTag;
+        }
+    }
+
+    return result;
 }
 
 function getRegexSource()
@@ -466,6 +502,7 @@ module.exports.hexToRgba = hexToRgba;
 module.exports.removeBlockComments = removeBlockComments;
 module.exports.removeLineComments = removeLineComments;
 module.exports.extractTag = extractTag;
+module.exports.updateBeforeAndAfter = updateBeforeAndAfter;
 module.exports.getRegexSource = getRegexSource;
 module.exports.getRegexForRipGrep = getRegexForRipGrep;
 module.exports.getRegexForEditorSearch = getRegexForEditorSearch;
