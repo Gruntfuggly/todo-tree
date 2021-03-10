@@ -432,6 +432,52 @@ You can also include and exclude folders from the tree using the context menu. T
 
 *Note: By default, ripgrep ignores files and folders from your `.gitignore` or `.ignore` files. If you want to include these files, set* `todo-tree.ripgrep.ripgrepArgs` *to* `--no-ignore`.
 
+### Markdown Support
+
+When the extension was first written, very basic markdown support was added simply by adding a pattern to the default regex to match "`- [ ]`". A better way to handle markdown TODOs is to add "`(-|\d+.)`" to the list of "comments" in the first part of the regex and then adding "`[ ]`" and "`[x]`" to the list of tags, e.g.
+
+```json
+"todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)"
+"todo-tree.general.tags": [
+        "BUG",
+        "HACK",
+        "FIXME",
+        "TODO",
+        "XXX",
+        "[ ]",
+        "[x]"
+    ]
+```
+
+This will then match all of the following:
+
+```markdown
+- [ ] Do something
+- [x] Something I've done
+
+1. [ ] Do this first
+2. [ ] Followed by this
+```
+
+This also allows custom highlighting to be applied, e.g.
+
+```json
+    "todo-tree.highlights.customHighlight": {
+        "[ ]": {
+            "background": "#ff000080"
+        },
+        "[x]": {
+            "background": "#00ff0080"
+        }
+    }
+```
+
+which will colour pending TODOs red and completed TODOs green.
+
+Lastly, it will allow grouping by tag (and sub tags) to work and also work better when showing counts in the status bar.
+
+*Note: The default regex will be updated to reflect these changes at some point in the future.*
+
 ## Known Issues
 
 Grouping by tag will only work when your configuration defines the tags using the `todo-tree.general.tags` setting. Older versions of the extension had the tags directly defined in the `todo-tree.regex.regex` whereas now, the regex replaces **$TAGS** with the contents of `todo-tree.general.tags`.

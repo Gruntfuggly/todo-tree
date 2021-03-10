@@ -4,7 +4,6 @@ var vscode = require( 'vscode' );
 var ripgrep = require( './ripgrep' );
 var path = require( 'path' );
 var treeify = require( 'treeify' );
-var os = require( 'os' );
 var fs = require( 'fs' );
 var crypto = require( 'crypto' );
 
@@ -26,6 +25,7 @@ var fileWatcherTimeout;
 var hideTimeout;
 var openDocuments = {};
 var provider;
+var ignoreMarkdownUpdate = false;
 var markdownUpdatePopupOpen = false;
 
 var SCAN_MODE_WORKSPACE_AND_OPEN_FILES = 'workspace';
@@ -37,6 +37,11 @@ var STATUS_BAR_TOTAL = 'total';
 var STATUS_BAR_TAGS = 'tags';
 var STATUS_BAR_TOP_THREE = 'top three';
 var STATUS_BAR_CURRENT_FILE = 'current file';
+
+var MORE_INFO_BUTTON = "More Info";
+var YES_BUTTON = "Yes";
+var NEVER_SHOW_AGAIN_BUTTON = "Never Show This Again";
+var OPEN_SETTINGS_BUTTON = "Open Settings";
 
 function activate( context )
 {
@@ -82,6 +87,8 @@ function activate( context )
             return treeify.asTree( provider.exportTree(), true );
         }
     } ) );
+
+    ignoreMarkdownUpdate = context.globalState.get( 'ignoreMarkdownUpdate', false );
 
     function resetOutputChannel()
     {
@@ -157,8 +164,7 @@ function activate( context )
         {
             if( match.added !== true )
             {
-                console.log( "EXT:" + path.extname( match.file ) );
-                if( path.extname( match.file ) === ".md" )
+                if( path.extname( match.file ) === '.md' )
                 {
                     checkForMarkdownUpgrade();
                 }
@@ -342,7 +348,7 @@ function activate( context )
             {
                 message += " (" + e.stderr + ")";
             }
-            vscode.window.showErrorMessage( "todo-tree: " + message );
+            vscode.window.showErrorMessage( "todo-Tree: " + message );
             onComplete();
         } );
     }
@@ -577,7 +583,7 @@ function activate( context )
 
         interrupted = false;
 
-        status.text = "todo-tree: Scanning...";
+        status.text = "todo-Tree: Scanning...";
         status.show();
         status.command = "todo-tree.stopScan";
         status.tooltip = "Click to interrupt scan";
@@ -839,23 +845,28 @@ function activate( context )
         refreshTree();
     }
 
-    function addTag()
+    function addTag( tag )
+    {
+        var tags = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'tags' );
+        if( tags.indexOf( tag ) === -1 )
+        {
+            tags.push( tag );
+            vscode.workspace.getConfiguration( 'todo-tree.general' ).update( 'tags', tags, true );
+        }
+    }
+
+    function addTagDialog()
     {
         vscode.window.showInputBox( { prompt: "New tag", placeHolder: "e.g. FIXME" } ).then( function( tag )
         {
             if( tag )
             {
-                var tags = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'tags' );
-                if( tags.indexOf( tag ) === -1 )
-                {
-                    tags.push( tag );
-                    vscode.workspace.getConfiguration( 'todo-tree.general' ).update( 'tags', tags, true );
-                }
+                addTag( tag );
             }
         } );
     }
 
-    function removeTag()
+    function removeTagDialog()
     {
         var tags = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'tags' );
         vscode.window.showQuickPick( tags, { matchOnDetail: true, matchOnDescription: true, canPickMany: true, placeHolder: "Select tags to remove" } ).then( function( tagsToRemove )
@@ -899,21 +910,49 @@ function activate( context )
 
     function checkForMarkdownUpgrade()
     {
-        if( markdownUpdatePopupOpen === false )
+        if( markdownUpdatePopupOpen === false && ignoreMarkdownUpdate === false )
         {
-        var c = vscode.workspace.getConfiguration( 'todo-tree' );
-        if( c.get( 'regex.regex' ).indexOf( "|^\\s*- \\[ \\])" ) > -1 )
-        {
-            // if( c.get( 'regex.regex' ) == c.inspect( 'regex.regex' ).defaultValue )
-            // {
-            markdownUpdatePopupOpen = true;
-            vscode.window.showInformationMessage( "Todo-Tree: There is now an improved method of locating markdown TODOs. Would you like to update your settings automatically? ", "More Info", "Yes", "Ignore", "Don't Show This Again" ).then( function( button )
+            var c = vscode.workspace.getConfiguration( 'todo-tree' );
+            if( c.get( 'regex.regex' ).indexOf( "|^\\s*- \\[ \\])" ) > -1 )
             {
-                markdownUpdatePopupOpen = false;
-            } );
-            // }
+                markdownUpdatePopupOpen = true;
+                setTimeout( function()
+                {
+                    // Information messages seem to self close after 15 seconds.
+                    markdownUpdatePopupOpen = false;
+                }, 15000 );
+                var message = "Todo Tree: There is now an improved method of locating markdown TODOs.";
+                var buttons = [ MORE_INFO_BUTTON, NEVER_SHOW_AGAIN_BUTTON ];
+                if( c.get( 'regex.regex' ) === c.inspect( 'regex.regex' ).defaultValue )
+                {
+                    message += " Would you like to update your settings automatically?";
+                    buttons.unshift( YES_BUTTON );
+                }
+                vscode.window.showInformationMessage( message, ...buttons ).then( function( button )
+                {
+                    markdownUpdatePopupOpen = false;
+                    if( button === undefined )
+                    {
+                        ignoreMarkdownUpdate = true;
+                    }
+                    else if( button === YES_BUTTON )
+                    {
+                        ignoreMarkdownUpdate = true;
+                        addTag( '[ ]' );
+                        addTag( '[x]' );
+                        c.update( 'regex.regex', '(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)', true );
+                    }
+                    else if( button === MORE_INFO_BUTTON )
+                    {
+                        vscode.env.openExternal( vscode.Uri.parse( "https://github.com/Gruntfuggly/todo-tree#markdown-support" ) );
+                    }
+                    else if( button === NEVER_SHOW_AGAIN_BUTTON )
+                    {
+                        context.globalState.update( 'ignoreMarkdownUpdate', true );
+                    }
+                } );
+            }
         }
-    }
     }
 
     function register()
@@ -988,17 +1027,18 @@ function activate( context )
             {
                 if( context.globalState.get( 'migratedVersion', 0 ) < 147 )
                 {
-                    vscode.window.showInformationMessage( "Your Todo Tree settings have been moved. Please remove the old settings from your settings.json.", "Open Settings", "Don't Show This Again" ).then( function( button )
-                    {
-                        if( button === "Open Settings" )
+                    vscode.window.showInformationMessage( "Your Todo Tree settings have been moved. Please remove the old settings from your settings.json.",
+                        OPEN_SETTINGS_BUTTON, NEVER_SHOW_AGAIN_BUTTON ).then( function( button )
                         {
-                            vscode.commands.executeCommand( 'workbench.action.openSettingsJson', true );
-                        }
-                        else if( button === "Don't Show This Again" )
-                        {
-                            context.globalState.update( 'migratedVersion', 147 );
-                        }
-                    } );
+                            if( button === OPEN_SETTINGS_BUTTON )
+                            {
+                                vscode.commands.executeCommand( 'workbench.action.openSettingsJson', true );
+                            }
+                            else if( button === NEVER_SHOW_AGAIN_BUTTON )
+                            {
+                                context.globalState.update( 'migratedVersion', 147 );
+                            }
+                        } );
                 }
             }
 
@@ -1026,13 +1066,13 @@ function activate( context )
                         destinationId: 'workbench.view.explorer'
                     } );
 
-                    vscode.window.showInformationMessage( "Todo-Tree: 'showInExplorer' has been deprecated. If needed, the view can now be dragged to where you want it.", "Open Settings", "Don't Show This Again" ).then( function( button )
+                    vscode.window.showInformationMessage( "Todo-Tree: 'showInExplorer' has been deprecated. If needed, the view can now be dragged to where you want it.", OPEN_SETTINGS_BUTTON, NEVER_SHOW_AGAIN_BUTTON ).then( function( button )
                     {
-                        if( button === "Open Settings" )
+                        if( button === OPEN_SETTINGS_BUTTON )
                         {
                             vscode.commands.executeCommand( 'workbench.action.openSettingsJson', 'todo-tree.tree.showInExplorer' );
                         }
-                        else if( button === "Don't Show This Again" )
+                        else if( button === NEVER_SHOW_AGAIN_BUTTON )
                         {
                             context.globalState.update( 'migratedVersion', 189 );
                         }
@@ -1123,7 +1163,7 @@ function activate( context )
         // We can't do anything if we can't find ripgrep
         if( !config.ripgrepPath() )
         {
-            vscode.window.showErrorMessage( "todo-tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
+            vscode.window.showErrorMessage( "todo-Tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
             return;
         }
 
@@ -1199,7 +1239,7 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.stopScan', function()
         {
             ripgrep.kill();
-            status.text = "todo-tree: Scanning interrupted.";
+            status.text = "todo-Tree: Scanning interrupted.";
             status.tooltip = "Click to restart";
             status.command = "todo-tree.refresh";
             interrupted = true;
@@ -1361,6 +1401,7 @@ function activate( context )
             context.workspaceState.update( 'expanded', undefined );
             context.workspaceState.update( 'grouped', undefined );
             context.globalState.update( 'migratedVersion', undefined );
+            context.globalState.update( 'ignoreMarkdownUpdate', undefined );
 
             purgeFolder( context.storageUri.fsPath );
             purgeFolder( context.globalStorageUri.fsPath );
@@ -1415,8 +1456,8 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.ungroupByTag', ungroupByTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.groupBySubTag', groupBySubTag ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.ungroupBySubTag', ungroupBySubTag ) );
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.addTag', addTag ) );
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeTag', removeTag ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.addTag', addTagDialog ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.removeTag', removeTagDialog ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.onStatusBarClicked', onStatusBarClicked ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanWorkspaceAndOpenFiles', scanWorkspaceAndOpenFiles ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanOpenFilesOnly', scanOpenFilesOnly ) );

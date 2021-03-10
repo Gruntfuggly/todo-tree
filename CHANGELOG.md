@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Add improved markdown support dialog and settings update
+
 ## v0.0.203 - 2021-03-10
 
 - Fix highlighting of markdown TODOs

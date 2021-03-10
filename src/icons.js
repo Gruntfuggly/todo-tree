@@ -6,7 +6,7 @@ var octicons = require( '@primer/octicons' );
 var colours = require( './colours.js' );
 var utils = require( './utils.js' );
 var attributes = require( './attributes.js' );
-const themeColourNames = require( './themeColourNames.js' );
+var themeColourNames = require( './themeColourNames.js' );
 
 function getIcon( context, tag, debug )
 {
