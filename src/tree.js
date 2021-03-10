@@ -83,7 +83,7 @@ var sortFoldersFirst = function( a, b, same )
 
 var sortByLineAndColumn = function( a, b )
 {
-    return a.line > b.line ? -1 : b.line > a.line ? 1 : a.column > b.column ? 1 : -1;
+    return a.line > b.line ? 1 : b.line > a.line ? -1 : a.column > b.column ? 1 : -1;
 };
 
 var sortByFilenameAndLine = function( a, b )

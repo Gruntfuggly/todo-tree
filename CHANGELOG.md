@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Fix highlighting of markdown TODOs
+- Fix reversed sort order
 
 ## v0.0.202 - 2021-03-08
 
