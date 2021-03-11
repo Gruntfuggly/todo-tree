@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Add improved markdown support dialog and settings update
+- Fix expanded node storage after resetting cache
 
 ## v0.0.203 - 2021-03-10
 

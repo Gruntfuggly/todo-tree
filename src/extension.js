@@ -1391,7 +1391,7 @@ function activate( context )
 
             context.workspaceState.update( 'includeGlobs', [] );
             context.workspaceState.update( 'excludeGlobs', [] );
-            context.workspaceState.update( 'expandedNodes', [] );
+            context.workspaceState.update( 'expandedNodes', {} );
             context.workspaceState.update( 'submoduleExcludeGlobs', [] );
             context.workspaceState.update( 'buildCounter', undefined );
             context.workspaceState.update( 'currentFilter', undefined );
