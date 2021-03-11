@@ -462,14 +462,14 @@ This will then match all of the following:
 This also allows custom highlighting to be applied, e.g.
 
 ```json
-    "todo-tree.highlights.customHighlight": {
-        "[ ]": {
-            "background": "#ff000080"
-        },
-        "[x]": {
-            "background": "#00ff0080"
-        }
+"todo-tree.highlights.customHighlight": {
+    "[ ]": {
+        "background": "#ff000080"
+    },
+    "[x]": {
+        "background": "#00ff0080"
     }
+}
 ```
 
 which will colour pending TODOs red and completed TODOs green.
