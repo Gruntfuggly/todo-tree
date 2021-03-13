@@ -16,6 +16,10 @@
         "vscode": "^1.46.0"
     },
     "repository": "https://github.com/Gruntfuggly/todo-tree",
+    "bugs": {
+        "url": "https://github.com/Gruntfuggly/todo-tree/issues",
+        "email": "gruntfuggly@googlemail.com"
+    },
     "scripts": {
         "test": "./node_modules/node-qunit/bin/cli.js -c src/utils.js -t test/tests.js",
         "vscode:prepublish": "webpack --mode production",

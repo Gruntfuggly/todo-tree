@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Add support for VSCode issue reporter
+
 ## v0.0.204 - 2021-03-11
 
 - Add improved markdown support dialog and settings update
