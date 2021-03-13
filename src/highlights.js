@@ -181,6 +181,20 @@ function getType( tag )
     return attributes.getAttribute( tag, 'type', vscode.workspace.getConfiguration( 'todo-tree.highlights' ).get( 'highlight' ) );
 }
 
+function editorId( editor )
+{
+    var id = "";
+    if( editor.document )
+    {
+        id = editor.document.uri.fsPath;
+    }
+    if( editor.viewColumn )
+    {
+        id += editor.viewColumn;
+    }
+    return id;
+}
+
 function highlight( editor )
 {
     var documentHighlights = {};
@@ -189,15 +203,17 @@ function highlight( editor )
 
     if( editor )
     {
-        if( decorations[ editor.id ] )
+        var id = editorId( editor );
+
+        if( decorations[ id ] )
         {
-            decorations[ editor.id ].forEach( function( decoration )
+            decorations[ id ].forEach( function( decoration )
             {
                 decoration.dispose();
             } );
         }
 
-        decorations[ editor.id ] = [];
+        decorations[ id ] = [];
 
         if( vscode.workspace.getConfiguration( 'todo-tree.highlights' ).get( 'enabled', true ) )
         {
@@ -291,14 +307,14 @@ function highlight( editor )
             Object.keys( documentHighlights ).forEach( function( tag )
             {
                 var decoration = getDecoration( tag );
-                decorations[ editor.id ].push( decoration );
+                decorations[ id ].push( decoration );
                 editor.setDecorations( decoration, documentHighlights[ tag ] );
             } );
 
             Object.keys( subTagHighlights ).forEach( function( subTag )
             {
                 var decoration = getDecoration( subTag );
-                decorations[ editor.id ].push( decoration );
+                decorations[ id ].push( decoration );
                 editor.setDecorations( decoration, subTagHighlights[ subTag ] );
             } );
         }
@@ -309,11 +325,13 @@ function triggerHighlight( editor )
 {
     if( editor )
     {
-        if( highlightTimer[ editor.id ] )
+        var id = editorId( editor );
+
+        if( highlightTimer[ id ] )
         {
-            clearTimeout( highlightTimer[ editor.id ] );
+            clearTimeout( highlightTimer[ id ] );
         }
-        highlightTimer[ editor.id ] = setTimeout( highlight, vscode.workspace.getConfiguration( 'todo-tree.highlights' ).highlightDelay, editor );
+        highlightTimer[ id ] = setTimeout( highlight, vscode.workspace.getConfiguration( 'todo-tree.highlights' ).highlightDelay, editor );
     }
 }
 

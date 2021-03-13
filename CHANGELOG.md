@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Add support for VSCode issue reporter
+- Fix highlights in split editors
 
 ## v0.0.204 - 2021-03-11
 
