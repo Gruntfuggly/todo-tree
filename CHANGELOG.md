@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Sort tags only view on tags order by default
+
 ## v0.0.205 - 2021-03-13
 
 - Add support for VSCode issue reporter

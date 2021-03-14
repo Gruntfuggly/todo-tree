@@ -96,6 +96,17 @@ var sortTagsOnlyViewByLabel = function( a, b )
     return sortFoldersFirst( a, b, function( a, b ) { return a.label > b.label ? 1 : b.label > a.label ? -1 : sortByLineAndColumn( a, b ); } );
 };
 
+var sortTagsOnlyViewByTagOrder = function( a, b )
+{
+    return sortFoldersFirst( a, b, function( a, b )
+    {
+        var tags = config.tags();
+        var indexA = tags.indexOf( a.tag );
+        var indexB = tags.indexOf( b.tag );
+        return indexA > indexB ? 1 : ( indexB > indexA ? -1 : sortByFilenameAndLine( a, b ) );
+    } );
+};
+
 function createWorkspaceRootNode( folder )
 {
     var id = ( buildCounter * 1000000 ) + nodeCounter++;
@@ -1074,9 +1085,16 @@ class TreeNodeProvider
                 }
             }, this );
 
-            if( config.shouldShowTagsOnly() && config.shouldSortTagsOnlyViewAlphabetically() )
+            if( config.shouldShowTagsOnly() )
             {
-                children.sort( sortTagsOnlyViewByLabel );
+                if( config.shouldSortTagsOnlyViewAlphabetically() )
+                {
+                    children.sort( sortTagsOnlyViewByLabel );
+                }
+                else
+                {
+                    children.sort( sortTagsOnlyViewByTagOrder );
+                }
             }
             else
             {
