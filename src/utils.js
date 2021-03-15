@@ -37,7 +37,7 @@ function isRgbColour( colour )
 
 function isNamedColour( colour )
 {
-    return colourNames.indexOf( colour ) > -1;
+    return colourNames.indexOf( colour.toLowerCase() ) > -1;
 }
 
 function isThemeColour( colour )

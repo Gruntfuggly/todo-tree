@@ -476,6 +476,7 @@ QUnit.test( "utils.isValidColour", function( assert )
 {
     assert.ok( utils.isValidColour( "red" ) );
     assert.ok( utils.isValidColour( "chartreuse" ) );
+    assert.ok( utils.isValidColour( "Chartreuse" ) );
     assert.ok( utils.isValidColour( "#ffffff" ) );
     assert.ok( utils.isValidColour( "ffffff" ) );
     assert.ok( utils.isValidColour( "rgb(0,0,0)" ) );
