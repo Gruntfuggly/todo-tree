@@ -34,7 +34,7 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `opacity` - percentage value used with the background colour. 100% will produce an opaque background which will obscure selection and other decorations.
 
-<sup>*Note: opacity can only be specified when hex or rgb colours are used.*</sup>
+<sup>*Note: opacity can only be specified when hex or RGB colours are used.*</sup>
 
 `fontWeight`, `fontStyle`, `textDecoration` - can be used to style the highlight with standard CSS values.
 
@@ -49,6 +49,10 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 <sup>*Note: Unfortunately, only octicons and the todo-tree icon can be displayed in the gutter.*</sup>
 
 `rulerColour` - used to set the colour of the marker in the overview ruler. If not specified, it will default to use the foreground colour. Colour can be specified as per foreground and background colours.
+
+`rulerOpacity` - used to set the opacity of the ruler markers.
+
+<sup>*Note: Only works with hex and RGB colour settings.*</sup>
 
 `rulerLane` - used to set the lane for the marker in the overview ruler. If not specified, it will default to the right hand lane. Use one of "left", "center", "right", or "full". You can also use "none" to disable the ruler markers.
 

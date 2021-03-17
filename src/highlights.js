@@ -26,6 +26,23 @@ function init( context_, debug_ )
     context.subscriptions.push( decorations );
 }
 
+function applyOpacity( colour, opacity )
+{
+    if( utils.isHexColour( colour ) )
+    {
+        colour = utils.hexToRgba( colour, opacity < 1 ? opacity * 100 : opacity );
+    }
+    else if( utils.isRgbColour( colour ) )
+    {
+        if( opacity !== 100 )
+        {
+            colour = utils.setRgbAlpha( colour, opacity > 1 ? opacity / 100 : opacity );
+        }
+    }
+
+    return colour;
+}
+
 function getDecoration( tag )
 {
     var foregroundColour = attributes.getForeground( tag );
@@ -65,28 +82,8 @@ function getDecoration( tag )
             darkBackgroundColour = new vscode.ThemeColor( 'editor.background' );
         }
 
-        if( utils.isHexColour( lightBackgroundColour ) )
-        {
-            lightBackgroundColour = utils.hexToRgba( lightBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
-        }
-        else if( utils.isRgbColour( lightBackgroundColour ) )
-        {
-            if( opacity !== 100 )
-            {
-                lightBackgroundColour = utils.setRgbAlpha( lightBackgroundColour, opacity > 1 ? opacity / 100 : opacity );
-            }
-        }
-        if( utils.isHexColour( darkBackgroundColour ) )
-        {
-            darkBackgroundColour = utils.hexToRgba( darkBackgroundColour, opacity < 1 ? opacity * 100 : opacity );
-        }
-        else if( utils.isRgbColour( darkBackgroundColour ) )
-        {
-            if( opacity !== 100 )
-            {
-                darkBackgroundColour = utils.setRgbAlpha( darkBackgroundColour, opacity > 1 ? opacity / 100 : opacity );
-            }
-        }
+        lightBackgroundColour = applyOpacity( lightBackgroundColour, opacity );
+        darkBackgroundColour = applyOpacity( darkBackgroundColour, opacity );
     }
 
     if( lightForegroundColour === undefined && utils.isHexColour( lightBackgroundColour ) )
@@ -126,7 +123,12 @@ function getDecoration( tag )
 
     if( lane !== undefined )
     {
-        decorationOptions.overviewRulerColor = getRulerColour( tag, darkBackgroundColour ? darkBackgroundColour : vscode.ThemeColor( 'editor.foreground' ) );
+        var rulerColour = getRulerColour( tag, darkBackgroundColour ? darkBackgroundColour : vscode.ThemeColor( 'editor.foreground' ) );
+        var rulerOpacity = getRulerOpacity( tag );
+
+        rulerColour = applyOpacity( rulerColour, rulerOpacity );
+
+        decorationOptions.overviewRulerColor = rulerColour;
         decorationOptions.overviewRulerLane = lane;
     }
 
@@ -149,6 +151,11 @@ function getRulerLane( tag )
 function getOpacity( tag )
 {
     return attributes.getAttribute( tag, 'opacity', 100 );
+}
+
+function getRulerOpacity( tag )
+{
+    return attributes.getAttribute( tag, 'rulerOpacity', 100 );
 }
 
 function getBorderRadius( tag )
