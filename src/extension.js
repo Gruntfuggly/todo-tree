@@ -67,14 +67,14 @@ function activate( context )
     attributes.init( config );
 
     provider = new tree.TreeNodeProvider( context, debug, setButtonsAndContext );
-    var status = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
+    var statusBarIndicator = vscode.window.createStatusBarItem( vscode.StatusBarAlignment.Left, 0 );
 
     var todoTreeView = vscode.window.createTreeView( "todo-tree-view", { treeDataProvider: provider } );
 
     var fileSystemWatcher;
 
     context.subscriptions.push( provider );
-    context.subscriptions.push( status );
+    context.subscriptions.push( statusBarIndicator );
     context.subscriptions.push( todoTreeView );
 
     context.subscriptions.push( vscode.workspace.registerTextDocumentContentProvider( 'todotree-export', {
@@ -211,9 +211,9 @@ function activate( context )
 
         if( statusBar === STATUS_BAR_TOTAL )
         {
-            status.text = "$(check) " + total;
-            status.tooltip = "Todo-Tree total";
-            status.show();
+            statusBarIndicator.text = "$(check) " + total;
+            statusBarIndicator.tooltip = "Todo-Tree total";
+            statusBarIndicator.show();
         }
         else if( statusBar === STATUS_BAR_TAGS || statusBar === STATUS_BAR_CURRENT_FILE || statusBar === STATUS_BAR_TOP_THREE )
         {
@@ -232,41 +232,41 @@ function activate( context )
                 }
                 text += tag + ": " + counts[ tag ];
             } );
-            status.text = "$(check) " + text.trim();
+            statusBarIndicator.text = "$(check) " + text.trim();
             if( statusBar === STATUS_BAR_CURRENT_FILE )
             {
-                status.tooltip = "Todo-Tree tags counts in current file";
+                statusBarIndicator.tooltip = "Todo-Tree tags counts in current file";
             }
             else if( statusBar === STATUS_BAR_TOP_THREE )
             {
-                status.tooltip = "Todo-Tree top three tag counts";
+                statusBarIndicator.tooltip = "Todo-Tree top three tag counts";
             }
             else
             {
-                status.tooltip = "Todo-Tree tags counts";
+                statusBarIndicator.tooltip = "Todo-Tree tags counts";
             }
             if( Object.keys( counts ).length === 0 )
             {
-                status.text += "0";
+                statusBarIndicator.text += "0";
             }
-            status.show();
+            statusBarIndicator.show();
         }
         else
         {
-            status.hide();
+            statusBarIndicator.hide();
         }
 
         var scanMode = config.scanMode();
         if( scanMode === SCAN_MODE_OPEN_FILES )
         {
-            status.text += " (in open files)";
+            statusBarIndicator.text += " (in open files)";
         }
         else if( scanMode === SCAN_MODE_CURRENT_FILE )
         {
-            status.text += " (in current file)";
+            statusBarIndicator.text += " (in current file)";
         }
 
-        status.command = "todo-tree.onStatusBarClicked";
+        statusBarIndicator.command = "todo-tree.onStatusBarClicked";
     }
 
     function onStatusBarClicked()
@@ -583,10 +583,10 @@ function activate( context )
 
         interrupted = false;
 
-        status.text = "todo-Tree: Scanning...";
-        status.show();
-        status.command = "todo-tree.stopScan";
-        status.tooltip = "Click to interrupt scan";
+        statusBarIndicator.text = "todo-Tree: Scanning...";
+        statusBarIndicator.show();
+        statusBarIndicator.command = "todo-tree.stopScan";
+        statusBarIndicator.tooltip = "Click to interrupt scan";
 
         searchList = getRootFolders();
 
@@ -1239,9 +1239,9 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.stopScan', function()
         {
             ripgrep.kill();
-            status.text = "todo-Tree: Scanning interrupted.";
-            status.tooltip = "Click to restart";
-            status.command = "todo-tree.refresh";
+            statusBarIndicator.text = "todo-Tree: Scanning interrupted.";
+            statusBarIndicator.tooltip = "Click to restart";
+            statusBarIndicator.command = "todo-tree.refresh";
             interrupted = true;
         } ) );
 
