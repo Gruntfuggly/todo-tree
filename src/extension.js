@@ -215,7 +215,20 @@ function activate( context )
         var match = countRegex.exec( todoTreeView.title );
         if( match !== null )
         {
-            var title = match[ 1 ];
+            var title;
+            if( config.shouldFlatten() )
+            {
+                title = "Flat";
+            }
+            else if( config.shouldShowTagsOnly() )
+            {
+                title = "Tags";
+            }
+            else
+            {
+                title = "Tree";
+            }
+
             if( total > 0 )
             {
                 title += " (" + total + ")";

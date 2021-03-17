@@ -4,6 +4,7 @@
 - Ignore case when validating HTML colour names
 - Allow highlights to be enabled/disabled by clicking the status bar
 - Add ruler opacity setting
+- Improve view title
 
 ## v0.0.205 - 2021-03-13
 
