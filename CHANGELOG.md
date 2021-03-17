@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.206 - 2021-03-17
+
 - Sort tags only view on tags order by default
 - Ignore case when validating HTML colour names
 - Allow highlights to be enabled/disabled by clicking the status bar
