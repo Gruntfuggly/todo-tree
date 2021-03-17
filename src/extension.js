@@ -47,6 +47,20 @@ function activate( context )
 {
     var outputChannel;
 
+    function settingLocation( setting )
+    {
+        var current = vscode.workspace.getConfiguration( 'todo-tree' ).inspect( setting );
+        if( current.workspaceFolderValue !== undefined )
+        {
+            return vscode.ConfigurationTarget.WorkspaceFolder;
+        }
+        else if( current.workspaceValue !== undefined )
+        {
+            return vscode.ConfigurationTarget.Workspace;
+        }
+        return vscode.ConfigurationTarget.Global;
+    }
+
     function debug( text )
     {
         if( outputChannel )
@@ -277,6 +291,12 @@ function activate( context )
             {
                 vscode.commands.executeCommand( 'todo-tree-view.focus' );
             }
+        }
+        else if( config.clickingStatusBarShouldToggleHighlights() )
+        {
+            var enabled = vscode.workspace.getConfiguration( 'todo-tree.highlights' ).get( 'enabled' );
+            var target = settingLocation( 'highlights.enabled' );
+            vscode.workspace.getConfiguration( 'todo-tree.highlights' ).update( 'enabled', !enabled, target );
         }
         else
         {

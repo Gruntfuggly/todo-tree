@@ -131,6 +131,11 @@ function clickingStatusBarShouldRevealTree()
     return vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBarClickBehaviour === "reveal";
 }
 
+function clickingStatusBarShouldToggleHighlights()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBarClickBehaviour === "toggle highlights";
+}
+
 function shouldShowHighlights( scheme )
 {
     var schemes = vscode.workspace.getConfiguration( 'todo-tree.highlights' ).schemes;
@@ -250,6 +255,7 @@ module.exports.shouldSortTagsOnlyViewAlphabetically = shouldSortTagsOnlyViewAlph
 module.exports.labelFormat = labelFormat;
 module.exports.tooltipFormat = tooltipFormat;
 module.exports.clickingStatusBarShouldRevealTree = clickingStatusBarShouldRevealTree;
+module.exports.clickingStatusBarShouldToggleHighlights = clickingStatusBarShouldToggleHighlights;
 module.exports.shouldShowHighlights = shouldShowHighlights;
 module.exports.shouldIgnoreGitSubmodules = shouldIgnoreGitSubmodules;
 module.exports.refreshTagGroupLookup = refreshTagGroupLookup;

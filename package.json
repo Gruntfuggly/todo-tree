@@ -611,12 +611,14 @@
                     "default": "reveal",
                     "enum": [
                         "cycle",
-                        "reveal"
+                        "reveal",
+                        "toggle highlights"
                     ],
                     "markdownDescription": "%todo-tree.configuration.general.statusBarClickBehaviour.markdownDescription%",
                     "markdownEnumDescriptions": [
                         "%todo-tree.configuration.general.statusBarClickBehaviour.markdownEnumDescriptions.1%",
-                        "%todo-tree.configuration.general.statusBarClickBehaviour.markdownEnumDescriptions.2%"
+                        "%todo-tree.configuration.general.statusBarClickBehaviour.markdownEnumDescriptions.2%",
+                        "%todo-tree.configuration.general.statusBarClickBehaviour.markdownEnumDescriptions.3%"
                     ],
                     "type": "string"
                 },

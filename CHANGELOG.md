@@ -2,6 +2,7 @@
 
 - Sort tags only view on tags order by default
 - Ignore case when validating HTML colour names
+- Allow highlights to be enabled/disabled by clicking the status bar
 
 ## v0.0.205 - 2021-03-13
 
