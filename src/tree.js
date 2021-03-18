@@ -222,11 +222,22 @@ function createTodoNode( result )
 
     if( result.extraLines )
     {
+        var joined = result.match.substr( result.column - 1 );
         result.extraLines.map( function( extraLine )
         {
-            var extraLineNode = createTodoNode( extraLine );
-            extraLineNode.isExtraLine = true;
-            todo.extraLines.push( extraLineNode );
+            joined += "\n" + extraLine.match;
+        } );
+        var commentsRemoved = utils.removeBlockComments( joined, result.file ).split( '\n' );
+        commentsRemoved.shift();
+        result.extraLines.map( function( extraLine, index )
+        {
+            extraLine.match = commentsRemoved[ index ];
+            if( extraLine.match.trim() !== "" )
+            {
+                var extraLineNode = createTodoNode( extraLine );
+                extraLineNode.isExtraLine = true;
+                todo.extraLines.push( extraLineNode );
+            }
         } );
     }
 
