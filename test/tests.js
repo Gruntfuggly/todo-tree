@@ -55,6 +55,8 @@ QUnit.test( "utils.removeBlockComments strips block comments based on filename",
     assert.equal( utils.removeBlockComments( "<!-- a -->", "x.html" ), " a " );
     assert.equal( utils.removeBlockComments( "  /* a */", "x.cpp" ), " a " );
     assert.equal( utils.removeBlockComments( "b /* a */", "x.cpp" ), "b /* a */" );
+    assert.equal( utils.removeBlockComments( "{- a -}", "x.hs" ), " a " );
+    assert.equal( utils.removeBlockComments( "{- a\nb -}", "x.hs" ), " a\nb " );
 } );
 
 QUnit.test( "utils.extractTag removes everything including tag", function( assert )

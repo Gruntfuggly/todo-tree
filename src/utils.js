@@ -75,13 +75,19 @@ function hexToRgba( hex, opacity )
 
 function removeBlockComments( text, fileName )
 {
-    if( path.extname( fileName ) === ".jsonc" )
+    var extension = path.extname( fileName );
+
+    if( extension === ".jsonc" )
     {
-        fileName = path.join( path.dirname( fileName ), path.basename( fileName, path.extname( fileName ) ) ) + ".js";
+        fileName = path.join( path.dirname( fileName ), path.basename( fileName, extension ) ) + ".js";
     }
-    else if( path.extname( fileName ) === ".vue" )
+    else if( extension === ".vue" )
     {
-        fileName = path.join( path.dirname( fileName ), path.basename( fileName, path.extname( fileName ) ) ) + ".html";
+        fileName = path.join( path.dirname( fileName ), path.basename( fileName, extension ) ) + ".html";
+    }
+    else if( extension === ".hs" )
+    {
+        fileName = path.join( path.dirname( fileName ), path.basename( fileName, extension ) ) + ".cpp";
     }
 
     var commentPattern;
@@ -104,6 +110,26 @@ function removeBlockComments( text, fileName )
         commentPattern = commentPatterns.regex( fileName );
         if( commentPattern && commentPattern.regex )
         {
+            var regex = commentPattern.regex;
+            if( extension == ".hs" )
+            {
+                var source = regex.source;
+                var flags = regex.flags;
+                while( source.indexOf( "\\/\\*\\*" ) !== -1 )
+                {
+                    source = source.replace( "\\/\\*\\*", "{-" );
+                }
+                while( source.indexOf( "\\/\\*" ) !== -1 )
+                {
+                    source = source.replace( "\\/\\*", "{-" );
+                }
+                while( source.indexOf( "\\*\\/" ) !== -1 )
+                {
+                    source = source.replace( "\\*\\/", "-}" );
+                }
+                regex = new RegExp( source, flags );
+                commentPattern.regex = regex;
+            }
             var commentMatch = commentPattern.regex.exec( text );
             if( commentMatch )
             {
