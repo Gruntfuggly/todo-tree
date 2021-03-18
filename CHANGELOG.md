@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Improve colour validation for icons
+- Fix theme colours for ruler colour
 
 ## v0.0.206 - 2021-03-17
 

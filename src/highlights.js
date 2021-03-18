@@ -123,10 +123,17 @@ function getDecoration( tag )
 
     if( lane !== undefined )
     {
-        var rulerColour = getRulerColour( tag, darkBackgroundColour ? darkBackgroundColour : vscode.ThemeColor( 'editor.foreground' ) );
+        var rulerColour = getRulerColour( tag, darkBackgroundColour ? darkBackgroundColour : 'editor.foreground' );
         var rulerOpacity = getRulerOpacity( tag );
 
-        rulerColour = applyOpacity( rulerColour, rulerOpacity );
+        if( utils.isThemeColour( rulerColour ) )
+        {
+            rulerColour = new vscode.ThemeColor( rulerColour );
+        }
+        else
+        {
+            rulerColour = applyOpacity( rulerColour, rulerOpacity );
+        }
 
         decorationOptions.overviewRulerColor = rulerColour;
         decorationOptions.overviewRulerLane = lane;
