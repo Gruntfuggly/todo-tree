@@ -536,3 +536,10 @@ QUnit.test( "utils.formatLabel replaces afterOrBefore tag", function( assert )
     assert.equal( utils.formatLabel( "${afterOrBefore}", { after: "", before: "yyy" }, unexpectedPlaceholders ), "yyy" );
     assert.equal( unexpectedPlaceholders.length, 0 );
 } );
+
+QUnit.test( "utils.isCodicon", function( assert )
+{
+    assert.equal( utils.isCodicon( "$(beaker)" ), true );
+    assert.equal( utils.isCodicon( "  $(beaker)" ), true );
+    assert.equal( utils.isCodicon( "beaker" ), false );
+} );

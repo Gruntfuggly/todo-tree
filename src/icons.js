@@ -56,7 +56,7 @@ function getIcon( context, tag, debug )
         darkIconPath = colouredTodoTreeIconPath;
         lightIconPath = colouredTodoTreeIconPath;
     }
-    else if( iconName && iconName.trim().substr( 0, 2 ) === "$(" )
+    else if( iconName && utils.isCodicon( iconName ) )
     {
         var themeColour;
         if( themeColourNames.indexOf( colour ) > -1 )

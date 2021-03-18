@@ -34,13 +34,31 @@ function validateColours( workspace )
 
 function validateIconColours( workspace )
 {
+    var hasInvalidCodiconColour = false;
+    var hasInvalidOcticonColour = false;
+
     function checkIconColour( setting )
     {
         var icon = workspace.getConfiguration( 'todo-tree.highlights' ).get( setting + ".icon" );
         var iconColour = workspace.getConfiguration( 'todo-tree.highlights' ).get( setting + ".iconColour" );
-        if( icon !== undefined && icon.indexOf( "$(" ) != 0 && utils.isThemeColour( iconColour ) )
+        if( icon !== undefined )
         {
-            invalidIconColours.push( setting + '.iconColour (' + iconColour + ')' );
+            if( utils.isCodicon( icon ) )
+            {
+                if( utils.isHexColour( iconColour ) || utils.isRgbColour( iconColour ) || utils.isNamedColour( iconColour ) )
+                {
+                    invalidIconColours.push( setting + '.iconColour (' + iconColour + ')' );
+                    hasInvalidCodiconColour = true;
+                }
+            }
+            else
+            {
+                if( utils.isThemeColour( iconColour ) )
+                {
+                    invalidIconColours.push( setting + '.iconColour (' + iconColour + ')' );
+                    hasInvalidOcticonColour = true;
+                }
+            }
         }
     }
 
@@ -57,7 +75,15 @@ function validateIconColours( workspace )
 
     if( invalidIconColours.length > 0 )
     {
-        result = "Invalid icon colour settings (theme colours can only be used with codicons): " + invalidIconColours.join( ', ' );
+        result = "Invalid icon colour settings: " + invalidIconColours.join( ', ' ) + ".";
+        if( hasInvalidCodiconColour )
+        {
+            result += " Codicons can only use theme colours.";
+        }
+        if( hasInvalidOcticonColour )
+        {
+            result += " Theme colours can only be used with Codicons.";
+        }
     }
 
     return result;

@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Improve colour validation for icons
+
 ## v0.0.206 - 2021-03-17
 
 - Sort tags only view on tags order by default

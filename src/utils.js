@@ -493,6 +493,11 @@ function setRgbAlpha( rgb, alpha )
     return rgb;
 }
 
+function isCodicon( icon )
+{
+    return icon.trim().indexOf( "$(" ) === 0;
+}
+
 module.exports.init = init;
 module.exports.isHexColour = isHexColour;
 module.exports.isRgbColour = isRgbColour;
@@ -517,3 +522,4 @@ module.exports.formatExportPath = formatExportPath;
 module.exports.complementaryColour = complementaryColour;
 module.exports.isValidColour = isValidColour;
 module.exports.setRgbAlpha = setRgbAlpha;
+module.exports.isCodicon = isCodicon;
