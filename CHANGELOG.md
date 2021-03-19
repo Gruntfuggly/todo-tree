@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.207 - 2021-03-19
+
 - Improve colour validation for icons
 - Fix theme colours for ruler colour
 - Remove trailing block comments when adding multiline todo to tree
