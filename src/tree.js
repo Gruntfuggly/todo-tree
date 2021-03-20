@@ -232,7 +232,7 @@ function createTodoNode( result )
         result.extraLines.map( function( extraLine, index )
         {
             extraLine.match = commentsRemoved[ index ];
-            if( extraLine.match.trim() !== "" )
+            if( extraLine.match && extraLine.match.trim() !== "" )
             {
                 var extraLineNode = createTodoNode( extraLine );
                 extraLineNode.isExtraLine = true;
