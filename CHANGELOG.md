@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Revert commit which removed trailing text from multiline TODOs
+
 ## v0.0.207 - 2021-03-19
 
 - Improve colour validation for icons
