@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.209 - 2021-03-28
+
 - Add support for scopes, allowing predefined sets of globs to be selected, (thanks to [kkckkc](https://github.com/kkckkc))
 - Add support for manually enabling multiline TODO support
 - Improve multi-line todo handling
