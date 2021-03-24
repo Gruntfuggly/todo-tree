@@ -192,13 +192,28 @@ function createSubTagNode( subTag )
 function createTodoNode( result )
 {
     var id = ( buildCounter * 1000000 ) + nodeCounter++;
-    var text = utils.removeBlockComments( result.match.substr( result.column - 1 ), result.file );
+    var joined = result.match.substr( result.column - 1 );
+    if( result.extraLines )
+    {
+        result.extraLines.map( function( extraLine )
+        {
+            joined += "\n" + extraLine.match;
+        } );
+    }
+    var text = utils.removeBlockComments( joined, result.file );
     var extracted = utils.extractTag( text, result.column );
     var label = ( extracted.withoutTag && extracted.withoutTag.length > 0 ) ? extracted.withoutTag : "line " + result.line;
 
     if( config.shouldGroupByTag() !== true )
     {
-        label = extracted.tag + " " + label;
+        if( result.extraLines )
+        {
+            label = extracted.tag;
+        }
+        else
+        {
+            label = extracted.tag + " " + label;
+        }
     }
 
     var tagGroup = config.tagGroup( extracted.tag );
@@ -222,21 +237,20 @@ function createTodoNode( result )
 
     if( result.extraLines )
     {
-        var joined = result.match.substr( result.column - 1 );
-        result.extraLines.map( function( extraLine )
-        {
-            joined += "\n" + extraLine.match;
-        } );
-        var commentsRemoved = utils.removeBlockComments( joined, result.file ).split( '\n' );
+        var commentsRemoved = text.split( '\n' );
         commentsRemoved.shift();
         result.extraLines.map( function( extraLine, index )
         {
             extraLine.match = commentsRemoved[ index ];
-            if( extraLine.match && extraLine.match.trim() !== "" )
+            if( extraLine.match )
             {
-                var extraLineNode = createTodoNode( extraLine );
-                extraLineNode.isExtraLine = true;
-                todo.extraLines.push( extraLineNode );
+                var extraLineMatch = extraLine.match.trim();
+                if( extraLineMatch && extraLineMatch != todo.tag )
+                {
+                    var extraLineNode = createTodoNode( extraLine );
+                    extraLineNode.isExtraLine = true;
+                    todo.extraLines.push( extraLineNode );
+                }
             }
         } );
     }
@@ -640,7 +654,7 @@ class TreeNodeProvider
                 }
 
                 var format = config.labelFormat();
-                if( format !== "" )
+                if( format !== "" && ( node.extraLines === undefined || node.extraLines.length === 0 ) )
                 {
                     treeItem.label = utils.formatLabel( format, node ) + ( node.pathLabel ? ( " " + node.pathLabel ) : "" );
                 }

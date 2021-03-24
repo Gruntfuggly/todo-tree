@@ -32,28 +32,32 @@ function formatResults( stdout, multiline )
 
     if( multiline === true )
     {
-        var lines = stdout.split( '\n' ).reverse();
-
         var results = [];
-        var extraLines = [];
+        var regex = utils.getRegexForEditorSearch();
+        var lines = stdout.split( '\n' );
+
+        var buffer = [];
+        var matches = [];
+        var text = "";
+
         lines.map( function( line )
         {
-            var match = new Match( line );
-            var extracted = utils.extractTag( match.match );
-            if( extracted.tag )
+            var resultMatch = new Match( line );
+            buffer.push( line );
+            matches.push( resultMatch );
+
+            text = ( text === "" ) ? resultMatch.match : text + '\n' + resultMatch.match;
+
+            var fullMatch = text.match( regex );
+            if( fullMatch )
             {
-                match.extraLines = extraLines.reverse();
-                match.extraLines = match.extraLines.map( function( element )
-                {
-                    element.match = utils.removeLineComments( element.match, match.file ).trim();
-                    return element;
-                } );
-                extraLines = [];
-                results.push( match );
-            }
-            else
-            {
-                extraLines.push( match );
+                resultMatch = matches[ 0 ];
+                matches.shift();
+                resultMatch.extraLines = matches;
+                results.push( resultMatch );
+                buffer = [];
+                matches = [];
+                text = "";
             }
         } );
 

@@ -212,6 +212,16 @@ QUnit.test( "utils.extractTag can extract sub tag", function( assert )
     assert.equal( result.subTag, "email@place.com" );
 } );
 
+QUnit.test( "utils.extractTag works with multiline", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    utils.init( testConfig );
+
+    var result = utils.extractTag( "before\nTODO\nafter" );
+    assert.equal( result.tag, "TODO" );
+    assert.equal( result.withoutTag, "after" );
+} );
+
 QUnit.test( "utils.getRegexSource returns the regex source without expanded tags if they aren't present", function( assert )
 {
     var testConfig = stubs.getTestConfig();
