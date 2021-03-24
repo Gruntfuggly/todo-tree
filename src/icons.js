@@ -3,7 +3,6 @@ var path = require( "path" );
 var fs = require( 'fs' );
 var octicons = require( '@primer/octicons' );
 
-var colours = require( './colours.js' );
 var utils = require( './utils.js' );
 var attributes = require( './attributes.js' );
 var themeColourNames = require( './themeColourNames.js' );
