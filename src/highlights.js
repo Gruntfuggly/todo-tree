@@ -278,7 +278,7 @@ function highlight( editor )
                     {
                         var endOfLineOffset = editor.document.offsetAt( new vscode.Position( fullEndPos.line, editor.document.lineAt( fullEndPos.line ).range.end.character ) );
                         var todoText = text.substring( offsetEnd, endOfLineOffset );
-                        var subTagMatch = subTagRegex.exec( todoText );
+                        var subTagMatch = subTagRegex.match( todoText );
                         if( subTagMatch !== null && subTagMatch.length > 1 )
                         {
                             var subTag = subTagMatch[ 1 ];
