@@ -608,7 +608,7 @@ class TreeNodeProvider
                 {
                     treeItem.iconPath = icons.getIcon( this._context, node.tag ? node.tag : node.label, this._debug );
                 }
-                else if( node.nodes && node.nodes.length > 0 )
+                else if( node.isFolder )
                 {
                     treeItem.iconPath = vscode.ThemeIcon.Folder;
                 }

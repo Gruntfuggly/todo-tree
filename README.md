@@ -347,7 +347,7 @@ Set to false if you want to prevent tracking the open file in the tree view.
 **todo-tree.tree.showBadges** (`true`)</br>
 Set to false to disable SCM status and badges in the tree. *
 
-<sup>Note: This also unfortunately turns off themed icons.*</sup>
+<sup>*Note: This also unfortunately turns off themed icons.*</sup>
 
 **todo-tree.tree.expanded<sup>*</sup>** (`false`)</br>
 Set to true if you want new views to be expanded by default.
