@@ -717,7 +717,7 @@
                     "type": "array"
                 },
                 "todo-tree.regex.regex": {
-                    "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
+                    "default": "((//|#|--\[*|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
                     "markdownDescription": "%todo-tree.configuration.regex.regex.markdownDescription%",
                     "type": "string"
                 },
