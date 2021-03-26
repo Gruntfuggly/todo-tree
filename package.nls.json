@@ -23,6 +23,7 @@
     "todo-tree.command.exportTree.title": "Export Tree",
     "todo-tree.command.showOnlyThisFolder.title": "Only Show This Folder",
     "todo-tree.command.showOnlyThisFolderAndSubfolders.title": "Only Show This Folder And Subfolders",
+    "todo-tree.command.switchScope.title": "Switch Scope",
     "todo-tree.command.excludeThisFolder.title": "Hide This Folder",
     "todo-tree.command.excludeThisFile.title": "Hide This File",
     "todo-tree.command.removeFilter.title": "Remove Filter",
@@ -120,5 +121,6 @@
     "todo-tree.configuration.tree.sort.markdownDescription": "ripgrep searches using multiple threads to improve performance. The tree is sorted when it is populated so that it stays stable. If you want to use ripgrep's own sort arguments, set this to false.",
     "todo-tree.configuration.tree.tagsOnly.markdownDescription": "When opening new workspaces, show only tag elements in tree.",
     "todo-tree.configuration.tree.tooltipFormat.markdownDescription": "Tree item tooltip format.",
-    "todo-tree.configuration.tree.trackFile.markdownDescription": "Track the current file in the tree view."
+    "todo-tree.configuration.tree.trackFile.markdownDescription": "Track the current file in the tree view.",
+    "todo-tree.configuration.scopes.markdownDescription": "Scopes (sets of globs) that can be switched between"
 }

@@ -171,6 +171,10 @@ To make it easier to configure the tags, there are two commands available:
 
 The contents of the tree can be exported using **Todo Tree: Export Tree**. A read-only file will be created using the path specified with `todo-tree.general.exportPath`. The file can be saved using **File: Save As...**. *Note: Currently **File: Save** does not work which seems to be a VSCode bug (see <https://github.com/microsoft/vscode/issues/101952>).*
 
+### Switch Scope
+
+**Todo Tree: Switch Scope** - shows a list of configured scopes which can be selected
+
 ## Configuration
 
 The extension can be customised as follows (default values in brackets):
@@ -416,6 +420,29 @@ Show a button in the tree view title bar to expand or collapse the whole tree.
 Show a button in the tree view title bar to create a text file showing the tree content.
 
 <sup>*</sup>*Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.*
+
+
+**todo-tree.scopes** (`{}`)</br>
+Defines a set of file scopes that can be quickly swicthed between using the *todo-tree.switchScope* command.
+
+This is a complex configuration property that can only be configured through the configuration JSON file. For example
+
+```json
+"todo-tree.scopes": [
+    {
+        "name": "Production ",
+        "excludeGlobs": "**/tests/**" 
+    },
+    {
+        "name": "Tests",
+        "includeGlobs": "**/tests/**" 
+    },
+    {
+        "name": "All"
+    }
+]
+```
+
 
 ### Multiline TODOs
 
