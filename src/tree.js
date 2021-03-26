@@ -512,7 +512,7 @@ class TreeNodeProvider
         {
             if( config.shouldCompactFolders() && node.tag === undefined )
             {
-                while( node.nodes && node.nodes.length === 1 && node.nodes[ 0 ].nodes && node.nodes[ 0 ].nodes.length > 0 )
+                while( node.nodes && node.nodes.length === 1 && node.nodes[ 0 ].nodes && node.nodes[ 0 ].nodes.length > 0 && node.nodes[ 0 ].isFolder )
                 {
                     node = node.nodes[ 0 ];
                 }

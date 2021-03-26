@@ -4,6 +4,7 @@
 - Add support for manually enabling multiline TODO support
 - Improve multi-line todo handling
 - Fix broken file icons in tree
+- Fix missing filename when using compact folders
 
 ## v0.0.208 - 2021-03-20
 
