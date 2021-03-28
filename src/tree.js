@@ -446,8 +446,8 @@ class TreeNodeProvider
             }
 
             var filterStatusNode = { label: "", notExported: true, isStatusNode: true };
-            var includeGlobs = this._context.workspaceState.get( 'includeGlobs' ) || [];
-            var excludeGlobs = this._context.workspaceState.get( 'excludeGlobs' ) || [];
+            var includeGlobs = utils.toGlobArray( this._context.workspaceState.get( 'includeGlobs' ) );
+            var excludeGlobs = utils.toGlobArray( this._context.workspaceState.get( 'excludeGlobs' ) );
             var totalFilters = includeGlobs.length + excludeGlobs.length;
             var tooltip = "";
 

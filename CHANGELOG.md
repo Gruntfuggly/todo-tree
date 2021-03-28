@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Indicate current scope selection when changing
+
 ## v0.0.209 - 2021-03-28
 
 - Add support for scopes, allowing predefined sets of globs to be selected, (thanks to [kkckkc](https://github.com/kkckkc))

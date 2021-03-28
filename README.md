@@ -434,18 +434,21 @@ This is a complex configuration property that can only be configured through the
 "todo-tree.scopes": [
     {
         "name": "Production ",
-        "excludeGlobs": "**/tests/**" 
+        "excludeGlobs": [
+             "**/tests/**"
+        ]
     },
     {
         "name": "Tests",
-        "includeGlobs": "**/tests/**" 
+        "includeGlobs": [
+            "**/tests/**"
+        ]
     },
     {
         "name": "All"
     }
 ]
 ```
-
 
 ### Multiline TODOs
 

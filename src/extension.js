@@ -1329,20 +1329,35 @@ function activate( context )
             }
             else
             {
-                vscode.window.showQuickPick( config.map( c => c.name ) ).then(
-                    function( term )
+                var items = [];
+                var currentIncludeGlobs = JSON.stringify( context.workspaceState.get( 'includeGlobs' ) || [] );
+                var currentExcludeGlobs = JSON.stringify( context.workspaceState.get( 'excludeGlobs' ) || [] );
+                config.forEach( function( c )
+                {
+                    var scope = { label: c.name };
+                    var includeGlobs = JSON.stringify( utils.toGlobArray( c.includeGlobs ) );
+                    var excludeGlobs = JSON.stringify( utils.toGlobArray( c.excludeGlobs ) );
+                    if( currentIncludeGlobs === includeGlobs && currentExcludeGlobs === excludeGlobs )
                     {
-                        var currentConfig = config.find( c => c.name === term );
+                        scope.description = "$(check)";
+                    }
 
-                        var includeGlobs = currentConfig.includeGlobs ? [ currentConfig.includeGlobs ] : [];
-                        context.workspaceState.update( 'includeGlobs', includeGlobs );
+                    items.push( scope );
+                } );
+                var options = { placeHolder: "Select scope..." };
+                vscode.window.showQuickPick( items, options ).then( function( scope )
+                {
+                    if( scope )
+                    {
+                        var currentConfig = config.find( c => c.name === scope.label );
 
-                        var excludeGlobs = currentConfig.excludeGlobs ? [ currentConfig.excludeGlobs ] : [];
-                        context.workspaceState.update( 'excludeGlobs', excludeGlobs );
+                        context.workspaceState.update( 'includeGlobs', utils.toGlobArray( currentConfig.includeGlobs ) );
+                        context.workspaceState.update( 'excludeGlobs', utils.toGlobArray( currentConfig.excludeGlobs ) );
 
                         rebuild();
                         dumpFolderFilter();
-                    } );
+                    }
+                } );
             }
 
         } ) );

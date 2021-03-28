@@ -528,6 +528,19 @@ function isCodicon( icon )
     return icon.trim().indexOf( "$(" ) === 0;
 }
 
+function toGlobArray( globs )
+{
+    if( globs === undefined )
+    {
+        return [];
+    }
+    if( typeof ( globs ) === 'string' )
+    {
+        return globs.split( ',' );
+    }
+    return globs;
+}
+
 module.exports.init = init;
 module.exports.isHexColour = isHexColour;
 module.exports.isRgbColour = isRgbColour;
@@ -553,3 +566,4 @@ module.exports.complementaryColour = complementaryColour;
 module.exports.isValidColour = isValidColour;
 module.exports.setRgbAlpha = setRgbAlpha;
 module.exports.isCodicon = isCodicon;
+module.exports.toGlobArray = toGlobArray;
