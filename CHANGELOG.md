@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Add support for scopes, allowing predefined sets of globs to be selected, (thanks to [kkckkc](https://github.com/kkckkc))
+
 ## v0.0.208 - 2021-03-20
 
 - Revert commit which removed trailing text from multiline TODOs
