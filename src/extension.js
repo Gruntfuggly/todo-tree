@@ -1309,6 +1309,34 @@ function activate( context )
             dumpFolderFilter();
         } ) );
 
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.switchScope', function()
+        {
+            var config = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'scopes' );
+
+            if (!config || config.length === 0) 
+            {
+                vscode.window.showWarningMessage("No scopes configured (see todo-tree.scopes setting)")
+            }
+            else
+            {
+                vscode.window.showQuickPick(config.map(c => c.name)).then(
+                    function( term ) 
+                    {
+                        var currentConfig = config.find(c => c.name === term);
+    
+                        var includeGlobs = currentConfig.includeGlobs ? [ currentConfig.includeGlobs ] : [];
+                        context.workspaceState.update( 'includeGlobs', includeGlobs );
+    
+                        var excludeGlobs = currentConfig.excludeGlobs ? [ currentConfig.excludeGlobs ] : [];
+                        context.workspaceState.update( 'excludeGlobs', excludeGlobs );
+    
+                        rebuild();
+                        dumpFolderFilter();
+                    } );
+            }
+
+        } ) );
+
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.excludeThisFolder', function( node )
         {
             var rootNode = tree.locateWorkspaceNode( node.fsPath );
