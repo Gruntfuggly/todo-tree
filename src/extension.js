@@ -616,7 +616,7 @@ function activate( context )
 
         interrupted = false;
 
-        statusBarIndicator.text = "todo-Tree: Scanning...";
+        statusBarIndicator.text = "Todo-Tree: Scanning...";
         statusBarIndicator.show();
         statusBarIndicator.command = "todo-tree.stopScan";
         statusBarIndicator.tooltip = "Click to interrupt scan";
@@ -1196,7 +1196,7 @@ function activate( context )
         // We can't do anything if we can't find ripgrep
         if( !config.ripgrepPath() )
         {
-            vscode.window.showErrorMessage( "todo-Tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
+            vscode.window.showErrorMessage( "Todo-Tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
             return;
         }
 
@@ -1272,7 +1272,7 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.stopScan', function()
         {
             ripgrep.kill();
-            statusBarIndicator.text = "todo-Tree: Scanning interrupted.";
+            statusBarIndicator.text = "Todo-Tree: Scanning interrupted.";
             statusBarIndicator.tooltip = "Click to restart";
             statusBarIndicator.command = "todo-tree.refresh";
             interrupted = true;
