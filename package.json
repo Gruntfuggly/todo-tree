@@ -533,6 +533,11 @@
                     "markdownDescription": "%todo-tree.configuration.filtering.passGlobsToRipgrep.markdownDescription%",
                     "type": "boolean"
                 },
+                "todo-tree.filtering.scopes": {
+                    "default": [],
+                    "markdownDescription": "%todo-tree.configuration.filtering.scopes.markdownDescription%",
+                    "type": "array"
+                },
                 "todo-tree.filtering.useBuiltInExcludes": {
                     "default": "none",
                     "enum": [
@@ -943,11 +948,6 @@
                     "default": true,
                     "markdownDescription": "%todo-tree.configuration.tree.trackFile.markdownDescription%",
                     "type": "boolean"
-                },
-                "todo-tree.scopes": {
-                    "default": [],
-                    "markdownDescription": "%todo-tree.configuration.scopes.markdownDescription%",
-                    "type": "array"
                 }
             }
         }

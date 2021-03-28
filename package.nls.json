@@ -41,6 +41,7 @@
     "todo-tree.configuration.filtering.includeGlobs.markdownDescription": "Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders.",
     "todo-tree.configuration.filtering.includeHiddenFiles.markdownDescription": "Include hidden files (starting with a .).",
     "todo-tree.configuration.filtering.passGlobsToRipgrep.markdownDescription": "By default the globs are passed into ripgrep to narrow the search. Set this to false to apply the globs *after* the search (pre 0.0.132 behaviour).",
+    "todo-tree.configuration.filtering.scopes.markdownDescription": "Scopes (sets of globs) that can be switched between",
     "todo-tree.configuration.filtering.useBuiltInExcludes.markdownDescription": "Add VSCode's `files.exclude` and/or `search.exclude` list to the ignored paths.",
     "todo-tree.configuration.filtering.useBuiltInExcludes.markdownEnumDescriptions.1": "Don't used any built in excludes",
     "todo-tree.configuration.filtering.useBuiltInExcludes.markdownEnumDescriptions.2": "Use the Files:Exclude setting",
@@ -122,6 +123,5 @@
     "todo-tree.configuration.tree.sort.markdownDescription": "ripgrep searches using multiple threads to improve performance. The tree is sorted when it is populated so that it stays stable. If you want to use ripgrep's own sort arguments, set this to false.",
     "todo-tree.configuration.tree.tagsOnly.markdownDescription": "When opening new workspaces, show only tag elements in tree.",
     "todo-tree.configuration.tree.tooltipFormat.markdownDescription": "Tree item tooltip format.",
-    "todo-tree.configuration.tree.trackFile.markdownDescription": "Track the current file in the tree view.",
-    "todo-tree.configuration.scopes.markdownDescription": "Scopes (sets of globs) that can be switched between"
+    "todo-tree.configuration.tree.trackFile.markdownDescription": "Track the current file in the tree view."
 }

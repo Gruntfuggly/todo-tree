@@ -42,6 +42,7 @@ var MORE_INFO_BUTTON = "More Info";
 var YES_BUTTON = "Yes";
 var NEVER_SHOW_AGAIN_BUTTON = "Never Show This Again";
 var OPEN_SETTINGS_BUTTON = "Open Settings";
+var OK_BUTTON = "OK";
 
 function activate( context )
 {
@@ -381,7 +382,7 @@ function activate( context )
             {
                 message += " (" + e.stderr + ")";
             }
-            vscode.window.showErrorMessage( "todo-Tree: " + message );
+            vscode.window.showErrorMessage( "Todo-Tree: " + message );
             onComplete();
         } );
     }
@@ -1311,25 +1312,34 @@ function activate( context )
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.switchScope', function()
         {
-            var config = vscode.workspace.getConfiguration( 'todo-tree' ).get( 'scopes' );
+            var config = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'scopes' );
 
-            if (!config || config.length === 0) 
+            if( !config || config.length === 0 )
             {
-                vscode.window.showWarningMessage("No scopes configured (see todo-tree.scopes setting)")
+                vscode.window.showWarningMessage( "Todo-Tree: No scopes configured (see todo-tree.filtering.scopes setting)", OPEN_SETTINGS_BUTTON, OK_BUTTON ).then( function( button )
+                {
+                    if( button === OPEN_SETTINGS_BUTTON )
+                    {
+                        vscode.workspace.getConfiguration( 'todo-tree.filtering' ).update( 'scopes', [], vscode.ConfigurationTarget.Global ).then( function()
+                        {
+                            vscode.commands.executeCommand( 'workbench.action.openSettingsJson', 'todo-tree.filtering.scopes' );
+                        } );
+                    }
+                } );
             }
             else
             {
-                vscode.window.showQuickPick(config.map(c => c.name)).then(
-                    function( term ) 
+                vscode.window.showQuickPick( config.map( c => c.name ) ).then(
+                    function( term )
                     {
-                        var currentConfig = config.find(c => c.name === term);
-    
+                        var currentConfig = config.find( c => c.name === term );
+
                         var includeGlobs = currentConfig.includeGlobs ? [ currentConfig.includeGlobs ] : [];
                         context.workspaceState.update( 'includeGlobs', includeGlobs );
-    
+
                         var excludeGlobs = currentConfig.excludeGlobs ? [ currentConfig.excludeGlobs ] : [];
                         context.workspaceState.update( 'excludeGlobs', excludeGlobs );
-    
+
                         rebuild();
                         dumpFolderFilter();
                     } );
