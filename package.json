@@ -573,19 +573,15 @@
                 "todo-tree.general.revealBehaviour": {
                     "default": "start of todo",
                     "enum": [
-                        "start of todo",
-                        "end of todo",
-                        "highlight todo",
                         "start of line",
-                        "highlight line"
+                        "start of todo",
+                        "end of todo"
                     ],
                     "markdownDescription": "%todo-tree.configuration.general.revealBehaviour.markdownDescription%",
                     "markdownEnumDescriptions": [
                         "%todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.1%",
                         "%todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.2%",
-                        "%todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.3%",
-                        "%todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.4%",
-                        "%todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.5%"
+                        "%todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.3%"
                     ],
                     "type": "string"
                 },

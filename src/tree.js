@@ -659,13 +659,30 @@ class TreeNodeProvider
                     treeItem.label = utils.formatLabel( format, node ) + ( node.pathLabel ? ( " " + node.pathLabel ) : "" );
                 }
 
+                var revealBehaviour = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'revealBehaviour' );
+
+                var todoSelection;
+                if( revealBehaviour === 'end of todo' )
+                {
+                    var todoEnd = new vscode.Position( node.line, node.endColumn - 1 );
+                    todoSelection = new vscode.Selection( todoEnd, todoEnd );
+                }
+                else if( revealBehaviour === 'start of line' )
+                {
+                    var lineStart = new vscode.Position( node.line, 0 );
+                    todoSelection = new vscode.Selection( lineStart, lineStart );
+                }
+                else if( revealBehaviour === 'start of todo' )
+                {
+                    var todoStart = new vscode.Position( node.line, node.column - 1 );
+                    todoSelection = new vscode.Selection( todoStart, todoStart );
+                }
+
                 treeItem.command = {
-                    command: "todo-tree.revealTodo",
+                    command: "vscode.open",
                     arguments: [
-                        node.fsPath,
-                        node.line,
-                        node.column,
-                        node.endColumn
+                        vscode.Uri.parse( node.fsPath ),
+                        { selection: todoSelection }
                     ]
                 };
             }

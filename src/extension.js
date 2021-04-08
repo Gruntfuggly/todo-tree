@@ -1113,6 +1113,25 @@ function activate( context )
                     } );
                 }
             }
+
+            if( context.globalState.get( 'migratedVersion', 0 ) < 210 )
+            {
+                var validValues = [ 'start of line', 'start of todo', 'end of todo' ];
+                if( validValues.indexOf( vscode.workspace.getConfiguration( 'todo-tree.general' ).revealBehaviour ) === -1 )
+                {
+                    vscode.window.showInformationMessage( "Todo-Tree: some 'revealBehaviour' settings have been removed to make the extension more consistent with VSCode.", OPEN_SETTINGS_BUTTON, NEVER_SHOW_AGAIN_BUTTON ).then( function( button )
+                    {
+                        if( button === OPEN_SETTINGS_BUTTON )
+                        {
+                            vscode.commands.executeCommand( 'workbench.action.openSettingsJson', 'todo-tree.general.revealBehaviour' );
+                        }
+                        else if( button === NEVER_SHOW_AGAIN_BUTTON )
+                        {
+                            context.globalState.update( 'migratedVersion', 210 );
+                        }
+                    } );
+                }
+            }
         }
 
         function showInTree( uri )
@@ -1200,53 +1219,6 @@ function activate( context )
             vscode.window.showErrorMessage( "Todo-Tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
             return;
         }
-
-        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.revealTodo', ( file, line, column, endColumn ) =>
-        {
-            selectedDocument = file;
-            vscode.workspace.openTextDocument( file ).then( function( document )
-            {
-                vscode.window.showTextDocument( document ).then( function( editor )
-                {
-                    var selectionStart, selectionEnd;
-                    var todoStart = new vscode.Position( line, column - 1 );
-                    var todoEnd = new vscode.Position( line, endColumn - 1 );
-                    var lineStart = new vscode.Position( line, 0 );
-                    var lineEnd = new vscode.Position( line, document.lineAt( line ).text.length );
-                    var revealBehaviour = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'revealBehaviour' );
-
-                    if( revealBehaviour == "end of todo" )
-                    {
-                        selectionStart = todoEnd;
-                        selectionEnd = todoEnd;
-                    }
-                    else if( revealBehaviour == "highlight todo" )
-                    {
-                        selectionStart = todoStart;
-                        selectionEnd = todoEnd;
-                    }
-                    else if( revealBehaviour == "start of line" )
-                    {
-                        selectionStart = lineStart;
-                        selectionEnd = lineStart;
-                    }
-                    else if( revealBehaviour == "highlight line" )
-                    {
-                        selectionStart = lineStart;
-                        selectionEnd = lineEnd;
-                    }
-                    else
-                    {
-                        selectionStart = todoStart;
-                        selectionEnd = todoStart;
-                    }
-
-                    editor.selection = new vscode.Selection( selectionStart, selectionEnd );
-                    editor.revealRange( editor.selection, vscode.TextEditorRevealType.InCenter );
-                    vscode.commands.executeCommand( 'workbench.action.focusActiveEditorGroup' );
-                } );
-            } );
-        } ) );
 
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.openUrl', ( url ) =>
         {
