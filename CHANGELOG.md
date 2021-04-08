@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.210 - 2021-04-08
+
 - Indicate current scope selection when changing
 - Make reveal behaviour more consistent with VSCode
 
