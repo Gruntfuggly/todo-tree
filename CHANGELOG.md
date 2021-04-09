@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.211 - 2021-04-09
+
 - Fix file opening on Windows
 
 ## v0.0.210 - 2021-04-08
