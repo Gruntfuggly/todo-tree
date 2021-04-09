@@ -681,7 +681,7 @@ class TreeNodeProvider
                 treeItem.command = {
                     command: "vscode.open",
                     arguments: [
-                        vscode.Uri.parse( node.fsPath ),
+                        vscode.Uri.file( node.fsPath ),
                         { selection: todoSelection }
                     ]
                 };
