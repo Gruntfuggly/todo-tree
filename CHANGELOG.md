@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Use the window icon for workspaces in the tree
+
 ## v0.0.211 - 2021-04-09
 
 - Fix file opening on Windows

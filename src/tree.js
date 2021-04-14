@@ -604,9 +604,13 @@ class TreeNodeProvider
                     this.nodesToGet += node.nodes.filter( isVisible ).length;
                 }
 
-                if( node.isWorkspaceNode || node.tag )
+                if( node.tag )
                 {
                     treeItem.iconPath = icons.getIcon( this._context, node.tag ? node.tag : node.label, this._debug );
+                }
+                else if( node.isWorkspaceNode )
+                {
+                    treeItem.iconPath = new vscode.ThemeIcon( 'window' );
                 }
                 else if( node.isFolder )
                 {
