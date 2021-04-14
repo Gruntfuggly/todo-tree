@@ -3,6 +3,7 @@ var strftime = require( 'fast-strftime' );
 var utils = require( '../src/utils.js' );
 var attributes = require( '../src/attributes.js' );
 var stubs = require( './stubs.js' );
+var searchResults = require( '../src/searchResults.js' );
 
 QUnit.test( "utils.isHexColour", function( assert )
 {
@@ -554,4 +555,21 @@ QUnit.test( "utils.isCodicon", function( assert )
     assert.equal( utils.isCodicon( "$(beaker)" ), true );
     assert.equal( utils.isCodicon( "  $(beaker)" ), true );
     assert.equal( utils.isCodicon( "beaker" ), false );
+} );
+
+QUnit.test( "searchResults can be added and removed", function( assert )
+{
+    searchResults.add( { uri: "uri" } );
+    assert.equal( searchResults.count(), 1 );
+    searchResults.remove( "uri" );
+    assert.equal( searchResults.count(), 0 );
+} );
+
+QUnit.test( "searchResults can be cleared", function( assert )
+{
+    searchResults.add( { uri: "uri1" } );
+    searchResults.add( { uri: "uri2" } );
+    assert.equal( searchResults.count(), 2 );
+    searchResults.clear();
+    assert.equal( searchResults.count(), 0 );
 } );
