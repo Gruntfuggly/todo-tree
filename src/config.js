@@ -137,10 +137,10 @@ function clickingStatusBarShouldToggleHighlights()
     return vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBarClickBehaviour === "toggle highlights";
 }
 
-function isValidScheme( scheme )
+function isValidScheme( uri )
 {
     var schemes = vscode.workspace.getConfiguration( 'todo-tree.general' ).schemes;
-    return schemes && schemes.length && schemes.indexOf( scheme ) !== -1;
+    return uri && uri.scheme && schemes && schemes.length && schemes.indexOf( uri.scheme ) !== -1;
 }
 
 function shouldUseBuiltInFileExcludes()

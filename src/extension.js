@@ -13,8 +13,8 @@ var highlights = require( './highlights.js' );
 var config = require( './config.js' );
 var utils = require( './utils.js' );
 var attributes = require( './attributes.js' );
+var searchResults = require( './searchResults.js' );
 
-var searchResults = [];
 var searchList = [];
 var currentFilter;
 var interrupted = false;
@@ -122,10 +122,9 @@ function activate( context )
     {
         function checkForExternalFileChanged( uri )
         {
-            debug( uri.fsPath + " changed" );
-            // TODO FIX THIS
-            removeFileFromSearchResults( uri.fsPath );
-            provider.remove( null, uri.fsPath );
+            debug( uri.toString( true ) + " changed" );
+            searchResults.remove( uri );
+            provider.remove( null, uri );
             searchList.push( uri.fsPath );
             searchList = searchList.filter( function( element, index )
             {
@@ -156,10 +155,9 @@ function activate( context )
 
                 fileSystemWatcher.onDidDelete( function( uri )
                 {
-                    debug( uri.fsPath + " deleted" );
-                    // TODO FIX THIS
-                    removeFileFromSearchResults( uri.fsPath );
-                    provider.remove( refreshTree, uri.fsPath );
+                    debug( uri.toString( true ) + " deleted" );
+                    searchResults.remove( uri );
+                    provider.remove( refreshTree, uri );
                 } );
             }
         }
@@ -177,18 +175,12 @@ function activate( context )
 
     function addResultsToTree()
     {
-        searchResults.map( function( match )
+        if( searchResults.containsMarkdown() )
         {
-            if( match.added !== true )
-            {
-                if( path.extname( match.uri.fsPath ) === '.md' )
-                {
-                    checkForMarkdownUpgrade();
-                }
-                provider.add( match );
-                match.added = true;
-            }
-        } );
+            checkForMarkdownUpgrade();
+        }
+
+        searchResults.addToTree( provider );
 
         if( interrupted === false )
         {
@@ -341,14 +333,6 @@ function activate( context )
         }
     }
 
-    function removeFileFromSearchResults( filename )
-    {
-        searchResults = searchResults.filter( match =>
-        {
-            return match.file !== filename;
-        } );
-    }
-
     function search( options, done )
     {
         function onComplete()
@@ -369,12 +353,12 @@ function activate( context )
                 {
                     match.uri = vscode.Uri.file( match.fsPath );
                     debug( " Match (File): " + JSON.stringify( match ) );
-                    searchResults.push( match );
+                    searchResults.add( match );
                 } );
             }
             else if( options.filename )
             {
-                removeFileFromSearchResults( options.filename );
+                searchResults.remove( vscode.Uri.file( options.filename ) );
             }
 
             onComplete();
@@ -529,14 +513,14 @@ function activate( context )
 
         if( includeGlobs.length + excludeGlobs.length + tempIncludeGlobs.length + tempExcludeGlobs.length > 0 )
         {
-            debug( "Applying globs to " + searchResults.length + " items..." );
+            debug( "Applying globs to " + searchResults.count() + " items..." );
 
-            searchResults = searchResults.filter( function( match )
+            searchResults.filter( function( match )
             {
-                return utils.isIncluded( match.file, includeGlobs.concat( tempIncludeGlobs ), excludeGlobs.concat( tempExcludeGlobs ) );
+                return utils.isIncluded( match.uri.fsPath, includeGlobs.concat( tempIncludeGlobs ), excludeGlobs.concat( tempExcludeGlobs ) );
             } );
 
-            debug( "Remaining items: " + searchResults.length );
+            debug( "Remaining items: " + searchResults.count() );
         }
     }
 
@@ -547,7 +531,7 @@ function activate( context )
             var entry = searchList.pop();
             search( getOptions( entry ), ( searchList.length > 0 ) ? iterateSearchList : function()
             {
-                debug( "Found " + searchResults.length + " items" );
+                debug( "Found " + searchResults.count() + " items" );
                 if( vscode.workspace.getConfiguration( 'todo-tree.ripgrep' ).get( 'passGlobsToRipgrep' ) !== true )
                 {
                     applyGlobs();
@@ -613,7 +597,7 @@ function activate( context )
     {
         todoTreeView.message = "";
 
-        searchResults = [];
+        searchResults.clear();
         searchList = [];
 
         provider.clear( vscode.workspace.workspaceFolders );
@@ -714,29 +698,34 @@ function activate( context )
         }
     }
 
-    function isIncluded( filename )
+    function isIncluded( uri )
     {
-        var includeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includeGlobs' );
-        var excludeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludeGlobs' );
-        var includeHiddenFiles = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includeHiddenFiles' );
-
-        var tempIncludeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
-        var tempExcludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
-
-        if( config.shouldUseBuiltInFileExcludes() )
+        if( uri.fsPath )
         {
-            excludeGlobs = addGlobs( vscode.workspace.getConfiguration( 'files.exclude' ), excludeGlobs );
+            var includeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includeGlobs' );
+            var excludeGlobs = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'excludeGlobs' );
+            var includeHiddenFiles = vscode.workspace.getConfiguration( 'todo-tree.filtering' ).get( 'includeHiddenFiles' );
+
+            var tempIncludeGlobs = context.workspaceState.get( 'includeGlobs' ) || [];
+            var tempExcludeGlobs = context.workspaceState.get( 'excludeGlobs' ) || [];
+
+            if( config.shouldUseBuiltInFileExcludes() )
+            {
+                excludeGlobs = addGlobs( vscode.workspace.getConfiguration( 'files.exclude' ), excludeGlobs );
+            }
+
+            if( config.shouldUseBuiltInSearchExcludes() )
+            {
+                excludeGlobs = addGlobs( vscode.workspace.getConfiguration( 'search.exclude' ), excludeGlobs );
+            }
+
+            var isHidden = utils.isHidden( uri.fsPath );
+            var included = utils.isIncluded( uri.fsPath, includeGlobs.concat( tempIncludeGlobs ), excludeGlobs.concat( tempExcludeGlobs ) );
+
+            return included && ( !isHidden || includeHiddenFiles );
         }
 
-        if( config.shouldUseBuiltInSearchExcludes() )
-        {
-            excludeGlobs = addGlobs( vscode.workspace.getConfiguration( 'search.exclude' ), excludeGlobs );
-        }
-
-        var isHidden = utils.isHidden( filename );
-        var included = utils.isIncluded( filename, includeGlobs.concat( tempIncludeGlobs ), excludeGlobs.concat( tempExcludeGlobs ) );
-
-        return included && ( !isHidden || includeHiddenFiles );
+        return false;
     }
 
     function refreshFile( document )
@@ -749,23 +738,20 @@ function activate( context )
             {
                 line = utils.removeLineComments( line, document.fileName );
             }
-            var file = document.uri.scheme === 'file' ? document.fileName : path.join( document.uri.authority, document.fileName );
+
             return {
-                file: file,
+                uri: document.uri,
                 line: position.line + 1,
                 column: position.character + 1,
-                match: line,
-                uri: document.uri
+                match: line
             };
         }
 
         var matchesFound = false;
 
-        var fileName = document.uri.scheme === 'file' ? document.fileName : path.join( document.uri.authority, document.fileName );
+        searchResults.remove( document.uri );
 
-        removeFileFromSearchResults( fileName );
-
-        if( config.isValidScheme( document.uri.scheme ) && isIncluded( document.fileName ) === true )
+        if( config.isValidScheme( document.uri ) && isIncluded( document.uri ) === true )
         {
             if( config.scanMode() !== SCAN_MODE_CURRENT_FILE || ( vscode.window.activeTextEditor && document.fileName === vscode.window.activeTextEditor.document.fileName ) )
             {
@@ -776,7 +762,7 @@ function activate( context )
                 };
                 var isMatch = function( s )
                 {
-                    if( s.file === result.file && s.line == result.line && s.column == result.column )
+                    if( s.uri === result.uri && s.line == result.line && s.column == result.column )
                     {
                         found = true;
                     }
@@ -807,12 +793,9 @@ function activate( context )
                         sections.map( extractExtraLines );
                     }
 
-                    var found = false;
-                    searchResults.map( isMatch );
-                    if( found === false )
+                    if( !searchResults.contains( result ) )
                     {
-                        debug( " Match (Editor):" + JSON.stringify( result ) );
-                        searchResults.push( result );
+                        searchResults.add( result );
                         matchesFound = true;
                     }
                 }
@@ -821,11 +804,11 @@ function activate( context )
 
         if( matchesFound === true )
         {
-            provider.reset( document.fileName );
+            provider.reset( document.uri );
         }
         else
         {
-            provider.remove( null, document.fileName );
+            provider.remove( null, document.uri );
         }
 
         addResultsToTree();
@@ -833,10 +816,8 @@ function activate( context )
 
     function refresh()
     {
-        searchResults.forEach( function( match )
-        {
-            match.added = false;
-        } );
+        searchResults.markAsNotAdded();
+
         provider.clear( vscode.workspace.workspaceFolders );
         provider.rebuild();
 
@@ -1170,16 +1151,16 @@ function activate( context )
             {
                 vscode.window.visibleTextEditors.map( editor =>
                 {
-                    if( document === editor.document && config.isValidScheme( document.uri.scheme ) )
+                    if( document === editor.document && config.isValidScheme( document.uri ) )
                     {
-                        if( document.fileName === undefined || isIncluded( document.fileName ) )
+                        if( isIncluded( document.uri ) )
                         {
                             highlights.triggerHighlight( editor );
                         }
                     }
                 } );
 
-                if( config.isValidScheme( document.uri.scheme ) && path.basename( document.fileName ) !== "settings.json" )
+                if( config.isValidScheme( document.uri ) && path.basename( document.fileName ) !== "settings.json" )
                 {
                     if( shouldRefreshFile() )
                     {
@@ -1192,9 +1173,9 @@ function activate( context )
             {
                 vscode.window.visibleTextEditors.map( editor =>
                 {
-                    if( config.isValidScheme( editor.document.uri.scheme ) )
+                    if( config.isValidScheme( editor.document.uri ) )
                     {
-                        if( isIncluded( editor.document.fileName ) )
+                        if( isIncluded( editor.document.uri ) )
                         {
                             highlights.triggerHighlight( editor );
                         }
@@ -1545,7 +1526,7 @@ function activate( context )
         {
             if( e && e.document )
             {
-                openDocuments[ e.document.fileName ] = e.document;
+                openDocuments[ e.document.uri.toString() ] = e.document;
 
                 if( config.scanMode() === SCAN_MODE_CURRENT_FILE )
                 {
@@ -1555,7 +1536,7 @@ function activate( context )
 
                 if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true && vscode.workspace.getConfiguration( 'todo-tree.tree' ).trackFile === true )
                 {
-                    if( e.document.uri && config.isValidScheme( e.document.uri.scheme ) )
+                    if( e.document.uri && config.isValidScheme( e.document.uri ) )
                     {
                         if( selectedDocument !== e.document.fileName )
                         {
@@ -1565,7 +1546,7 @@ function activate( context )
                     }
                 }
 
-                if( e.document.fileName === undefined || isIncluded( e.document.fileName ) )
+                if( e.document.fileName === undefined || isIncluded( e.document.uri ) )
                 {
                     updateStatusBarAndTitleBar();
                 }
@@ -1576,7 +1557,7 @@ function activate( context )
 
         context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( document =>
         {
-            if( config.isValidScheme( document.uri.scheme ) && path.basename( document.fileName ) !== "settings.json" )
+            if( config.isValidScheme( document.uri ) && path.basename( document.fileName ) !== "settings.json" )
             {
                 if( shouldRefreshFile() )
                 {
@@ -1589,9 +1570,9 @@ function activate( context )
         {
             if( shouldRefreshFile() )
             {
-                if( config.isValidScheme( document.uri.scheme ) )
+                if( config.isValidScheme( document.uri ) )
                 {
-                    openDocuments[ document.fileName ] = document;
+                    openDocuments[ document.uri.toString() ] = document;
                     refreshFile( document );
                 }
             }
@@ -1599,26 +1580,25 @@ function activate( context )
 
         context.subscriptions.push( vscode.workspace.onDidCloseTextDocument( document =>
         {
-            function removeFromTree( filename )
+            function removeFromTree( uri )
             {
-                // TODO FIX THIS
-                removeFileFromSearchResults( filename );
+                searchResults.remove( uri );
                 provider.remove( function()
                 {
                     refreshTree();
                     updateStatusBarAndTitleBar();
-                }, filename );
+                }, uri );
             }
 
-            delete openDocuments[ document.fileName ];
+            delete openDocuments[ document.uri.toString() ];
 
             if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
             {
-                if( config.isValidScheme( document.uri.scheme ) )
+                if( config.isValidScheme( document.uri ) )
                 {
                     if( config.scanMode() !== SCAN_MODE_WORKSPACE_AND_OPEN_FILES )
                     {
-                        removeFromTree( document.fileName );
+                        removeFromTree( document.uri );
                     }
                     else
                     {
@@ -1639,7 +1619,7 @@ function activate( context )
                         } );
                         if( !keep )
                         {
-                            removeFromTree( document.fileName );
+                            removeFromTree( document.uri );
                         }
                     }
                 }
@@ -1741,9 +1721,9 @@ function activate( context )
             var editors = vscode.window.visibleTextEditors;
             editors.map( function( editor )
             {
-                if( editor.document && config.isValidScheme( editor.document.uri.scheme ) )
+                if( editor.document && config.isValidScheme( editor.document.uri ) )
                 {
-                    openDocuments[ editor.document.fileName ] = editor.document;
+                    openDocuments[ editor.document.uri.toString() ] = editor.document;
                 }
                 refreshOpenFiles();
             } );

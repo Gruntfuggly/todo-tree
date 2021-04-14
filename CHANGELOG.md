@@ -2,6 +2,7 @@
 
 - Use the window icon for workspaces in the tree
 - Move 'schemes' setting from highlights to general (and include "ssh" by default)
+- Use URIs instead of file paths to improve support for remote file systems
 
 ## v0.0.211 - 2021-04-09
 

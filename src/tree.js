@@ -201,7 +201,7 @@ function createTodoNode( result )
             joined += "\n" + extraLine.match;
         } );
     }
-    var text = utils.removeBlockComments( joined, result.file );
+    var text = utils.removeBlockComments( joined, result.uri.fsPath );
     var extracted = utils.extractTag( text, result.column );
     var label = ( extracted.withoutTag && extracted.withoutTag.length > 0 ) ? extracted.withoutTag : "line " + result.line;
 
@@ -221,7 +221,7 @@ function createTodoNode( result )
 
     var todo = {
         type: TODO,
-        fsPath: result.file,
+        fsPath: result.uri.fsPath,
         uri: result.uri,
         label: label,
         tag: tagGroup ? tagGroup : extracted.tag,
@@ -303,7 +303,8 @@ function locateFlatChildNode( rootNode, result, tag, subTag )
         parentNodes = parentNode.nodes;
     }
 
-    var nodePath = subTag ? path.join( result.file, subTag ) : result.file;
+    var fullPath = result.uri.scheme === 'file' ? result.uri.fsPath : path.join( result.uri.authority, result.uri.fsPath );
+    var nodePath = subTag ? path.join( fullPath, subTag ) : fullPath;
     var childNode = parentNodes.find( findExactPath, nodePath );
     if( childNode === undefined )
     {
@@ -823,7 +824,9 @@ class TreeNodeProvider
             addWorkspaceFolders();
         }
 
-        var rootNode = locateWorkspaceNode( result.file );
+        var fullPath = result.uri.scheme === 'file' ? result.uri.fsPath : path.join( result.uri.authority, result.uri.fsPath );
+
+        var rootNode = locateWorkspaceNode( fullPath );
         var todoNode = createTodoNode( result );
 
         if( config.shouldHideFromTree( todoNode.tag ? todoNode.tag : todoNode.label ) )
@@ -882,7 +885,7 @@ class TreeNodeProvider
         }
         else if( rootNode )
         {
-            var relativePath = path.relative( rootNode.fsPath, result.file );
+            var relativePath = path.relative( rootNode.fsPath, fullPath );
             var pathElements = [];
             if( relativePath !== "" )
             {
@@ -917,8 +920,10 @@ class TreeNodeProvider
         }
     }
 
-    reset( filename, children )
+    reset( uri, children )
     {
+        var fullPath = uri.scheme === 'file' ? uri.fsPath : path.join( uri.authority, uri.fsPath );
+
         var root = children === undefined;
         if( children === undefined )
         {
@@ -929,17 +934,17 @@ class TreeNodeProvider
             var keep = true;
             if( child.nodes !== undefined )
             {
-                this.reset( filename, child.nodes );
+                this.reset( uri, child.nodes );
             }
-            if( child.type === TODO && !child.tag && child.fsPath == filename ) // no tag (e.g. markdown)
+            if( child.type === TODO && !child.tag && child.fsPath == fullPath ) // no tag (e.g. markdown)
             {
                 keep = false;
             }
-            else if( child.type === TODO && child.parent === undefined && child.fsPath == filename ) // top level todo node
+            else if( child.type === TODO && child.parent === undefined && child.fsPath == fullPath ) // top level todo node
             {
                 keep = false;
             }
-            else if( child.fsPath === filename || child.isRootTagNode )
+            else if( child.fsPath === fullPath || child.isRootTagNode )
             {
                 if( config.shouldShowTagsOnly() )
                 {
@@ -947,7 +952,7 @@ class TreeNodeProvider
                     {
                         child.nodes = child.nodes.filter( function( node )
                         {
-                            return isTodoNode( node ) && node.fsPath !== filename;
+                            return isTodoNode( node ) && node.fsPath !== fullPath;
                         } );
                     }
                 }
@@ -966,17 +971,19 @@ class TreeNodeProvider
         }
     }
 
-    remove( callback, filename, children )
+    remove( callback, uri, children )
     {
+        var fullPath = uri.scheme === 'file' ? uri.fsPath : path.join( uri.authority, uri.fsPath );
+
         function removeNodesByFilename( children, me )
         {
             return children.filter( function( child )
             {
                 if( child.nodes !== undefined )
                 {
-                    child.nodes = me.remove( callback, filename, child.nodes );
+                    child.nodes = me.remove( callback, uri, child.nodes );
                 }
-                var shouldRemove = ( child.fsPath === filename );
+                var shouldRemove = ( child.fsPath === fullPath );
                 if( shouldRemove )
                 {
                     delete expandedNodes[ child.fsPath ];
@@ -996,7 +1003,7 @@ class TreeNodeProvider
             {
                 if( child.nodes !== undefined )
                 {
-                    child.nodes = me.remove( callback, filename, child.nodes );
+                    child.nodes = me.remove( callback, uri, child.nodes );
                 }
                 var shouldRemove = ( child.nodes && child.nodes.length === 0 && child.isWorkspaceNode !== true );
                 if( shouldRemove )
