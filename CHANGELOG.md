@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Use the window icon for workspaces in the tree
+- Move 'schemes' setting from highlights to general (and include "ssh" by default)
 
 ## v0.0.211 - 2021-04-09
 

@@ -595,6 +595,18 @@
                     "markdownDescription": "%todo-tree.configuration.general.rootFolder.markdownDescription%",
                     "type": "string"
                 },
+                "todo-tree.general.schemes": {
+                    "default": [
+                        "file",
+                        "ssh",
+                        "untitled"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "markdownDescription": "%todo-tree.configuration.general.schemes.markdownDescription%",
+                    "type": "array"
+                },
                 "todo-tree.general.statusBar": {
                     "default": "none",
                     "enum": [
@@ -674,17 +686,6 @@
                     "default": 500,
                     "markdownDescription": "%todo-tree.configuration.highlights.highlightDelay.markdownDescription%",
                     "type": "integer"
-                },
-                "todo-tree.highlights.schemes": {
-                    "default": [
-                        "file",
-                        "untitled"
-                    ],
-                    "items": {
-                        "type": "string"
-                    },
-                    "markdownDescription": "%todo-tree.configuration.highlights.schemes.markdownDescription%",
-                    "type": "array"
                 },
                 "todo-tree.highlights.useColourScheme": {
                     "default": false,

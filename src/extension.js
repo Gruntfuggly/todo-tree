@@ -123,6 +123,7 @@ function activate( context )
         function checkForExternalFileChanged( uri )
         {
             debug( uri.fsPath + " changed" );
+            // TODO FIX THIS
             removeFileFromSearchResults( uri.fsPath );
             provider.remove( null, uri.fsPath );
             searchList.push( uri.fsPath );
@@ -156,6 +157,7 @@ function activate( context )
                 fileSystemWatcher.onDidDelete( function( uri )
                 {
                     debug( uri.fsPath + " deleted" );
+                    // TODO FIX THIS
                     removeFileFromSearchResults( uri.fsPath );
                     provider.remove( refreshTree, uri.fsPath );
                 } );
@@ -758,9 +760,11 @@ function activate( context )
 
         var matchesFound = false;
 
-        removeFileFromSearchResults( document.fileName );
+        var fileName = document.uri.scheme === 'file' ? document.fileName : path.join( document.uri.authority, document.fileName );
 
-        if( config.shouldShowHighlights( document.uri.scheme ) && isIncluded( document.fileName ) === true )
+        removeFileFromSearchResults( fileName );
+
+        if( config.isValidScheme( document.uri.scheme ) && isIncluded( document.fileName ) === true )
         {
             if( config.scanMode() !== SCAN_MODE_CURRENT_FILE || ( vscode.window.activeTextEditor && document.fileName === vscode.window.activeTextEditor.document.fileName ) )
             {
@@ -1134,6 +1138,18 @@ function activate( context )
                     } );
                 }
             }
+
+            var currentSchemes = vscode.workspace.getConfiguration( 'todo-tree.highlights' ).get( 'schemes' );
+            if( vscode.workspace.getConfiguration( 'todo-tree.highlights' ).schemes !== undefined )
+            {
+                var schemesSettings = vscode.workspace.getConfiguration( 'todo-tree.general' ).inspect( 'schemes' );
+
+                if( currentSchemes !== schemesSettings.defaultValue )
+                {
+                    var target = settingLocation( 'highlights.schemes' );
+                    vscode.workspace.getConfiguration( 'todo-tree.general' ).update( 'schemes', currentSchemes, target );
+                }
+            }
         }
 
         function showInTree( uri )
@@ -1153,7 +1169,7 @@ function activate( context )
             {
                 vscode.window.visibleTextEditors.map( editor =>
                 {
-                    if( document === editor.document && config.shouldShowHighlights( document.uri.scheme ) )
+                    if( document === editor.document && config.isValidScheme( document.uri.scheme ) )
                     {
                         if( document.fileName === undefined || isIncluded( document.fileName ) )
                         {
@@ -1162,7 +1178,7 @@ function activate( context )
                     }
                 } );
 
-                if( config.shouldShowHighlights( document.uri.scheme ) && path.basename( document.fileName ) !== "settings.json" )
+                if( config.isValidScheme( document.uri.scheme ) && path.basename( document.fileName ) !== "settings.json" )
                 {
                     if( shouldRefreshFile() )
                     {
@@ -1175,7 +1191,7 @@ function activate( context )
             {
                 vscode.window.visibleTextEditors.map( editor =>
                 {
-                    if( config.shouldShowHighlights( editor.document.uri.scheme ) )
+                    if( config.isValidScheme( editor.document.uri.scheme ) )
                     {
                         if( isIncluded( editor.document.fileName ) )
                         {
@@ -1538,7 +1554,7 @@ function activate( context )
 
                 if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true && vscode.workspace.getConfiguration( 'todo-tree.tree' ).trackFile === true )
                 {
-                    if( e.document.uri && config.shouldShowHighlights( e.document.uri.scheme ) )
+                    if( e.document.uri && config.isValidScheme( e.document.uri.scheme ) )
                     {
                         if( selectedDocument !== e.document.fileName )
                         {
@@ -1559,7 +1575,7 @@ function activate( context )
 
         context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( document =>
         {
-            if( config.shouldShowHighlights( document.uri.scheme ) && path.basename( document.fileName ) !== "settings.json" )
+            if( config.isValidScheme( document.uri.scheme ) && path.basename( document.fileName ) !== "settings.json" )
             {
                 if( shouldRefreshFile() )
                 {
@@ -1572,7 +1588,7 @@ function activate( context )
         {
             if( shouldRefreshFile() )
             {
-                if( config.shouldShowHighlights( document.uri.scheme ) )
+                if( config.isValidScheme( document.uri.scheme ) )
                 {
                     openDocuments[ document.fileName ] = document;
                     refreshFile( document );
@@ -1584,6 +1600,7 @@ function activate( context )
         {
             function removeFromTree( filename )
             {
+                // TODO FIX THIS
                 removeFileFromSearchResults( filename );
                 provider.remove( function()
                 {
@@ -1596,7 +1613,7 @@ function activate( context )
 
             if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
             {
-                if( config.shouldShowHighlights( document.uri.scheme ) )
+                if( config.isValidScheme( document.uri.scheme ) )
                 {
                     if( config.scanMode() !== SCAN_MODE_WORKSPACE_AND_OPEN_FILES )
                     {
@@ -1723,7 +1740,7 @@ function activate( context )
             var editors = vscode.window.visibleTextEditors;
             editors.map( function( editor )
             {
-                if( editor.document && editor.document.uri.scheme === "file" )
+                if( editor.document && config.isValidScheme( editor.document.uri.scheme ) )
                 {
                     openDocuments[ editor.document.fileName ] = editor.document;
                 }

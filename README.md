@@ -197,6 +197,9 @@ or</br>
 
 <sup>*Note: Other open files (outside of the rootFolder) will be shown (as they are opened) with their full path in brackets.*</sup>
 
+**todo-tree.general.schemes** (`['file','ssh','untitled']`)</br>
+Editor schemes to find TODOs in. To find TODOs in settings files, for instance, add `vscode-userdata` or for output windows, add `output`.
+
 **todo-tree.general.tags** (`["TODO","FIXME","BUG"]`)</br>
 This defines the tags which are recognised as TODOs. This list is automatically inserted into the regex.
 
@@ -286,9 +289,6 @@ Set highlights per tag (or tag group). Example:
     }
 }
 ```
-
-**todo-tree.highlights.schemes** (`['file','untitled']`)</br>
-Editor schemes to show highlights in. To show highlights in settings files, for instance, add `vscode-userdata` or for output windows, add `output`.
 
 **todo-tree.highlights.useColourScheme** (`false`)</br>
 Use a simple scheme for colouring highlights. This will simply apply a list of colours in the same order as the tags are defined. Use this as a much simpler alternative to setting up custom highlights for each tag.
