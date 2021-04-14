@@ -746,11 +746,13 @@ function activate( context )
             {
                 line = utils.removeLineComments( line, document.fileName );
             }
+            var file = document.uri.scheme === 'file' ? document.fileName : path.join( document.uri.authority, document.fileName );
             return {
-                file: document.fileName,
+                file: file,
                 line: position.line + 1,
                 column: position.character + 1,
-                match: line
+                match: line,
+                uri: document.uri
             };
         }
 
@@ -758,7 +760,7 @@ function activate( context )
 
         removeFileFromSearchResults( document.fileName );
 
-        if( document.uri.scheme === 'file' && isIncluded( document.fileName ) === true )
+        if( config.shouldShowHighlights( document.uri.scheme ) && isIncluded( document.fileName ) === true )
         {
             if( config.scanMode() !== SCAN_MODE_CURRENT_FILE || ( vscode.window.activeTextEditor && document.fileName === vscode.window.activeTextEditor.document.fileName ) )
             {
@@ -1151,7 +1153,7 @@ function activate( context )
             {
                 vscode.window.visibleTextEditors.map( editor =>
                 {
-                    if( document === editor.document && config.shouldShowHighlights( editor.document.uri.scheme ) )
+                    if( document === editor.document && config.shouldShowHighlights( document.uri.scheme ) )
                     {
                         if( document.fileName === undefined || isIncluded( document.fileName ) )
                         {
@@ -1160,7 +1162,7 @@ function activate( context )
                     }
                 } );
 
-                if( document.uri.scheme === "file" && path.basename( document.fileName ) !== "settings.json" )
+                if( config.shouldShowHighlights( document.uri.scheme ) && path.basename( document.fileName ) !== "settings.json" )
                 {
                     if( shouldRefreshFile() )
                     {
@@ -1536,7 +1538,7 @@ function activate( context )
 
                 if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true && vscode.workspace.getConfiguration( 'todo-tree.tree' ).trackFile === true )
                 {
-                    if( e.document.uri && e.document.uri.scheme === "file" )
+                    if( e.document.uri && config.shouldShowHighlights( e.document.uri.scheme ) )
                     {
                         if( selectedDocument !== e.document.fileName )
                         {
@@ -1557,7 +1559,7 @@ function activate( context )
 
         context.subscriptions.push( vscode.workspace.onDidSaveTextDocument( document =>
         {
-            if( document.uri.scheme === "file" && path.basename( document.fileName ) !== "settings.json" )
+            if( config.shouldShowHighlights( document.uri.scheme ) && path.basename( document.fileName ) !== "settings.json" )
             {
                 if( shouldRefreshFile() )
                 {
@@ -1570,7 +1572,7 @@ function activate( context )
         {
             if( shouldRefreshFile() )
             {
-                if( document.uri.scheme === "file" )
+                if( config.shouldShowHighlights( document.uri.scheme ) )
                 {
                     openDocuments[ document.fileName ] = document;
                     refreshFile( document );
@@ -1594,7 +1596,7 @@ function activate( context )
 
             if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
             {
-                if( document.uri.scheme === "file" )
+                if( config.shouldShowHighlights( document.uri.scheme ) )
                 {
                     if( config.scanMode() !== SCAN_MODE_WORKSPACE_AND_OPEN_FILES )
                     {

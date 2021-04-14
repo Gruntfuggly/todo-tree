@@ -110,16 +110,17 @@ var sortTagsOnlyViewByTagOrder = function( a, b )
 function createWorkspaceRootNode( folder )
 {
     var id = ( buildCounter * 1000000 ) + nodeCounter++;
-    return {
+    var node = {
         isWorkspaceNode: true,
         type: PATH,
-        label: folder.name,
+        label: folder.uri.scheme === 'file' ? folder.name : folder.uri.authority,
         nodes: [],
-        fsPath: folder.uri.fsPath,
+        fsPath: folder.uri.scheme === 'file' ? folder.uri.fsPath : ( folder.uri.authority + folder.uri.fsPath ),
         id: id,
         visible: true,
         isFolder: true
     };
+    return node;
 }
 
 function createPathNode( folder, pathElements, isFolder, subTag )
@@ -221,6 +222,7 @@ function createTodoNode( result )
     var todo = {
         type: TODO,
         fsPath: result.file,
+        uri: result.uri,
         label: label,
         tag: tagGroup ? tagGroup : extracted.tag,
         subTag: extracted.subTag,
@@ -263,7 +265,8 @@ function locateWorkspaceNode( filename )
     var result;
     nodes.map( function( node )
     {
-        if( node.isWorkspaceNode && ( filename === node.fsPath || filename.indexOf( node.fsPath + path.sep ) === 0 ) )
+        var workspacePath = node.fsPath + ( node.fsPath.indexOf( path.sep ) === node.fsPath.length - 1 ? "" : path.sep );
+        if( node.isWorkspaceNode && ( filename === node.fsPath || filename.indexOf( workspacePath ) === 0 ) )
         {
             result = node;
         }
@@ -685,7 +688,7 @@ class TreeNodeProvider
                 treeItem.command = {
                     command: "vscode.open",
                     arguments: [
-                        vscode.Uri.file( node.fsPath ),
+                        node.uri ? node.uri : vscode.Uri.file( node.fsPath ),
                         { selection: todoSelection }
                     ]
                 };
