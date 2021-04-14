@@ -214,23 +214,23 @@ class Match
         var match = regex.exec( matchText );
         if( match && match.groups )
         {
-            this.file = match.groups.file;
+            this.fsPath = match.groups.file;
             this.line = parseInt( match.groups.line );
             this.column = parseInt( match.groups.column );
             this.match = match.groups.todo;
         }
         else // Fall back to old method
         {
-            this.file = "";
+            this.fsPath = "";
 
             if( matchText.length > 1 && matchText[ 1 ] === ':' )
             {
-                this.file = matchText.substr( 0, 2 );
+                this.fsPath = matchText.substr( 0, 2 );
                 matchText = matchText.substr( 2 );
             }
             var parts = matchText.split( ':' );
             var hasColumn = ( parts.length === 4 );
-            this.file += parts.shift();
+            this.fsPath += parts.shift();
             this.line = parseInt( parts.shift() );
             if( hasColumn === true )
             {

@@ -181,7 +181,7 @@ function activate( context )
         {
             if( match.added !== true )
             {
-                if( path.extname( match.file ) === '.md' )
+                if( path.extname( match.uri.fsPath ) === '.md' )
                 {
                     checkForMarkdownUpgrade();
                 }
@@ -367,6 +367,7 @@ function activate( context )
             {
                 matches.forEach( match =>
                 {
+                    match.uri = vscode.Uri.file( match.fsPath );
                     debug( " Match (File): " + JSON.stringify( match ) );
                     searchResults.push( match );
                 } );
