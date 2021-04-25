@@ -63,6 +63,7 @@
     "todo-tree.configuration.general.statusBar.markdownEnumDescriptions.3": "Show a breakdown of the count of each tag in the status bar",
     "todo-tree.configuration.general.statusBar.markdownEnumDescriptions.4": "Show the count of the top three tags in the status bar",
     "todo-tree.configuration.general.statusBar.markdownEnumDescriptions.5": "Show the count of tags in the current file in the status bar",
+    "todo-tree.configuration.general.showIconsInsteadOfTagsInStatusBar.markdownDescription": "Show icons instead of tags in the status bar",
     "todo-tree.configuration.general.statusBarClickBehaviour.markdownDescription": "What to do when the status bar is clicked.",
     "todo-tree.configuration.general.statusBarClickBehaviour.markdownEnumDescriptions.1": "Toggle between showing total count and the top three tag counts",
     "todo-tree.configuration.general.statusBarClickBehaviour.markdownEnumDescriptions.2": "Reveal the tree view",

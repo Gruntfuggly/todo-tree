@@ -237,6 +237,11 @@ function subTagClickUrl()
     return vscode.workspace.getConfiguration( 'todo-tree.tree' ).subTagClickUrl;
 }
 
+function shouldShowIconsInsteadOfTagsInStatusBar()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.general' ).showIconsInsteadOfTagsInStatusBar;
+}
+
 module.exports.init = init;
 module.exports.shouldGroupByTag = shouldGroupByTag;
 module.exports.shouldGroupBySubTag = shouldGroupBySubTag;
@@ -275,3 +280,4 @@ module.exports.backgroundColourScheme = backgroundColourScheme;
 module.exports.defaultHighlight = defaultHighlight;
 module.exports.customHighlight = customHighlight;
 module.exports.subTagClickUrl = subTagClickUrl;
+module.exports.shouldShowIconsInsteadOfTagsInStatusBar = shouldShowIconsInsteadOfTagsInStatusBar;

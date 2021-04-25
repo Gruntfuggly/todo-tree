@@ -4,6 +4,7 @@
 - Move 'schemes' setting from highlights to general (and include "ssh" by default)
 - Use URIs instead of file paths to improve support for remote file systems
 - Fix group by tag in flat mode
+- Show icons on status bar for each tag count
 
 ## v0.0.211 - 2021-04-09
 

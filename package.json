@@ -626,6 +626,11 @@
                     ],
                     "type": "string"
                 },
+                "todo-tree.general.showIconsInsteadOfTagsInStatusBar": {
+                    "default": false,
+                    "markdownDescription": "%todo-tree.configuration.general.showIconsInsteadOfTagsInStatusBar.markdownDescription%",
+                    "type": "boolean"
+                },
                 "todo-tree.general.statusBarClickBehaviour": {
                     "default": "reveal",
                     "enum": [

@@ -246,15 +246,24 @@ function activate( context )
                 sortedTags = sortedTags.splice( 0, 3 );
             }
             var text = "";
+            var showIcons = config.shouldShowIconsInsteadOfTagsInStatusBar();
             sortedTags.map( function( tag )
             {
                 if( text.length > 0 )
                 {
                     text += ", ";
                 }
-                text += tag + ": " + counts[ tag ];
+                var icon = attributes.getIcon( tag );
+                if( icon != config.defaultHighlight().icon && showIcons )
+                {
+                    text += "$(" + icon + ") " + counts[ tag ];
+                }
+                else
+                {
+                    text += tag + ": " + counts[ tag ];
+                }
             } );
-            statusBarIndicator.text = "$(check) " + text.trim();
+            statusBarIndicator.text = showIcons ? text.trim() : "$(check) " + text.trim();
             if( statusBar === STATUS_BAR_CURRENT_FILE )
             {
                 statusBarIndicator.tooltip = "Todo-Tree tags counts in current file";
@@ -269,7 +278,7 @@ function activate( context )
             }
             if( Object.keys( counts ).length === 0 )
             {
-                statusBarIndicator.text += "0";
+                statusBarIndicator.text = "$(check) 0";
             }
             statusBarIndicator.show();
         }
