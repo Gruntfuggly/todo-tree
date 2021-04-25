@@ -5,6 +5,7 @@
 - Use URIs instead of file paths to improve support for remote file systems
 - Fix group by tag in flat mode
 - Show icons on status bar for each tag count
+- Use tag order in status bar, unless showing top three
 
 ## v0.0.211 - 2021-04-09
 

@@ -240,27 +240,34 @@ function activate( context )
         else if( statusBar === STATUS_BAR_TAGS || statusBar === STATUS_BAR_CURRENT_FILE || statusBar === STATUS_BAR_TOP_THREE )
         {
             var sortedTags = Object.keys( counts );
-            sortedTags.sort( function( a, b ) { return counts[ a ] < counts[ b ] ? 1 : counts[ b ] < counts[ a ] ? -1 : a > b ? 1 : -1; } );
             if( statusBar === STATUS_BAR_TOP_THREE )
             {
+                sortedTags.sort( function( a, b ) { return counts[ a ] < counts[ b ] ? 1 : counts[ b ] < counts[ a ] ? -1 : a > b ? 1 : -1; } );
                 sortedTags = sortedTags.splice( 0, 3 );
+            }
+            else
+            {
+                sortedTags = config.tags();
             }
             var text = "";
             var showIcons = config.shouldShowIconsInsteadOfTagsInStatusBar();
             sortedTags.map( function( tag )
             {
-                if( text.length > 0 )
+                if( counts[ tag ] > 0 )
                 {
-                    text += ", ";
-                }
-                var icon = attributes.getIcon( tag );
-                if( icon != config.defaultHighlight().icon && showIcons )
-                {
-                    text += "$(" + icon + ") " + counts[ tag ];
-                }
-                else
-                {
-                    text += tag + ": " + counts[ tag ];
+                    if( text.length > 0 )
+                    {
+                        text += ", ";
+                    }
+                    var icon = attributes.getIcon( tag );
+                    if( icon != config.defaultHighlight().icon && showIcons )
+                    {
+                        text += "$(" + icon + ") " + counts[ tag ];
+                    }
+                    else
+                    {
+                        text += tag + ": " + counts[ tag ];
+                    }
                 }
             } );
             statusBarIndicator.text = showIcons ? text.trim() : "$(check) " + text.trim();
