@@ -287,6 +287,7 @@ function locateFlatChildNode( rootNode, result, tag, subTag )
         {
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tagPath ], subTag );
             parentNode.tag = tagPath;
+            parentNodes.push( parentNode );
         }
         parentNodes = parentNode.nodes;
     }
