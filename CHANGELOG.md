@@ -6,6 +6,7 @@
 - Fix group by tag in flat mode
 - Show icons on status bar for each tag count
 - Use tag order in status bar, unless showing top three
+- Use tag order when grouping by tag
 
 ## v0.0.211 - 2021-04-09
 

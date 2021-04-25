@@ -88,7 +88,15 @@ var sortByLineAndColumn = function( a, b )
 
 var sortByFilenameAndLine = function( a, b )
 {
-    return sortFoldersFirst( a, b, function( a, b ) { return a.fsPath > b.fsPath ? 1 : b.fsPath > a.fsPath ? -1 : sortByLineAndColumn( a, b ); } );
+    return sortFoldersFirst( a, b, function( a, b )
+    {
+        if( a.isRootTagNode === true && b.isRootTagNode === true )
+        {
+            var tags = config.tags();
+            return tags.indexOf( a.tag ) > tags.indexOf( b.tag ) ? 1 : tags.indexOf( b.tag ) > tags.indexOf( a.tag ) ? -1 : sortByLineAndColumn( a, b );
+        }
+        return a.fsPath > b.fsPath ? 1 : b.fsPath > a.fsPath ? -1 : sortByLineAndColumn( a, b );
+    } );
 };
 
 var sortTagsOnlyViewByLabel = function( a, b )
@@ -287,6 +295,7 @@ function locateFlatChildNode( rootNode, result, tag, subTag )
         {
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), [ tagPath ], subTag );
             parentNode.tag = tagPath;
+            parentNode.isRootTagNode = true;
             parentNodes.push( parentNode );
         }
         parentNodes = parentNode.nodes;
@@ -335,6 +344,7 @@ function locateTreeChildNode( rootNode, pathElements, tag, subTag )
             }
             tagPathList.push( tag );
             parentNode = createPathNode( rootNode ? rootNode.fsPath : JSON.stringify( result ), tagPathList, subTag );
+            parentNode.isRootTagNode = true;
             parentNode.tag = tag;
             parentNodes.push( parentNode );
         }
