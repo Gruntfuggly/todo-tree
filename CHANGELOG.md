@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.212 - 2021-04-26
+
 - Use the window icon for workspaces in the tree
 - Move 'schemes' setting from highlights to general (and include "ssh" by default)
 - Use URIs instead of file paths to improve support for remote file systems
