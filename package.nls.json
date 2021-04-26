@@ -104,7 +104,6 @@
     "todo-tree.configuration.tree.showBadges.markdownDescription": "Show badges and SCM state in the tree view.",
     "todo-tree.configuration.tree.showCountsInTree.markdownDescription": "Show counts of TODOs in the tree.",
     "todo-tree.configuration.tree.showInExplorer.deprecationMessage": "This setting is no longer used. Please drag the view to move it.",
-    "todo-tree.configuration.tree.showScanModeButton.markdownDescription": "Show a button on the tree view header to change between scanning the current file, open files, or the whole workspace.",
     "todo-tree.configuration.tree.showCurrentScanMode.markdownDescription": "Show the current scan mode at the top of the tree view",
     "todo-tree.configuration.tree.showScanOpenFilesOrWorkspaceButton.deprecationMessage": "This setting is no longer used, please use \"todo-tree.tree.scanMode\" instead.",
     "todo-tree.configuration.tree.subTagClickUrl.markdownDescription": "The URL to open when clicking on a sub tag in the tree. Can include placeholders as defined in `todo-tree.tree.labelFormat`.",

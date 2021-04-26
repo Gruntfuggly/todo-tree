@@ -856,11 +856,6 @@
                     "deprecationMessage": "%todo-tree.configuration.tree.showInExplorer.deprecationMessage%",
                     "type": "boolean"
                 },
-                "todo-tree.tree.showScanModeButton": {
-                    "default": false,
-                    "markdownDescription": "%todo-tree.configuration.tree.showScanModeButton.markdownDescription%",
-                    "type": "boolean"
-                },
                 "todo-tree.tree.showCurrentScanMode": {
                     "default": true,
                     "markdownDescription": "%todo-tree.configuration.tree.showCurrentScanMode.markdownDescription%",
