@@ -1061,40 +1061,6 @@ function activate( context )
             migrateIfRequired( 'tagsOnly', 'boolean', 'tree' );
             migrateIfRequired( 'trackFile', 'boolean', 'tree' );
 
-            if( migrated === true )
-            {
-                if( context.globalState.get( 'migratedVersion', 0 ) < 147 )
-                {
-                    vscode.window.showInformationMessage( "Your Todo Tree settings have been moved. Please remove the old settings from your settings.json.",
-                        OPEN_SETTINGS_BUTTON, NEVER_SHOW_AGAIN_BUTTON ).then( function( button )
-                        {
-                            if( button === OPEN_SETTINGS_BUTTON )
-                            {
-                                vscode.commands.executeCommand( 'workbench.action.openSettingsJson', true );
-                            }
-                            else if( button === NEVER_SHOW_AGAIN_BUTTON )
-                            {
-                                context.globalState.update( 'migratedVersion', 147 );
-                            }
-                        } );
-                }
-            }
-
-            if( context.globalState.get( 'migratedVersion', 0 ) < 168 )
-            {
-                vscode.workspace.getConfiguration( 'todo-tree.tree' ).update(
-                    'showScanModeButton',
-                    vscode.workspace.getConfiguration( 'todo-tree.tree' ).showScanOpenFilesOrWorkspaceButton,
-                    vscode.ConfigurationTarget.Global );
-
-                if( vscode.workspace.getConfiguration( 'todo-tree.filtering' ).useBuiltInExcludes === true )
-                {
-                    vscode.workspace.getConfiguration( 'todo-tree.filtering' ).update( 'useBuiltInExcludes', "file excludes", vscode.ConfigurationTarget.Global );
-                }
-
-                context.globalState.update( 'migratedVersion', 168 );
-            }
-
             if( context.globalState.get( 'migratedVersion', 0 ) < 189 )
             {
                 if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'showInExplorer' ) === true )

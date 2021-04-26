@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Remove some old migration code (before version 168)
+
 ## v0.0.212 - 2021-04-26
 
 - Use the window icon for workspaces in the tree
