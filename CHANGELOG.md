@@ -4,6 +4,7 @@
 - Fix colour validation
 - Improve status bar layout
 - Fix missing URI in multi line TODOs
+- Add icon validation
 
 ## v0.0.212 - 2021-04-26
 

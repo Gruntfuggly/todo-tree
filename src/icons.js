@@ -6,6 +6,7 @@ var octicons = require( '@primer/octicons' );
 var utils = require( './utils.js' );
 var attributes = require( './attributes.js' );
 var themeColourNames = require( './themeColourNames.js' );
+var themeIconNames = require( './themeIconNames.js' );
 
 function getIcon( context, tag, debug )
 {
@@ -117,4 +118,46 @@ function getIcon( context, tag, debug )
     return icon;
 }
 
+function validateIcons( workspace )
+{
+    function checkIcon( setting )
+    {
+        var icon = workspace.getConfiguration( 'todo-tree.highlights' ).get( setting + ".icon" );
+        if( icon !== undefined )
+        {
+            if( utils.isCodicon( icon ) )
+            {
+                var codicon = icon.substr( 2, icon.length - 3 );
+                if( themeIconNames.indexOf( codicon ) == -1 )
+                {
+                    invalidIcons.push( setting + '.icon(' + icon + ')' );
+                }
+            }
+            else if( !octicons[ icon ] )
+            {
+                invalidIcons.push( setting + '.icon(' + icon + ')' );
+            }
+        }
+    }
+
+    var invalidIcons = [];
+    var result = "";
+
+    checkIcon( 'defaultHighlight' );
+
+    var config = vscode.workspace.getConfiguration( 'todo-tree.highlights' );
+    Object.keys( config.customHighlight ).forEach( function( tag )
+    {
+        checkIcon( 'customHighlight.' + tag );
+    } );
+
+    if( invalidIcons.length > 0 )
+    {
+        result = "Invalid icons: " + invalidIcons.join( ', ' ) + ".";
+    }
+
+    return result;
+}
+
 module.exports.getIcon = getIcon;
+module.exports.validateIcons = validateIcons;

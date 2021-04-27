@@ -9,6 +9,7 @@ var crypto = require( 'crypto' );
 
 var tree = require( "./tree.js" );
 var colours = require( './colours.js' );
+var icons = require( './icons.js' );
 var highlights = require( './highlights.js' );
 var config = require( './config.js' );
 var utils = require( './utils.js' );
@@ -1184,6 +1185,15 @@ function activate( context )
             }
         }
 
+        function validateIcons()
+        {
+            var invalidIconMessage = icons.validateIcons( vscode.workspace );
+            if( invalidIconMessage )
+            {
+                vscode.window.showWarningMessage( "Todo Tree: " + invalidIconMessage );
+            }
+        }
+
         function validatePlaceholders()
         {
             var unexpectedPlaceholders = [];
@@ -1631,6 +1641,7 @@ function activate( context )
                     e.affectsConfiguration( "todo-tree.highlights.customHighlight" ) )
                 {
                     validateColours();
+                    validateIcons();
                     documentChanged();
                 }
                 else if( e.affectsConfiguration( "todo-tree.tree.labelFormat" ) )
@@ -1697,6 +1708,7 @@ function activate( context )
 
         migrateSettings();
         validateColours();
+        validateIcons()
         validatePlaceholders();
         setButtonsAndContext();
 
