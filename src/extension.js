@@ -257,16 +257,20 @@ function activate( context )
                 {
                     if( text.length > 0 )
                     {
-                        text += ", ";
+                        text += " ";
                     }
                     var icon = attributes.getIcon( tag );
                     if( icon != config.defaultHighlight().icon && showIcons )
                     {
-                        text += "$(" + icon + ") " + counts[ tag ];
+                        if( !utils.isCodicon( icon ) )
+                        {
+                            icon = "$(" + icon + ")";
+                        }
+                        text += icon + " " + counts[ tag ] + "  ";
                     }
                     else
                     {
-                        text += tag + ": " + counts[ tag ];
+                        text += tag + ": " + counts[ tag ] + " ";
                     }
                 }
             } );
