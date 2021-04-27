@@ -221,7 +221,7 @@ This treats any of `FIXME`, `FIXIT` or `FIX` as `FIXME`. When the tree is groupe
 <sup>*Note: all tags in the group should also appear in `todo-tree.general.tags`.*</sup>
 
 **todo-tree.general.revealBehaviour** (`start of todo`)</br>
-Change the cursor behaviour when selecting a todo from the explorer. You can choose from: `start of todo` (moves the cursor to the beginning of the todo), `end of todo` (moves the cursor to the end of the todo) or `start of line` (moves the cursor to the start of the line).
+Change the cursor behaviour when double-clicking a todo in the tree. You can choose from: `start of todo` (moves the cursor to the beginning of the todo), `end of todo` (moves the cursor to the end of the todo) or `start of line` (moves the cursor to the start of the line).
 
 **todo-tree.general.statusBar** (`none`)</br>
 What to show in the status bar - nothing (`none`), total count (`total`), counts per tag (`tags`), counts for the top three tags (`top three`) or counts for the current file only (`current file`).
