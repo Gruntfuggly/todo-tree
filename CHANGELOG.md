@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Remove some old migration code (before version 168)
+- Fix colour validation
 
 ## v0.0.212 - 2021-04-26
 

@@ -41,7 +41,7 @@ function validateIconColours( workspace )
     {
         var icon = workspace.getConfiguration( 'todo-tree.highlights' ).get( setting + ".icon" );
         var iconColour = workspace.getConfiguration( 'todo-tree.highlights' ).get( setting + ".iconColour" );
-        if( icon !== undefined )
+        if( icon !== undefined && iconColour !== undefined )
         {
             if( utils.isCodicon( icon ) )
             {
