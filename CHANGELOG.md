@@ -3,6 +3,7 @@
 - Remove some old migration code (before version 168)
 - Fix colour validation
 - Improve status bar layout
+- Fix missing URI in multi line TODOs
 
 ## v0.0.212 - 2021-04-26
 

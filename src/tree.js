@@ -252,6 +252,7 @@ function createTodoNode( result )
         result.extraLines.map( function( extraLine, index )
         {
             extraLine.match = commentsRemoved[ index ];
+            extraLine.uri = result.uri;
             if( extraLine.match )
             {
                 var extraLineMatch = extraLine.match.trim();
