@@ -6,7 +6,8 @@ var octicons = require( '@primer/octicons' );
 var utils = require( './utils.js' );
 var attributes = require( './attributes.js' );
 var themeColourNames = require( './themeColourNames.js' );
-var themeIconNames = require( './themeIconNames.js' );
+var codiconNames = require( './codiconNames.js' );
+var productIconNames = require( './productIconNames.js' );
 
 function getIcon( context, tag, debug )
 {
@@ -128,7 +129,7 @@ function validateIcons( workspace )
             if( utils.isCodicon( icon ) )
             {
                 var codicon = icon.substr( 2, icon.length - 3 );
-                if( themeIconNames.indexOf( codicon ) == -1 )
+                if( codiconNames.indexOf( codicon ) === -1 && productIconNames.indexOf( codicon ) === -1 )
                 {
                     invalidIcons.push( setting + '.icon(' + icon + ')' );
                 }

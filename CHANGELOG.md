@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Build codicon list automatically
+
 ## v0.0.213 - 2021-04-27
 
 - Remove some old migration code (before version 168)
