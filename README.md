@@ -455,7 +455,7 @@ This is a complex configuration property that can only be configured through the
 If the regex contains `\n`, then multiline TODOs will be enabled. In this mode, the search results are processed slightly differently. If results are found which do not contain any tags from `todo-tree.general.tags` it will be assumed that they belong to the previous result that did have a tag. For example, if you set the regex to something like:
 
 ```json
-"todo-tree.regex.regex": "(//)\\s*($TAGS).*(\\n\\s*//\\s{2,}.*)*"
+"todo-tree.regex.regex": "\/\/\\s*($TAGS).*(\\s+\/\/\\s{2,}.*)*",
 ```
 
 This will now match multiline TODOs where the extra lines have at least two spaces between the comment characters and the TODO item. e.g.
@@ -469,7 +469,7 @@ This will now match multiline TODOs where the extra lines have at least two spac
 If you want to match multiline TODOs in C++ style multiline comment blocks, you'll need something like:
 
 ```json
-"todo-tree.regex.regex": "(/\\*)\\s*($TAGS).*(\\n\\s*(//|/\\*|\\*\\*)\\s{2,}.*)*"
+"todo-tree.regex.regex": "\/\\*\\s*($TAGS).*((\\s+(\/\/|\/\\*|\\*\\*)\\s{2,}.*)*\\s*\\*\/)*",
 ```
 
 which should match:
