@@ -225,7 +225,7 @@ function activate( context )
                 title = "Tree";
             }
 
-            if( total > 0 )
+            if( total > 0 && vscode.workspace.getConfiguration( 'todo-tree.tree' ).get( 'showCountsInTree' ) === true )
             {
                 title += " (" + total + ")";
             }
