@@ -61,7 +61,7 @@
                 },
                 {
                     "command": "todo-tree.reveal",
-                    "when": "view =~ /todo-tree/ && todo-tree-show-reveal-button == true",
+                    "when": "view =~ /todo-tree/ && todo-tree-tags-only == false && todo-tree-show-reveal-button == true",
                     "group": "navigation@2"
                 },
                 {

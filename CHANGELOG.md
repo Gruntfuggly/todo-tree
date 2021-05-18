@@ -8,6 +8,7 @@
 - When grouping by tag, don't add group node for single item
 - Ensure markdown update popup is hidden for current session too
 - Use entire URI for editor ID when highlighting
+- Only show reveal button when not in tags only view
 
 ## v0.0.213 - 2021-04-27
 
