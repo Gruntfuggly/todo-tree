@@ -649,7 +649,13 @@
                 "todo-tree.general.tagGroups": {
                     "default": {},
                     "markdownDescription": "%todo-tree.configuration.general.tagGroups.markdownDescription%",
-                    "type": "object"
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
                 },
                 "todo-tree.general.tags": {
                     "default": [
@@ -675,12 +681,155 @@
                         }
                     },
                     "markdownDescription": "%todo-tree.configuration.highlights.customHighlight.markdownDescription%",
-                    "type": "object"
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                            "foreground": {
+                                "type": "string",
+                                "format": "color-hex"
+                            },
+                            "background": {
+                                "type": "string",
+                                "format": "color-hex"
+                            },
+                            "opacity": {
+                                "type": "number"
+                            },
+                            "fontWeight": {
+                                "type": "string"
+                            },
+                            "fontStyle": {
+                                "type": "string"
+                            },
+                            "textDecoration": {
+                                "type": "string"
+                            },
+                            "borderRadius": {
+                                "type": "string"
+                            },
+                            "icon": {
+                                "type": "string"
+                            },
+                            "iconColour": {
+                                "type": "string",
+                                "format": "color-hex"
+                            },
+                            "gutterIcon": {
+                                "type": "boolean"
+                            },
+                            "rulerColour": {
+                                "type": "string",
+                                "format": "color-hex"
+                            },
+                            "rulerOpacity": {
+                                "type": "number"
+                            },
+                            "rulerLane": {
+                                "type": "string",
+                                "enum": [
+                                    "none",
+                                    "left",
+                                    "center",
+                                    "right",
+                                    "full"
+                                ]
+                            },
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "tag",
+                                    "text",
+                                    "tag-and-comment",
+                                    "tag-and-subTag",
+                                    "text-and-comment",
+                                    "line",
+                                    "whole-line"
+                                ]
+                            },
+                            "hideFromTree": {
+                                "type": "boolean"
+                            },
+                            "hideFromStatusBar": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
                 },
                 "todo-tree.highlights.defaultHighlight": {
                     "default": {},
                     "markdownDescription": "%todo-tree.configuration.highlights.defaultHighlight.markdownDescription%",
-                    "type": "object"
+                    "type": "object",
+                    "properties": {
+                        "foreground": {
+                            "type": "string",
+                            "format": "color-hex"
+                        },
+                        "background": {
+                            "type": "string",
+                            "format": "color-hex"
+                        },
+                        "opacity": {
+                            "type": "number"
+                        },
+                        "fontWeight": {
+                            "type": "string"
+                        },
+                        "fontStyle": {
+                            "type": "string"
+                        },
+                        "textDecoration": {
+                            "type": "string"
+                        },
+                        "borderRadius": {
+                            "type": "string"
+                        },
+                        "icon": {
+                            "type": "string"
+                        },
+                        "iconColour": {
+                            "type": "string",
+                            "format": "color-hex"
+                        },
+                        "gutterIcon": {
+                            "type": "boolean"
+                        },
+                        "rulerColour": {
+                            "type": "string",
+                            "format": "color-hex"
+                        },
+                        "rulerOpacity": {
+                            "type": "number"
+                        },
+                        "rulerLane": {
+                            "type": "string",
+                            "enum": [
+                                "none",
+                                "left",
+                                "center",
+                                "right",
+                                "full"
+                            ]
+                        },
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "tag",
+                                "text",
+                                "tag-and-comment",
+                                "tag-and-subTag",
+                                "text-and-comment",
+                                "line",
+                                "whole-line"
+                            ]
+                        },
+                        "hideFromTree": {
+                            "type": "boolean"
+                        },
+                        "hideFromStatusBar": {
+                            "type": "boolean"
+                        }
+                    }
                 },
                 "todo-tree.highlights.enabled": {
                     "default": true,
