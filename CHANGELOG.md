@@ -9,6 +9,7 @@
 - Ensure markdown update popup is hidden for current session too
 - Use entire URI for editor ID when highlighting
 - Only show reveal button when not in tags only view
+- use subtag match correctly
 
 ## v0.0.213 - 2021-04-27
 
