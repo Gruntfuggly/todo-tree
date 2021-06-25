@@ -68,6 +68,7 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 - `line` - highlights the entire line containing the tag
 - `whole-line` - highlights the entire line containing the tag to the full width of the editor
 - `capture-groups:n,m...` - highlights capture groups from the regex, where 'n' is the index into the regex
+- `none` - disable highlightling in the document
 
 `hideFromTree` - used to hide tags from the tree, but still highlight in files
 

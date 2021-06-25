@@ -744,7 +744,8 @@
                                     "tag-and-subTag",
                                     "text-and-comment",
                                     "line",
-                                    "whole-line"
+                                    "whole-line",
+                                    "none"
                                 ]
                             },
                             "hideFromTree": {
@@ -820,7 +821,8 @@
                                 "tag-and-subTag",
                                 "text-and-comment",
                                 "line",
-                                "whole-line"
+                                "whole-line",
+                                "none"
                             ]
                         },
                         "hideFromTree": {

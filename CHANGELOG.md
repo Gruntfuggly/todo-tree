@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Update default regex in README.md
+- Add "none" as a valid value for highlight type
 
 ## v0.0.214 - 2021-09-07
 
