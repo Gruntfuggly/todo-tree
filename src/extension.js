@@ -992,6 +992,7 @@ function activate( context )
                     else if( button === NEVER_SHOW_AGAIN_BUTTON )
                     {
                         context.globalState.update( 'ignoreMarkdownUpdate', true );
+                        ignoreMarkdownUpdate = true;
                     }
                 } );
             }
