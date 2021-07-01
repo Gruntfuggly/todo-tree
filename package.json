@@ -657,7 +657,8 @@
                         "HACK",
                         "FIXME",
                         "TODO",
-                        "XXX"
+                        "XXX",
+                        "@todo"
                     ],
                     "items": {
                         "type": "string"
