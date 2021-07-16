@@ -649,7 +649,15 @@
                 "todo-tree.general.tagGroups": {
                     "default": {},
                     "markdownDescription": "%todo-tree.configuration.general.tagGroups.markdownDescription%",
-                    "type": "object"
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "%todo-tree.configuration.general.tagGroups.items.description%"
+                        },
+                        "description": "%todo-tree.configuration.general.tagGroups.key.description%"
+                    }
                 },
                 "todo-tree.general.tags": {
                     "default": [
@@ -675,12 +683,293 @@
                         }
                     },
                     "markdownDescription": "%todo-tree.configuration.highlights.customHighlight.markdownDescription%",
-                    "type": "object"
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                            "foreground": {
+                                "type": "string",
+                                "format": "color",
+                                "description": "%todo-tree.configuration.highlights.properties.foreground.description%",
+                                "examples": ["#80FF00", "#80FF0080", "Salmon", "rgb(255,128,0)", "rgba(255,128,0,0.5)", "peekViewResult.background"]
+                            },
+                            "background": {
+                                "type": "string",
+                                "format": "color",
+                                "description": "%todo-tree.configuration.highlights.properties.background.description%",
+                                "examples": ["#80FF00", "#80FF0080", "Salmon", "rgb(255,128,0)", "rgba(255,128,0,0.5)", "peekViewResult.background"]
+                            },
+                            "opacity": {
+                                "type": "number",
+                                "description": "%todo-tree.configuration.highlights.properties.opacity.description%",
+                                "minimum": 0,
+                                "maximum": 100
+                            },
+                            "fontWeight": {
+                                "type": "string",
+                                "description": "%todo-tree.configuration.highlights.properties.fontWeight.description%",
+                                "examples": [
+                                    "normal",
+                                    "bold",
+                                    "bolder",
+                                    "lighter",
+                                    "100",
+                                    "200",
+                                    "300",
+                                    "400",
+                                    "500",
+                                    "600",
+                                    "700",
+                                    "800",
+                                    "900"
+                                ]   
+
+                            },
+                            "fontStyle": {
+                                "type": "string",
+                                "description": "%todo-tree.configuration.highlights.properties.fontStyle.description%",
+                                "examples": [
+                                    "normal",
+                                    "italic",
+                                    "oblique"
+                                ]
+                            },
+                            "textDecoration": {
+                                "type": "string",
+                                "description": "%todo-tree.configuration.highlights.properties.textDecoration.description%",
+                                "examples": [
+                                    "underline",
+                                    "underline dotted",
+                                    "underline dotted red",
+                                    "green wavy underline",
+                                    "underline overline #FF3028"
+                                ]
+                            },
+                            "borderRadius": {
+                                "type": "string",
+                                "description": "%todo-tree.configuration.highlights.properties.borderRadius.description%",
+                                "examples": [
+                                    "30px",
+                                    "25% 10%",
+                                    "10% 30% 50% 70%",
+                                    "10% / 50%",
+                                    "10px 100px / 120px",
+                                    "50% 20% / 10% 40%"
+                                ]
+                            },
+                            "icon": {
+                                "type": "string",
+                                "description": "%todo-tree.configuration.highlights.properties.icon.description%",
+                                "examples": [
+                                    "check",
+                                    "$(check)",
+                                    "todo-tree",
+                                    "todo-tree-filled"
+                                ]
+                            },
+                            "iconColour": {
+                                "type": "string",
+                                "format": "color",
+                                "description": "%todo-tree.configuration.highlights.properties.iconColour.description%",
+                                "examples": ["#80FF00", "#80FF0080", "Salmon", "rgb(255,128,0)", "rgba(255,128,0,0.5)", "peekViewResult.background"]
+                            },
+                            "gutterIcon": {
+                                "type": "boolean",
+                                "description": "%todo-tree.configuration.highlights.properties.gutterIcon.description%",
+                                "default": false
+                            },
+                            "rulerColour": {
+                                "type": "string",
+                                "format": "color",
+                                "description": "%todo-tree.configuration.highlights.properties.rulerColour.description%",
+                                "examples": ["#80FF00", "#80FF0080", "Salmon", "rgb(255,128,0)", "rgba(255,128,0,0.5)", "peekViewResult.background"]
+                            },
+                            "rulerOpacity": {
+                                "type": "number",
+                                "description": "%todo-tree.configuration.highlights.properties.rulerOpacity.description%",
+                                "minimum": 0,
+                                "maximum": 100
+                            },
+                            "rulerLane": {
+                                "type": "string",
+                                "description": "%todo-tree.configuration.highlights.properties.rulerLane.description%",
+                                "enum": [
+                                    "left",
+                                    "center",
+                                    "right",
+                                    "full",
+                                    "none"
+                                ]
+                            },
+                            "type": {
+                                "type": "string",
+                                "description": "%todo-tree.configuration.highlights.properties.type.description%",
+                                "oneOf": [
+                                    {"const": "tag", "description": "highlights just the tag"},
+                                    {"const": "text", "description": "highlights the tag and any text after the tag"},
+                                    {"const": "tag-and-comment", "description": "highlights the comment characters (or the start of the match) and the tag"},
+                                    {"const": "tag-and-subTag", "description": "similar to tag-and-comment, but allows the sub tag to be highlight too (with colours defined in custom highlights)"},
+                                    {"const": "text-and-comment", "description": "highlights the comment characters (or the start of the match), the tag and the text after the tag"},
+                                    {"const": "line", "description": "highlights the entire line containing the tag"},
+                                    {"const": "whole-line", "description": "highlights the entire line containing the tag to the full width of the editor"}
+                                ]
+                            },
+                            "hideFromTree": {
+                                "type": "boolean",
+                                "description": "%todo-tree.configuration.highlights.properties.hideFromTree.description%",
+                                "default": false
+                            },
+                            "hideFromStatusBar": {
+                                "type": "boolean",
+                                "description": "%todo-tree.configuration.highlights.properties.hideFromStatusBar.description%",
+                                "default": false
+                            }
+                        }
+                    }
                 },
                 "todo-tree.highlights.defaultHighlight": {
                     "default": {},
                     "markdownDescription": "%todo-tree.configuration.highlights.defaultHighlight.markdownDescription%",
-                    "type": "object"
+                    "type": "object",
+                    "properties": {
+                        "foreground": {
+                            "type": "string",
+                            "format": "color",
+                            "description": "%todo-tree.configuration.highlights.properties.foreground.description%",
+                            "examples": ["#80FF00", "#80FF0080", "Salmon", "rgb(255,128,0)", "rgba(255,128,0,0.5)", "peekViewResult.background"]
+                        },
+                        "background": {
+                            "type": "string",
+                            "format": "color",
+                            "description": "%todo-tree.configuration.highlights.properties.background.description%",
+                            "examples": ["#80FF00", "#80FF0080", "Salmon", "rgb(255,128,0)", "rgba(255,128,0,0.5)", "peekViewResult.background"]
+                        },
+                        "opacity": {
+                            "type": "number",
+                            "description": "%todo-tree.configuration.highlights.properties.opacity.description%",
+                            "minimum": 0,
+                            "maximum": 100
+                        },
+                        "fontWeight": {
+                            "type": "string",
+                            "description": "%todo-tree.configuration.highlights.properties.fontWeight.description%",
+                            "examples": [
+                                "normal",
+                                "bold",
+                                "bolder",
+                                "lighter",
+                                "100",
+                                "200",
+                                "300",
+                                "400",
+                                "500",
+                                "600",
+                                "700",
+                                "800",
+                                "900"
+                            ]   
+
+                        },
+                        "fontStyle": {
+                            "type": "string",
+                            "description": "%todo-tree.configuration.highlights.properties.fontStyle.description%",
+                            "examples": [
+                                "normal",
+                                "italic",
+                                "oblique"
+                            ]
+                        },
+                        "textDecoration": {
+                            "type": "string",
+                            "description": "%todo-tree.configuration.highlights.properties.textDecoration.description%",
+                            "examples": [
+                                "underline",
+                                "underline dotted",
+                                "underline dotted red",
+                                "green wavy underline",
+                                "underline overline #FF3028"
+                            ]
+                        },
+                        "borderRadius": {
+                            "type": "string",
+                            "description": "%todo-tree.configuration.highlights.properties.borderRadius.description%",
+                            "examples": [
+                                "30px",
+                                "25% 10%",
+                                "10% 30% 50% 70%",
+                                "10% / 50%",
+                                "10px 100px / 120px",
+                                "50% 20% / 10% 40%"
+                            ]
+                        },
+                        "icon": {
+                            "type": "string",
+                            "description": "%todo-tree.configuration.highlights.properties.icon.description%",
+                            "examples": [
+                                "check",
+                                "$(check)",
+                                "todo-tree",
+                                "todo-tree-filled"
+                            ]
+                        },
+                        "iconColour": {
+                            "type": "string",
+                            "format": "color",
+                            "description": "%todo-tree.configuration.highlights.properties.iconColour.description%",
+                            "examples": ["#80FF00", "#80FF0080", "Salmon", "rgb(255,128,0)", "rgba(255,128,0,0.5)", "peekViewResult.background"]
+                        },
+                        "gutterIcon": {
+                            "type": "boolean",
+                            "description": "%todo-tree.configuration.highlights.properties.gutterIcon.description%",
+                            "default": false
+                        },
+                        "rulerColour": {
+                            "type": "string",
+                            "format": "color",
+                            "description": "%todo-tree.configuration.highlights.properties.rulerColour.description%",
+                            "examples": ["#80FF00", "#80FF0080", "Salmon", "rgb(255,128,0)", "rgba(255,128,0,0.5)", "peekViewResult.background"]
+                        },
+                        "rulerOpacity": {
+                            "type": "number",
+                            "description": "%todo-tree.configuration.highlights.properties.rulerOpacity.description%",
+                            "minimum": 0,
+                            "maximum": 100
+                        },
+                        "rulerLane": {
+                            "type": "string",
+                            "description": "%todo-tree.configuration.highlights.properties.rulerLane.description%",
+                            "enum": [
+                                "left",
+                                "center",
+                                "right",
+                                "full",
+                                "none"
+                            ]
+                        },
+                        "type": {
+                            "type": "string",
+                            "description": "%todo-tree.configuration.highlights.properties.type.description%",
+                            "oneOf": [
+                                {"const": "tag", "description": "highlights just the tag"},
+                                {"const": "text", "description": "highlights the tag and any text after the tag"},
+                                {"const": "tag-and-comment", "description": "highlights the comment characters (or the start of the match) and the tag"},
+                                {"const": "tag-and-subTag", "description": "similar to tag-and-comment, but allows the sub tag to be highlight too (with colours defined in custom highlights)"},
+                                {"const": "text-and-comment", "description": "highlights the comment characters (or the start of the match), the tag and the text after the tag"},
+                                {"const": "line", "description": "highlights the entire line containing the tag"},
+                                {"const": "whole-line", "description": "highlights the entire line containing the tag to the full width of the editor"}
+                            ]
+                        },
+                        "hideFromTree": {
+                            "type": "boolean",
+                            "description": "%todo-tree.configuration.highlights.properties.hideFromTree.description%",
+                            "default": false
+                        },
+                        "hideFromStatusBar": {
+                            "type": "boolean",
+                            "description": "%todo-tree.configuration.highlights.properties.hideFromStatusBar.description%",
+                            "default": false
+                        }
+                    }
                 },
                 "todo-tree.highlights.enabled": {
                     "default": true,
@@ -708,7 +997,8 @@
                         "black"
                     ],
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "color"
                     },
                     "markdownDescription": "%todo-tree.configuration.highlights.foregroundColourScheme.markdownDescription%",
                     "type": "array"
@@ -724,7 +1014,8 @@
                         "violet"
                     ],
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "color"
                     },
                     "markdownDescription": "%todo-tree.configuration.highlights.backgroundColourScheme.markdownDescription%",
                     "type": "array"
