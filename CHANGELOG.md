@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Update default regex in README.md
+
 ## v0.0.214 - 2021-09-07
 
 - Build codicon list automatically
