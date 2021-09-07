@@ -522,7 +522,20 @@ class TreeNodeProvider
                 result.unshift( scanModeNode );
             }
 
-            return result;
+            var compacted = [];
+            result.map( function( child )
+            {
+                if( child.isRootTagNode === true && child.nodes.length === 1 )
+                {
+                    compacted.push( child.nodes[ 0 ] );
+                }
+                else
+                {
+                    compacted.push( child );
+                }
+            } );
+
+            return compacted;
         }
         else if( isPathNode( node ) )
         {

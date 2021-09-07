@@ -5,6 +5,7 @@
 - Fix default regex to not greedily match newlines
 - Update default regex
 - Fix group by tag
+- When grouping by tag, don't add group node for single item
 
 ## v0.0.213 - 2021-04-27
 
