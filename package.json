@@ -730,7 +730,7 @@
                     "type": "array"
                 },
                 "todo-tree.regex.regex": {
-                    "default": "((//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
+                    "default": "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
                     "markdownDescription": "%todo-tree.configuration.regex.regex.markdownDescription%",
                     "type": "string",
                     "minLength": 1

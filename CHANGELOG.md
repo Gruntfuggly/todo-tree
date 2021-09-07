@@ -3,6 +3,7 @@
 - Build codicon list automatically
 - Support highlighting from capture groups in the regex
 - Fix default regex to not greedily match newlines
+- Update default regex
 
 ## v0.0.213 - 2021-04-27
 
