@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.214 - 2021-09-07
+
 - Build codicon list automatically
 - Support highlighting from capture groups in the regex
 - Fix default regex to not greedily match newlines
