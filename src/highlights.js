@@ -203,7 +203,7 @@ function editorId( editor )
     var id = "";
     if( editor.document )
     {
-        id = editor.document.uri.fsPath;
+        id = JSON.stringify( editor.document.uri );
     }
     if( editor.viewColumn )
     {
