@@ -6,7 +6,7 @@
         {
             "label": "ut",
             "type": "shell",
-            "command": "vsce package && qunit -c src/utils.js -c src/attributes.js -c src/searchResults.js -t test/tests.js",
+            "command": "qunit",
             "presentation": {
                 "reveal": "always"
             },
