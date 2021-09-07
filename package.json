@@ -961,6 +961,7 @@
         "fast-strftime": "^1.1.1",
         "find": "^0.3.0",
         "micromatch": "^4.0.2",
+        "regexp-match-indices": "^1.0.2",
         "treeify": "^1.1.0"
     },
     "devDependencies": {

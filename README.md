@@ -67,6 +67,7 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 - `text-and-comment` - highlights the comment characters (or the start of the match), the tag and the text after the tag
 - `line` - highlights the entire line containing the tag
 - `whole-line` - highlights the entire line containing the tag to the full width of the editor
+- `capture-groups:n,m...` - highlights capture groups from the regex, where 'n' is the index into the regex
 
 `hideFromTree` - used to hide tags from the tree, but still highlight in files
 
@@ -97,6 +98,8 @@ Example:
 ```
 
 <sup>*Note: The highlight configuration is separate from the settings for the search. Adding settings in `customHighlight` does not automatically add the tags into `todo-tree.general.tags`.*</sup>
+
+<sup>*Note: Using the `capture-groups` setting in `type` may have an impact on performance with large files.
 
 ## Installing
 

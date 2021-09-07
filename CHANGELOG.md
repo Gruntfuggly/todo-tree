@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Build codicon list automatically
+- Support highlighting from capture groups in the regex
 
 ## v0.0.213 - 2021-04-27
 
