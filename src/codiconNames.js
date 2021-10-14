@@ -463,5 +463,18 @@ module.exports = [
   "debug-all",
   "debug-coverage",
   "run-errors",
-  "folder-library"
+  "folder-library",
+  "debug-continue-small",
+  "beaker-stop",
+  "graph-line",
+  "graph-scatter",
+  "pie-chart",
+  "bracket",
+  "bracket-dot",
+  "bracket-error",
+  "lock-small",
+  "azure-devops",
+  "verified-filled",
+  "newline",
+  "layout"
 ];
