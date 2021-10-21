@@ -956,7 +956,7 @@
         "publisherDisplayName": "Gruntfuggly"
     },
     "dependencies": {
-        "@primer/octicons": "^11.0.0",
+        "@primer/octicons": "^16.0.0",
         "comment-patterns": "^0.10.1",
         "fast-strftime": "^1.1.1",
         "find": "^0.3.0",
