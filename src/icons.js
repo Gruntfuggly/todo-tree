@@ -134,7 +134,7 @@ function validateIcons( workspace )
                     invalidIcons.push( setting + '.icon(' + icon + ')' );
                 }
             }
-            else if( !octicons[ icon ] )
+            else if( !octicons[ icon ] && ( iconName !== 'todo-tree' || iconName !== 'todo-tree-filled' ) )
             {
                 invalidIcons.push( setting + '.icon(' + icon + ')' );
             }
