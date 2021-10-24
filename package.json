@@ -676,8 +676,14 @@
                         "BUG": {
                             "icon": "bug"
                         },
+                        "HACK": {
+                            "icon": "tools"
+                        },
                         "FIXME": {
                             "icon": "flame"
+                        },
+                        "XXX": {
+                            "icon": "$(close)"
                         }
                     },
                     "markdownDescription": "%todo-tree.configuration.highlights.customHighlight.markdownDescription%",
