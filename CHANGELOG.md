@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.215 - 2022-01-04
+
 - Update default regex in README.md
 - Add "none" as a valid value for highlight type
 - Add default icons for default tags
