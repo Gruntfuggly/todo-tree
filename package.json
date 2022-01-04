@@ -595,7 +595,9 @@
                             "HACK",
                             "FIXME",
                             "TODO",
-                            "XXX"
+                            "XXX",
+                            "[ ]",
+                            "[x]"
                         ],
                         "items": {
                             "type": "string"
