@@ -5,6 +5,7 @@
 - Add default icons for default tags
 - Add markdown tags to default tag list
 - Update screenshot in README.md
+- Look for new location of VSCode's packaged ripgrep when the default setting is used
 
 ## v0.0.214 - 2021-09-07
 

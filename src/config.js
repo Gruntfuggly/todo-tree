@@ -103,6 +103,12 @@ function ripgrepPath()
     rgPath = exePathIsDefined( path.join( vscode.env.appRoot, "node_modules.asar.unpacked/vscode-ripgrep/bin/", exeName() ) );
     if( rgPath ) return rgPath;
 
+    rgPath = exePathIsDefined( path.join( vscode.env.appRoot, "node_modules/@vscode/ripgrep/bin/", exeName() ) );
+    if( rgPath ) return rgPath;
+
+    rgPath = exePathIsDefined( path.join( vscode.env.appRoot, "node_modules.asar.unpacked/@vscode/ripgrep/bin/", exeName() ) );
+    if( rgPath ) return rgPath;
+
     return rgPath;
 }
 
