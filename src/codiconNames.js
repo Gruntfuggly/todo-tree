@@ -476,5 +476,15 @@ module.exports = [
   "azure-devops",
   "verified-filled",
   "newline",
-  "layout"
+  "layout",
+  "layout-activitybar-left",
+  "layout-activitybar-right",
+  "layout-panel-left",
+  "layout-panel-center",
+  "layout-panel-justify",
+  "layout-panel-right",
+  "layout-panel",
+  "layout-sidebar-left",
+  "layout-sidebar-right",
+  "layout-statusbar"
 ];
