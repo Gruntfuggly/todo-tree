@@ -345,6 +345,7 @@ QUnit.test( "utils.formatLabel replaces tag placeholders", function( assert )
     assert.equal( utils.formatLabel( "Label ${tag:uppercase} content", { actualTag: "todo" }, unexpectedPlaceholders ), "Label TODO content" );
     assert.equal( utils.formatLabel( "Label ${tag:lowercase} content", { actualTag: "TODO" }, unexpectedPlaceholders ), "Label todo content" );
     assert.equal( utils.formatLabel( "Label ${tag:capitalize} content", { actualTag: "todo" }, unexpectedPlaceholders ), "Label Todo content" );
+    assert.equal( utils.formatLabel( "Label ${tag:capitalize} content", { actualTag: "TODO" }, unexpectedPlaceholders ), "Label Todo content" );
     assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
@@ -356,6 +357,7 @@ QUnit.test( "utils.formatLabel replaces sub tag placeholders", function( assert 
     assert.equal( utils.formatLabel( "Label ${subtag:uppercase} content", { subTag: "example" }, unexpectedPlaceholders ), "Label EXAMPLE content" );
     assert.equal( utils.formatLabel( "Label ${subtag:lowercase} content", { subTag: "EXAMPLE" }, unexpectedPlaceholders ), "Label example content" );
     assert.equal( utils.formatLabel( "Label ${subtag:capitalize} content", { subTag: "example" }, unexpectedPlaceholders ), "Label Example content" );
+    assert.equal( utils.formatLabel( "Label ${subtag:capitalize} content", { subTag: "EXAMPLE" }, unexpectedPlaceholders ), "Label Example content" );
     assert.equal( unexpectedPlaceholders.length, 0 );
 } );
 
