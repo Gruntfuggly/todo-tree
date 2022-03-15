@@ -4,9 +4,10 @@ os:
   - osx
   - linux
 
+dist: bionic
+
 before_install:
   - npm install
-  - npm install -g node-qunit
 
 script:
-  - ./node_modules/node-qunit/bin/cli.js -c src/utils.js -t test/tests.js
+  - npm test
