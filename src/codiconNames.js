@@ -486,5 +486,15 @@ module.exports = [
   "layout-panel",
   "layout-sidebar-left",
   "layout-sidebar-right",
-  "layout-statusbar"
+  "layout-statusbar",
+  "layout-menubar",
+  "layout-centered",
+  "target",
+  "indent",
+  "record-small",
+  "error-small",
+  "arrow-circle-down",
+  "arrow-circle-left",
+  "arrow-circle-right",
+  "arrow-circle-up"
 ];
