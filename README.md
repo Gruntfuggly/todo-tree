@@ -463,7 +463,7 @@ This is a complex configuration property that can only be configured through the
 If the regex contains `\n`, then multiline TODOs will be enabled. In this mode, the search results are processed slightly differently. If results are found which do not contain any tags from `todo-tree.general.tags` it will be assumed that they belong to the previous result that did have a tag. For example, if you set the regex to something like:
 
 ```json
-"todo-tree.regex.regex": "(//)\\s*($TAGS).*(\\n\\s*//\\s{2,}.*)*"
+"todo-tree.regex.regex": "(//)[ \\t]*($TAGS).*(\\n[ \\t]*//[ \\t]{2,}.*)*"
 ```
 
 This will now match multiline TODOs where the extra lines have at least two spaces between the comment characters and the TODO item. e.g.
@@ -477,7 +477,7 @@ This will now match multiline TODOs where the extra lines have at least two spac
 If you want to match multiline TODOs in C++ style multiline comment blocks, you'll need something like:
 
 ```json
-"todo-tree.regex.regex": "(/\\*)\\s*($TAGS).*(\\n\\s*(//|/\\*|\\*\\*)\\s{2,}.*)*"
+"todo-tree.regex.regex": "(/\\*)[ \\t]*($TAGS).*(\\n[ \\t]*(//|/\\*|\\*\\*)[ \\t]{2,}.*)*"
 ```
 
 which should match:
@@ -510,7 +510,7 @@ You can also include and exclude folders from the tree using the context menu. T
 When the extension was first written, very basic markdown support was added simply by adding a pattern to the default regex to match "`- [ ]`". A better way to handle markdown TODOs is to add "`(-|\d+.)`" to the list of "comments" in the first part of the regex and then adding "`[ ]`" and "`[x]`" to the list of tags in `settings.json`, e.g. :
 
 ```json
-"todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)"
+"todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+\\.)[ \\t])[ \\t]*($TAGS)"
 "todo-tree.general.tags": [
         "BUG",
         "HACK",
