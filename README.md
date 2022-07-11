@@ -553,6 +553,21 @@ Lastly, it will allow grouping by tag (and sub tags) to work and also work bette
 
 <sup>*Note: The default regex will be updated to reflect these changes at some point in the future.*<sup>
 
+## Usage with other extensions
+
+### [Activitus Bar](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.activitusbar)
+
+To add Todo Tree to your Activitus Bar, open settings.json and add this entry to the `"activitusbar.views"` array:
+
+```json
+"activitusbar.views": [
+    {
+        "name": "extension.todo-tree-container",
+        "codicon": "checklist"
+    }
+]
+```
+
 ## Known Issues
 
 Grouping by tag will only work when your configuration defines the tags using the `todo-tree.general.tags` setting. Older versions of the extension had the tags directly defined in the `todo-tree.regex.regex` whereas now, the regex replaces **$TAGS** with the contents of `todo-tree.general.tags`.
