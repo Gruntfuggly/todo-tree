@@ -240,7 +240,7 @@ Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.
 
 <sup>*Note: globs paths are absolute - not relative to the current workspace.*</sup>
 
-**todo-tree.filtering.excludeGlobs** (`["**/node_modules"]`)</br>
+**todo-tree.filtering.excludeGlobs** (`["**/node_modules/*/**"]`)</br>
 Globs for use in limiting search results by exclusion (applied after **includeGlobs**), e.g. `[\"**/*.txt\"]` to ignore all .txt files.
 
 <sup>*Note: `node_modules` are excluded by default.*</sup>
