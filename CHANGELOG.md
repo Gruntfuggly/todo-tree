@@ -1,5 +1,9 @@
 # Todo Tree Change Log
 
+## v0.0.217 - 2020-10-13
+
+- Update minimum VSCode version to 1.172
+
 ## v0.0.216 - 2022-10-13
 
 - Add support for activity bar badge

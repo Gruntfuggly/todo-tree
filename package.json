@@ -8,12 +8,12 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.216",
+    "version": "0.0.217",
     "license": "MIT",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
-        "vscode": "^1.46.0"
+        "vscode": "^1.172.0"
     },
     "repository": "https://github.com/Gruntfuggly/todo-tree",
     "bugs": {
