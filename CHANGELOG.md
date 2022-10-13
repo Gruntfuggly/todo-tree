@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.216 - 2022-10-13
+
 - Add support for activity bar badge
 
 ## v0.0.215 - 2022-01-04
