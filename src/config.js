@@ -248,6 +248,11 @@ function shouldShowIconsInsteadOfTagsInStatusBar()
     return vscode.workspace.getConfiguration( 'todo-tree.general' ).showIconsInsteadOfTagsInStatusBar;
 }
 
+function shouldShowActivityBarBadge()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.general' ).showActivityBarBadge;
+}
+
 module.exports.init = init;
 module.exports.shouldGroupByTag = shouldGroupByTag;
 module.exports.shouldGroupBySubTag = shouldGroupBySubTag;
@@ -287,3 +292,4 @@ module.exports.defaultHighlight = defaultHighlight;
 module.exports.customHighlight = customHighlight;
 module.exports.subTagClickUrl = subTagClickUrl;
 module.exports.shouldShowIconsInsteadOfTagsInStatusBar = shouldShowIconsInsteadOfTagsInStatusBar;
+module.exports.shouldShowActivityBarBadge = shouldShowActivityBarBadge;

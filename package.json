@@ -604,6 +604,11 @@
                         },
                         "markdownDescription": "%todo-tree.configuration.general.tags.markdownDescription%",
                         "type": "array"
+                    },
+                    "todo-tree.general.showActivityBarBadge": {
+                        "default": true,
+                        "markdownDescription": "%todo-tree.configuration.general.showActivityBarBadge.markdownDescription%",
+                        "type": "boolean"
                     }
                 }
             },

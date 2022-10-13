@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Add support for activity bar badge
+
 ## v0.0.215 - 2022-01-04
 
 - Update default regex in README.md
