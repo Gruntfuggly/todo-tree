@@ -1716,7 +1716,7 @@ function activate( context )
 
         migrateSettings();
         validateColours();
-        validateIcons()
+        validateIcons();
         validatePlaceholders();
         setButtonsAndContext();
 
