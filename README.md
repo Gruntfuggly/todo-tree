@@ -235,6 +235,9 @@ What to show in the status bar - nothing (`none`), total count (`total`), counts
 **todo-tree.general.statusBarClickBehaviour** (`reveal`)</br>
 Set the behaviour of clicking the status bar to either cycle through the status bar display formats (`cycle`), reveal the tree (`reveal`) or to toggle highlights (`toggle highlights`).
 
+**todo-tree.general.showIconsInsteadOfTagsInStatusBar** (`false`)</br>
+Show icons instead of tags in the status bar.
+
 **todo-tree.general.showActivityBarBadge** (`true`)</br>
 Show a badge in the activity bar indicating the total number of found TODOs.
 
