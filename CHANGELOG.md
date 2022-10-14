@@ -1,5 +1,9 @@
 # Todo Tree Change Log
 
+## v0.0.218 - 2020-10-14
+
+- Back out activity bar badge option for older versions of VSCode
+
 ## v0.0.217 - 2020-10-13
 
 - Update minimum VSCode version to 1.172

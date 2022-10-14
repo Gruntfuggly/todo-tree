@@ -207,9 +207,6 @@ function activate( context )
         var counts = provider.getTagCountsForStatusBar( fileFilter );
         var total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );
 
-        var badgeTotal = config.shouldShowActivityBarBadge() ? total : 0;
-        todoTreeView.badge = { value: badgeTotal };
-
         var countRegex = new RegExp( "([^(]*)(\\(\\d+\\))*" );
         var match = countRegex.exec( todoTreeView.title );
         if( match !== null )

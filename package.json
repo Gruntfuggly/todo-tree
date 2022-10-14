@@ -8,12 +8,12 @@
         "tasklist",
         "multi-root ready"
     ],
-    "version": "0.0.217",
+    "version": "0.0.218",
     "license": "MIT",
     "icon": "resources/todo-tree.png",
     "publisher": "Gruntfuggly",
     "engines": {
-        "vscode": "^1.172.0"
+        "vscode": "^1.46.0"
     },
     "repository": "https://github.com/Gruntfuggly/todo-tree",
     "bugs": {
@@ -604,11 +604,6 @@
                         },
                         "markdownDescription": "%todo-tree.configuration.general.tags.markdownDescription%",
                         "type": "array"
-                    },
-                    "todo-tree.general.showActivityBarBadge": {
-                        "default": true,
-                        "markdownDescription": "%todo-tree.configuration.general.showActivityBarBadge.markdownDescription%",
-                        "type": "boolean"
                     }
                 }
             },
