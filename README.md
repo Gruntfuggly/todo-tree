@@ -238,6 +238,11 @@ Set the behaviour of clicking the status bar to either cycle through the status 
 **todo-tree.general.showIconsInsteadOfTagsInStatusBar** (`false`)</br>
 Show icons instead of tags in the status bar.
 
+**todo-tree.general.showActivityBarBadge** (`false`)</br>
+Show a badge in the activity bar indicating the total number of found TODOs.
+
+<sup>*Note: When the tree view is in the Explorer pane, the badge is displayed on the Explorer icon, which may not be desirable.*</sup>
+
 **todo-tree.filtering.includeGlobs** (`[]`)</br>
 Globs for use in limiting search results by inclusion, e.g. `[\"**/unit-tests/*.js\"]` to only show .js files in unit-tests subfolders. [Globs help](https://code.visualstudio.com/api/references/vscode-api#GlobPattern).
 

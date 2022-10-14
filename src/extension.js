@@ -185,14 +185,14 @@ function activate( context )
 
         if( interrupted === false )
         {
-            updateStatusBarAndTitleBar();
+            updateInformation();
         }
 
         provider.filter( currentFilter );
         refreshTree();
     }
 
-    function updateStatusBarAndTitleBar()
+    function updateInformation()
     {
         var statusBar = vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar;
         var fileFilter;
@@ -206,6 +206,9 @@ function activate( context )
 
         var counts = provider.getTagCountsForStatusBar( fileFilter );
         var total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );
+
+        var badgeTotal = config.shouldShowActivityBarBadge() ? total : 0;
+        todoTreeView.badge = { value: badgeTotal };
 
         var countRegex = new RegExp( "([^(]*)(\\(\\d+\\))*" );
         var match = countRegex.exec( todoTreeView.title );
@@ -1545,7 +1548,7 @@ function activate( context )
 
                 if( e.document.fileName === undefined || isIncluded( e.document.uri ) )
                 {
-                    updateStatusBarAndTitleBar();
+                    updateInformation();
                 }
 
                 documentChanged( e.document );
@@ -1583,7 +1586,7 @@ function activate( context )
                 provider.remove( function()
                 {
                     refreshTree();
-                    updateStatusBarAndTitleBar();
+                    updateInformation();
                 }, uri );
             }
 
@@ -1683,7 +1686,7 @@ function activate( context )
                 }
                 else if( e.affectsConfiguration( "todo-tree.general.showActivityBarBadge" ) )
                 {
-                    updateStatusBarAndTitleBar();
+                    updateInformation();
                 }
                 else
                 {

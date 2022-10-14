@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Add activity bar badge support, but default to off and only for versions 172+ of vscode
+
 ## v0.0.218 - 2020-10-14
 
 - Back out activity bar badge option for older versions of VSCode
