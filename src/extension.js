@@ -357,19 +357,11 @@ function activate( context )
         }
     }
 
-    function search( options, done )
+    function search( options)
     {
-        function onComplete()
-        {
-            if( done )
-            {
-                done();
-            }
-        }
-
         debug( "Searching " + options.filename + "..." );
 
-        ripgrep.search( "/", options ).then( matches =>
+        return ripgrep.search( "/", options ).then( matches =>
         {
             if( matches.length > 0 )
             {
@@ -384,8 +376,6 @@ function activate( context )
             {
                 searchResults.remove( vscode.Uri.file( options.filename ) );
             }
-
-            onComplete();
         } ).catch( e =>
         {
             var message = e.message;
@@ -394,7 +384,6 @@ function activate( context )
                 message += " (" + e.stderr + ")";
             }
             vscode.window.showErrorMessage( "Todo-Tree: " + message );
-            onComplete();
         } );
     }
 
@@ -552,9 +541,8 @@ function activate( context )
     {
         if( searchList.length > 0 )
         {
-            var entry = searchList.pop();
-            search( getOptions( entry ), ( searchList.length > 0 ) ? iterateSearchList : function()
-            {
+            return searchList.reduce((p, entry) => p.finally(() => search( getOptions( entry ))), Promise.resolve())
+            .finally(() => {
                 debug( "Found " + searchResults.count() + " items" );
                 if( vscode.workspace.getConfiguration( 'todo-tree.ripgrep' ).get( 'passGlobsToRipgrep' ) !== true )
                 {
@@ -562,12 +550,13 @@ function activate( context )
                 }
                 addResultsToTree();
                 setButtonsAndContext();
-            } );
+            });
         }
         else
         {
             addResultsToTree();
             setButtonsAndContext();
+            return Promise.resolve();
         }
     }
 
@@ -650,9 +639,9 @@ function activate( context )
             context.workspaceState.update( 'submoduleExcludeGlobs', submoduleExcludeGlobs );
         }
 
-        iterateSearchList();
-
-        refreshOpenFiles();
+        iterateSearchList()
+        .finally(refreshOpenFiles)
+        .then(addResultsToTree);
     }
 
     function setButtonsAndContext()
