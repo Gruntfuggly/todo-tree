@@ -1,14 +1,21 @@
 # Todo Tree Change Log
 
-## v0.0.219 - 2020-10-14
+## v0.0.220 - 2022-11-07
+
+- Fix missing 'new' keywords (thanks to [Elias](https://github.com/Elias-Graf))
+- Fix duplicate entries when refreshing and files have unsaved changes (thanks to [Chris Bain](https://github.com/baincd))
+- Fix issue with duplicate items (thanks to [Matt Toigo](https://github.com/mtoigo))
+- Update octicons and fix todo tree icons (thanks to [Morgan](https://github.com/morgansliman))
+
+## v0.0.219 - 2022-10-14
 
 - Add activity bar badge support, but default to off and only for versions 172+ of vscode
 
-## v0.0.218 - 2020-10-14
+## v0.0.218 - 2022-10-14
 
 - Back out activity bar badge option for older versions of VSCode
 
-## v0.0.217 - 2020-10-13
+## v0.0.217 - 2022-10-13
 
 - Update minimum VSCode version to 1.172
 
