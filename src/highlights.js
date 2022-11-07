@@ -100,13 +100,13 @@ function getDecoration( tag )
 
     if( lightBackgroundColour === undefined && lightForegroundColour === undefined )
     {
-        lightBackgroundColour = vscode.ThemeColor( 'editor.foreground' );
+        lightBackgroundColour = new vscode.ThemeColor( 'editor.foreground' );
         lightForegroundColour = new vscode.ThemeColor( 'editor.background' );
     }
 
     if( darkBackgroundColour === undefined && darkForegroundColour === undefined )
     {
-        darkBackgroundColour = vscode.ThemeColor( 'editor.foreground' );
+        darkBackgroundColour = new vscode.ThemeColor( 'editor.foreground' );
         darkForegroundColour = new vscode.ThemeColor( 'editor.background' );
     }
 
