@@ -628,8 +628,17 @@
                             "FIXME": {
                                 "icon": "flame"
                             },
+                            "TODO": {
+                                "icon": "check"
+                            },
                             "XXX": {
-                                "icon": "$(close)"
+                                "icon": "x"
+                            },
+                            "[ ]": {
+                                "icon": "issue-draft"
+                            },
+                            "[x]": {
+                                "icon": "issue-closed"
                             }
                         },
                         "markdownDescription": "%todo-tree.configuration.highlights.customHighlight.markdownDescription%",
