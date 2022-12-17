@@ -611,7 +611,7 @@ class TreeNodeProvider
                 {
                     var onlyChild = node.nodes.filter( isPathNode ).length === 1 ? node.nodes[ 0 ] : undefined;
                     var onlyChildParent = node;
-                    while( onlyChild && onlyChild.nodes.filter( isPathNode ).length > 0 && onlyChildParent.nodes.filter( isPathNode ).length === 1 )
+                    while( onlyChild && onlyChild.nodes && onlyChild.nodes.filter( isPathNode ).length > 0 && onlyChildParent.nodes.filter( isPathNode ).length === 1 )
                     {
                         treeItem.label += "/" + onlyChild.label;
                         onlyChildParent = onlyChild;
