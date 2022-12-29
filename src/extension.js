@@ -1581,7 +1581,7 @@ function activate( context )
 
             delete openDocuments[ document.uri.toString() ];
 
-            if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true )
+            if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true && config.scanMode() !== SCAN_MODE_WORKSPACE_ONLY )
             {
                 if( config.isValidScheme( document.uri ) )
                 {
