@@ -517,5 +517,6 @@ module.exports = [
   "comment-unresolved",
   "git-pull-request-go-to-changes",
   "git-pull-request-new-changes",
-  "search-fuzzy"
+  "search-fuzzy",
+  "comment-draft"
 ];
