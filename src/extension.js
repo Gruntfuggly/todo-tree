@@ -362,7 +362,7 @@ function activate( context )
         }
     }
 
-    function search( options)
+    function search( options )
     {
         debug( "Searching " + options.filename + "..." );
 

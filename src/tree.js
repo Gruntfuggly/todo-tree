@@ -969,7 +969,7 @@ class TreeNodeProvider
             {
                 keep = false;
             }
-            else if( child.fsPath === fullPath || child.isRootTagNode)
+            else if( child.fsPath === fullPath || child.isRootTagNode )
             {
                 if( config.shouldShowTagsOnly() )
                 {
