@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Add default octicons for custom highlights (thanks to [Andrew Hlynskyi](https://github.com/ahlinc))
+
 ## v0.0.220 - 2022-11-07
 
 - Fix missing 'new' keywords (thanks to [Elias](https://github.com/Elias-Graf))
