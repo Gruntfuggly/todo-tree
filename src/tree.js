@@ -392,7 +392,19 @@ function countTags( child, tagCounts, forStatusBar, fileFilter )
             var tag = node.tag ? node.tag : "TODO";
             if( isVisible( node ) && ( !fileFilter || fileFilter === node.fsPath ) )
             {
-                if( !forStatusBar || !config.shouldHideFromStatusBar( tag ) )
+                var hide = false;
+
+                if( forStatusBar && config.shouldHideFromStatusBar( tag ) )
+                {
+                    hide = true;
+                }
+
+                if( !forStatusBar && config.shouldHideFromActivityBar( tag ) )
+                {
+                    hide = true;
+                }
+
+                if( !hide )
                 {
                     tagCounts[ tag ] = tagCounts[ tag ] === undefined ? 1 : tagCounts[ tag ] + 1;
                 }
@@ -1095,6 +1107,12 @@ class TreeNodeProvider
     {
         var tagCounts = {};
         return countChildTags( nodes, tagCounts, true, fileFilter );
+    }
+
+    getTagCountsForActivityBar()
+    {
+        var tagCounts = {};
+        return countChildTags( nodes, tagCounts, false );
     }
 
     exportChildren( parent, children )

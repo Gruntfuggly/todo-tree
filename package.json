@@ -711,6 +711,9 @@
                                 },
                                 "hideFromStatusBar": {
                                     "type": "boolean"
+                                },
+                                "hideFromActivityBar": {
+                                    "type": "boolean"
                                 }
                             }
                         }
@@ -787,6 +790,9 @@
                                 "type": "boolean"
                             },
                             "hideFromStatusBar": {
+                                "type": "boolean"
+                            },
+                            "hideFromActivityBar": {
                                 "type": "boolean"
                             }
                         }

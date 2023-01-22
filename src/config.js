@@ -198,6 +198,12 @@ function shouldHideFromStatusBar( tag )
     return attributes.getAttribute( tag, 'hideFromStatusBar', false );
 }
 
+function shouldHideFromActivityBar( tag )
+{
+    console.log( tag + " hide:" + attributes.getAttribute( tag, 'hideFromActivityBar', false ) );
+    return attributes.getAttribute( tag, 'hideFromActivityBar', false );
+}
+
 function shouldSortTree()
 {
     return vscode.workspace.getConfiguration( 'todo-tree.tree' ).sort;
@@ -282,6 +288,7 @@ module.exports.shouldUseBuiltInFileExcludes = shouldUseBuiltInFileExcludes;
 module.exports.shouldUseBuiltInSearchExcludes = shouldUseBuiltInSearchExcludes;
 module.exports.shouldHideFromTree = shouldHideFromTree;
 module.exports.shouldHideFromStatusBar = shouldHideFromStatusBar;
+module.exports.shouldHideFromActivityBar = shouldHideFromActivityBar;
 module.exports.shouldSortTree = shouldSortTree;
 module.exports.scanMode = scanMode;
 module.exports.shouldShowScanModeInTree = shouldShowScanModeInTree;

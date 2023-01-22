@@ -196,7 +196,7 @@ function activate( context )
     {
         var statusBar = vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar;
 
-        var counts = provider.getTagCountsForStatusBar();
+        var counts = provider.getTagCountsForActivityBar();
         var total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );
 
         var badgeTotal = config.shouldShowActivityBarBadge() ? total : 0;

@@ -76,6 +76,8 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `hideFromStatusBar` - prevents the tag from being included in the status bar counts
 
+`hideFromActivityBar` - prevents the tag from being included in the activity bar badge count
+
 Example:
 
 ```json
