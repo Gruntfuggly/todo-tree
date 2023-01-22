@@ -849,7 +849,7 @@
                     },
                     "todo-tree.filtering.excludeGlobs": {
                         "default": [
-                            "**/node_modules"
+                            "**/node_modules/*/**"
                         ],
                         "items": {
                             "type": "string"
