@@ -3,6 +3,9 @@
 - Add default octicons for custom highlights (thanks to [Andrew Hlynskyi](https://github.com/ahlinc))
 - Always show total in the activity bar regardless of other settings
 - Add support for hiding counts from the activity bar badge
+- Fix auto refresh when closing file (thanks to [yw662](https://github.com/yw662))
+- Fix scopes documentation (thanks to [kjo-sdds](https://github.com/kjo-sdds))
+- Update node_modules exclude to match VSCode (thanks to [Benas Svipas](https://github.com/svipas))
 
 ## v0.0.220 - 2022-11-07
 
