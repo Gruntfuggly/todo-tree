@@ -441,7 +441,7 @@ Show a button in the tree view title bar to create a text file showing the tree 
 <sup>*</sup>*Only applies to new workspaces. Once the view has been changed in the workspace, the current state is stored.*
 
 
-**todo-tree.scopes** (`{}`)</br>
+**todo-tree.filtering.scopes** (`{}`)</br>
 Defines a set of file scopes that can be quickly swicthed between using the *todo-tree.switchScope* command.
 
 This is a complex configuration property that can only be configured through the configuration JSON file. For example
@@ -451,7 +451,7 @@ This is a complex configuration property that can only be configured through the
     {
         "name": "Production ",
         "excludeGlobs": [
-             "**/tests/**"
+            "**/tests/**"
         ]
     },
     {
