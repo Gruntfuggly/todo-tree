@@ -195,20 +195,25 @@ function activate( context )
     function updateInformation()
     {
         var statusBar = vscode.workspace.getConfiguration( 'todo-tree.general' ).statusBar;
-        var fileFilter;
-        if( statusBar === STATUS_BAR_CURRENT_FILE )
-        {
-            if( vscode.window.activeTextEditor && vscode.window.activeTextEditor.document )
-            {
-                fileFilter = vscode.window.activeTextEditor.document.fileName;
-            }
-        }
 
-        var counts = provider.getTagCountsForStatusBar( fileFilter );
+        var counts = provider.getTagCountsForStatusBar();
         var total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );
 
         var badgeTotal = config.shouldShowActivityBarBadge() ? total : 0;
         todoTreeView.badge = { value: badgeTotal };
+
+        if( statusBar === STATUS_BAR_CURRENT_FILE )
+        {
+            var fileFilter;
+
+            if( vscode.window.activeTextEditor && vscode.window.activeTextEditor.document )
+            {
+                fileFilter = vscode.window.activeTextEditor.document.fileName;
+            }
+
+            counts = provider.getTagCountsForStatusBar( fileFilter );
+            total = Object.values( counts ).reduce( function( a, b ) { return a + b; }, 0 );
+        }
 
         var countRegex = new RegExp( "([^(]*)(\\(\\d+\\))*" );
         var match = countRegex.exec( todoTreeView.title );
