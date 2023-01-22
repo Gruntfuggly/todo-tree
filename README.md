@@ -1,7 +1,5 @@
 # Todo Tree
 
-[![Build Status](https://travis-ci.org/Gruntfuggly/todo-tree.svg?branch=master)](https://travis-ci.org/Gruntfuggly/todo-tree)
-
 This extension quickly searches (using [ripgrep](https://github.com/BurntSushi/ripgrep)) your workspace for comment tags like TODO and FIXME, and displays them in a tree view in the activity bar. The view can be dragged out of the activity bar into the explorer pane (or anywhere else you would prefer it to be).
 
 Clicking a TODO within the tree will open the file and put the cursor on the line containing the TODO.
