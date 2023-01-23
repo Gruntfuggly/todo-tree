@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+## v0.0.222 - 2023-01-23
+
 - Add commands to move to next and previous TODO in a file
 
 ## v0.0.221 - 2023-01-22
