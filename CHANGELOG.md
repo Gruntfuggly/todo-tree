@@ -1,5 +1,9 @@
 # Todo Tree Change Log
 
+- Add commands to move to next and previous TODO in a file
+
+## v0.0.221 - 2023-01-22
+
 - Add default octicons for custom highlights (thanks to [Andrew Hlynskyi](https://github.com/ahlinc))
 - Always show total in the activity bar regardless of other settings
 - Add support for hiding counts from the activity bar badge

@@ -33,6 +33,8 @@
     "todo-tree.command.toggleItemCounts.title": "Toggle Item Counts",
     "todo-tree.command.toggleBadges.title": "Toggle Badges",
     "todo-tree.command.toggleCompactFolders.title": "Toggle Compact Folders",
+    "todo-tree.command.goToNext.title": "Go To Next",
+    "todo-tree.command.goToPrevious.title": "Go To Previous",
     "todo-tree.configuration.title": "Todo Tree",
     "todo-tree.configuration.filtering": "Filtering",
     "todo-tree.configuration.filtering.excludedWorkspaces.markdownDescription": "An array of workspace names to exclude as roots in the tree (wildcards can be used).",

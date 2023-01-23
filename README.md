@@ -181,6 +181,10 @@ The contents of the tree can be exported using **Todo Tree: Export Tree**. A rea
 
 **Todo Tree: Switch Scope** - shows a list of configured scopes which can be selected
 
+### Navigation
+
+The commands **Todo Tree: Go To Next** and **Todo Tree: Go To Previous** can be used to move to the next and previous TODO within the current editor.
+
 ## Configuration
 
 The extension can be customised as follows (default values in brackets):

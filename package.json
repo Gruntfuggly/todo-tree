@@ -478,6 +478,16 @@
                 "command": "todo-tree.toggleCompactFolders",
                 "title": "%todo-tree.command.toggleCompactFolders.title%",
                 "category": "%todo-tree.command.category%"
+            },
+            {
+                "command": "todo-tree.goToNext",
+                "title": "%todo-tree.command.goToNext.title%",
+                "category": "%todo-tree.command.category%"
+            },
+            {
+                "command": "todo-tree.goToPrevious",
+                "title": "%todo-tree.command.goToPrevious.title%",
+                "category": "%todo-tree.command.category%"
             }
         ],
         "configuration": [

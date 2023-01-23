@@ -1494,6 +1494,91 @@ function activate( context )
             vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'disableCompactFolders', !current, vscode.ConfigurationTarget.Workspace );
         } ) );
 
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.goToNext', function()
+        {
+            var editor = vscode.window.activeTextEditor;
+
+            var text = editor.document.getText();
+            var regex = utils.getRegexForEditorSearch( false );
+
+            var newSelections = [];
+            var ok = true;
+
+            editor.selections.map( function( selection )
+            {
+                var cursorOffset = editor.document.offsetAt( selection.start );
+                var textToSearch = text.substring( cursorOffset );
+                var matches = textToSearch.match( regex );
+
+                if( matches && matches.length && matches.index === 0 )
+                {
+                    cursorOffset += matches[ 0 ].length;
+                    textToSearch = text.substring( cursorOffset );
+                    matches = textToSearch.match( regex );
+                }
+
+                if( matches && matches.length )
+                {
+                    var newPosition = editor.document.positionAt( cursorOffset + matches.index );
+                    newSelections.push( new vscode.Selection( newPosition, newPosition ) );
+                }
+                else
+                {
+                    ok = false;
+                }
+            } );
+
+            if( ok && newSelections.length > 0 )
+            {
+                editor.selections = newSelections;
+
+                editor.revealRange( new vscode.Range( newSelections[ 0 ].start, newSelections[ 0 ].start ) );
+            }
+        } ) );
+
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.goToPrevious', function()
+        {
+            var editor = vscode.window.activeTextEditor;
+
+            var text = editor.document.getText();
+
+            var newSelections = [];
+            var ok = true;
+
+            editor.selections.map( function( selection )
+            {
+                var cursorOffset = editor.document.offsetAt( selection.start );
+                var textToSearch = text.substring( 0, cursorOffset );
+
+                var regex = utils.getRegexForEditorSearch( true );
+
+                var lastMatch = -1;
+
+                while( result = regex.exec( textToSearch ) )
+                {
+                    lastMatch = result.index;
+                }
+
+                if( lastMatch !== -1 )
+                {
+                    var newPosition = editor.document.positionAt( lastMatch );
+                    newSelections.push( new vscode.Selection( newPosition, newPosition ) );
+                }
+                else
+                {
+                    ok = false;
+                }
+            } );
+
+            if( ok && newSelections.length > 0 )
+            {
+                editor.selections = newSelections;
+
+                editor.revealRange( new vscode.Range( newSelections[ 0 ].start, newSelections[ 0 ].start ) );
+            }
+        } ) );
+
+
         context.subscriptions.push( todoTreeView.onDidExpandElement( function( e ) { provider.setExpanded( e.element.fsPath, true ); } ) );
         context.subscriptions.push( todoTreeView.onDidCollapseElement( function( e ) { provider.setExpanded( e.element.fsPath, false ); } ) );
 
