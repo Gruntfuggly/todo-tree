@@ -787,7 +787,7 @@ function activate( context )
                 };
 
                 var text = document.getText();
-                var regex = utils.getRegexForEditorSearch();
+                var regex = utils.getRegexForEditorSearch( true );
 
                 var match;
                 while( ( match = regex.exec( text ) ) !== null )

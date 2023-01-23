@@ -33,7 +33,7 @@ function formatResults( stdout, multiline )
     if( multiline === true )
     {
         var results = [];
-        var regex = utils.getRegexForEditorSearch();
+        var regex = utils.getRegexForEditorSearch( true );
         var lines = stdout.split( '\n' );
 
         var buffer = [];

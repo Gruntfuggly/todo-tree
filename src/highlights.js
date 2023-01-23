@@ -245,7 +245,7 @@ function highlight( editor )
         if( vscode.workspace.getConfiguration( 'todo-tree.highlights' ).get( 'enabled', true ) )
         {
             var text = editor.document.getText();
-            var regex = utils.getRegexForEditorSearch();
+            var regex = utils.getRegexForEditorSearch( true );
             var subTagRegex = new RegExp( config.subTagRegex() );
 
             var match;

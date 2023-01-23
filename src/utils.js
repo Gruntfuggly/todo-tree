@@ -318,9 +318,13 @@ function getRegexSource()
     return regex;
 }
 
-function getRegexForEditorSearch()
+function getRegexForEditorSearch( global )
 {
-    var flags = 'gm';
+    var flags = 'm';
+    if( global )
+    {
+        flags += 'g';
+    }
     if( config.regex().caseSensitive === false )
     {
         flags += 'i';
