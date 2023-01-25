@@ -22,7 +22,7 @@
     },
     "scripts": {
         "test": "qunit",
-        "vscode:prepublish": "./buildCodiconNames.js && webpack --mode production",
+        "vscode:prepublish": "node ./buildCodiconNames.js && webpack --mode production",
         "webpack": "webpack --mode development",
         "webpack-dev": "webpack --mode development --watch"
     },
