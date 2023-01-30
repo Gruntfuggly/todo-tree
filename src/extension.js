@@ -1578,6 +1578,38 @@ function activate( context )
             }
         } ) );
 
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.revealInFile', function( uri, selection )
+        {
+            function flashLine()
+            {
+                var editor = vscode.window.activeTextEditor;
+
+                var currentLineRange = editor.document.lineAt( editor.selection.active.line ).range;
+
+                var decorationOptions = {
+                    isWholeLine: true,
+                };
+
+                var flashBackgroundColour = new vscode.ThemeColor( 'editor.rangeHighlightBackground' );
+
+                decorationOptions.light = { backgroundColor: flashBackgroundColour };
+                decorationOptions.dark = { backgroundColor: flashBackgroundColour };
+
+                var lineFlashStyle = vscode.window.createTextEditorDecorationType( decorationOptions );
+
+                var lineRangeHighlight = { range: currentLineRange };
+
+                editor.setDecorations( lineFlashStyle, [ lineRangeHighlight ] );
+
+                setTimeout( function()
+                {
+                    editor.setDecorations( lineFlashStyle, [] );
+                }, 150 );
+            }
+            vscode.commands.executeCommand( 'vscode.open', uri, selection ).then(
+                flashLine
+            );
+        } ) );
 
         context.subscriptions.push( todoTreeView.onDidExpandElement( function( e ) { provider.setExpanded( e.element.fsPath, true ); } ) );
         context.subscriptions.push( todoTreeView.onDidCollapseElement( function( e ) { provider.setExpanded( e.element.fsPath, false ); } ) );

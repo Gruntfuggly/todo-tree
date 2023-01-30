@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Flash the line containing the TODO when clicking on items in the tree view
+
 ## v0.0.222 - 2023-01-23
 
 - Add commands to move to next and previous TODO in a file

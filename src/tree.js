@@ -724,7 +724,7 @@ class TreeNodeProvider
                 }
 
                 treeItem.command = {
-                    command: "vscode.open",
+                    command: "todo-tree.revealInFile",
                     arguments: [
                         node.uri ? node.uri : vscode.Uri.file( node.fsPath ),
                         { selection: todoSelection }

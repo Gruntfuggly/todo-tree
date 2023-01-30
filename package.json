@@ -488,6 +488,11 @@
                 "command": "todo-tree.goToPrevious",
                 "title": "%todo-tree.command.goToPrevious.title%",
                 "category": "%todo-tree.command.category%"
+            },
+            {
+                "command": "todo-tree.revealInFile",
+                "title": "%todo-tree.command.revealInFile.title%",
+                "category": "%todo-tree.command.category%"
             }
         ],
         "configuration": [
