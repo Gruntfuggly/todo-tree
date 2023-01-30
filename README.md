@@ -151,7 +151,7 @@ Right clicking in the tree view will bring up a context menu with the following 
 **Scan Open Files Only** - show TODOs from files open in VSCode (no search)</br>
 **Scan Current File Only** - show TODOs from the current open file only</br>
 **Scan Workspace And Open Files** - show TODOs from the workspace and any open files</br>
-**Scan Workspace Only** - show TODOs from the workspace only (requires manual refres or use of the file watcher)</br>
+**Scan Workspace Only** - show TODOs from the workspace only (requires manual refresh)</br>
 **Expand Tree/Collapse Tree** - expand or collapse the whole tree
 **Show Tree View/Show Flat View/Show Tags Only View** - change the tree view style
 **Group by Tag/Ungroup by Tag** - toggle grouping of items by tag
@@ -191,9 +191,6 @@ The extension can be customised as follows (default values in brackets):
 
 **todo-tree.general.debug** (`false`)</br>
 Show a debug channel in the output view.
-
-**todo-tree.general.enableFileWatcher** (`false`)</br>
-Set this to true to turn on automatic updates when files in the workspace are created, changed or deleted.
 
 **todo-tree.general.exportPath** (`~/todo-tree-%Y%m%d-%H%M.txt`)</br>
 Path to use when exporting the tree. Environment variables will be expanded, e.g `${HOME}` and the path is passed through strftime (see <https://github.com/samsonjs/strftime>). Set the extension to `.json` to export as a JSON record.

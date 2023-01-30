@@ -2,6 +2,7 @@
 
 - Flash the line containing the TODO when clicking on items in the tree view
 - Fix go to next/previous TODO commands when regex matches the starts of the line
+- Deprecate file watcher settings and remove from the README.md
 
 ## v0.0.222 - 2023-01-23
 
