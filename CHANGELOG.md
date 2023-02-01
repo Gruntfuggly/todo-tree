@@ -1,5 +1,7 @@
 # Todo Tree Change Log
 
+- Remove filewatcher functionality
+
 ## v0.0.223 - 2023-02-01
 
 - Flash the line containing the TODO when clicking on items in the tree view
