@@ -1519,7 +1519,12 @@ function activate( context )
 
                 if( matches && matches.length )
                 {
-                    var newPosition = editor.document.positionAt( cursorOffset + matches.index );
+                    var offset = cursorOffset + matches.index;
+                    if( matches[ 0 ][ 0 ] === '\n' )
+                    {
+                        ++offset;
+                    }
+                    var newPosition = editor.document.positionAt( offset );
                     newSelections.push( new vscode.Selection( newPosition, newPosition ) );
                 }
                 else
@@ -1552,16 +1557,22 @@ function activate( context )
 
                 var regex = utils.getRegexForEditorSearch( true );
 
-                var lastMatch = -1;
+                var lastMatch;
+                var lastMatchOffset = -1;
 
                 while( result = regex.exec( textToSearch ) )
                 {
-                    lastMatch = result.index;
+                    lastMatch = result;
+                    lastMatchOffset = result.index;
                 }
 
-                if( lastMatch !== -1 )
+                if( lastMatchOffset !== -1 )
                 {
-                    var newPosition = editor.document.positionAt( lastMatch );
+                    if( lastMatch[ 0 ][ 0 ] === '\n' )
+                    {
+                        ++lastMatchOffset;
+                    }
+                    var newPosition = editor.document.positionAt( lastMatchOffset );
                     newSelections.push( new vscode.Selection( newPosition, newPosition ) );
                 }
                 else
