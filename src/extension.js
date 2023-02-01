@@ -1097,11 +1097,33 @@ function activate( context )
                     {
                         if( button === OPEN_SETTINGS_BUTTON )
                         {
-                            vscode.commands.executeCommand( 'workbench.action.openSettingsJson', 'todo-tree.general.revealBehaviour' );
+                            vscode.commands.executeCommand( 'workbench.action.openSettings', 'todo-tree.general.revealBehaviour' );
                         }
                         else if( button === NEVER_SHOW_AGAIN_BUTTON )
                         {
                             context.globalState.update( 'migratedVersion', 210 );
+                        }
+                    } );
+                }
+            }
+
+            if( context.globalState.get( 'migratedVersion', 0 ) < 223 )
+            {
+                if( vscode.workspace.getConfiguration( 'todo-tree.general' ).enableFileWatcher === true )
+                {
+                    vscode.window.showInformationMessage( "Todo-Tree: File watcher functionality will be removed in the next version of the extension.", MORE_INFO_BUTTON, OPEN_SETTINGS_BUTTON, NEVER_SHOW_AGAIN_BUTTON ).then( function( button )
+                    {
+                        if( button == MORE_INFO_BUTTON )
+                        {
+                            vscode.env.openExternal( vscode.Uri.parse( "https://github.com/Gruntfuggly/todo-tree/issues/723" ) );
+                        }
+                        else if( button === OPEN_SETTINGS_BUTTON )
+                        {
+                            vscode.commands.executeCommand( 'workbench.action.openSettingsJson', 'todo-tree.general.enableFileWatcher' );
+                        }
+                        else if( button === NEVER_SHOW_AGAIN_BUTTON )
+                        {
+                            context.globalState.update( 'migratedVersion', 223 );
                         }
                     } );
                 }
