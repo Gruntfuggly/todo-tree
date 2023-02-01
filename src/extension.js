@@ -546,16 +546,17 @@ function activate( context )
     {
         if( searchList.length > 0 )
         {
-            return searchList.reduce((p, entry) => p.finally(() => search( getOptions( entry ))), Promise.resolve())
-            .finally(() => {
-                debug( "Found " + searchResults.count() + " items" );
-                if( vscode.workspace.getConfiguration( 'todo-tree.ripgrep' ).get( 'passGlobsToRipgrep' ) !== true )
+            return searchList.reduce( ( p, entry ) => p.finally( () => search( getOptions( entry ) ) ), Promise.resolve() )
+                .finally( () =>
                 {
-                    applyGlobs();
-                }
-                addResultsToTree();
-                setButtonsAndContext();
-            });
+                    debug( "Found " + searchResults.count() + " items" );
+                    if( vscode.workspace.getConfiguration( 'todo-tree.ripgrep' ).get( 'passGlobsToRipgrep' ) !== true )
+                    {
+                        applyGlobs();
+                    }
+                    addResultsToTree();
+                    setButtonsAndContext();
+                } );
         }
         else
         {
@@ -645,8 +646,8 @@ function activate( context )
         }
 
         iterateSearchList()
-        .finally(refreshOpenFiles)
-        .then(addResultsToTree);
+            .finally( refreshOpenFiles )
+            .then( addResultsToTree );
     }
 
     function setButtonsAndContext()
