@@ -1,6 +1,7 @@
 # Todo Tree Change Log
 
 - Remove filewatcher functionality
+- Add a simple mechanism to watch for git repo changes instead of using the file watcher
 
 ## v0.0.223 - 2023-02-01
 

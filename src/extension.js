@@ -6,6 +6,7 @@ var path = require( 'path' );
 var treeify = require( 'treeify' );
 var fs = require( 'fs' );
 var crypto = require( 'crypto' );
+var child_process = require( 'child_process' );
 
 var tree = require( "./tree.js" );
 var colours = require( './colours.js' );
@@ -23,6 +24,8 @@ var selectedDocument;
 var refreshTimeout;
 var fileRefreshTimeout;
 var hideTimeout;
+var autoGitRefreshTimer;
+var lastGitHead = {};
 var openDocuments = {};
 var provider;
 var ignoreMarkdownUpdate = false;
@@ -602,6 +605,55 @@ function activate( context )
         iterateSearchList()
             .finally( refreshOpenFiles )
             .then( addResultsToTree );
+    }
+
+    function resetGitWatcher()
+    {
+        function checkGitHead()
+        {
+    function triggerRescan()
+    {
+        clearTimeout( refreshTimeout );
+        refreshTimeout = setTimeout( function()
+        {
+            rebuild();
+        }, 1000 );
+    }
+
+            if( vscode.workspace.workspaceFolders )
+            {
+                vscode.workspace.workspaceFolders.map( function( folder )
+                {
+                    child_process.exec( "git rev-parse HEAD", { cwd: folder.uri.fsPath }, ( err, stdout, stderr ) =>
+                    {
+                        var gitHead = stdout.toString();
+                        if( lastGitHead[ folder.uri.fsPath ] !== undefined && gitHead != lastGitHead[ folder.uri.fsPath ] )
+                        {
+                            debug( 'Rescan triggered by change to git repository' );
+                            triggerRescan();
+                        }
+                        lastGitHead[ folder.uri.fsPath ] = gitHead;
+                    } );
+                } );
+            }
+        }
+
+        var timerInterval = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'automaticGitRefreshInterval' );
+
+        if( autoGitRefreshTimer )
+        {
+            clearInterval( autoGitRefreshTimer );
+        }
+
+        if( timerInterval > 0 )
+        {
+            debug( 'Setting automatic Git refresh interval to ' + timerInterval + ' seconds' );
+            autoGitRefreshTimer = setInterval( checkGitHead, timerInterval * 1000 );
+        }
+        else
+        {
+            debug( 'Automatic Git refresh disabled' );
+        }
     }
 
     function setButtonsAndContext()
@@ -1755,6 +1807,10 @@ function activate( context )
                 {
                     resetOutputChannel();
                 }
+                else if( e.affectsConfiguration( "todo-tree.general.automaticGitRefreshInterval" ) )
+                {
+                    resetGitWatcher();
+                }
 
                 if( e.affectsConfiguration( "todo-tree.general.tagGroups" ) )
                 {
@@ -1813,6 +1869,7 @@ function activate( context )
         validateIcons();
         validatePlaceholders();
         setButtonsAndContext();
+        resetGitWatcher();
 
         if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanAtStartup === true )
         {

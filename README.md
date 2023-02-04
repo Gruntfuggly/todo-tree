@@ -192,6 +192,9 @@ The extension can be customised as follows (default values in brackets):
 **todo-tree.general.debug** (`false`)</br>
 Show a debug channel in the output view.
 
+**todo-tree.general.automaticGitRefreshInterval** (`0`)</br>
+Polling interval (in seconds) for automatically refreshing the tree when your repository is updated. This will check if your repository HEAD has changed and trigger a rescan of the workspace if it has. This replaces the file watcher functionality. Set to '0' to disable, or to the number of seconds between checks.
+
 **todo-tree.general.exportPath** (`~/todo-tree-%Y%m%d-%H%M.txt`)</br>
 Path to use when exporting the tree. Environment variables will be expanded, e.g `${HOME}` and the path is passed through strftime (see <https://github.com/samsonjs/strftime>). Set the extension to `.json` to export as a JSON record.
 
