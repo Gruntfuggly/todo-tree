@@ -200,7 +200,6 @@ function shouldHideFromStatusBar( tag )
 
 function shouldHideFromActivityBar( tag )
 {
-    console.log( tag + " hide:" + attributes.getAttribute( tag, 'hideFromActivityBar', false ) );
     return attributes.getAttribute( tag, 'hideFromActivityBar', false );
 }
 
