@@ -25,6 +25,7 @@ var refreshTimeout;
 var fileRefreshTimeout;
 var hideTimeout;
 var autoGitRefreshTimer;
+var periodicRefreshTimer;
 var lastGitHead = {};
 var openDocuments = {};
 var provider;
@@ -607,19 +608,19 @@ function activate( context )
             .then( addResultsToTree );
     }
 
+            function triggerRescan()
+            {
+                clearTimeout( refreshTimeout );
+                refreshTimeout = setTimeout( function()
+                {
+                    rebuild();
+                }, 1000 );
+            }
+
     function resetGitWatcher()
     {
         function checkGitHead()
         {
-    function triggerRescan()
-    {
-        clearTimeout( refreshTimeout );
-        refreshTimeout = setTimeout( function()
-        {
-            rebuild();
-        }, 1000 );
-    }
-
             if( vscode.workspace.workspaceFolders )
             {
                 vscode.workspace.workspaceFolders.map( function( folder )
@@ -653,6 +654,26 @@ function activate( context )
         else
         {
             debug( 'Automatic Git refresh disabled' );
+        }
+    }
+
+    function resetPeriodicRefresh()
+    {
+        var timerInterval = vscode.workspace.getConfiguration( 'todo-tree.general' ).get( 'periodicRefreshInterval' );
+
+        if( periodicRefreshTimer )
+        {
+            clearInterval( periodicRefreshTimer );
+        }
+
+        if( timerInterval > 0 )
+        {
+            debug( 'Setting periodic refresh interval to ' + timerInterval + ' minutes' );
+            periodicRefreshTimer = setInterval( triggerRescan, timerInterval * 1000 * 60 );
+        }
+        else
+        {
+            debug( 'Periodic refresh disabled' );
         }
     }
 
@@ -1811,6 +1832,10 @@ function activate( context )
                 {
                     resetGitWatcher();
                 }
+                else if( e.affectsConfiguration( "todo-tree.general.periodicRefreshInterval" ) )
+                {
+                    resetPeriodicRefresh();
+                }
 
                 if( e.affectsConfiguration( "todo-tree.general.tagGroups" ) )
                 {
@@ -1870,6 +1895,7 @@ function activate( context )
         validatePlaceholders();
         setButtonsAndContext();
         resetGitWatcher();
+        resetPeriodicRefresh();
 
         if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).scanAtStartup === true )
         {

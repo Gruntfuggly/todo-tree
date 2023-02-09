@@ -511,6 +511,11 @@
                         "markdownDescription": "%todo-tree.configuration.general.automaticGitRefreshInterval.markdownDescription%",
                         "type": "integer"
                     },
+                    "todo-tree.general.periodicRefreshInterval": {
+                        "default": 0,
+                        "markdownDescription": "%todo-tree.configuration.general.periodicRefreshInterval.markdownDescription%",
+                        "type": "integer"
+                    },
                     "todo-tree.general.revealBehaviour": {
                         "default": "start of todo",
                         "enum": [

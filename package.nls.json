@@ -56,6 +56,7 @@
     "todo-tree.configuration.general.enableFileWatcher.markdownDescription": "Set to true to enable automatic updates when files in the workspace are created, changed or deleted.",
     "todo-tree.configuration.general.fileWatcherGlob.markdownDescription": "Glob for use with the file watcher. Change this if the default setting causes performance issues.",
     "todo-tree.configuration.general.automaticGitRefreshInterval.markdownDescription": "Polling interval (in seconds) for automatically refreshing the tree when your repository is updated. Set to '0' to disable.",
+    "todo-tree.configuration.general.periodicRefreshInterval.markdownDescription": "Periodic refresh interval (in minutes) for automatically refreshing the tree. Set to '0' to disable.",
     "todo-tree.configuration.general.revealBehaviour.markdownDescription": "Sets where the cursor is positioned when revealing a todo.",
     "todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.1": "Moves the cursor to the start of the line",
     "todo-tree.configuration.general.revealBehaviour.markdownEnumDescriptions.2": "Moves the cursor to the beginning of the todo",

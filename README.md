@@ -192,6 +192,9 @@ The extension can be customised as follows (default values in brackets):
 **todo-tree.general.debug** (`false`)</br>
 Show a debug channel in the output view.
 
+**todo-tree.general.periodicRefreshInteval** (`0`)</br>
+Interval (in minutes) for automatically refreshing the tree. Set to '0' to disable, or to the number of minutes between refreshes. *Note: This is not typically needed as the tree will be refreshed when files change.*
+
 **todo-tree.general.automaticGitRefreshInterval** (`0`)</br>
 Polling interval (in seconds) for automatically refreshing the tree when your repository is updated. This will check if your repository HEAD has changed and trigger a rescan of the workspace if it has. This replaces the file watcher functionality. Set to '0' to disable, or to the number of seconds between checks.
 
