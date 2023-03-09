@@ -378,8 +378,11 @@ Set to true if you want new views to be expanded by default.
 **todo-tree.tree.flat<sup>*</sup>** (`false`)</br>
 Set to true if you want new views to be flat by default.
 
-**todo-tree.tree.grouped<sup>*</sup>** (`false`)</br>
-Set to true if you want new views to be grouped by default.
+**todo-tree.tree.groupByTag<sup>*</sup>** (`false`)</br>
+Set to true if you want new views to be grouped by tag by default.
+
+**todo-tree.tree.groupBySubTag<sup>*</sup>** (`false`)</br>
+Set to true if you want new views to be grouped by sub tag by default.
 
 **todo-tree.tree.tagsOnly<sup>*</sup>** (`false`)</br>
 Set to true if you want new views with tags only by default.
