@@ -34,21 +34,12 @@
     ],
     "main": "./dist/extension",
     "contributes": {
-        "icons": {
-            "todo-tree-icon": {
-                "description": "todo-tree icon",
-                "default": {
-                    "fontPath": "resources/fonts/todotree.woff",
-                    "fontCharacter": "\\e900"
-                }
-            }
-        },
         "viewsContainers": {
             "activitybar": [
                 {
                     "id": "todo-tree-container",
                     "title": "%todo-tree.activitybar.title%",
-                    "icon": "$(todo-tree-icon)"
+                    "icon": "resources/todo-tree-container.svg"
                 }
             ]
         },
