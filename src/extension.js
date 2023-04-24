@@ -1008,7 +1008,7 @@ function activate( context )
                         ignoreMarkdownUpdate = true;
                         addTag( '[ ]' );
                         addTag( '[x]' );
-                        c.update( 'regex.regex', '(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)', true );
+                        c.update( 'regex.regex', '(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+\\.)[ \\t])[ \\t]*($TAGS)', true );
                     }
                     else if( button === MORE_INFO_BUTTON )
                     {
