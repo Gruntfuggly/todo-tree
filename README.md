@@ -524,7 +524,7 @@ You can also include and exclude folders from the tree using the context menu. T
 When the extension was first written, very basic markdown support was added simply by adding a pattern to the default regex to match "`- [ ]`". A better way to handle markdown TODOs is to add "`(-|\d+.)`" to the list of "comments" in the first part of the regex and then adding "`[ ]`" and "`[x]`" to the list of tags in `settings.json`, e.g. :
 
 ```json
-"todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)"
+"todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^\\s*(-|\\d+.))\\s*($TAGS)"
 "todo-tree.general.tags": [
         "BUG",
         "HACK",
