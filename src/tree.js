@@ -981,22 +981,19 @@ class TreeNodeProvider
             {
                 keep = false;
             }
-            else if( child.fsPath === fullPath || (child.isRootTagNode && config.shouldShowTagsOnly()) )
+            else if ( config.shouldShowTagsOnly() && ( child.fsPath === fullPath || child.isRootTagNode ) )
             {
-                if( config.shouldShowTagsOnly() )
+                if( child.nodes )
                 {
-                    if( child.nodes )
+                    child.nodes = child.nodes.filter( function( node )
                     {
-                        child.nodes = child.nodes.filter( function( node )
-                        {
-                            return isTodoNode( node ) && node.fsPath !== fullPath;
-                        } );
-                    }
+                        return isTodoNode( node ) && node.fsPath !== fullPath;
+                    } );
                 }
-                else
-                {
-                    child.nodes = [];
-                }
+            }
+            else if ( !config.shouldShowTagsOnly() && child.fsPath === fullPath )
+            {
+                child.nodes = [];
             }
             return keep;
         }, this );
