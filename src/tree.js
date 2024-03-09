@@ -981,7 +981,7 @@ class TreeNodeProvider
             {
                 keep = false;
             }
-            else if( child.fsPath === fullPath || child.isRootTagNode )
+            else if( child.fsPath === fullPath || (child.isRootTagNode && config.shouldShowTagsOnly()) )
             {
                 if( config.shouldShowTagsOnly() )
                 {
