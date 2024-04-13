@@ -107,9 +107,21 @@ function getBackground( tag )
     return colour;
 }
 
+function getBorderColour( tag )
+{
+    var useColourScheme = config.shouldUseColourScheme();
+    var colour = getAttribute( tag, 'borderColour', undefined, useColourScheme );
+    if( colour === undefined && useColourScheme )
+    {
+        colour = getSchemeColour( tag, config.borderColourScheme() );
+    }
+    return colour;
+}
+
 module.exports.init = init;
 module.exports.getAttribute = getAttribute;
 module.exports.getIcon = getIcon;
 module.exports.getIconColour = getIconColour;
 module.exports.getForeground = getForeground;
 module.exports.getBackground = getBackground;
+module.exports.getBorderColour = getBorderColour;

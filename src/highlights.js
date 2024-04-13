@@ -50,6 +50,7 @@ function getDecoration( tag )
 {
     var foregroundColour = attributes.getForeground( tag );
     var backgroundColour = attributes.getBackground( tag );
+    var borderColour = attributes.getBorderColour( tag );
 
     var opacity = getOpacity( tag );
 
@@ -57,6 +58,8 @@ function getDecoration( tag )
     var darkForegroundColour = foregroundColour;
     var lightBackgroundColour = backgroundColour;
     var darkBackgroundColour = backgroundColour;
+    var lightBorderColour = borderColour;
+    var darkBorderColour = borderColour;
 
     if( foregroundColour )
     {
@@ -89,6 +92,23 @@ function getDecoration( tag )
         darkBackgroundColour = applyOpacity( darkBackgroundColour, opacity );
     }
 
+    if( borderColour )
+    {
+        if( borderColour.match( /(foreground|background)/i ) )
+        {
+            lightBorderColour = new vscode.ThemeColor( borderColour );
+            darkBorderColour = new vscode.ThemeColor( borderColour );
+        }
+        else if( !utils.isValidColour( borderColour ) )
+        {
+            lightBorderColour = new vscode.ThemeColor( 'editor.background' );
+            darkBorderColour = new vscode.ThemeColor( 'editor.background' );
+        }
+
+        lightBorderColour = applyOpacity( lightBorderColour, opacity );
+        darkBorderColour = applyOpacity( darkBorderColour, opacity );
+    }
+
     if( lightForegroundColour === undefined && utils.isHexColour( lightBackgroundColour ) )
     {
         lightForegroundColour = utils.complementaryColour( lightBackgroundColour );
@@ -110,6 +130,15 @@ function getDecoration( tag )
         darkForegroundColour = new vscode.ThemeColor( 'editor.background' );
     }
 
+    if( lightBorderColour === undefined && lightBackgroundColour !== undefined )
+    {
+        lightBorderColour = lightBackgroundColour;
+    }
+    if( darkBorderColour === undefined && darkBackgroundColour !== undefined )
+    {
+        darkBorderColour = darkBackgroundColour;
+    }
+
     var lane = getRulerLane( tag );
     if( isNaN( parseInt( lane ) ) )
     {
@@ -117,6 +146,8 @@ function getDecoration( tag )
     }
     var decorationOptions = {
         borderRadius: getBorderRadius( tag ),
+        borderWidth: getBorderWidth( tag ),
+        borderStyle: getBorderStyle( tag ),
         isWholeLine: getType( tag ) === 'whole-line',
         fontWeight: getFontWeight( tag ),
         fontStyle: getFontStyle( tag ),
@@ -142,8 +173,16 @@ function getDecoration( tag )
         decorationOptions.overviewRulerLane = lane;
     }
 
-    decorationOptions.light = { backgroundColor: lightBackgroundColour, color: lightForegroundColour };
-    decorationOptions.dark = { backgroundColor: darkBackgroundColour, color: darkForegroundColour };
+    decorationOptions.light = {
+        backgroundColor: lightBackgroundColour,
+        color: lightForegroundColour,
+        borderColor: lightBorderColour
+    };
+    decorationOptions.dark = {
+        backgroundColor: darkBackgroundColour,
+        color: darkForegroundColour,
+        borderColor: darkBorderColour
+    };
 
     return vscode.window.createTextEditorDecorationType( decorationOptions );
 }
@@ -171,6 +210,16 @@ function getRulerOpacity( tag )
 function getBorderRadius( tag )
 {
     return attributes.getAttribute( tag, 'borderRadius', '0.2em' );
+}
+
+function getBorderWidth( tag )
+{
+    return attributes.getAttribute( tag, 'borderWidth', '0');
+}
+
+function getBorderStyle( tag )
+{
+    return attributes.getAttribute( tag, 'borderStyle', 'solid' );
 }
 
 function getFontStyle( tag )

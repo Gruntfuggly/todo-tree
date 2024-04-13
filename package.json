@@ -681,6 +681,16 @@
                                 "borderRadius": {
                                     "type": "string"
                                 },
+                                "borderColour": {
+                                    "type": "string",
+                                    "format": "color-hex"
+                                },
+                                "borderWidth": {
+                                    "type": "string"
+                                },
+                                "borderStyle": {
+                                    "type": "string"
+                                },
                                 "icon": {
                                     "type": "string"
                                 },
@@ -857,6 +867,22 @@
                             "type": "string"
                         },
                         "markdownDescription": "%todo-tree.configuration.highlights.backgroundColourScheme.markdownDescription%",
+                        "type": "array"
+                    },
+                    "todo-tree.highlights.borderColourScheme": {
+                        "default": [
+                            "red",
+                            "orange",
+                            "yellow",
+                            "green",
+                            "blue",
+                            "indigo",
+                            "violet"
+                        ],
+                        "items": {
+                            "type": "string"
+                        },
+                        "markdownDescription": "%todo-tree.configuration.highlights.borderColourScheme.markdownDescription%",
                         "type": "array"
                     }
                 }

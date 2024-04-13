@@ -233,6 +233,11 @@ function backgroundColourScheme()
     return vscode.workspace.getConfiguration( 'todo-tree.highlights' ).backgroundColourScheme;
 }
 
+function borderColourScheme()
+{
+    return vscode.workspace.getConfiguration( 'todo-tree.highlights' ).borderColourScheme;
+}
+
 function defaultHighlight()
 {
     return vscode.workspace.getConfiguration( 'todo-tree.highlights' ).defaultHighlight;
@@ -294,6 +299,7 @@ module.exports.shouldShowScanModeInTree = shouldShowScanModeInTree;
 module.exports.shouldUseColourScheme = shouldUseColourScheme;
 module.exports.foregroundColourScheme = foregroundColourScheme;
 module.exports.backgroundColourScheme = backgroundColourScheme;
+module.exports.borderColourScheme = borderColourScheme;
 module.exports.defaultHighlight = defaultHighlight;
 module.exports.customHighlight = customHighlight;
 module.exports.subTagClickUrl = subTagClickUrl;

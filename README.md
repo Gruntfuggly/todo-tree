@@ -38,7 +38,13 @@ Both `defaultHighlight` and `customHighlight` allow for the following settings:
 
 `fontWeight`, `fontStyle`, `textDecoration` - can be used to style the highlight with standard CSS values.
 
-`borderRadius` - used to set the border radius of the background of the highlight.
+`borderRadius` - used to set the radius of the border of the highlight.
+
+`borderColor` - used to set the color of the border of the highlight.
+
+`borderWidth` - used to set the width of the border of the highlight.
+
+`borderStyle` - used to set the style of the border of the highlight.
 
 `icon` - used to set a different icon in the tree view. Must be a valid octicon (see <https://octicons.github.com>) or codicon (see <https://microsoft.github.io/vscode-codicons/dist/codicon.html>). If using codicons, specify them in the format "$(*icon*)". The icon defaults to a tick if it's not valid. You can also use "todo-tree", or "todo-tree-filled" if you want to use the icon from the activity view.
 

@@ -74,6 +74,7 @@
     "todo-tree.configuration.highlights.useColourScheme.markdownDescription": "使用配色方案按标签顺序为标签着色。可以通过修改 `todo-tree.highlights.foregroundColourScheme` 和 `todo-tree.highlights.backgroundColourScheme` 来改变颜色。配色方案将覆盖默认突出显示的颜色，但不会覆盖自定义突出显示的颜色。",
     "todo-tree.configuration.highlights.foregroundColourScheme.markdownDescription": "应用于标签突出显示的颜色列表。标签突出显示的颜色由标签顺序决定，颜色在必要时可以重复，并会被  `todo-tree.highlights.customHighlight` 中的设置覆盖。",
     "todo-tree.configuration.highlights.backgroundColourScheme.markdownDescription": "应用于标签突出显示的颜色列表。标签突出显示的颜色由标签顺序决定，颜色在必要时可以重复，并会被  `todo-tree.highlights.customHighlight` 中的设置覆盖。",
+    "todo-tree.configuration.highlights.borderColourScheme.markdownDescription": "应用于标签突出显示的颜色列表。标签突出显示的颜色由标签顺序决定，颜色在必要时可以重复，并会被  `todo-tree.highlights.customHighlight` 中的设置覆盖。",
     "todo-tree.configuration.regex": "雷格克斯",
     "todo-tree.configuration.regex.regex.markdownDescription": "控制匹配待办事项标签的 Rust 正则表达式。注意：`$TAGS` 会被标签列表内的项替换。为了某些功能的正常使用，`$TAGS` 必须在正则表达式中出现。但在正则表达式中完整列出标签（而不使用 `$TAGS`）也不会影响到基本的功能。",
     "todo-tree.configuration.regex.regexCaseSensitive.markdownDescription": "使用区分大小写的正则表达式。",
