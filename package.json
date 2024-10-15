@@ -610,6 +610,7 @@
                             "HACK",
                             "FIXME",
                             "TODO",
+                            "@todo",
                             "XXX",
                             "[ ]",
                             "[x]"
@@ -1136,7 +1137,7 @@
                 "type": "object",
                 "properties": {
                     "todo-tree.regex.regex": {
-                        "default": "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
+                        "default": "(//|///|//!|#|\"\"\"|<!--|;|/\\*|/\\*\\*|/\\*!|\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
                         "markdownDescription": "%todo-tree.configuration.regex.regex.markdownDescription%",
                         "type": "string",
                         "minLength": 1,
