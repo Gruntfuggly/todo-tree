@@ -115,6 +115,11 @@ module.exports.search = function ripGrep( cwd, options )
     }
 
     let execString = rgPath + ' --no-messages --vimgrep -H --column --line-number --color never ' + options.additional;
+
+    if (process.env.ComSpec && process.env.ComSpec.toLowerCase().includes("powershell")) {
+        execString = "&" + execString;
+    }
+
     if( options.multiline )
     {
         execString += " -U ";
