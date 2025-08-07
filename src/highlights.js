@@ -1,5 +1,4 @@
 var vscode = require( 'vscode' );
-var execWithIndices = require( "regexp-match-indices" ).shim();
 
 var config = require( './config.js' );
 var utils = require( './utils.js' );
@@ -224,9 +223,99 @@ function highlight( editor )
         documentHighlights[ tag ].push( decoration );
     }
 
+    function detectMultilineBlock( document, startLine, commentPrefix )
+    {
+        var lines = [ startLine ];
+        var maxLines = config.getMultilineMaxLines();
+        var currentLine = startLine + 1;
+        var lineCount = document.lineCount;
+        
+        // Handle different comment styles
+        var continuationPatterns = [];
+        var trimmedPrefix = commentPrefix.trim();
+        
+        if( trimmedPrefix.indexOf('/*') !== -1 )
+        {
+            // For /* style comments, look for continuation patterns like " *", "  *", etc.
+            continuationPatterns = ['*', ' *', '  *', '   *', '    *'];
+        }
+        else if( trimmedPrefix.indexOf('<!--') !== -1 )
+        {
+            // For HTML comments, continuation lines can be plain text (no special prefix required)
+            // We'll handle this differently - any non-empty line until --> is considered continuation
+            continuationPatterns = [];
+        }
+        else
+        {
+            // For other comments like #, //, use the original prefix
+            continuationPatterns = [trimmedPrefix];
+        }
+        
+        while( currentLine < lineCount && lines.length < maxLines )
+        {
+            var line = document.lineAt( currentLine );
+            var lineText = line.text;
+            var trimmedText = lineText.trim();
+            
+            // Check for end of block comments
+            if( trimmedPrefix.indexOf('/*') !== -1 && trimmedText.indexOf('*/') !== -1 )
+            {
+                lines.push( currentLine );
+                break;
+            }
+            else if( trimmedPrefix.indexOf('<!--') !== -1 && trimmedText.indexOf('-->') !== -1 )
+            {
+                lines.push( currentLine );
+                break;
+            }
+            
+            // Determine if this is a comment line
+            var isCommentLine = false;
+            
+            if( trimmedText.length === 0 )
+            {
+                // Empty lines are considered part of the comment block
+                isCommentLine = true;
+            }
+            else if( trimmedPrefix.indexOf('<!--') !== -1 )
+            {
+                // For HTML comments, any line that doesn't contain --> is a continuation
+                if( trimmedText.indexOf('-->') === -1 )
+                {
+                    isCommentLine = true;
+                }
+            }
+            else if( continuationPatterns.length > 0 )
+            {
+                // For other comment types, check against continuation patterns
+                for( var i = 0; i < continuationPatterns.length; i++ )
+                {
+                    if( trimmedText.startsWith( continuationPatterns[i] ) )
+                    {
+                        isCommentLine = true;
+                        break;
+                    }
+                }
+            }
+            
+            if( isCommentLine )
+            {
+                lines.push( currentLine );
+                currentLine++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        
+        return lines;
+    }
+
     var documentHighlights = {};
     var subTagHighlights = {};
     var customHighlight = config.customHighlight();
+    var isMultilineEnabled = config.isMultilineHighlightEnabled();
 
     if( editor )
     {
@@ -242,7 +331,8 @@ function highlight( editor )
 
         decorations[ id ] = [];
 
-        if( vscode.workspace.getConfiguration( 'todo-tree.highlights' ).get( 'enabled', true ) )
+        var highlightConfig = vscode.workspace.getConfiguration( 'todo-tree.highlights' );
+        if( highlightConfig.get( 'enabled', true ) )
         {
             var text = editor.document.getText();
             var regex = utils.getRegexForEditorSearch( true );
@@ -344,6 +434,93 @@ function highlight( editor )
                     {
                         addDecoration( startPos, endPos );
                     }
+                    
+                    // Handle multi-line highlighting if enabled (for ALL types)
+                    if( isMultilineEnabled )
+                    {
+                        var lineText = editor.document.lineAt( startPos.line ).text;
+                        var commentPrefix = '';
+                        
+                        // Detect comment prefix (supports #, //, /*, <!--, ;, etc.)
+                        // Group 1 captures leading whitespace, Group 2 captures the comment character(s)
+                        var prefixMatch = lineText.match( /^(\s*)(#|\/{2}|\/{1}\*|<!--|;|--|-|\d+\.|\*)/ );
+                        if( prefixMatch )
+                        {
+                            commentPrefix = prefixMatch[ 0 ];
+                            
+                            var multiLines = detectMultilineBlock( editor.document, startPos.line, commentPrefix );
+                            
+                            // If we found a multi-line block, add highlighting for continuation lines
+                            if( multiLines.length > 1 )
+                            {
+                                // For the first line, if type is 'tag', replace it with content-only highlight
+                                if( type === 'tag' )
+                                {
+                                    // Remove the tag-only highlight and replace with content highlight
+                                    if( documentHighlights[ tag ] && documentHighlights[ tag ].length > 0 )
+                                    {
+                                        documentHighlights[ tag ].pop();
+                                    }
+                                    
+                                    // Find where the actual content starts after the TODO tag
+                                    var firstLine = editor.document.lineAt( startPos.line );
+                                    var firstLineText = firstLine.text;
+                                    
+                                    // Look for the TODO tag and start highlighting after it
+                                    var tagPattern = new RegExp( '\\b' + tag + '\\b.*?:?\\s*' );
+                                    var tagMatch = firstLineText.match( tagPattern );
+                                    if( tagMatch )
+                                    {
+                                        var contentStart = firstLineText.indexOf( tagMatch[0] ) + tagMatch[0].length;
+                                        if( contentStart < firstLineText.length )
+                                        {
+                                            var firstLineStartPos = new vscode.Position( firstLine.line, contentStart );
+                                            addDecoration( firstLineStartPos, firstLine.range.end );
+                                        }
+                                    }
+                                }
+                                
+                                // Add highlights for continuation lines
+                                for( var i = 1; i < multiLines.length; i++ )
+                                {
+                                    var blockLine = editor.document.lineAt( multiLines[ i ] );
+                                    var blockLineText = blockLine.text;
+                                    
+                                    if( blockLineText.trim().length > 0 )
+                                    {
+                                        var blockContentStart = 0;
+                                        
+                                        // Find where the actual content starts (after comment characters and spaces)
+                                        var blockPrefixMatch = blockLineText.match( /^(\s*)(#|\/{2}|\/{1}\*|<!--|;|--|-|\d+\.|\*)(\s*)/ );
+                                        if( blockPrefixMatch )
+                                        {
+                                            // Start after the comment prefix and any following spaces
+                                            blockContentStart = blockPrefixMatch[ 0 ].length;
+                                        }
+                                        else if( prefixMatch && prefixMatch[ 0 ].indexOf('<!--') !== -1 )
+                                        {
+                                            // For HTML comment continuation lines without specific prefix,
+                                            // start from the first non-whitespace character (the actual content)
+                                            blockContentStart = blockLine.firstNonWhitespaceCharacterIndex;
+                                        }
+                                        else
+                                        {
+                                            // Fallback to first non-whitespace character
+                                            blockContentStart = blockLine.firstNonWhitespaceCharacterIndex;
+                                        }
+                                        
+                                        // Only highlight if there's actual content after the comment characters
+                                        if( blockContentStart < blockLineText.length )
+                                        {
+                                            var blockStartPos = new vscode.Position( multiLines[ i ], blockContentStart );
+                                            var blockEndPos = blockLine.range.end;
+                                            addDecoration( blockStartPos, blockEndPos );
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -374,7 +551,8 @@ function triggerHighlight( editor )
         {
             clearTimeout( highlightTimer[ id ] );
         }
-        highlightTimer[ id ] = setTimeout( highlight, vscode.workspace.getConfiguration( 'todo-tree.highlights' ).highlightDelay, editor );
+        var highlightDelay = vscode.workspace.getConfiguration( 'todo-tree.highlights' ).highlightDelay;
+        highlightTimer[ id ] = setTimeout( highlight, highlightDelay, editor );
     }
 }
 

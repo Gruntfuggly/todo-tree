@@ -18,6 +18,8 @@ Found TODOs can also be highlighted in open files.
 
 >*New!:* If you just want to set different colours for tags, you can now enable `todo-tree.highlights.useColourScheme`. This will apply a set of colours (which can be changed) to the tags in the order that they are defined.
 
+>*New Feature:* **Multi-line TODO Highlighting** - Enable `todo-tree.highlights.multiline.enabled` to highlight entire TODO blocks that span multiple comment lines. When enabled, the extension will automatically detect and highlight subsequent comment lines that belong to the same TODO block.
+
 Highlighting tags is configurable. Use `defaultHighlight` to set up highlights for all tags. If you need to configure individual tags differently, use `customHighlight`. If settings are not specified in `customHighlight`, the value from `defaultHighlight` is used.
 
 Custom highlights can also be specified for sub tags (if used).
@@ -103,6 +105,33 @@ Example:
 <sup>*Note: The highlight configuration is separate from the settings for the search. Adding settings in `customHighlight` does not automatically add the tags into `todo-tree.general.tags`.*</sup>
 
 <sup>*Note: Using the `capture-groups` setting in `type` may have an impact on performance with large files.
+
+### Multi-line Highlighting
+
+Multi-line TODO highlighting allows you to highlight entire comment blocks that span multiple lines. This is useful for TODOs with detailed explanations or multi-step tasks.
+
+Configuration:
+
+```json
+"todo-tree.highlights.multiline.enabled": true,
+"todo-tree.highlights.multiline.maxLines": 20
+```
+
+When enabled, the extension will:
+- Detect comment blocks starting with a TODO tag
+- Continue highlighting subsequent lines that have the same comment prefix
+- Include indented continuation lines
+- Stop at non-comment lines or when reaching the max line limit
+
+Example of a multi-line TODO that will be fully highlighted:
+```python
+# TODO: Implement user authentication
+# This requires several steps:
+# 1. Add login endpoint
+# 2. Implement JWT token generation
+#    - Check token validity
+# 3. Update frontend login form
+```
 
 ## Installing
 

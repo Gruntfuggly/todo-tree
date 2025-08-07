@@ -817,6 +817,18 @@
                         "markdownDescription": "%todo-tree.configuration.highlights.enabled.markdownDescription%",
                         "type": "boolean"
                     },
+                    "todo-tree.highlights.multiline.enabled": {
+                        "default": false,
+                        "markdownDescription": "Enable highlighting of multi-line TODO blocks where subsequent comment lines are part of the TODO",
+                        "type": "boolean"
+                    },
+                    "todo-tree.highlights.multiline.maxLines": {
+                        "default": 20,
+                        "markdownDescription": "Maximum number of lines to include in a multi-line TODO block",
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 100
+                    },
                     "todo-tree.highlights.highlightDelay": {
                         "default": 500,
                         "markdownDescription": "%todo-tree.configuration.highlights.highlightDelay.markdownDescription%",
