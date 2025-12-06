@@ -36,6 +36,7 @@ var SCAN_MODE_WORKSPACE_AND_OPEN_FILES = 'workspace';
 var SCAN_MODE_OPEN_FILES = 'open files';
 var SCAN_MODE_CURRENT_FILE = 'current file';
 var SCAN_MODE_WORKSPACE_ONLY = 'workspace only';
+var SCAN_MODE_GIT_BRANCH = 'git branch';
 
 var STATUS_BAR_TOTAL = 'total';
 var STATUS_BAR_TAGS = 'tags';
@@ -274,6 +275,10 @@ function activate( context )
         {
             statusBarIndicator.text += " (in current file)";
         }
+        else if( scanMode === SCAN_MODE_GIT_BRANCH )
+        {
+            statusBarIndicator.text += " (in git branch)";
+        }
 
         statusBarIndicator.command = "todo-tree.onStatusBarClicked";
     }
@@ -347,6 +352,130 @@ function activate( context )
                 message += " (" + e.stderr + ")";
             }
             vscode.window.showErrorMessage( "Todo-Tree: " + message );
+        } );
+    }
+
+    function getBaseBranch( workspaceFolder )
+    {
+        return new Promise( function( resolve, reject )
+        {
+            // First try 'main'
+            child_process.exec( "git rev-parse --verify main", { cwd: workspaceFolder }, ( err, stdout, stderr ) =>
+            {
+                if( !err )
+                {
+                    debug( "Using 'main' as base branch" );
+                    resolve( 'main' );
+                }
+                else
+                {
+                    // Fall back to 'master'
+                    child_process.exec( "git rev-parse --verify master", { cwd: workspaceFolder }, ( err, stdout, stderr ) =>
+                    {
+                        if( !err )
+                        {
+                            debug( "Using 'master' as base branch" );
+                            resolve( 'master' );
+                        }
+                        else
+                        {
+                            debug( "No main or master branch found" );
+                            reject( new Error( "No 'main' or 'master' branch found" ) );
+                        }
+                    } );
+                }
+            } );
+        } );
+    }
+
+    function searchGitBranch( workspaceFolder )
+    {
+        return getBaseBranch( workspaceFolder ).then( function( baseBranch )
+        {
+            return new Promise( function( resolve, reject )
+            {
+                debug( "Running git diff " + baseBranch + "..HEAD in " + workspaceFolder );
+
+                child_process.exec( "git diff " + baseBranch + "..HEAD --unified=0", { cwd: workspaceFolder, maxBuffer: 50 * 1024 * 1024 }, ( err, stdout, stderr ) =>
+                {
+                    if( err )
+                    {
+                        debug( "Git diff error: " + stderr );
+                        reject( new Error( stderr || err.message ) );
+                        return;
+                    }
+
+                    var diffOutput = stdout.toString();
+                    if( !diffOutput.trim() )
+                    {
+                        debug( "No diff found between " + baseBranch + " and HEAD" );
+                        resolve();
+                        return;
+                    }
+
+                    var regex = utils.getRegexForEditorSearch( true );
+                    var lines = diffOutput.split( '\n' );
+                    var currentFile = null;
+                    var currentLineNumber = 0;
+
+                    for( var i = 0; i < lines.length; i++ )
+                    {
+                        var line = lines[ i ];
+
+                        // Parse file header: +++ b/path/to/file
+                        if( line.startsWith( '+++ b/' ) )
+                        {
+                            currentFile = line.substring( 6 );
+                            debug( "Diff file: " + currentFile );
+                            continue;
+                        }
+
+                        // Parse hunk header: @@ -old,count +new,count @@
+                        var hunkMatch = line.match( /^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@/ );
+                        if( hunkMatch )
+                        {
+                            currentLineNumber = parseInt( hunkMatch[ 1 ], 10 );
+                            continue;
+                        }
+
+                        // Process added lines (start with + but not +++)
+                        if( line.startsWith( '+' ) && !line.startsWith( '+++' ) )
+                        {
+                            var addedContent = line.substring( 1 );
+
+                            // Check if this line matches our TODO regex
+                            regex.lastIndex = 0;
+                            var match = regex.exec( addedContent );
+                            if( match && currentFile )
+                            {
+                                var fsPath = path.join( workspaceFolder, currentFile );
+                                var result = {
+                                    fsPath: fsPath,
+                                    uri: vscode.Uri.file( fsPath ),
+                                    line: currentLineNumber,
+                                    column: match.index + 1,
+                                    match: addedContent
+                                };
+                                debug( " Match (Git Branch): " + JSON.stringify( result ) );
+                                searchResults.add( result );
+                            }
+                            currentLineNumber++;
+                        }
+                        else if( !line.startsWith( '-' ) && !line.startsWith( '\\' ) && line.length > 0 )
+                        {
+                            // Context line (no prefix) - shouldn't happen with --unified=0 but handle anyway
+                            currentLineNumber++;
+                        }
+                        // Removed lines (start with -) don't affect line numbering for new file
+                    }
+
+                    resolve();
+                } );
+            } );
+        } ).catch( function( err )
+        {
+            vscode.window.showWarningMessage( "Todo-Tree: " + err.message );
+            return Promise.resolve();
         } );
     }
 
@@ -470,7 +599,8 @@ function activate( context )
 
     function refreshOpenFiles()
     {
-        if( config.scanMode() !== SCAN_MODE_WORKSPACE_ONLY )
+        var scanMode = config.scanMode();
+        if( scanMode !== SCAN_MODE_WORKSPACE_ONLY && scanMode !== SCAN_MODE_GIT_BRANCH )
         {
             Object.keys( openDocuments ).map( function( document )
             {
@@ -586,26 +716,48 @@ function activate( context )
         statusBarIndicator.command = "todo-tree.stopScan";
         statusBarIndicator.tooltip = "Click to interrupt scan";
 
-        searchList = getRootFolders();
+        var scanMode = config.scanMode();
 
-        if( searchList.length === 0 )
+        if( scanMode === SCAN_MODE_GIT_BRANCH )
         {
-            searchWorkspaces( searchList );
-        }
-
-        if( config.shouldIgnoreGitSubmodules() )
-        {
-            submoduleExcludeGlobs = [];
-            searchList.forEach( function( rootPath )
+            // For git branch mode, search git diffs in each workspace folder
+            var workspaceFolders = vscode.workspace.workspaceFolders || [];
+            var gitSearchPromises = workspaceFolders.map( function( folder )
             {
-                submoduleExcludeGlobs = submoduleExcludeGlobs.concat( utils.getSubmoduleExcludeGlobs( rootPath ) );
+                return searchGitBranch( folder.uri.fsPath );
             } );
-            context.workspaceState.update( 'submoduleExcludeGlobs', submoduleExcludeGlobs );
-        }
 
-        iterateSearchList()
-            .finally( refreshOpenFiles )
-            .then( addResultsToTree );
+            Promise.all( gitSearchPromises )
+                .then( function()
+                {
+                    debug( "Found " + searchResults.count() + " items in git branch diff" );
+                    addResultsToTree();
+                    setButtonsAndContext();
+                } );
+        }
+        else
+        {
+            searchList = getRootFolders();
+
+            if( searchList.length === 0 )
+            {
+                searchWorkspaces( searchList );
+            }
+
+            if( config.shouldIgnoreGitSubmodules() )
+            {
+                submoduleExcludeGlobs = [];
+                searchList.forEach( function( rootPath )
+                {
+                    submoduleExcludeGlobs = submoduleExcludeGlobs.concat( utils.getSubmoduleExcludeGlobs( rootPath ) );
+                } );
+                context.workspaceState.update( 'submoduleExcludeGlobs', submoduleExcludeGlobs );
+            }
+
+            iterateSearchList()
+                .finally( refreshOpenFiles )
+                .then( addResultsToTree );
+        }
     }
 
             function triggerRescan()
@@ -970,6 +1122,11 @@ function activate( context )
         vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'scanMode', SCAN_MODE_WORKSPACE_ONLY, vscode.ConfigurationTarget.Workspace );
     }
 
+    function scanGitBranch()
+    {
+        vscode.workspace.getConfiguration( 'todo-tree.tree' ).update( 'scanMode', SCAN_MODE_GIT_BRANCH, vscode.ConfigurationTarget.Workspace );
+    }
+
     function dumpFolderFilter()
     {
         debug( "Folder filter include:" + JSON.stringify( context.workspaceState.get( 'includeGlobs' ) ) );
@@ -1254,7 +1411,8 @@ function activate( context )
 
         function shouldRefreshFile()
         {
-            return vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true && config.scanMode() !== SCAN_MODE_WORKSPACE_ONLY;
+            var scanMode = config.scanMode();
+            return vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true && scanMode !== SCAN_MODE_WORKSPACE_ONLY && scanMode !== SCAN_MODE_GIT_BRANCH;
         }
 
         // We can't do anything if we can't find ripgrep
@@ -1693,6 +1851,7 @@ function activate( context )
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanOpenFilesOnly', scanOpenFilesOnly ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanCurrentFileOnly', scanCurrentFileOnly ) );
         context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanWorkspaceOnly', scanWorkspaceOnly ) );
+        context.subscriptions.push( vscode.commands.registerCommand( 'todo-tree.scanGitBranch', scanGitBranch ) );
 
         context.subscriptions.push( vscode.window.onDidChangeActiveTextEditor( function( e )
         {
@@ -1764,11 +1923,12 @@ function activate( context )
 
             delete openDocuments[ document.uri.toString() ];
 
-            if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true && config.scanMode() !== SCAN_MODE_WORKSPACE_ONLY )
+            var scanMode = config.scanMode();
+            if( vscode.workspace.getConfiguration( 'todo-tree.tree' ).autoRefresh === true && scanMode !== SCAN_MODE_WORKSPACE_ONLY && scanMode !== SCAN_MODE_GIT_BRANCH )
             {
                 if( config.isValidScheme( document.uri ) )
                 {
-                    if( config.scanMode() !== SCAN_MODE_WORKSPACE_AND_OPEN_FILES )
+                    if( scanMode !== SCAN_MODE_WORKSPACE_AND_OPEN_FILES )
                     {
                         removeFromTree( document.uri );
                     }

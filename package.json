@@ -75,8 +75,13 @@
                     "group": "navigation@3"
                 },
                 {
-                    "command": "todo-tree.scanWorkspaceAndOpenFiles",
+                    "command": "todo-tree.scanGitBranch",
                     "when": "view =~ /todo-tree/ && todo-tree-scan-mode == 'current file' && todo-tree-show-scan-mode-button == true",
+                    "group": "navigation@3"
+                },
+                {
+                    "command": "todo-tree.scanWorkspaceAndOpenFiles",
+                    "when": "view =~ /todo-tree/ && todo-tree-scan-mode == 'git branch' && todo-tree-show-scan-mode-button == true",
                     "group": "navigation@3"
                 },
                 {
@@ -219,6 +224,11 @@
                 {
                     "command": "todo-tree.scanWorkspaceOnly",
                     "when": "view =~ /todo-tree/ && todo-tree-scan-mode != 'workspace only'",
+                    "group": "3-view"
+                },
+                {
+                    "command": "todo-tree.scanGitBranch",
+                    "when": "view =~ /todo-tree/ && todo-tree-scan-mode != 'git branch'",
                     "group": "3-view"
                 },
                 {
@@ -394,6 +404,12 @@
                 "title": "%todo-tree.command.scanWorkspaceOnly.title%",
                 "category": "%todo-tree.command.category%",
                 "icon": "$(folder)"
+            },
+            {
+                "command": "todo-tree.scanGitBranch",
+                "title": "%todo-tree.command.scanGitBranch.title%",
+                "category": "%todo-tree.command.category%",
+                "icon": "$(git-branch)"
             },
             {
                 "command": "todo-tree.addTag",
@@ -1005,14 +1021,16 @@
                             "workspace",
                             "open files",
                             "current file",
-                            "workspace only"
+                            "workspace only",
+                            "git branch"
                         ],
                         "markdownDescription": "%todo-tree.configuration.tree.scanMode.markdownDescription%",
                         "markdownEnumDescriptions": [
                             "%todo-tree.configuration.tree.scanMode.markdownEnumDescriptions.1%",
                             "%todo-tree.configuration.tree.scanMode.markdownEnumDescriptions.2%",
                             "%todo-tree.configuration.tree.scanMode.markdownEnumDescriptions.3%",
-                            "%todo-tree.configuration.tree.scanMode.markdownEnumDescriptions.4%"
+                            "%todo-tree.configuration.tree.scanMode.markdownEnumDescriptions.4%",
+                            "%todo-tree.configuration.tree.scanMode.markdownEnumDescriptions.5%"
                         ],
                         "type": "string"
                     },
