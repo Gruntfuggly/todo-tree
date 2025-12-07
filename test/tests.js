@@ -291,6 +291,48 @@ QUnit.test( "utils.getRegexForRipGrep can remove the case insensitive flag", fun
     assert.equal( utils.getRegexForRipGrep().flags, "gm" );
 } );
 
+QUnit.test( "default regex should not match TODOs after multiline HTML openers", function( assert )
+{
+    var testConfig = stubs.getTestConfig();
+    testConfig.regexSource = "(//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))[ \\t]*($TAGS)";
+    utils.init( testConfig );
+
+    var regex = utils.getRegexForRipGrep();
+    var sample = [
+        "TODO case 1 Shows up normally",
+        "<!-- TODO case 2 Shows up normally -->",
+        "",
+        "<!--",
+        "TODO case 3 NOT Preceded by extra TODO after multi-line HTML comment",
+        "TODO case 4 Shows up normally",
+        "-->"
+    ].join( "\n" );
+
+    var matches = Array.from( sample.matchAll( regex ) );
+    var lines = sample.split( "\n" );
+    var lineNumbers = matches.map( function( match )
+    {
+        var uptoMatch = sample.slice( 0, match.index );
+        return uptoMatch.split( "\n" ).length - 1;
+    } );
+    var matchedLines = lineNumbers.map( function( lineNumber )
+    {
+        return lines[ lineNumber ];
+    } );
+
+    assert.equal( matches.length, 4, "every actual TODO occurrence should still be detected" );
+    assert.equal( lineNumbers.indexOf( 3 ), -1, "regex should not report TODOs starting on a bare HTML opener line" );
+    assert.deepEqual( lineNumbers, [ 0, 1, 4, 5 ], "default regex should only match TODO tags on their own lines" );
+    assert.deepEqual( matchedLines,
+        [
+            "TODO case 1 Shows up normally",
+            "<!-- TODO case 2 Shows up normally -->",
+            "TODO case 3 NOT Preceded by extra TODO after multi-line HTML comment",
+            "TODO case 4 Shows up normally"
+        ],
+        "default regex should only match TODO text which shares its line" );
+} );
+
 QUnit.test( "utils.isIncluded returns true when no includes or excludes are specified", function( assert )
 {
     assert.ok( utils.isIncluded( "filename.js", [], [] ) === true );
