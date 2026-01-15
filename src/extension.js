@@ -214,7 +214,7 @@ function activate( context )
             }
             else
             {
-                sortedTags = config.tags();
+                sortedTags = config.tags().concat(Object.keys(config.tagGroups()));
             }
             var text = "";
             var showIcons = config.shouldShowIconsInsteadOfTagsInStatusBar();

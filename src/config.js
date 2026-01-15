@@ -118,6 +118,13 @@ function tags()
     return tags.length > 0 ? tags : [ "TODO" ];
 }
 
+function tagGroups() 
+{
+    /**@type {{[groupname:string]:string[]}} */
+    var tags = vscode.workspace.getConfiguration('todo-tree.general').tagGroups;
+    return typeof tags === "object" && tags !== null ? tags : {};
+}
+
 function shouldSortTagsOnlyViewAlphabetically()
 {
     return vscode.workspace.getConfiguration( 'todo-tree.tree' ).sortTagsOnlyViewAlphabetically;
@@ -273,6 +280,7 @@ module.exports.regex = regex;
 module.exports.subTagRegex = subTagRegex;
 module.exports.ripgrepPath = ripgrepPath;
 module.exports.tags = tags;
+module.exports.tagGroups = tagGroups;
 module.exports.shouldSortTagsOnlyViewAlphabetically = shouldSortTagsOnlyViewAlphabetically;
 module.exports.labelFormat = labelFormat;
 module.exports.tooltipFormat = tooltipFormat;
