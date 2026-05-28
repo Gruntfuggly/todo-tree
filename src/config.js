@@ -109,6 +109,14 @@ function ripgrepPath()
     rgPath = exePathIsDefined( path.join( vscode.env.appRoot, "node_modules.asar.unpacked/@vscode/ripgrep/bin/", exeName() ) );
     if( rgPath ) return rgPath;
 
+    var platformArch = process.platform + "-" + process.arch;
+
+    rgPath = exePathIsDefined( path.join( vscode.env.appRoot, "node_modules/@vscode/ripgrep-universal/bin/", platformArch, exeName() ) );
+    if( rgPath ) return rgPath;
+
+    rgPath = exePathIsDefined( path.join( vscode.env.appRoot, "node_modules.asar.unpacked/@vscode/ripgrep-universal/bin/", platformArch, exeName() ) );
+    if( rgPath ) return rgPath;
+
     return rgPath;
 }
 
