@@ -1260,7 +1260,7 @@ function activate( context )
         // We can't do anything if we can't find ripgrep
         if( !config.ripgrepPath() )
         {
-            vscode.window.showErrorMessage( "Todo-Tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep' to point to the executable" );
+            vscode.window.showErrorMessage( "Todo-Tree: Failed to find vscode-ripgrep - please install ripgrep manually and set 'todo-tree.ripgrep.ripgrep' to point to the executable" );
             return;
         }
 
