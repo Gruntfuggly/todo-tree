@@ -1,5 +1,5 @@
 var vscode = require( 'vscode' );
-var execWithIndices = require( "regexp-match-indices" ).shim();
+var execWithIndices = require( "regexp-match-indices" );
 
 var config = require( './config.js' );
 var utils = require( './utils.js' );
@@ -249,7 +249,7 @@ function highlight( editor )
             var subTagRegex = new RegExp( config.subTagRegex() );
 
             var match;
-            while( ( match = regex.exec( text ) ) !== null )
+            while( ( match = execWithIndices( regex, text ) ) !== null )
             {
                 var tag = match[ 0 ];
                 var offsetStart = match.index;
